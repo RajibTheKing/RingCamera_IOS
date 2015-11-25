@@ -76,11 +76,12 @@ public:
     
     void ReceiveFullFrame(byte*data, int iLen);
     
+    void ReleaseV();
 
    
     queue<byte*> m_RenderQueue;
     queue<int> m_RenderDataLenQueue;
-    
+    pthread_mutex_t pRenderQueueMutex;
     
     
 };

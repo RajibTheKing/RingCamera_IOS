@@ -168,6 +168,9 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     m_pVideoThreadProcessor.bRenderThreadActive = false;
     
     m_pVideoThreadProcessor.bEncodeThreadActive = false;
+    CVideoAPI::GetInstance()->StopVideoCallV(m_lUserId);
+    CVideoAPI::GetInstance()->ReleaseV();
+
 }
 
 

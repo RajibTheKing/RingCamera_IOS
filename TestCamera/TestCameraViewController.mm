@@ -128,7 +128,7 @@ FILE *fpyuv = NULL;
     
     [g_pVideoCallProcessor Initialize:lUserId];
     
-    [[RingCallAudioManager sharedInstance] startRecordAndPlayAudio];
+    //[[RingCallAudioManager sharedInstance] startRecordAndPlayAudio];
     
     NSString *nsRemoteIp = _remoteIPTextField.text;
     string sRemoteIp([nsRemoteIp UTF8String]);
@@ -156,7 +156,7 @@ FILE *fpyuv = NULL;
 
 
 
-bool flagggg = false;
+//bool flagggg = false;
 
 - (IBAction)LoginButtonAction:(id)loginButton
 {
@@ -201,16 +201,9 @@ bool flagggg = false;
     pMessageProcessor->prepareLoginRequestMessageR(sMyId, sFrinedId, message);
     
     SendToVideoSocket(message, iLength);
-    
-    if(flagggg == false)
-    {
-        [g_pVideoCallProcessor Initialize:g_iMyId];
-        flagggg = true;
-    }
+    [g_pVideoCallProcessor Initialize:g_iMyId];
     
 #endif
-    
-    
     
 }
 
@@ -261,8 +254,9 @@ bool flagggg = false;
 - (IBAction)EndCallAction:(id)endButton
 {
     NSLog(@"Inside EndCall Button");
-    
+    //[[RingCallAudioManager sharedInstance] stopRecordAndPlayAudio];
     [g_pVideoCallProcessor CloseAllThreads];
+    
     
     [session stopRunning];
     

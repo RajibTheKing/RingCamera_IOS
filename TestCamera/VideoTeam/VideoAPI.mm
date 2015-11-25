@@ -26,6 +26,7 @@ void notifyClientMethodWithFrame(IPVLongType lFriendID, unsigned char data[], in
 CVideoAPI::CVideoAPI()
 {
     cout<<"Inside CVideoAPI constructor"<<endl;
+    pthread_mutex_init(&pRenderQueueMutex, NULL);
 }
 
 CVideoAPI* CVideoAPI::GetInstance()
@@ -142,9 +143,16 @@ bool CVideoAPI::StopVideoCallV(long long lFriendID)
     return StopVideoCall(lFriendID);
 }
 
+void CVideoAPI::ReleaseV()
+{
+     Release();
+}
+
 void CVideoAPI::UninitializeLibraryV()
 {
     //UninitializeLibraryV();
+    //Release();
+    
 }
 
 
