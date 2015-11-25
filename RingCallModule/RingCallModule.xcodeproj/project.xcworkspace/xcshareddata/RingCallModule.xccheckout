@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>B95FB425-3595-453B-B52F-0510BDBFD034</string>
+	<key>IDESourceControlProjectName</key>
+	<string>RingCallModule</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>B35153B866525C5C0D2FCE6FCE71EF31BCE99618</key>
+		<string>http://192.168.1.17/ios_call/ringcall.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>RingCallModule/RingCallModule.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>B35153B866525C5C0D2FCE6FCE71EF31BCE99618</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>http://192.168.1.17/ios_call/ringcall.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>B35153B866525C5C0D2FCE6FCE71EF31BCE99618</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B35153B866525C5C0D2FCE6FCE71EF31BCE99618</string>
+			<key>IDESourceControlWCCName</key>
+			<string>IPVL_ProjectRingid_(As_CallModule_Development_Client)-%5Blinked%20with%20RIngCall%20Framework%20+%20For%20VideoCall%5D</string>
+		</dict>
+	</array>
+</dict>
+</plist>

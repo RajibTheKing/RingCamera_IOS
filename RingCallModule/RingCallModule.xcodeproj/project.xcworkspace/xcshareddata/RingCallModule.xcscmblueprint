@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "B35153B866525C5C0D2FCE6FCE71EF31BCE99618",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "DBEA042F4687A21CE160AA69D8551569475E131E" : 0,
+    "B35153B866525C5C0D2FCE6FCE71EF31BCE99618" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "B95FB425-3595-453B-B52F-0510BDBFD034",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "DBEA042F4687A21CE160AA69D8551569475E131E" : "IPVL_ProjectRingid_(As_CallModule_Development_Client)-%5Blinked%20with%20RIngCall%20Framework%20+%20For%20VideoCall%5D",
+    "B35153B866525C5C0D2FCE6FCE71EF31BCE99618" : "RingCallFramwork\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "RingCallModule",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Ring\/Classes\/Voip\/RingCallModule\/RingCallModule.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/192.168.1.17\/ios_call\/ringcall.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B35153B866525C5C0D2FCE6FCE71EF31BCE99618"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/192.168.1.17\/ringid-ios\/ios_ringid.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DBEA042F4687A21CE160AA69D8551569475E131E"
+    }
+  ]
+}
