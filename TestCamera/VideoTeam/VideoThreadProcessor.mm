@@ -96,8 +96,15 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
             //int iDecodedDataLen = m_pVideoAPI->DecodeV(200, pGotData , iLen, baVideoRenderBuffer , height, width);
             
             pthread_mutex_lock(&m_pVideoAPI->pRenderQueueMutex);
-            m_pVideoAPI->m_RenderQueue.pop();
-            m_pVideoAPI->m_RenderDataLenQueue.pop();
+            if(!m_pVideoAPI->m_RenderQueue.empty())
+            {
+                m_pVideoAPI->m_RenderQueue.pop();
+            }
+            if(!m_pVideoAPI->m_RenderDataLenQueue.empty())
+            {
+                m_pVideoAPI->m_RenderDataLenQueue.pop();
+            }
+            
             pthread_mutex_unlock(&m_pVideoAPI->pRenderQueueMutex);
             
             if(height > 0 && width > 0)

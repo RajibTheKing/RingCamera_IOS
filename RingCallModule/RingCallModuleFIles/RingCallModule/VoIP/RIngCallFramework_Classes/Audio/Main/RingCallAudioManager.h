@@ -139,6 +139,7 @@
 - (void) playSystemSound:(SystemSound)systemSound;
 - (void) playCallModuleTone:(CallModuleTone) callModuleTone;
 
+- (void) playMyReceivedAudioData:(short *)data withLength:(int)iLen;
 
 - (void) createAndGetPCMfromotherFormat;
 

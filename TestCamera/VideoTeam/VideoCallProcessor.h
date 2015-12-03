@@ -39,6 +39,8 @@
     int m_iCameraHeight;
     int m_iCameraWidth;
     long long m_lUserId;
+    long long m_lFriendId;
+    
     int m_iRenderHeight;
     int m_iRenderWidth;
     dispatch_queue_t videoDataOutputQueue;
@@ -55,6 +57,8 @@
 
     CVideoAPI *m_pVideoAPI;
     G729CodecNative *g_G729CodecNative;
+    string m_sRemoteIP;
+    
 }
 
 
@@ -64,6 +68,10 @@
 + (id)GetInstance;
 
 - (id) init;
+
+- (void)SetRemoteIP:(string)sRemoteIP;
+- (void)SetFriendId:(long long)lFriendId;
+
 - (void) Initialize : (long long)lUserId;
 - (void) InitializeVideoEngine:(long long) lUserId;
 
@@ -79,7 +87,8 @@
                           withHeight:(int *)iHeight
                            withWidth:(int *)iWidth;
 -(G729CodecNative *)GetG729;
-
+-(long long)GetUserId;
+-(long long)GetFriendId;
 - (int)FrontConversion:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection;
 
 @property (nonatomic,strong) id delegate;

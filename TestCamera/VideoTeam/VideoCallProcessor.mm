@@ -66,7 +66,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     g_G729CodecNative = new G729CodecNative();
     
     int iRet = g_G729CodecNative->Open();
-    cout << "Open returned " << iRet << "\n";
+    cout <<  "Open returned " << iRet << "\n";
     
     
     return self;
@@ -89,7 +89,22 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     m_lUserId = lUserId;
     [self InitializeVideoEngine:lUserId];
 }
-
+- (void)SetRemoteIP:(string)sRemoteIP
+{
+    m_sRemoteIP = sRemoteIP;
+}
+- (void)SetFriendId:(long long)lFriendId
+{
+    m_lFriendId = lFriendId;
+}
+-(long long)GetUserId
+{
+    return m_lUserId;
+}
+-(long long)GetFriendId
+{
+    return m_lFriendId;
+}
 -(G729CodecNative *)GetG729
 {
     return g_G729CodecNative;
@@ -99,22 +114,60 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     m_pVideoAPI =  CVideoAPI::GetInstance();
     
     
-    if(m_pVideoAPI->Init(lUserId, g_sLOG_PATH.c_str(), g_iDEBUG_INFO) == 1)
+    cout<<"VideoCallProcessor:: VideoAPI->Init --> "<<"lUser = "<<lUserId<<endl;
+    if(m_pVideoAPI->Init(100, g_sLOG_PATH.c_str(), g_iDEBUG_INFO) == 1)
     {
         printf("myVideoAPI Initialized\n");
+        
+        //string sAuthServerIP = m_sRemoteIP;
+        //int iAuthServerPort = 32321;
+        //string sAppSessionId = "12345678";
+        //long long lFriendId = 200;
+        
+        ///bool bRet = m_pVideoAPI->SetAuthenticationServer(sAuthServerIP, iAuthServerPort, sAppSessionId);
+        //cout<<"SetAuthenticationServer, bRet = "<<bRet<<endl;
+        
+        
+        
+        
     }
     else
     {
         printf("myVideoAPI is not Initialized\n");
     }
     //352x288
-    printf("Check: m_iCameraHeight = %d, m_iCameraWidth = %d\n", m_iCameraHeight, m_iCameraWidth);
-    m_pVideoAPI->StartVideoCall(lUserId,m_iCameraHeight, m_iCameraWidth);
+    /*printf("Check: m_iCameraHeight = %d, m_iCameraWidth = %d\n", m_iCameraHeight, m_iCameraWidth);
+    m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth);
     
+    cout<<"VideoCallProcessor:: VideoAPI->StartAudioCall --> "<<"lUser = "<<lUserId<<endl;
+    m_pVideoAPI->StartAudioCall(200);*/
+    
+    string sAuthServerIP = "38.127.68.60";
+    int iAuthServerPort = 10001;
+    string sAppSessionId = "12345678";
+    long long lFriendId = 200;
+    
+    cout<<"Check--> sRemoteIP = "<<m_sRemoteIP<<endl;
+    int iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)2/*Video*/,  m_sRemoteIP, 20000);
+    cout<<"CreateSession, iRet = "<<iRet<<endl;
+    iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)1/*Video*/,  m_sRemoteIP, 20000);
+    
+    
+    
+    printf("Check: m_iCameraHeight = %d, m_iCameraWidth = %d\n", m_iCameraHeight, m_iCameraWidth);
+    m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth);
+    
+    cout<<"VideoCallProcessor:: VideoAPI->StartAudioCall --> "<<"lUser = "<<lUserId<<endl;
+    m_pVideoAPI->StartAudioCall(200);
+    
+    
+    
+    //m_pVideoAPI->SetRelayServerInformation(lFriendId, (int)2/*Audio*/,  m_sRemoteIP, 15000);
     
     [m_pVideoThreadProcessor SetVideoAPI:m_pVideoAPI];
     [m_pVideoSockets SetVideoAPI:m_pVideoAPI];
     [m_pVideoSockets SetUserID:lUserId];
+     
     
 }
 
@@ -155,11 +208,11 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         [m_pVideoThreadProcessor EncodeThread];
     });*/
     
+    
     dispatch_queue_t RenderThreadQ = dispatch_queue_create("RenderThreadQ",DISPATCH_QUEUE_CONCURRENT);
      dispatch_async(RenderThreadQ, ^{
      [m_pVideoThreadProcessor RenderThread];
      });
-    
     
 }
 
@@ -168,8 +221,8 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     m_pVideoThreadProcessor.bRenderThreadActive = false;
     
     m_pVideoThreadProcessor.bEncodeThreadActive = false;
-    CVideoAPI::GetInstance()->StopVideoCallV(m_lUserId);
-    CVideoAPI::GetInstance()->ReleaseV();
+    //CVideoAPI::GetInstance()->StopVideoCallV(m_lUserId);
+    //CVideoAPI::GetInstance()->ReleaseV();
 
 }
 
@@ -286,12 +339,13 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 
     [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
     [connection setVideoMirrored:true];
-    /*
+    
+    
     //### Step 2: Controlling FPS, Currently disabled
     [connection setVideoMinFrameDuration:CMTimeMake(1, 15.0)];
-    [connection setVideoMaxFrameDuration:CMTimeMake(1, 15.0)];
+    [connection setVideoMaxFrameDuration:CMTimeMake(1, 17.0)];
     
-    */
+    
     
     CVImageBufferRef IB = CMSampleBufferGetImageBuffer(sampleBuffer);
     int iHeight = CVPixelBufferGetHeight(IB);
@@ -334,7 +388,9 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     for(int i=0;i<20;i++)
         printf("%d ", pRawYuv[i]);
     printf("\n");
-    m_pVideoAPI->EncodeAndTransfer(m_lUserId, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
+    //m_pVideoAPI->EncodeAndTransferV(m_lUserId, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
+    
+    m_pVideoAPI->SendVideoDataV(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
     return 0;
 }
 

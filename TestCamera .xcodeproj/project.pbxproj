@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		18747AFA1BFDD0C60010CAA3 /* Constants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18747AE81BFDD0C50010CAA3 /* Constants.cpp */; };
-		18747AFB1BFDD0C60010CAA3 /* libVideoEngineInterface.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18747AEB1BFDD0C50010CAA3 /* libVideoEngineInterface.a */; };
 		18747AFC1BFDD0C60010CAA3 /* MessageProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18747AEC1BFDD0C50010CAA3 /* MessageProcessor.cpp */; };
 		18747AFD1BFDD0C60010CAA3 /* RingBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18747AEF1BFDD0C50010CAA3 /* RingBuffer.mm */; };
 		18747AFE1BFDD0C60010CAA3 /* VideoAPI.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18747AF11BFDD0C50010CAA3 /* VideoAPI.mm */; };
@@ -82,7 +81,6 @@
 		18EB2B2C1C02E78300153D45 /* RIConnectivityManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18EB2B271C02E78300153D45 /* RIConnectivityManager.mm */; };
 		18EB2B2D1C02E78300153D45 /* RingCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18EB2B281C02E78300153D45 /* RingCommon.framework */; };
 		18EB2B2E1C02E78300153D45 /* RingSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18EB2B291C02E78300153D45 /* RingSocket.framework */; };
-		18EB2BE81C03316B00153D45 /* libG729Library.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18EB2BE71C03316B00153D45 /* libG729Library.a */; };
 		18F66BFB1BCB6D8A00FEE798 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18F66BF91BCB6D8A00FEE798 /* MainStoryboard_iPhone.storyboard */; };
 		1B3C9A27139D4E0F0042676B /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3C9A26139D4E0F0042676B /* CoreVideo.framework */; };
 		1B3C9A2A139D4E150042676B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3C9A29139D4E150042676B /* AVFoundation.framework */; };
@@ -101,6 +99,7 @@
 		2BA4851013F1E6CC000BABB3 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2BA4850C13F1E6CC000BABB3 /* MainStoryboard_iPad.storyboard */; };
 		2BA4851713F1E6DB000BABB3 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4851313F1E6DB000BABB3 /* main.mm */; };
 		619176C51C02ED760052A12A /* RingCallModuleResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 619176C41C02ED760052A12A /* RingCallModuleResource.bundle */; };
+		9D61515A1C0BF91400A10482 /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D6151591C0BF91400A10482 /* libRingIDSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -108,7 +107,6 @@
 		18747AE81BFDD0C50010CAA3 /* Constants.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Constants.cpp; path = TestCamera/VideoTeam/Constants.cpp; sourceTree = "<group>"; };
 		18747AE91BFDD0C50010CAA3 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = TestCamera/VideoTeam/Constants.h; sourceTree = "<group>"; };
 		18747AEA1BFDD0C50010CAA3 /* CustomPrintf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomPrintf.h; path = TestCamera/VideoTeam/CustomPrintf.h; sourceTree = "<group>"; };
-		18747AEB1BFDD0C50010CAA3 /* libVideoEngineInterface.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libVideoEngineInterface.a; path = TestCamera/VideoTeam/libVideoEngineInterface.a; sourceTree = "<group>"; };
 		18747AEC1BFDD0C50010CAA3 /* MessageProcessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MessageProcessor.cpp; path = TestCamera/VideoTeam/MessageProcessor.cpp; sourceTree = "<group>"; };
 		18747AED1BFDD0C50010CAA3 /* MessageProcessor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MessageProcessor.hpp; path = TestCamera/VideoTeam/MessageProcessor.hpp; sourceTree = "<group>"; };
 		18747AEE1BFDD0C50010CAA3 /* RingBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RingBuffer.hpp; path = TestCamera/VideoTeam/RingBuffer.hpp; sourceTree = "<group>"; };
@@ -322,7 +320,6 @@
 		18EB2B271C02E78300153D45 /* RIConnectivityManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RIConnectivityManager.mm; sourceTree = "<group>"; };
 		18EB2B281C02E78300153D45 /* RingCommon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RingCommon.framework; sourceTree = "<group>"; };
 		18EB2B291C02E78300153D45 /* RingSocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = RingSocket.framework; sourceTree = "<group>"; };
-		18EB2BE71C03316B00153D45 /* libG729Library.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libG729Library.a; path = TestCamera/VideoTeam/libG729Library.a; sourceTree = "<group>"; };
 		18F66BFA1BCB6D8A00FEE798 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = TestCamera/en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = SOURCE_ROOT; };
 		1B3C9A26139D4E0F0042676B /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		1B3C9A29139D4E150042676B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -344,6 +341,7 @@
 		2BA4851313F1E6DB000BABB3 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = main.mm; path = TestCamera/main.mm; sourceTree = SOURCE_ROOT; };
 		2BA4851413F1E6DB000BABB3 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = TestCamera/Prefix.pch; sourceTree = SOURCE_ROOT; };
 		619176C41C02ED760052A12A /* RingCallModuleResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RingCallModuleResource.bundle; sourceTree = "<group>"; };
+		9D6151591C0BF91400A10482 /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = TestCamera/libRingIDSDK.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -358,12 +356,11 @@
 				1B867FE1139D4AD300AD6B47 /* CoreGraphics.framework in Frameworks */,
 				1B3C9A2E139D4E350042676B /* AssetsLibrary.framework in Frameworks */,
 				1B3C9A2C139D4E1C0042676B /* CoreImage.framework in Frameworks */,
-				18747AFB1BFDD0C60010CAA3 /* libVideoEngineInterface.a in Frameworks */,
+				9D61515A1C0BF91400A10482 /* libRingIDSDK.a in Frameworks */,
 				1B3C9A2A139D4E150042676B /* AVFoundation.framework in Frameworks */,
 				1B3C9A27139D4E0F0042676B /* CoreVideo.framework in Frameworks */,
 				18EB2B2A1C02E78300153D45 /* libIPVConnectivityDllStatic.a in Frameworks */,
 				1B867FDD139D4AD300AD6B47 /* UIKit.framework in Frameworks */,
-				18EB2BE81C03316B00153D45 /* libG729Library.a in Frameworks */,
 				1B867FDF139D4AD300AD6B47 /* Foundation.framework in Frameworks */,
 				18EB2B2D1C02E78300153D45 /* RingCommon.framework in Frameworks */,
 			);
@@ -379,8 +376,6 @@
 				18747AE81BFDD0C50010CAA3 /* Constants.cpp */,
 				18747AE91BFDD0C50010CAA3 /* Constants.h */,
 				18747AEA1BFDD0C50010CAA3 /* CustomPrintf.h */,
-				18747AEB1BFDD0C50010CAA3 /* libVideoEngineInterface.a */,
-				18EB2BE71C03316B00153D45 /* libG729Library.a */,
 				18747AEC1BFDD0C50010CAA3 /* MessageProcessor.cpp */,
 				18747AED1BFDD0C50010CAA3 /* MessageProcessor.hpp */,
 				18747AEE1BFDD0C50010CAA3 /* RingBuffer.hpp */,
@@ -833,6 +828,7 @@
 		1B867FCD139D4AD300AD6B47 = {
 			isa = PBXGroup;
 			children = (
+				9D6151591C0BF91400A10482 /* libRingIDSDK.a */,
 				9DC00C551C02E02E00966587 /* RingCallModule */,
 				18747B031BFDD0CD0010CAA3 /* VideoTeam */,
 				1B867FE2139D4AD300AD6B47 /* TestCamera */,
@@ -1178,6 +1174,9 @@
 					"$(PROJECT_DIR)/TestCamera/VideoTeam",
 					"$(PROJECT_DIR)/Audio/IPVConnectivityFramework/lib",
 					"$(PROJECT_DIR)/RingCallModule/RingCallModuleFIles/Frameworks/IPVConnectivityFramework/lib",
+					"$(PROJECT_DIR)/TestCamera/NATTraversalTeam",
+					"$(PROJECT_DIR)/NATTraversalTeam",
+					"$(PROJECT_DIR)/TestCamera",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -1222,6 +1221,9 @@
 					"$(PROJECT_DIR)/TestCamera/VideoTeam",
 					"$(PROJECT_DIR)/Audio/IPVConnectivityFramework/lib",
 					"$(PROJECT_DIR)/RingCallModule/RingCallModuleFIles/Frameworks/IPVConnectivityFramework/lib",
+					"$(PROJECT_DIR)/TestCamera/NATTraversalTeam",
+					"$(PROJECT_DIR)/NATTraversalTeam",
+					"$(PROJECT_DIR)/TestCamera",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (

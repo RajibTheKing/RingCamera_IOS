@@ -71,7 +71,7 @@ void CMessageProcessor::prepareLoginRequestMessage( string username, byte *messa
     setMessageType( message, AUTH_SERVER_REGISTATION_REQUEST );
     pushAttribute( message, username, index, USER_NAME);
     
-    cout<<"Rajib_Check: Final output: "<<endl;
+    //cout<<"Rajib_Check: Final output: "<<endl;
     for(int i=0;i<iLength ; i++)
         printf("%d ", (int)message[i]);
     
@@ -96,7 +96,7 @@ int CMessageProcessor::pushAttribute( byte* message, string attribute, int index
     printf("b4\n");
     
     byte* attributeInByte = (byte*)malloc(attributeLength);
-    cout<<"Attribute Length = "<<attributeLength<<endl;
+    //cout<<"Attribute Length = "<<attributeLength<<endl;
     
 
 #if 1

@@ -29,6 +29,7 @@ using namespace std;
 #include "VideoSockets.h"
 #include "Constants.h"
 //#define printf(...)
+#include "VideoCallProcessor.h"
 
 string g_sServerIP = "38.127.68.60"; //"192.168.57.113";
 
@@ -73,6 +74,7 @@ byte baVideoReceiverBuffer[MAXBUFFER_SIZE];
 
 -(void)InitializeSocket
 {
+    
     if ( (s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
     {
         printf("socket");
@@ -116,6 +118,7 @@ byte baVideoReceiverBuffer[MAXBUFFER_SIZE];
     });
     
 }
+
 - (void) SetUserID:(long long)lUserId
 {
     m_lUserId = lUserId;
@@ -197,13 +200,18 @@ void SendToVideoSendSocket(byte sendingBytePacket[], int length)
             NSData *receivedData = [[NSData alloc] initWithBytes:baVideoReceiverBuffer+1 length:iDataLen-1];
             [[RingCallAudioManager sharedInstance] processReceivedRTPPacket:receivedData];
             */
-            
-            //m_pVideoAPI->PushReceivedPacketForMergingV(200, baVideoReceiverBuffer+1, iDataLen-1);
+            //long long lUser = [[VideoCallProcessor GetInstance] GetUserId];
+            m_pVideoAPI->PushPacketForDecodingV(m_lUserId, baVideoReceiverBuffer+1, iDataLen-1);
             
             //int availableBytes = 0;
             //TPCircularBufferProduceBytes([[RingCallAudioManager sharedInstance]., shortArray, (availableBytes));
             
-            m_pVideoAPI->PushPacketForDecoding(m_lUserId, baVideoReceiverBuffer+1, iDataLen-1);
+            //m_pVideoAPI->PushPacketForDecoding(m_lUserId, baVideoReceiverBuffer+1, iDataLen-1);
+            
+            /*printf("VideoTeamCheck: AUDIO PACKET Found, iLen = %d\n", iDataLen);
+            
+            NSData *receivedData = [[NSData alloc] initWithBytes:baVideoReceiverBuffer+1 length:iDataLen-1];
+            [[RingCallAudioManager sharedInstance] processReceivedRTPPacket:receivedData];*/
             
         }
         else if(iPacketType == 43 && iDataLen !=-1)
@@ -215,6 +223,22 @@ void SendToVideoSendSocket(byte sendingBytePacket[], int length)
             [[RingCallAudioManager sharedInstance] processReceivedRTPPacket:receivedData];
             
             
+        }
+        else
+        {
+            /*
+            printf("VideoTeamCheck: AUDIO PACKET Found, iLen = %d\n", iDataLen);
+            
+            NSData *receivedData = [[NSData alloc] initWithBytes:baVideoReceiverBuffer length:iDataLen];
+            [[RingCallAudioManager sharedInstance] processReceivedRTPPacket:receivedData];
+            
+            
+            
+            //WriteToFileV(byteData, len);
+            
+            //CVideoAPI::GetInstance()->PushAudioForDecoding(200, byteData, len);
+             
+             */
         }
         
     }
@@ -253,10 +277,17 @@ void SendToVideoSendSocket(byte sendingBytePacket[], int length)
             int start = 1;
             int iFriendPort = ByteArrayToIntegerConvert((byte*)baDataReceiverBuffer, ++start);
             
+            
+            cout<<"VideoSocket:: VideoAPI->SetRelayServerInformation --> "<<"lUser = "<<[[VideoCallProcessor GetInstance] GetFriendId]<<", g_serverip  = "<<g_sServerIP<<", iFriendPort = "<<iFriendPort<<endl;
+            CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Audio*/,  g_sServerIP, iFriendPort);
+            CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)1/*Audio*/,  g_sServerIP, iFriendPort);
+            
+            /*
             if ( (s_VideoSendSocket =socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
             {
                 printf("socket");
             }
+            
             
             InitializeServerSocketForRemoteUser(s_VideoSendSocket, g_sServerIP, iFriendPort);
             
@@ -264,6 +295,8 @@ void SendToVideoSendSocket(byte sendingBytePacket[], int length)
             dispatch_async(PacketReceiverForVideoSendSocketQ, ^{
                 [self PacketReceiverForVideoSendSocket];
             });
+            */
+            
             
             /*
             

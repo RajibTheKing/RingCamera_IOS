@@ -15,8 +15,10 @@
 using namespace std;
 
 
-#include "CppInterfaceOfIPVSDK.h"
-#include "ObjectiveCInterFace.h"
+//#include "CppInterfaceOfRingSDK.h"
+//#include "ObjectiveCInterFace.h"
+#include "RingIDSDK.h"
+
 
 #include "Common.h"
 
@@ -27,7 +29,7 @@ using namespace std;
 //extern CCppInterfaceOfVideoEngine *g_pVideoEngineInterface;
 class CVideoAPI;
 
-class CVideoAPI : public CCppInterfaceOfIPVSDK
+class CVideoAPI : public CRingIDSDK
 {
     
 public:
@@ -52,6 +54,9 @@ public:
     bool StartVideoCallV(long long lFriendID, int iVideoHeight, int iVideoWidth);
     
     int EncodeAndTransferV(long long lFriendID, unsigned char *in_data, unsigned int in_size);
+
+    int SendVideoDataV(long long lFriendID, unsigned char *in_data, unsigned int in_size);
+    int SendAudioDataV(long long lFriendID, short *in_data, unsigned int in_size);
     
     int PushPacketForDecodingV(long long lFriendID, unsigned char *in_data, unsigned int in_size);
     

@@ -23,6 +23,7 @@
 
 #include "VideoSockets.h"
 #include "VideoCallProcessor.h"
+#include "VideoAPI.hpp"
 
 
 #define IS_IPHONE ([[[UIDevice currentDevice] model] isEqualToString:@"iPhone"])
@@ -678,11 +679,20 @@ static OSStatus playbackCallback(void *inRefCon,
         
         memcpy(shortArray, buffer, availableBytes);
         
+        //SendToEngine
+        long long lUser = [[VideoCallProcessor GetInstance] GetUserId];
+        cout<<"RingCallAudioManager:: VideoAPI->SendAudioDataV --> "<<"lUser = "<<lUser<<", len = "<<availableBytes<<endl;
+        CVideoAPI::GetInstance()->SendAudioDataV(200, shortArray, availableBytes/2);
         
+        
+        /*
         //Rajib: Method to Play Data
         //TPCircularBufferProduceBytes(&receivedPCMBuffer, shortArray, (availableBytes));
         
+        
         printf("VideoTeamCheck: availableBytes = %d\n", availableBytes);
+        
+         
         
         int iEncodedSize = [pVideoCallProcessor GetG729]->Encode(shortArray, availableBytes/2, (byte*)bAudioEncodeBuffer);
         printf("VideoTeamCheck: iEncodedSize = %d\n", iEncodedSize);
@@ -692,6 +702,8 @@ static OSStatus playbackCallback(void *inRefCon,
         memcpy(bAudioBuffer+1, bAudioEncodeBuffer, iEncodedSize);
         
         SendToServer((byte *)bAudioBuffer,  iEncodedSize+1);
+        */
+        
         
         TPCircularBufferConsume(&recordedPCMBuffer, availableBytes);
         
@@ -714,17 +726,33 @@ static OSStatus playbackCallback(void *inRefCon,
     return rtpPacket;
 }
 
+- (void) playMyReceivedAudioData:(short *)data withLength:(int)iLen
+{
+    TPCircularBufferProduceBytes(&receivedPCMBuffer, data, iLen*2);
+}
+
 -(void)processReceivedRTPPacket:(NSData *)receivedRTP
 {
+    
     NSUInteger len = [receivedRTP length];
     byte* byteData = (byte*)[receivedRTP bytes];
-   
+    
+    cout<<"Rajib_Check: trying to push audio received rtp"<<endl;
+    
+    long long lUser = [[VideoCallProcessor GetInstance] GetUserId];
+    
+    
+    cout<<"RingCallAudioManager:: VideoAPI->PushAudioForDecoding --> "<<"lUser = "<<lUser<<", len = "<<len<<endl;
+    CVideoAPI::GetInstance()->PushAudioForDecoding(lUser, byteData, len);
+    
+    /*
     //memcpy(shortArray, byteData, len);
     
     int iDecLen = [pVideoCallProcessor GetG729]->Decode(byteData, len, shortArray);
+    
     //Rajib: Method to Play Data
     TPCircularBufferProduceBytes(&receivedPCMBuffer, shortArray, iDecLen * 2);
-    
+    */
     
     /*
     RAJIB: Operation Closed to Test Our Data
@@ -2393,7 +2421,7 @@ static OSStatus playbackCallback(void *inRefCon,
     });
 
 }
-FILE *fp;
+FILE *fp2;
 bool isFpOpen = false;
 
 void WriteToFileV(byte *pData, int iLen)
@@ -2406,14 +2434,14 @@ void WriteToFileV(byte *pData, int iLen)
         NSFileHandle *handle;
         NSArray *Docpaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [Docpaths objectAtIndex:0];
-        NSString *filePathyuv = [documentsDirectory stringByAppendingPathComponent:@"AudioSecondAttempt.pcm"];
+        NSString *filePathyuv = [documentsDirectory stringByAppendingPathComponent:@"AudioSecondAttempt33.g729"];
         handle = [NSFileHandle fileHandleForUpdatingAtPath:filePathyuv];
         char *filePathcharyuv = (char*)[filePathyuv UTF8String];
-        fp = fopen(filePathcharyuv, "wb");
+        fp2 = fopen(filePathcharyuv, "wb");
     }
     
     printf("Writing to File\n");
-    fwrite(pData, 1, iLen, fp);
+    fwrite(pData, 1, iLen, fp2);
 }
 
 

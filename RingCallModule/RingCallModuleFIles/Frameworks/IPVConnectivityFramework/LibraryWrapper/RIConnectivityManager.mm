@@ -7,7 +7,7 @@
 //
 
 #import "RIConnectivityManager.h"
-#import "ObjectiveCInterFace.h"
+//#import "ObjectiveCInterFace.h"
 //#import <IPVConnectivityDllStatic/ObjectiveCInterFace.h>
 //#import "../header/ObjectiveCInterFace.h"
 #import "RIConnectivityAdapter.h"

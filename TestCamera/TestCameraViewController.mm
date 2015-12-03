@@ -31,6 +31,8 @@
 #include "RingCallAudioManager.h"
 
 
+//#include "InterfaceOfConnectivityEngine.h"
+
 //#include "CustomPrintf.h"
 
 
@@ -74,6 +76,7 @@ FILE *fpyuv = NULL;
 {
     [super viewDidLoad];
     
+    //CInterfaceOfConnectivityEngine *m_pInterfaceOfConnectivityEngine = new CInterfaceOfConnectivityEngine();
 
     MyCustomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, m_iCameraWidth, m_iCameraHeight)];
     [_LoginButton setEnabled:YES];
@@ -124,24 +127,34 @@ FILE *fpyuv = NULL;
 
 - (IBAction) P2PButtonAction:(id)P2PButton
 {
+    /*
+    long long lUserId = 200;
+    [g_pVideoCallProcessor Initialize:lUserId];
+     */
+    
+    
     long long lUserId  = 200;
+    NSString *nsRemoteIp = _remoteIPTextField.text;
+    string sRemoteIp([nsRemoteIp UTF8String]);
+    
+    InitializeSocketForRemoteUser(sRemoteIp);
+    
+    [g_pVideoCallProcessor SetRemoteIP:sRemoteIp];
     
     [g_pVideoCallProcessor Initialize:lUserId];
     
+    
     //[[RingCallAudioManager sharedInstance] startRecordAndPlayAudio];
     
-    NSString *nsRemoteIp = _remoteIPTextField.text;
-    string sRemoteIp([nsRemoteIp UTF8String]);
-    InitializeSocketForRemoteUser(sRemoteIp);
-    
+
+    /*
     if(!_bP2PSocketInitialized)
     {
         printf("Rajib_Check: bindsocketToRemoteData initalization called\n");
         [g_pVideoSockets BindSocketToReceiveRemoteData];
         _bP2PSocketInitialized = true;
     }
-    
-    
+    */
     
     //bStartVideoSending = true;
     g_pVideoCallProcessor.m_bStartVideoSending = true;
@@ -150,6 +163,8 @@ FILE *fpyuv = NULL;
     [session startRunning];
     
     [_P2PButton setEnabled:NO];
+     
+    
     
     
 }
@@ -161,7 +176,6 @@ FILE *fpyuv = NULL;
 - (IBAction)LoginButtonAction:(id)loginButton
 {
     std::set<int>st;
-    int xyz = *st.begin();
     printf("maksud------------->%d\n",xyz);
 
     NSString *nsRemoteIp = _remoteIPTextField.text;
@@ -179,7 +193,7 @@ FILE *fpyuv = NULL;
     g_iMyId = iMyId;
     g_iFriendId = iFriendId;
 
-    
+    [g_pVideoCallProcessor SetFriendId:g_iFriendId];
     sMyId = SSTR(iMyId);
     sFrinedId = SSTR(iFriendId);
     
@@ -253,6 +267,9 @@ FILE *fpyuv = NULL;
 
 - (IBAction)EndCallAction:(id)endButton
 {
+    //[g_pVideoCallProcessor CloseAllThreads];
+    
+    
     NSLog(@"Inside EndCall Button");
     //[[RingCallAudioManager sharedInstance] stopRecordAndPlayAudio];
     [g_pVideoCallProcessor CloseAllThreads];
@@ -269,6 +286,7 @@ FILE *fpyuv = NULL;
     }];
     
     [_P2PButton setEnabled:YES];
+     
     
 }
 
