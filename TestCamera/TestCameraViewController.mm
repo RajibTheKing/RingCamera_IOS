@@ -176,6 +176,7 @@ FILE *fpyuv = NULL;
 - (IBAction)LoginButtonAction:(id)loginButton
 {
     std::set<int>st;
+    int xyz = *st.begin();
     printf("maksud------------->%d\n",xyz);
 
     NSString *nsRemoteIp = _remoteIPTextField.text;

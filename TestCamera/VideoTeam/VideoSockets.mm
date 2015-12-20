@@ -33,7 +33,7 @@ using namespace std;
 
 string g_sServerIP = "38.127.68.60"; //"192.168.57.113";
 
-int g_iVideoSocketPort = 15000;
+int g_iVideoSocketPort = 15001;
 int g_iServerPort = 10001;
 
 struct sockaddr_in si_me, si_other, si_VideoSocket, si_VideoSendSocket;
@@ -279,8 +279,8 @@ void SendToVideoSendSocket(byte sendingBytePacket[], int length)
             
             
             cout<<"VideoSocket:: VideoAPI->SetRelayServerInformation --> "<<"lUser = "<<[[VideoCallProcessor GetInstance] GetFriendId]<<", g_serverip  = "<<g_sServerIP<<", iFriendPort = "<<iFriendPort<<endl;
-            CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Audio*/,  g_sServerIP, iFriendPort);
-            CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)1/*Audio*/,  g_sServerIP, iFriendPort);
+            CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Audio*/,  "38.127.68.60", 60001);
+            CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)1/*Audio*/,  "38.127.68.60", 60001);
             
             /*
             if ( (s_VideoSendSocket =socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)

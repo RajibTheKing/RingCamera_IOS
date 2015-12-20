@@ -341,9 +341,11 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     [connection setVideoMirrored:true];
     
     
+    usleep(15*1000);
+    
     //### Step 2: Controlling FPS, Currently disabled
-    [connection setVideoMinFrameDuration:CMTimeMake(1, 15.0)];
-    [connection setVideoMaxFrameDuration:CMTimeMake(1, 17.0)];
+    //[connection setVideoMinFrameDuration:CMTimeMake(1, 15.0)];
+    //[connection setVideoMaxFrameDuration:CMTimeMake(1, 17.0)];
     
     
     

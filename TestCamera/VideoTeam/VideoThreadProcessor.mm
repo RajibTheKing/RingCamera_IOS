@@ -113,6 +113,7 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
                 [self.delegate BackConversion:baVideoRenderBuffer];
                 
             }
+            if(pGotData!= NULL)
             free(pGotData);
             usleep(1000);
             

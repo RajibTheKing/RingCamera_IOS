@@ -629,13 +629,13 @@ static OSStatus playbackCallback(void *inRefCon,
         
         
         if (!isRecordedBufferProduceBytes) {
-#if STATE_DEVELOPMENT
+//#if STATE_DEVELOPMENT
             NSLog(@"---------------------- Recorded RTP push faild ----------------------");
-#endif
+//#endif
         } else {
-#if STATE_DEVELOPMENT
+//#if STATE_DEVELOPMENT
             //        NSLog(@"---------------------- Recorded RTP push Succeeded ----------------------");
-#endif
+//#endif
         }
     }
 }
@@ -728,7 +728,21 @@ static OSStatus playbackCallback(void *inRefCon,
 
 - (void) playMyReceivedAudioData:(short *)data withLength:(int)iLen
 {
-    TPCircularBufferProduceBytes(&receivedPCMBuffer, data, iLen*2);
+    //TPCircularBufferProduceBytes(&receivedPCMBuffer, data, iLen*2);
+    //    TPCircularBufferProduceBytes(&receivedPCMBuffer, data, iLen*2);
+    
+    bool isBufferProduceBytes = false;
+    
+    @try {
+        isBufferProduceBytes = TPCircularBufferProduceBytes(&receivedPCMBuffer, data, iLen*2);
+    }
+    @catch (NSException *exception) {
+        NSLog(@"Exception: %@", exception);
+    }
+    
+    if (!isBufferProduceBytes) {
+        NSLog(@"---------------------- Incoming RTP push faild ----------------------");
+    }
 }
 
 -(void)processReceivedRTPPacket:(NSData *)receivedRTP
@@ -816,9 +830,12 @@ static OSStatus playbackCallback(void *inRefCon,
 
 // This method will be fired when sending each RTP packet. YES, offcourse if we use NSTimer.
 //RAJIB:
+//int sleeptime = 1000;
 -(void)rtpSendingTimerMethod
 {
-    
+  //   NSLog(@"rtpSendingTimerMethod 1");
+ //   usleep(sleeptime);
+ //   sleeptime += 100;
     NSData *data = [self processRTPPacketToSent];
     
    
