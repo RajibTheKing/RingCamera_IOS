@@ -4,7 +4,13 @@
 #include <stdio.h>
 #include <string>
 
-#define LongLong long long
+#ifdef WIN32
+typedef __int64 IPVLongType;
+#else
+typedef long long IPVLongType;
+#endif
+
+typedef long long LongLong;
 
 // Start NAT Traversal Team
 
@@ -52,7 +58,7 @@ class CEventHandler;
 
 // Start NAT Traversal Team
 
-class CIPVConnectivityDLL;
+class CConnectivityEngine;
 
 // End NAT Traversal Team
 
@@ -78,17 +84,17 @@ public:
     
 // Start NAT Traversal Team
 
-    bool SetAuthenticationServer(const std::string& sAuthServerIP, int iAuthServerPort, const std::string& sAppSessionId);
+    bool SetAuthenticationServer(const LongLong& sAuthServerIP, int iAuthServerPort, const std::string& sAppSessionId);
     
-    int CreateSession(const LongLong& lFriendID, int mediaType, const std::string& sRelayServerIP, int iRelayServerPort);
+    int CreateSession(const LongLong& lFriendID, int mediaType, const LongLong& sRelayServerIP, int iRelayServerPort);
     
-    void SetRelayServerInformation(const LongLong& lFriendID, int mediaType, const std::string& sRelayServerIP, int iRelayServerPort);
+    void SetRelayServerInformation(const LongLong& lFriendID, int mediaType, const LongLong& sRelayServerIP, int iRelayServerPort);
     
     void StartP2PCall(const LongLong& lFriendID, int medaiType, bool bCaller);
     
     bool IsConnectionTypeHostToHost(LongLong lFriendID, int mediaType);
     
-    int SendTo(const LongLong& lFriendID, const int mediaType, unsigned char data[], int iLen, const std::string& sDestinationIP, int iDestinationPort);
+    int SendTo(const LongLong& lFriendID, const int mediaType, unsigned char data[], int iLen, const LongLong& sDestinationIP, int iDestinationPort);
     
     std::string GetSelectedIPAddress(const LongLong& lFriendID, int mediaType);
     
@@ -110,6 +116,10 @@ public:
     
     void Release();
     
+    void UpdateInformation();
+    
+    void SetLogFileProperty(const std::string& loc, int logLevel, bool bCreate);
+    
     void SetLogFileLocation(const std::string& loc);
     
 // Start Video Team
@@ -123,8 +133,8 @@ public:
     void PushAudioForDecoding(LongLong lFriendID, unsigned char *in_data, int in_size);
     
     int SendAudioData(const LongLong& lFriendID, short *in_data, unsigned int in_size);
-    
-    int SendVideoData(const LongLong& lFriendID, unsigned char *in_data, unsigned int in_size);
+
+    int SendVideoData(const LongLong& lFriendID, unsigned char *in_data, unsigned int in_size, unsigned int orientation_type=0);
     
     int SetHeightWidth(const LongLong& lFriendID, int width, int height);
     
@@ -159,7 +169,7 @@ public:
     
 // Start NAT Traversal Team
     
-    CIPVConnectivityDLL *m_pConnectivityInstance;
+    CConnectivityEngine *m_pConnectivityInstance;
     
 // End NAT Traversal Team
     

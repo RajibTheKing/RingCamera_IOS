@@ -65,6 +65,7 @@
 
 @property bool m_bStartVideoSending;
 
++(long long)convertStringIPtoLongLong:(NSString *)ipAddr;
 + (id)GetInstance;
 
 - (id) init;

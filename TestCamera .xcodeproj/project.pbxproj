@@ -342,6 +342,7 @@
 		2BA4851413F1E6DB000BABB3 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = TestCamera/Prefix.pch; sourceTree = SOURCE_ROOT; };
 		619176C41C02ED760052A12A /* RingCallModuleResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RingCallModuleResource.bundle; sourceTree = "<group>"; };
 		9D6151591C0BF91400A10482 /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = TestCamera/libRingIDSDK.a; sourceTree = "<group>"; };
+		DAE1100A1C3A9C5000F53ADE /* RingIDSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RingIDSDK.h; path = include/RingIDSDK.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -828,6 +829,7 @@
 		1B867FCD139D4AD300AD6B47 = {
 			isa = PBXGroup;
 			children = (
+				DAE1100A1C3A9C5000F53ADE /* RingIDSDK.h */,
 				9D6151591C0BF91400A10482 /* libRingIDSDK.a */,
 				9DC00C551C02E02E00966587 /* RingCallModule */,
 				18747B031BFDD0CD0010CAA3 /* VideoTeam */,

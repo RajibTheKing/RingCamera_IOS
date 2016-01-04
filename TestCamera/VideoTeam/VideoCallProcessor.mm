@@ -146,11 +146,21 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     int iAuthServerPort = 10001;
     string sAppSessionId = "12345678";
     long long lFriendId = 200;
-    
+    long long lServerIP = /*645874748*/ 1011121958;
+    int iFriendPort = 60003;
+    NSString *nsServerIP = @"38.127.68.60";
     cout<<"Check--> sRemoteIP = "<<m_sRemoteIP<<endl;
-    int iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)2/*Video*/,  m_sRemoteIP, 20000);
+    int iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], 20000);
     cout<<"CreateSession, iRet = "<<iRet<<endl;
-    iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)1/*Video*/,  m_sRemoteIP, 20000);
+    iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)1/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], 20000);
+    
+    return;
+    
+    CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)1/*Audio*/,  lServerIP, iFriendPort);
+    
+    CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  lServerIP, iFriendPort);
+    
+    
     
     
     
@@ -441,6 +451,19 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         return; //Success
     }
     
+}
+
+
+
++(long long)convertStringIPtoLongLong:(NSString *)ipAddr
+{
+    struct in_addr addr;
+    long long ip = 0;
+    if (inet_aton([ipAddr UTF8String], &addr) != 0)
+    {
+        ip = addr.s_addr;
+    }
+    return ip;
 }
 
 

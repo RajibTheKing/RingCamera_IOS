@@ -279,8 +279,8 @@ void SendToVideoSendSocket(byte sendingBytePacket[], int length)
             
             
             cout<<"VideoSocket:: VideoAPI->SetRelayServerInformation --> "<<"lUser = "<<[[VideoCallProcessor GetInstance] GetFriendId]<<", g_serverip  = "<<g_sServerIP<<", iFriendPort = "<<iFriendPort<<endl;
-            CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Audio*/,  "38.127.68.60", 60001);
-            CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)1/*Audio*/,  "38.127.68.60", 60001);
+            //CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Audio*/,  "38.127.68.60", 60001);
+            //CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)1/*Audio*/,  "38.127.68.60", 60001);
             
             /*
             if ( (s_VideoSendSocket =socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
