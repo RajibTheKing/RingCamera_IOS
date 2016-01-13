@@ -44,6 +44,7 @@
 
 
 - (id) init;
++ (id)GetInstance;
 - (void)SetWidthAndHeight:(int)iWidth withHeight:(int)iHeight;
 - (void)SetVideoAPI:(CVideoAPI *)pVideoAPI;
 
@@ -53,5 +54,7 @@
 
 @end
 
+
+static VideoThreadProcessor *m_pVideoThreadProcessor = nil;
 
 #endif /* VideoThreadProcessor_h */

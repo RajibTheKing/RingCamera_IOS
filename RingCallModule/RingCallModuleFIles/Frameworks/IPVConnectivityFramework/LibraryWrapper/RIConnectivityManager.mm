@@ -51,32 +51,32 @@
 
 -(int)createSession:(NSString *) friendID mediaType:(int) sMedia relayServerIP:(NSString *) relayServerIP relayServerPort:(int)relayServerPort
 {
-    return [RIConnectivityAdapter createSession:[friendID longLongValue] mediaType:(MediaType)sMedia relayServerIP:relayServerIP relayServerPort:relayServerPort];
+    //return [RIConnectivityAdapter createSession:[friendID longLongValue] mediaType:(MediaType)sMedia relayServerIP:relayServerIP relayServerPort:relayServerPort];
 }
 
 -(BOOL)closeSession:(NSString *) friendID mediaType:(int) sMedia
 {
-    return [RIConnectivityAdapter closeSession:[friendID longLongValue] mediaType:(MediaType)sMedia];
+    //return [RIConnectivityAdapter closeSession:[friendID longLongValue] mediaType:(MediaType)sMedia];
 }
 
 -(void)setRelayServerInformation:(NSString *) friendID mediaType:(int) sMedia relayServerIP:(NSString *) relayServerIP relayServerPort:(int)relayServerPort
 {
-    [RIConnectivityAdapter setRelayServerInformation:[friendID longLongValue] mediaType:(MediaType)sMedia relayServerIPAddress:relayServerIP relayServerPort:relayServerPort];
+    //[RIConnectivityAdapter setRelayServerInformation:[friendID longLongValue] mediaType:(MediaType)sMedia relayServerIPAddress:relayServerIP relayServerPort:relayServerPort];
 }
 
 -(void)startP2PCall:(NSString *) friendID mediaType:(int) sMedia isCaller:(bool)isCaller
 {
-    [RIConnectivityAdapter startP2PCall:[friendID longLongValue] mediaType:(MediaType)sMedia isCaller:isCaller];
+    //[RIConnectivityAdapter startP2PCall:[friendID longLongValue] mediaType:(MediaType)sMedia isCaller:isCaller];
 }
 
 -(void)sendTo:(NSData *)data friendID:(NSString *) friendID destinationIPaddress:(NSString *)dstIPaddr destinationPort:(int)dstPort mediaType:(int)mediaType
 {
-    [RIConnectivityAdapter sendTo:[friendID longLongValue] mediaType:(MediaType)mediaType data:data length:(int)data.length destinationAddress:dstIPaddr destinationPort:dstPort];
+    //[RIConnectivityAdapter sendTo:[friendID longLongValue] mediaType:(MediaType)mediaType data:data length:(int)data.length destinationAddress:dstIPaddr destinationPort:dstPort];
 }
 
 - (int)send:(NSData *)data friendId:(NSString *) frinedID mediaType:(int)mediaType{
 
-    return [RIConnectivityAdapter send:[frinedID longLongValue] mediaType:(MediaType)mediaType data:data length:(int)data.length];
+    //return [RIConnectivityAdapter send:[frinedID longLongValue] mediaType:(MediaType)mediaType data:data length:(int)data.length];
 }
 
 -(BOOL)setAuthenticationServerWith:(NSString *)authIp withPort:(int)port withSessionId:(NSString *)appSessionId {

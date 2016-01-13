@@ -144,7 +144,7 @@ FILE *fpyuv = NULL;
     [g_pVideoCallProcessor Initialize:lUserId];
     
     
-    //[[RingCallAudioManager sharedInstance] startRecordAndPlayAudio];
+    [[RingCallAudioManager sharedInstance] startRecordAndPlayAudio];
     
 
     /*
@@ -157,6 +157,7 @@ FILE *fpyuv = NULL;
     */
     
     //bStartVideoSending = true;
+    
     g_pVideoCallProcessor.m_bStartVideoSending = true;
     
     [g_pVideoCallProcessor StartAllThreads];

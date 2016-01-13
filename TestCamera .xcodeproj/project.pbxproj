@@ -76,7 +76,6 @@
 		18EB2B141C02E76500153D45 /* IDVideoFrameModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EB2AD51C02E76500153D45 /* IDVideoFrameModel.m */; };
 		18EB2B151C02E76500153D45 /* IDVideoOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EB2AD71C02E76500153D45 /* IDVideoOperation.m */; };
 		18EB2B161C02E76500153D45 /* RIVideoMediaSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 18EB2AD91C02E76500153D45 /* RIVideoMediaSocket.m */; };
-		18EB2B2A1C02E78300153D45 /* libIPVConnectivityDllStatic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18EB2B221C02E78300153D45 /* libIPVConnectivityDllStatic.a */; };
 		18EB2B2B1C02E78300153D45 /* RIConnectivityAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18EB2B251C02E78300153D45 /* RIConnectivityAdapter.mm */; };
 		18EB2B2C1C02E78300153D45 /* RIConnectivityManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18EB2B271C02E78300153D45 /* RIConnectivityManager.mm */; };
 		18EB2B2D1C02E78300153D45 /* RingCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18EB2B281C02E78300153D45 /* RingCommon.framework */; };
@@ -99,7 +98,7 @@
 		2BA4851013F1E6CC000BABB3 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2BA4850C13F1E6CC000BABB3 /* MainStoryboard_iPad.storyboard */; };
 		2BA4851713F1E6DB000BABB3 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4851313F1E6DB000BABB3 /* main.mm */; };
 		619176C51C02ED760052A12A /* RingCallModuleResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 619176C41C02ED760052A12A /* RingCallModuleResource.bundle */; };
-		9D61515A1C0BF91400A10482 /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D6151591C0BF91400A10482 /* libRingIDSDK.a */; };
+		DAAB12271C466970001A4B91 /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAB12261C466970001A4B91 /* libRingIDSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -307,13 +306,6 @@
 		18EB2AD71C02E76500153D45 /* IDVideoOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDVideoOperation.m; sourceTree = "<group>"; };
 		18EB2AD81C02E76500153D45 /* RIVideoMediaSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIVideoMediaSocket.h; sourceTree = "<group>"; };
 		18EB2AD91C02E76500153D45 /* RIVideoMediaSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RIVideoMediaSocket.m; sourceTree = "<group>"; };
-		18EB2B1A1C02E78300153D45 /* IPVConnectivityDLL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPVConnectivityDLL.h; sourceTree = "<group>"; };
-		18EB2B1B1C02E78300153D45 /* IPVConnectivityDLLCInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPVConnectivityDLLCInterface.h; sourceTree = "<group>"; };
-		18EB2B1C1C02E78300153D45 /* IPVConnectivityDLLLinker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPVConnectivityDLLLinker.h; sourceTree = "<group>"; };
-		18EB2B1D1C02E78300153D45 /* IPVConnectivityEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPVConnectivityEngine.h; sourceTree = "<group>"; };
-		18EB2B1E1C02E78300153D45 /* IPVConnectivityEventInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPVConnectivityEventInterface.h; sourceTree = "<group>"; };
-		18EB2B1F1C02E78300153D45 /* IPVConnectivityInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPVConnectivityInterface.h; sourceTree = "<group>"; };
-		18EB2B221C02E78300153D45 /* libIPVConnectivityDllStatic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libIPVConnectivityDllStatic.a; sourceTree = "<group>"; };
 		18EB2B241C02E78300153D45 /* RIConnectivityAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIConnectivityAdapter.h; sourceTree = "<group>"; };
 		18EB2B251C02E78300153D45 /* RIConnectivityAdapter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RIConnectivityAdapter.mm; sourceTree = "<group>"; };
 		18EB2B261C02E78300153D45 /* RIConnectivityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RIConnectivityManager.h; sourceTree = "<group>"; };
@@ -341,7 +333,8 @@
 		2BA4851313F1E6DB000BABB3 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = main.mm; path = TestCamera/main.mm; sourceTree = SOURCE_ROOT; };
 		2BA4851413F1E6DB000BABB3 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = TestCamera/Prefix.pch; sourceTree = SOURCE_ROOT; };
 		619176C41C02ED760052A12A /* RingCallModuleResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RingCallModuleResource.bundle; sourceTree = "<group>"; };
-		9D6151591C0BF91400A10482 /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = TestCamera/libRingIDSDK.a; sourceTree = "<group>"; };
+		DAAB12241C465DDD001A4B91 /* RingIDSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingIDSDK.h; sourceTree = "<group>"; };
+		DAAB12261C466970001A4B91 /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = RingCallModule/RingCallModuleFIles/Frameworks/IPVConnectivityFramework/lib/libRingIDSDK.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -353,13 +346,12 @@
 				18EB2B2E1C02E78300153D45 /* RingSocket.framework in Frameworks */,
 				1B3C9A32139D4E740042676B /* QuartzCore.framework in Frameworks */,
 				1B3C9A30139D4E5F0042676B /* CoreMedia.framework in Frameworks */,
+				DAAB12271C466970001A4B91 /* libRingIDSDK.a in Frameworks */,
 				1B867FE1139D4AD300AD6B47 /* CoreGraphics.framework in Frameworks */,
 				1B3C9A2E139D4E350042676B /* AssetsLibrary.framework in Frameworks */,
 				1B3C9A2C139D4E1C0042676B /* CoreImage.framework in Frameworks */,
-				9D61515A1C0BF91400A10482 /* libRingIDSDK.a in Frameworks */,
 				1B3C9A2A139D4E150042676B /* AVFoundation.framework in Frameworks */,
 				1B3C9A27139D4E0F0042676B /* CoreVideo.framework in Frameworks */,
-				18EB2B2A1C02E78300153D45 /* libIPVConnectivityDllStatic.a in Frameworks */,
 				1B867FDD139D4AD300AD6B47 /* UIKit.framework in Frameworks */,
 				1B867FDF139D4AD300AD6B47 /* Foundation.framework in Frameworks */,
 				18EB2B2D1C02E78300153D45 /* RingCommon.framework in Frameworks */,
@@ -796,12 +788,7 @@
 		18EB2B191C02E78300153D45 /* header */ = {
 			isa = PBXGroup;
 			children = (
-				18EB2B1A1C02E78300153D45 /* IPVConnectivityDLL.h */,
-				18EB2B1B1C02E78300153D45 /* IPVConnectivityDLLCInterface.h */,
-				18EB2B1C1C02E78300153D45 /* IPVConnectivityDLLLinker.h */,
-				18EB2B1D1C02E78300153D45 /* IPVConnectivityEngine.h */,
-				18EB2B1E1C02E78300153D45 /* IPVConnectivityEventInterface.h */,
-				18EB2B1F1C02E78300153D45 /* IPVConnectivityInterface.h */,
+				DAAB12241C465DDD001A4B91 /* RingIDSDK.h */,
 			);
 			path = header;
 			sourceTree = "<group>";
@@ -809,7 +796,6 @@
 		18EB2B211C02E78300153D45 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				18EB2B221C02E78300153D45 /* libIPVConnectivityDllStatic.a */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -828,7 +814,7 @@
 		1B867FCD139D4AD300AD6B47 = {
 			isa = PBXGroup;
 			children = (
-				9D6151591C0BF91400A10482 /* libRingIDSDK.a */,
+				DAAB12261C466970001A4B91 /* libRingIDSDK.a */,
 				9DC00C551C02E02E00966587 /* RingCallModule */,
 				18747B031BFDD0CD0010CAA3 /* VideoTeam */,
 				1B867FE2139D4AD300AD6B47 /* TestCamera */,
