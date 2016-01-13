@@ -48,13 +48,10 @@
     CVideoConverter *m_pVideoConverter;
     VideoSockets *m_pVideoSockets;
     
+    VideoThreadProcessor *m_pVTP;
    
     
     id <ViewControllerDelegate> _delegate;
-    VideoThreadProcessor *m_pVideoThreadProcessor;
-    
-    
-
     CVideoAPI *m_pVideoAPI;
     G729CodecNative *g_G729CodecNative;
     string m_sRemoteIP;

@@ -29,6 +29,19 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
     m_pVideoAPI = pVideoAPI;
 }
 
++ (id)GetInstance
+{
+    if(!m_pVideoThreadProcessor)
+    {
+        cout<<"Video_Team: m_pVideoThreadProcessor Initialized"<<endl;
+        
+        m_pVideoThreadProcessor = [[VideoThreadProcessor alloc] init];
+        
+    }
+    return m_pVideoThreadProcessor;
+}
+
+
 - (void)SetEncodeBuffer:(RingBuffer<byte> *)pBuffer
 {
     pEncodeBuffer = pBuffer;
