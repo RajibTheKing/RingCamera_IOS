@@ -56,6 +56,8 @@
     G729CodecNative *g_G729CodecNative;
     string m_sRemoteIP;
     
+    FILE *m_FileForDump;
+    
 }
 
 
@@ -88,6 +90,10 @@
 -(long long)GetUserId;
 -(long long)GetFriendId;
 - (int)FrontConversion:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection;
+
+- (void)WriteToFile:(unsigned char *)data dataLength:(int)datalen filePointer:(FILE *)fp;
+- (void)InitializeFilePointer:(FILE *)fp fileName:(NSString *)fileName;
+int ConvertNV12ToI420(unsigned char *convertingData, int iheight, int iwidth);
 
 @property (nonatomic,strong) id delegate;
 

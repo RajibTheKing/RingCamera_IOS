@@ -11,18 +11,11 @@
 
 #import <Foundation/Foundation.h>
 #include "VideoCallProcessor.h"
-
-
 #import <CoreImage/CoreImage.h>
 #import <ImageIO/ImageIO.h>
 #import <AssertMacros.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #include <stdio.h>
-
-
-
-
-
 #include <pthread.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -68,6 +61,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     int iRet = g_G729CodecNative->Open();
     cout <<  "Open returned " << iRet << "\n";
     
+    [self InitializeFilePointer:m_FileForDump fileName:@"YuvTest.yuv"];
     
     return self;
 }
@@ -153,8 +147,6 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     cout<<"Check--> sRemoteIP = "<<m_sRemoteIP<<endl;
     
     //m_pVideoAPI->SetLoggingState(true,5);
-    
-    //int iRet = (int)m_pVideoAPI->InitializeLibrary(lFriendId);
     int iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
     cout<<"CreateSession, iRet = "<<iRet<<endl;
     iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
@@ -163,27 +155,14 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  lServerIP, iFriendPort);
     
-    
-    
-    
-    
-    printf("Check: m_iCameraHeight = %d, m_iCameraWidth = %d\n", m_iCameraHeight, m_iCameraWidth);
-    
+    iRet = m_pVideoAPI->StopVideoCall(200);
     iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth);
-    cout<<"VideoCallProcessor:: VideoAPI->StartVideoCall --> iRet = "<<(int)iRet<<endl;
+    iRet = m_pVideoAPI->StartAudioCall(200);
     
-    
-    m_pVideoAPI->StartAudioCall(200);
-    
-    
-    
-    //m_pVideoAPI->SetRelayServerInformation(lFriendId, (int)2/*Audio*/,  m_sRemoteIP, 15000);
     
     [m_pVTP SetVideoAPI:m_pVideoAPI];
     [m_pVideoSockets SetVideoAPI:m_pVideoAPI];
     [m_pVideoSockets SetUserID:lUserId];
-     
-    
 }
 
 
@@ -348,6 +327,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 }
 
 
+int tempCounter = 0;
 - (int)FrontConversion:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
     printf("Rajib_Check: Inside FrontConversion\n");
@@ -397,22 +377,48 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     memcpy(pRawYuv, y_ch0, YPlaneLength);
     memcpy(pRawYuv+YPlaneLength, y_ch1, VPlaneLength+VPlaneLength);
-    
-    //m_pVideoConverter->Convert_YUVNV12_To_YUVI420(y_ch0, y_ch1, pRawYuv, m_iCameraHeight, m_iCameraWidth);
-    //m_pEncodeBuffer->setIndexStatus(iWritebleIndex[0], AVAILABLE_TO_READ);
-    
-    printf("Rajib_Check: Front Bits  --> ");
-    for(int i=0;i<20;i++)
-        printf("%d ", pRawYuv[i]);
-    printf("\n");
-    //m_pVideoAPI->EncodeAndTransferV(m_lUserId, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
-    
+
     int iRet = m_pVideoAPI->SendVideoDataV(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
+    //printf("Rajib_Check: iRet = %d\n", iRet);
     
-    printf("Rajib_Check: iRet = %d\n", iRet);
+    /*
+    if(tempCounter<500)
+    {
+        printf("TheKing--> tempCounter = %d\n", tempCounter);
+        tempCounter++;
+        ConvertNV12ToI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
+        
+        [self WriteToFile:pRawYuv dataLength:m_iCameraHeight * m_iCameraWidth * 3 / 2 filePointer:m_FileForDump];
+    }
+    */
     return 0;
 }
 
+int ConvertNV12ToI420(unsigned char *convertingData, int iheight, int iwidth)
+{
+    
+    int m_iVideoHeight = iheight;
+    int m_iVideoWidth = iwidth;
+    int m_YPlaneLength = m_iVideoHeight*m_iVideoWidth;
+    int m_VPlaneLength = m_YPlaneLength >> 2;
+    int m_UVPlaneMidPoint = m_YPlaneLength + m_VPlaneLength;
+    int m_UVPlaneEnd = (m_UVPlaneMidPoint + m_VPlaneLength);
+    
+    
+    int i, j, k;
+    
+    unsigned char m_pVPlane[iheight * iwidth * 3 / 2 + 100];
+    
+    for (i = m_YPlaneLength, j = 0, k = i; i < m_UVPlaneEnd; i += 2, j++, k++)
+    {
+        m_pVPlane[j] = convertingData[i + 1];
+        convertingData[k] = convertingData[i];
+    }
+    
+    memcpy(convertingData + m_UVPlaneMidPoint, m_pVPlane, m_VPlaneLength);
+    
+    return m_UVPlaneEnd;
+}
 
 
 
@@ -461,6 +467,22 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 }
 
 
+- (void)InitializeFilePointer:(FILE *)fp fileName:(NSString *)fileName
+{
+    NSFileHandle *handle;
+    NSArray *Docpaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [Docpaths objectAtIndex:0];
+    NSString *filePathyuv = [documentsDirectory stringByAppendingPathComponent:fileName];
+    handle = [NSFileHandle fileHandleForUpdatingAtPath:filePathyuv];
+    char *filePathcharyuv = (char*)[filePathyuv UTF8String];
+    m_FileForDump = fopen(filePathcharyuv, "wb");
+}
+
+- (void)WriteToFile:(unsigned char *)data dataLength:(int)datalen filePointer:(FILE *)fp
+{
+    printf("Writing to yuv");
+    fwrite(data, 1, datalen, m_FileForDump);
+}
 
 +(long long)convertStringIPtoLongLong:(NSString *)ipAddr
 {
