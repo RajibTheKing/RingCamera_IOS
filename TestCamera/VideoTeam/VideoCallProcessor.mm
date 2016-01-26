@@ -121,9 +121,6 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         ///bool bRet = m_pVideoAPI->SetAuthenticationServer(sAuthServerIP, iAuthServerPort, sAppSessionId);
         //cout<<"SetAuthenticationServer, bRet = "<<bRet<<endl;
         
-        
-        
-        
     }
     else
     {
@@ -141,23 +138,27 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     string sAppSessionId = "12345678";
     long long lFriendId = 200;
     long long lServerIP = /*645874748*/ 1011121958;
-    int iFriendPort = 60001;
+    int iFriendPort = 60008;
     
     NSString *nsServerIP = @"38.127.68.60";
     cout<<"Check--> sRemoteIP = "<<m_sRemoteIP<<endl;
     
     //m_pVideoAPI->SetLoggingState(true,5);
-    int iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
-    cout<<"CreateSession, iRet = "<<iRet<<endl;
+    
+    int iRet;
+
     iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
+    cout<<"CreateSession, Audio, iRet = "<<iRet<<endl;
+    iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
+    cout<<"CreateSession, Video, iRet = "<<iRet<<endl;
     
     CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)1/*Audio*/,  lServerIP, iFriendPort);
     
     CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  lServerIP, iFriendPort);
     
-    iRet = m_pVideoAPI->StopVideoCall(200);
-    iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth);
+
     iRet = m_pVideoAPI->StartAudioCall(200);
+    iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth);
     
     
     [m_pVTP SetVideoAPI:m_pVideoAPI];

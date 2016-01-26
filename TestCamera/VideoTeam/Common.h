@@ -8,7 +8,7 @@
 
 #ifndef Common_h
 #define Common_h
-//#define printf(...)
+#define printf(...)
 #define MAXWIDTH 640
 #define MAXHEIGHT 640
 #define MAXBUFFER_SIZE 5000

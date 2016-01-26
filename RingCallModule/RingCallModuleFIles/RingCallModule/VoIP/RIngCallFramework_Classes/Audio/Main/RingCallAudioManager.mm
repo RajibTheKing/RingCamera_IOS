@@ -681,7 +681,7 @@ static OSStatus playbackCallback(void *inRefCon,
         
         //SendToEngine
         long long lUser = [[VideoCallProcessor GetInstance] GetUserId];
-        cout<<"RingCallAudioManager:: VideoAPI->SendAudioDataV --> "<<"lUser = "<<lUser<<", len = "<<availableBytes<<endl;
+        //cout<<"RingCallAudioManager:: VideoAPI->SendAudioDataV --> "<<"lUser = "<<lUser<<", len = "<<availableBytes<<endl;
         CVideoAPI::GetInstance()->SendAudioDataV(200, shortArray, availableBytes/2);
         
         

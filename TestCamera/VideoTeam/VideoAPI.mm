@@ -48,14 +48,14 @@ void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[]
 {
     if(data != NULL)
     {
-        cout << "lenghth2 " << dataLenth << endl;
+        //cout << "lenghth2 " << dataLenth << endl;
         
         CVideoAPI::GetInstance()->ReceiveFullFrame(data, dataLenth);
     }
 }
 void notifyClientMethodWithAudioDataIos(LongLong lFriendID, short data[], int dataLenth)
 {
-    cout<<"Check: Found Audio Data"<<endl;
+    //cout<<"Check: Found Audio Data"<<endl;
     
     [[RingCallAudioManager sharedInstance] playMyReceivedAudioData:data withLength:dataLenth];
 }
