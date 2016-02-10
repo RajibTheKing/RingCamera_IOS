@@ -43,6 +43,7 @@
     
     int m_iRenderHeight;
     int m_iRenderWidth;
+    int m_iActualFriendPort;
     dispatch_queue_t videoDataOutputQueue;
     
     CVideoConverter *m_pVideoConverter;
@@ -78,6 +79,8 @@
 - (void)SetWidthAndHeight:(int)iWidth withHeight:(int)iHeight;
 
 - (void)SetVideoSockets:(VideoSockets *)pVideoSockets;
+
+- (void)SetFriendPort:(int)iPort;
 
 - (void)StartAllThreads;
 - (void)CloseAllThreads;

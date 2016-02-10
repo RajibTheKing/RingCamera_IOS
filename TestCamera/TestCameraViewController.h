@@ -44,6 +44,11 @@
 @property (retain, nonatomic) IBOutlet UITextField *myIdTextField;
 @property (retain, nonatomic) IBOutlet UITextField *friendIdTextField;
 @property (retain, nonatomic) IBOutlet UITextField *remoteIPTextField;
+@property (retain, nonatomic) IBOutlet UIButton *ServerCall;
+
+@property (retain, nonatomic) IBOutlet UIButton *ChangePort;
+@property (retain, nonatomic) IBOutlet UITextField *PortField;
+
 
 @property bool bEncodeThreadActive;
 @property bool bP2PSocketInitialized;
@@ -55,13 +60,17 @@
 - (IBAction) StartCallAction:(id)startButton;
 - (IBAction) EndCallAction:(id)endButton;
 - (IBAction) P2PButtonAction:(id)P2PButton;
+- (IBAction)ChangePort:(id)sender;
+
+
+
 
 
 
 void WriteToFile(byte *pData);
 unsigned int timeGetTime();
 void CalculateFPS();
-
+- (void)UpdatePort;
 
 
 @end

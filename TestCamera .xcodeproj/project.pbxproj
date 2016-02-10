@@ -320,7 +320,7 @@
 		1B3C9A2F139D4E5F0042676B /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		1B3C9A31139D4E740042676B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1B3C9A33139D4EAA0042676B /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
-		1B867FD8139D4AD300AD6B47 /* Server&P2P.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Server&P2P.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B867FD8139D4AD300AD6B47 /* Version-2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Version-2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B867FDC139D4AD300AD6B47 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1B867FDE139D4AD300AD6B47 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1B867FE0139D4AD300AD6B47 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -826,7 +826,7 @@
 		1B867FD9139D4AD300AD6B47 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1B867FD8139D4AD300AD6B47 /* Server&P2P.app */,
+				1B867FD8139D4AD300AD6B47 /* Version-2.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -900,7 +900,7 @@
 			);
 			name = TestCamera;
 			productName = StacheCam;
-			productReference = 1B867FD8139D4AD300AD6B47 /* Server&P2P.app */;
+			productReference = 1B867FD8139D4AD300AD6B47 /* Version-2.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1171,7 +1171,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.TestCamera;
-				PRODUCT_NAME = "Server&P2P";
+				PRODUCT_NAME = "Version-2";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -1218,7 +1218,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.TestCamera;
-				PRODUCT_NAME = "Server&P2P";
+				PRODUCT_NAME = "Version-2";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

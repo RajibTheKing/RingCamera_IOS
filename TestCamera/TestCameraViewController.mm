@@ -29,7 +29,7 @@
 #include <set>
 #include <sys/time.h>
 #include "RingCallAudioManager.h"
-
+#include <sstream>
 
 //#include "InterfaceOfConnectivityEngine.h"
 
@@ -68,7 +68,7 @@ int counter = 0;
 FILE *fp = NULL;
 FILE *fpyuv = NULL;
 
-
+int g_iPort;
 
 @implementation TestCameraViewController
 
@@ -79,7 +79,11 @@ FILE *fpyuv = NULL;
     //CInterfaceOfConnectivityEngine *m_pInterfaceOfConnectivityEngine = new CInterfaceOfConnectivityEngine();
 
     MyCustomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, m_iCameraWidth, m_iCameraHeight)];
-    [_LoginButton setEnabled:YES];
+    
+    [_LoginButton setEnabled:false];
+    [_ServerCall setEnabled:false];
+    
+    
     _bP2PSocketInitialized = false;
     
     //g_pVideoSockets = [[VideoSockets alloc] init];
@@ -107,6 +111,10 @@ FILE *fpyuv = NULL;
     
     [self setupAVCapture]; //This Method is needed to Initialize Self View with Camera output
     [session startRunning];
+    [_PortField setEnabled:false];
+    g_iPort = 60008;
+    [self UpdatePort];
+    [g_pVideoCallProcessor SetFriendPort:g_iPort];
     
 }
 
@@ -167,6 +175,31 @@ FILE *fpyuv = NULL;
      
     
     
+    
+}
+- (void)UpdatePort
+{
+    g_iPort++;
+    if(g_iPort>60008)
+        g_iPort = 60001;
+    if(g_iPort<60001)
+        g_iPort = 60008;
+    
+    cout<<"Current FriendPort = "<<g_iPort<<endl;
+    ostringstream oss;
+    oss.clear();
+    oss<<g_iPort;
+    string sPort = oss.str();
+    
+    self.PortField.text = @(sPort.c_str());
+}
+
+- (IBAction)ChangePort:(id)sender
+{
+    [self UpdatePort];
+    
+    [g_pVideoCallProcessor SetFriendPort:g_iPort];
+
     
 }
 
@@ -273,7 +306,8 @@ FILE *fpyuv = NULL;
     
     
     NSLog(@"Inside EndCall Button");
-    //[[RingCallAudioManager sharedInstance] stopRecordAndPlayAudio];
+    CVideoAPI::GetInstance()->StopVideoCall(200);
+    [[RingCallAudioManager sharedInstance] stopRecordAndPlayAudio];
     [g_pVideoCallProcessor CloseAllThreads];
     
     
@@ -431,9 +465,12 @@ FILE *fpyuv = NULL;
     [_myIdTextField release];
     [_friendIdTextField release];
     [_remoteIPTextField release];
-    [_P2PButton release];
+    [_P2PButton release]; //StartCall Button
     [SelfView release];
-    [_LoginButton release];
+    [_LoginButton release]; //Login Button
+    [_ServerCall release];
+    [_ChangePort release];
+    [_PortField release];
     [super dealloc];
 }
 

@@ -87,6 +87,10 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 {
     m_sRemoteIP = sRemoteIP;
 }
+- (void)SetFriendPort:(int)iPort
+{
+    m_iActualFriendPort = iPort;
+}
 - (void)SetFriendId:(long long)lFriendId
 {
     m_lFriendId = lFriendId;
@@ -138,7 +142,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     string sAppSessionId = "12345678";
     long long lFriendId = 200;
     long long lServerIP = /*645874748*/ 1011121958;
-    int iFriendPort = 60008;
+    int iFriendPort = m_iActualFriendPort;
     
     NSString *nsServerIP = @"38.127.68.60";
     cout<<"Check--> sRemoteIP = "<<m_sRemoteIP<<endl;
@@ -380,7 +384,7 @@ int tempCounter = 0;
     memcpy(pRawYuv+YPlaneLength, y_ch1, VPlaneLength+VPlaneLength);
 
     int iRet = m_pVideoAPI->SendVideoDataV(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
-    //printf("Rajib_Check: iRet = %d\n", iRet);
+    printf("Rajib_Check: SendVideoDataV, iRet = %d\n", iRet);
     
     /*
     if(tempCounter<500)

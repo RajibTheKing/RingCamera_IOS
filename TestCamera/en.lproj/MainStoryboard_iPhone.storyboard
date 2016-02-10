@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="TUH-46-oqL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="TUH-46-oqL">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
         <!--Test Camera View Controller-->
@@ -18,53 +18,13 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="friendId" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="2" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="6dR-YF-Fod">
-                                <rect key="frame" x="245" y="396" width="55" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="2" id="eBU-0T-CEL"/>
-                                </connections>
-                            </textField>
                             <view contentMode="scaleToFill" id="3qS-LM-QOC" userLabel="SelfView">
                                 <rect key="frame" x="8" y="20" width="137" height="131"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="startButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="mAs-rc-dti">
-                                <rect key="frame" x="67" y="430" width="71" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="ServerCall"/>
-                                <connections>
-                                    <action selector="StartCallAction:" destination="2" eventType="touchUpInside" id="QcS-L1-9Tp"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MyID: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NOS-h1-Xk8">
-                                <rect key="frame" x="20" y="401" width="54" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RemoteID:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fFQ-4M-Ohw">
-                                <rect key="frame" x="148" y="401" width="80" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="myId" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="5lL-bk-NzD">
-                                <rect key="frame" x="67" y="396" width="54" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="2" id="m4V-gL-WUx"/>
-                                </connections>
-                            </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remote IP:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FRQ-dD-Wg3">
-                                <rect key="frame" x="20" y="357" width="83" height="21"/>
+                                <rect key="frame" x="23" y="364" width="83" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -79,7 +39,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="192.168.57.131" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="x5c-KY-OyZ">
-                                <rect key="frame" x="145" y="352" width="155" height="30"/>
+                                <rect key="frame" x="145" y="358" width="155" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -103,17 +63,40 @@
                                     <action selector="P2PButtonAction:" destination="2" eventType="touchUpInside" id="uhh-lE-Zg9"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="startButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="mAs-rc-dti">
+                                <rect key="frame" x="67" y="430" width="71" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="ServerCall"/>
+                                <connections>
+                                    <action selector="StartCallAction:" destination="2" eventType="touchUpInside" id="QcS-L1-9Tp"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="btB-ro-XiA">
+                                <rect key="frame" x="38" y="397" width="123" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="TapToChangePort"/>
+                                <connections>
+                                    <action selector="ChangePort:" destination="2" eventType="touchUpInside" id="g81-zJ-yEt"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="60001" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="SBx-et-y2C">
+                                <rect key="frame" x="186" y="396" width="97" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="d4i-wF-zvS"/>
                     <connections>
+                        <outlet property="ChangePort" destination="btB-ro-XiA" id="bul-co-RMK"/>
                         <outlet property="LoginButton" destination="UX1-YT-bOK" id="YKA-KX-RhF"/>
                         <outlet property="MyCustomView" destination="kGE-FL-FM1" id="cRQ-97-2b2"/>
                         <outlet property="P2PButton" destination="7Fz-kt-MBd" id="AIt-96-3Jw"/>
+                        <outlet property="PortField" destination="SBx-et-y2C" id="5NV-Vz-aqz"/>
                         <outlet property="SelfView" destination="3qS-LM-QOC" id="8eC-2k-N9R"/>
-                        <outlet property="friendIdTextField" destination="6dR-YF-Fod" id="piB-TC-90y"/>
-                        <outlet property="myIdTextField" destination="5lL-bk-NzD" id="MtU-7F-tOu"/>
+                        <outlet property="ServerCall" destination="mAs-rc-dti" id="oDA-Qf-XfQ"/>
                         <outlet property="remoteIPTextField" destination="x5c-KY-OyZ" id="UA8-04-CJ6"/>
                     </connections>
                 </viewController>
