@@ -650,7 +650,7 @@ static OSStatus playbackCallback(void *inRefCon,
     
     if (availableBytes)
     {
-        /*if( availableBytes > AUDIO_MAXIMUM_PACKET_LENGTH) {
+        if( availableBytes > AUDIO_MAXIMUM_PACKET_LENGTH) {
          
          int randomRawDataPacketSize = (arc4random()%10)*160;
          availableBytes = AUDIO_MINIMUM_PACKET_LENGTH + randomRawDataPacketSize;
@@ -660,8 +660,9 @@ static OSStatus playbackCallback(void *inRefCon,
          } else {
          // Data not enough to send ignor this case..
          return;
-         }*/
+         }
         
+        /*
         if(availableBytes >= AUDIO_FIXED_PACKET_LENGTH)
         {
             availableBytes = AUDIO_FIXED_PACKET_LENGTH;
@@ -671,6 +672,7 @@ static OSStatus playbackCallback(void *inRefCon,
             // Data not enough to send ignor this case..
             return;
         }
+         */
         
         short shortArray[availableBytes];
         memcpy(shortArray, buffer, availableBytes);
@@ -678,7 +680,7 @@ static OSStatus playbackCallback(void *inRefCon,
         int success = -1;
         //success = [[RIConnectivityManager sharedInstance] sendAudioData:[IDCallManager sharedInstance].currentCallInfoModel.callInfo.callID  audioData:shortArray dataSize:availableBytes/2];
         success = CVideoAPI::GetInstance()->SendAudioDataV(200, shortArray, availableBytes/2);
-        cout<<"TheKing-------> SendingAudio = "<<availableBytes/2<<endl;
+        //cout<<"TheKing-------> SendingAudio = "<<availableBytes/2<<endl;
         
         if (success < 0) {
             //RICallLog(@"Faild to send audio data...................");

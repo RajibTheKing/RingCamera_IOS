@@ -59,6 +59,10 @@ void notifyClientMethodWithAudioDataIos(LongLong lFriendID, short data[], int da
     
     [[RingCallAudioManager sharedInstance] playMyReceivedAudioData:data withLength:dataLenth];
 }
+void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType) //Video Notification Added
+{
+    cout<<"Found EventType = "<<eventType<<endl;
+}
 void notifyClientMethodWithAudiPacketDataIos(LongLong lFriendID, unsigned char data[], int dataLenth)
 {
     int iPacketType = (int)data[0];
