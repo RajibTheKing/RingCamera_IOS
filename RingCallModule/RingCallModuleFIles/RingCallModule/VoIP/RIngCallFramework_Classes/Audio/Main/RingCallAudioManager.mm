@@ -641,91 +641,59 @@ static OSStatus playbackCallback(void *inRefCon,
 }
 
 
--(NSData *)processRTPPacketToSent
+-(void) processRTPPacketToSent
 {
-    NSMutableData * rtpPacket = nil;
-    
     int availableBytes;
-    
-    
-    
+    //iProcessRTPPacketCounter++;
     void *buffer = TPCircularBufferTail(&recordedPCMBuffer, &availableBytes);
-    
-    /*
-    if( availableBytes > AUDIO_MAXIMUM_PACKET_LENGTH) {
-        
-        int randomRawDataPacketSize = (arc4random()%10)*160;
-        availableBytes = AUDIO_MINIMUM_PACKET_LENGTH + randomRawDataPacketSize;
-    } else if (availableBytes >= AUDIO_MINIMUM_PACKET_LENGTH && availableBytes <= AUDIO_MAXIMUM_PACKET_LENGTH) {
-        availableBytes = (availableBytes/160)*160;
-        // NSLog(@"general Length : %d",dataLength);
-    } else {
-        // Data not enough to send ignor this case..
-        return rtpPacket;
-    }
-    */
-    
+    //if(iProcessRTPPacketCounter%2==0) return;
     
     if (availableBytes)
     {
-        
-        rtpPacket = [NSMutableData data];
-        short shortArray[availableBytes];
-        //Byte g729EncodedBytes[availableBytes/16];
-        Byte bbyte[1];
-        
-        bbyte[0] = 0;
-        [rtpPacket appendBytes:bbyte length:1];
-        
-        memcpy(shortArray, buffer, availableBytes);
-        
-        //SendToEngine
-        long long lUser = [[VideoCallProcessor GetInstance] GetUserId];
-        //cout<<"RingCallAudioManager:: VideoAPI->SendAudioDataV --> "<<"lUser = "<<lUser<<", len = "<<availableBytes<<endl;
-        CVideoAPI::GetInstance()->SendAudioDataV(200, shortArray, availableBytes/2);
-        
+        if( availableBytes > AUDIO_MAXIMUM_PACKET_LENGTH) {
+         
+         int randomRawDataPacketSize = (arc4random()%10)*160;
+         availableBytes = AUDIO_MINIMUM_PACKET_LENGTH + randomRawDataPacketSize;
+         } else if (availableBytes >= AUDIO_MINIMUM_PACKET_LENGTH && availableBytes <= AUDIO_MAXIMUM_PACKET_LENGTH) {
+         availableBytes = (availableBytes/160)*160;
+         // RICallLog(@"general Length : %d",dataLength);
+         } else {
+         // Data not enough to send ignor this case..
+         return;
+         }
         
         /*
-        //Rajib: Method to Play Data
-        //TPCircularBufferProduceBytes(&receivedPCMBuffer, shortArray, (availableBytes));
-        
-        
-        printf("VideoTeamCheck: availableBytes = %d\n", availableBytes);
-        
-         
-        
-        int iEncodedSize = [pVideoCallProcessor GetG729]->Encode(shortArray, availableBytes/2, (byte*)bAudioEncodeBuffer);
-        printf("VideoTeamCheck: iEncodedSize = %d\n", iEncodedSize);
-        
-        
-        bAudioBuffer[0] = (int)43;
-        memcpy(bAudioBuffer+1, bAudioEncodeBuffer, iEncodedSize);
-        
-        SendToServer((byte *)bAudioBuffer,  iEncodedSize+1);
-        */
-        
-        
-        TPCircularBufferConsume(&recordedPCMBuffer, availableBytes);
-        
-        
-        /*int encodedLength = [g729EncoderDecoder encodeWithPCM:shortArray andSize:availableBytes/2 andEncodedG729:g729EncodedBytes];
-        
-        if (encodedLength > 0)
+        if(availableBytes >= AUDIO_FIXED_PACKET_LENGTH)
         {
-            [rtpPacket appendBytes:g729EncodedBytes length:encodedLength];
+            availableBytes = AUDIO_FIXED_PACKET_LENGTH;
+        }
+        else
+        {
+            // Data not enough to send ignor this case..
+            return;
+        }
+         */
+        
+        short shortArray[availableBytes];
+        memcpy(shortArray, buffer, availableBytes);
+        
+        int success = -1;
+        //success = [[RIConnectivityManager sharedInstance] sendAudioData:[IDCallManager sharedInstance].currentCallInfoModel.callInfo.callID  audioData:shortArray dataSize:availableBytes/2];
+        success = CVideoAPI::GetInstance()->SendAudioDataV(200, shortArray, availableBytes/2);
+        //cout<<"TheKing-------> SendingAudio = "<<availableBytes/2<<endl;
+        
+        if (success < 0) {
+            //RICallLog(@"Faild to send audio data...................");
+        } else {
+           // RICallLog(@"Audio data sent to callID: %@ IP:%@ voiceBibdPort:%d",[IDCallManager sharedInstance].currentCallInfoModel.callInfo.callID, [IDCallManager sharedInstance].currentCallInfoModel.callInfo.callServerInfo.voicehostIPAddress, [IDCallManager sharedInstance].currentCallInfoModel.callInfo.callServerInfo.voiceBindingPort);
         }
         
-        int randomGarbage = 1 + arc4random()%NUMBER_OF_MAX_GARBAGE;
+        sentRtpCount++;
+        TPCircularBufferConsume(&recordedPCMBuffer, availableBytes);
         
-        for (int index = 0; index < randomGarbage; index++) {
-            bbyte[0] = g729EncodedBytes[index];  //add garbage value
-            [rtpPacket appendBytes:bbyte length:1];
-        }*/
         memset(shortArray, 0, sizeof(shortArray));
     }
-    return rtpPacket;
 }
-
 - (void) playMyReceivedAudioData:(short *)data withLength:(int)iLen
 {
     //TPCircularBufferProduceBytes(&receivedPCMBuffer, data, iLen*2);
@@ -836,7 +804,7 @@ static OSStatus playbackCallback(void *inRefCon,
   //   NSLog(@"rtpSendingTimerMethod 1");
  //   usleep(sleeptime);
  //   sleeptime += 100;
-    NSData *data = [self processRTPPacketToSent];
+    [self processRTPPacketToSent];
     
    
     /*

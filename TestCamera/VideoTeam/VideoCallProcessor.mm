@@ -162,7 +162,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
 
     iRet = m_pVideoAPI->StartAudioCall(200);
-    iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth);
+    iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth,0); //Added NetworkType
     
     
     [m_pVTP SetVideoAPI:m_pVideoAPI];
