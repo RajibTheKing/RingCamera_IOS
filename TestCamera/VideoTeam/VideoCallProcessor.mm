@@ -239,10 +239,14 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     *session = [AVCaptureSession new];
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
     {
-        [*session setSessionPreset:AVCaptureSessionPreset352x288];
+        //[*session setSessionPreset:AVCaptureSessionPreset352x288];
+        //*iHeight = 352;
+        //*iWidth = 288;
         
-        *iHeight = 352;
-        *iWidth = 288;
+        [*session setSessionPreset:AVCaptureSessionPreset640x480];
+        *iHeight = 640;
+        *iWidth = 480;
+        
         
         [self SetWidthAndHeight:*iHeight withHeight:*iWidth];
         m_pEncodeBuffer = new RingBuffer<byte>(m_iCameraWidth,m_iCameraHeight,5);
