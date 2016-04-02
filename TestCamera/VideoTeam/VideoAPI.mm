@@ -189,7 +189,7 @@ void CVideoAPI::SendPakcetFragments(byte  *data, int iLen)
 
 void CVideoAPI::ReceiveFullFrame(byte*data, int iLen)
 {
-    printf("-->Received Full Frame Number = \n");
+    printf("-->Received Full Frame. Length = %d\n", iLen);
     byte* pNewData = (byte*)malloc(iLen + 100);
     memcpy(pNewData, data, iLen);
     
