@@ -96,21 +96,11 @@ int g_iPort;
     g_pVideoCallProcessor = [VideoCallProcessor GetInstance] /*[[VideoCallProcessor alloc] init]*/;
     
     g_pVideoCallProcessor.delegate = self;
-    [g_pVideoCallProcessor InitializeCameraSession:&session
-                               withDeviceOutput:&videoDataOutput
-                                      withLayer:&previewLayer
-                                     withHeight:&m_iCameraHeight
-                                      withWidth:&m_iCameraWidth];
-    
-    
+
     //End
     
     [g_pVideoCallProcessor SetVideoSockets:g_pVideoSockets];
     
-    
-    
-    [self setupAVCapture]; //This Method is needed to Initialize Self View with Camera output
-    [session startRunning];
     [_PortField setEnabled:false];
     g_iPort = 60008;
     [self UpdatePort];
@@ -139,6 +129,24 @@ int g_iPort;
     long long lUserId = 200;
     [g_pVideoCallProcessor Initialize:lUserId];
      */
+    if([self.ResField.text isEqual:@"640x480"])
+    {
+        m_iCameraHeight = 640;
+        m_iCameraWidth = 480;
+    }
+    else
+    {
+        m_iCameraHeight = 352;
+        m_iCameraWidth = 288;
+    }
+    
+    [g_pVideoCallProcessor InitializeCameraSession:&session
+                                  withDeviceOutput:&videoDataOutput
+                                         withLayer:&previewLayer
+                                        withHeight:&m_iCameraHeight
+                                         withWidth:&m_iCameraWidth];
+    [self setupAVCapture]; //This Method is needed to Initialize Self View with Camera output
+    [session startRunning];
     
     
     long long lUserId  = 200;
@@ -194,6 +202,21 @@ int g_iPort;
     self.PortField.text = @(sPort.c_str());
 }
 
+- (IBAction)ChangeResBtnAction:(id)sender
+{
+    cout<<"TheKing--> Inside ChangeResAction"<<endl;
+    NSString *nsRes = self.ResField.text;
+    if([nsRes isEqual: @"640x480"])
+    {
+        cout<<"Setting to Low Resolution"<<endl;
+        self.ResField.text = @"352x288";
+    }
+    else
+    {
+        cout<<"Setting to High Resolution"<<endl;
+        self.ResField.text = @"640x480";
+    }
+}
 - (IBAction)ChangePort:(id)sender
 {
     [self UpdatePort];
@@ -202,8 +225,6 @@ int g_iPort;
 
     
 }
-
-
 
 //bool flagggg = false;
 
@@ -288,7 +309,6 @@ int g_iPort;
     
     SendToVideoSocket(message, iLength);
     */
-    
     
     g_pVideoCallProcessor.m_bStartVideoSending = true;
     //[g_pVideoCallProcessor Initialize:g_iMyId];
@@ -471,6 +491,9 @@ int g_iPort;
     [_ServerCall release];
     [_ChangePort release];
     [_PortField release];
+    [_ChangeResBtn release];
+    [_ResLabel release];
+    [_ResField release];
     [super dealloc];
 }
 

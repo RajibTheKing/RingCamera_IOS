@@ -49,9 +49,12 @@
 @property (retain, nonatomic) IBOutlet UIButton *ChangePort;
 @property (retain, nonatomic) IBOutlet UITextField *PortField;
 
+@property (retain, nonatomic) IBOutlet UIButton *ChangeResBtn;
 
 @property bool bEncodeThreadActive;
 @property bool bP2PSocketInitialized;
+@property (retain, nonatomic) IBOutlet UILabel *ResLabel;
+@property (retain, nonatomic) IBOutlet UITextField *ResField;
 
 - (void)setupAVCapture;
 - (void)teardownAVCapture;
@@ -61,6 +64,7 @@
 - (IBAction) EndCallAction:(id)endButton;
 - (IBAction) P2PButtonAction:(id)P2PButton;
 - (IBAction)ChangePort:(id)sender;
+- (IBAction)ChangeResBtnAction:(id)sender;
 
 
 
