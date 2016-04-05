@@ -175,6 +175,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 {
     m_iCameraHeight = iWidth;
     m_iCameraWidth = iHeight;
+    
     [m_pVTP SetWidthAndHeight:iHeight withHeight:iWidth];
     
 }
@@ -239,16 +240,29 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     *session = [AVCaptureSession new];
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
     {
-        //[*session setSessionPreset:AVCaptureSessionPreset352x288];
+        if(*iHeight == 352 && *iWidth==288)
+        {
+            [*session setSessionPreset:AVCaptureSessionPreset352x288];
+        }
+        else if(*iHeight == 640 && *iWidth == 480)
+        {
+            [*session setSessionPreset:AVCaptureSessionPreset640x480];
+        }
+        else
+        {
+            cout<<"Error: Resolution Is not in Correct Format"<<endl;
+        }
+        
         //*iHeight = 352;
         //*iWidth = 288;
         
-        [*session setSessionPreset:AVCaptureSessionPreset640x480];
-        *iHeight = 640;
-        *iWidth = 480;
+        //[*session setSessionPreset:AVCaptureSessionPreset640x480];
+        //*iHeight = 640;
+        //*iWidth = 480;
         
         
         [self SetWidthAndHeight:*iHeight withHeight:*iWidth];
+        
         m_pEncodeBuffer = new RingBuffer<byte>(m_iCameraWidth,m_iCameraHeight,5);
         [m_pVTP SetEncodeBuffer:m_pEncodeBuffer];
         
