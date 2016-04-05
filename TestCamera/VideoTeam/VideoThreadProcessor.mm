@@ -90,8 +90,11 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
             pGotData = m_pVideoAPI->m_RenderQueue.front();
             int iLen = m_pVideoAPI->m_RenderDataLenQueue.front();
             
-            int height = 640;
-            int width = 480;
+            int height = CVideoAPI::GetInstance()->m_iReceivedHeight;
+            int width = CVideoAPI::GetInstance()->m_iReceivedWidth;
+            
+            //int height = 640;
+            //int width = 480;
             
             printf("Inside renderthread, iLen = %d --> ", iLen);
             for(int i=0;i<20;i++)

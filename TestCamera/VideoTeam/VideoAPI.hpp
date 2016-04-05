@@ -87,6 +87,8 @@ public:
     queue<byte*> m_RenderQueue;
     queue<int> m_RenderDataLenQueue;
     pthread_mutex_t pRenderQueueMutex;
+    int m_iReceivedHeight;
+    int m_iReceivedWidth;
     
     
 };

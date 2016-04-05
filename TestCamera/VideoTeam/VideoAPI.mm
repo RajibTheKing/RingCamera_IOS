@@ -49,6 +49,8 @@ void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[]
     if(data != NULL)
     {
         //cout << "lenghth2 " << dataLenth << endl;
+        CVideoAPI::GetInstance()->m_iReceivedHeight = iVideoHeight;
+        CVideoAPI::GetInstance()->m_iReceivedWidth = iVideoWidth;
         
         CVideoAPI::GetInstance()->ReceiveFullFrame(data, dataLenth);
     }
