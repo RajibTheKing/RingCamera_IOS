@@ -168,9 +168,35 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     [m_pVTP SetVideoAPI:m_pVideoAPI];
     [m_pVideoSockets SetVideoAPI:m_pVideoAPI];
     [m_pVideoSockets SetUserID:lUserId];
+    
+    /*dispatch_queue_t SendDummyDataQ = dispatch_queue_create("SendDummyDataQ",DISPATCH_QUEUE_CONCURRENT);
+    dispatch_async(SendDummyDataQ, ^{
+        [self SendDummyData];
+    });*/
 }
 
-
+-(void)SendDummyData
+{
+    while(true)
+    {
+        if(!pRawYuv) cout<<"pRaw is NuLL"<<endl;
+        if(m_pVideoAPI == NULL) cout<<"m_pVideoAPI is NULL"<<endl;
+        
+        
+        //m_iCameraHeight = 640;
+        //m_iCameraWidth = 480;
+        /*
+        for(int i=0;i<m_iCameraHeight * m_iCameraWidth * 3 / 2; i++)
+        {
+            pRawYuv[i] = rand()%255;
+            
+        }*/
+        int iRet = -1;
+        iRet = m_pVideoAPI->SendVideoDataV(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
+        cout<<"ClientEnd--> iRet = "<<iRet<<", Size = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<endl;
+        usleep(60*1000);
+    }
+}
 - (void)SetWidthAndHeight:(int)iWidth withHeight:(int)iHeight
 {
     m_iCameraHeight = iWidth;
@@ -353,6 +379,11 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 int tempCounter = 0;
 - (int)FrontConversion:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
+    if(tempCounter == 0)
+    {
+        cout<<"First Frame after camera Initialization = "<<[self GetTimeStamp2] - _m_lCameraInitializationStartTime<<endl;
+    }
+    tempCounter++;
     printf("Rajib_Check: Inside FrontConversion\n");
 
     [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
@@ -516,6 +547,19 @@ int ConvertNV12ToI420(unsigned char *convertingData, int iheight, int iwidth)
         ip = addr.s_addr;
     }
     return ip;
+}
+
+-(long long)GetTimeStamp2
+{
+    namespace sc = std::chrono;
+    auto time = sc::system_clock::now(); // get the current time
+    auto since_epoch = time.time_since_epoch(); // get the duration since epoch
+    // I don't know what system_clock returns
+    // I think it's uint64_t nanoseconds since epoch
+    // Either way this duration_cast will do the right thing
+    auto millis = sc::duration_cast<sc::milliseconds>(since_epoch);
+    long long now = millis.count(); // just like java (new Date()).getTime();
+    return now;
 }
 
 

@@ -74,6 +74,7 @@
 void WriteToFile(byte *pData);
 unsigned int timeGetTime();
 void CalculateFPS();
+long long GetTimeStamp();
 - (void)UpdatePort;
 
 
