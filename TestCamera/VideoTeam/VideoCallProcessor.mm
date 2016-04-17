@@ -116,15 +116,6 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     if(m_pVideoAPI->Init(100, g_sLOG_PATH.c_str(), g_iDEBUG_INFO) == 1)
     {
         printf("myVideoAPI Initialized\n");
-        
-        //string sAuthServerIP = m_sRemoteIP;
-        //int iAuthServerPort = 32321;
-        //string sAppSessionId = "12345678";
-        //long long lFriendId = 200;
-        
-        ///bool bRet = m_pVideoAPI->SetAuthenticationServer(sAuthServerIP, iAuthServerPort, sAppSessionId);
-        //cout<<"SetAuthenticationServer, bRet = "<<bRet<<endl;
-        
     }
     else
     {
@@ -137,14 +128,13 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     cout<<"VideoCallProcessor:: VideoAPI->StartAudioCall --> "<<"lUser = "<<lUserId<<endl;
     m_pVideoAPI->StartAudioCall(200);*/
     
-    string sAuthServerIP = "38.127.68.60";
     int iAuthServerPort = 10001;
     string sAppSessionId = "12345678";
     long long lFriendId = 200;
     long long lServerIP = /*645874748*/ 1011121958;
     int iFriendPort = m_iActualFriendPort;
     
-    NSString *nsServerIP = @"38.127.68.60";
+    NSString *nsServerIP =  @"38.127.68.60"/*@"192.168.57.134"*/;
     cout<<"Check--> sRemoteIP = "<<m_sRemoteIP<<endl;
     
     //m_pVideoAPI->SetLoggingState(true,5);
@@ -229,6 +219,8 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     m_pVTP.bEncodeThreadActive = true;
     
+    m_pVTP.bEventThreadActive = true;
+    
     /*dispatch_queue_t EncoderQ = dispatch_queue_create("EncoderQ",DISPATCH_QUEUE_CONCURRENT);
     dispatch_async(EncoderQ, ^{
         [m_pVTP EncodeThread];
@@ -240,6 +232,10 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
          [m_pVTP RenderThread];
      });
     
+    dispatch_queue_t EventThreadQ = dispatch_queue_create("EventThreadQ",DISPATCH_QUEUE_CONCURRENT);
+    dispatch_async(EventThreadQ, ^{
+        [m_pVTP EventThread];
+    });
 }
 
 - (void)CloseAllThreads
@@ -247,6 +243,8 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     m_pVTP.bRenderThreadActive = false;
     
     m_pVTP.bEncodeThreadActive = false;
+    
+    m_pVTP.bEventThreadActive = false;
     //CVideoAPI::GetInstance()->StopVideoCallV(m_lUserId);
     //CVideoAPI::GetInstance()->ReleaseV();
 
@@ -367,11 +365,23 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     return error;
 }
-
+- (void)ReInitializeCamera
+{
+    cout<<"Here inside video call processor, sendint info to view controller to reinitialize"<<endl;
+    [self.delegate ReinitializeCameraFromViewController];
+    //[self InitializeCameraSession:&session
+      //                            withDeviceOutput:&videoDataOutput
+       //                                  withLayer:&previewLayer
+         //                               withHeight:&m_iCameraHeight
+           //                              withWidth:&m_iCameraWidth];
+    
+    
+}
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
     
     if(!_m_bStartVideoSending) return;
+    
     [self FrontConversion: sampleBuffer fromConnection:connection];
 }
 
@@ -433,6 +443,8 @@ int tempCounter = 0;
     memcpy(pRawYuv+YPlaneLength, y_ch1, VPlaneLength+VPlaneLength);
 
     int iRet = m_pVideoAPI->SendVideoDataV(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
+    //cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
+    
     printf("Rajib_Check: SendVideoDataV, iRet = %d\n", iRet);
     
     /*

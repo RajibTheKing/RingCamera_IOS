@@ -65,6 +65,7 @@
 - (IBAction) P2PButtonAction:(id)P2PButton;
 - (IBAction)ChangePort:(id)sender;
 - (IBAction)ChangeResBtnAction:(id)sender;
+- (void)ReinitializeCameraFromViewController;
 
 
 

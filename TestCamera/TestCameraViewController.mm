@@ -475,6 +475,40 @@ int g_iPort;
     }
 }
 
+- (void)ReinitializeCameraFromViewController
+{
+    cout<<"Re-initializing Camera From ViewController";
+    
+    [session stopRunning];
+    //m_iCameraHeight = 352;
+    //m_iCameraWidth = 288;
+    
+    m_iCameraHeight = 352;
+    m_iCameraWidth = 288;
+    
+    
+    //CVideoAPI::GetInstance()->StopVideoCall(200);
+    
+    CVideoAPI::GetInstance()->StartVideoCall(200, m_iCameraHeight, m_iCameraWidth);
+    
+    
+    
+    MyCustomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, m_iCameraWidth, m_iCameraHeight)];
+    
+    
+    /*[g_pVideoCallProcessor InitializeCameraSession:&session
+                                  withDeviceOutput:&videoDataOutput
+                                         withLayer:&previewLayer
+                                        withHeight:&m_iCameraHeight
+                                         withWidth:&m_iCameraWidth];*/
+    
+    
+    
+    [session setSessionPreset:AVCaptureSessionPreset352x288];
+    
+    [session startRunning];
+}
+
 - (void)dealloc
 {
     [self teardownAVCapture];
@@ -527,7 +561,7 @@ void WriteToFile(byte *pData)
         NSFileHandle *handle;
         NSArray *Docpaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [Docpaths objectAtIndex:0];
-        NSString *filePathyuv = [documentsDirectory stringByAppendingPathComponent:@"RotationTest.yuv"];
+        NSString *filePathyuv = [documentsDirectory stringByAppendingPathComponent:@"NextDataCheck.yuv"];
         handle = [NSFileHandle fileHandleForUpdatingAtPath:filePathyuv];
         char *filePathcharyuv = (char*)[filePathyuv UTF8String];
         fpyuv = fopen(filePathcharyuv, "wb");

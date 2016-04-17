@@ -18,6 +18,7 @@
 
 @protocol VideoThreadProcessorDelegate <NSObject>
 @required
+- (void)ReInitializeCamera;
 - (void)BackConversion:(byte*)pRenderBuffer;
 - (void)SetWidthAndHeightForRendering:(int)iWidth withHeight:(int)iHeight;
 @end
@@ -38,6 +39,7 @@
 
 @property bool bRenderThreadActive;
 @property bool bEncodeThreadActive;
+@property bool bEventThreadActive;
 @property (nonatomic,strong) id delegate;
 
 
@@ -51,7 +53,7 @@
 - (void)SetEncodeBuffer:(RingBuffer<byte> *)pBuffer;
 - (void)RenderThread;
 - (void)EncodeThread;
-
+- (void)EventThread;
 @end
 
 

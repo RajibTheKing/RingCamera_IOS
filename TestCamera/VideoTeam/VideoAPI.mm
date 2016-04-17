@@ -10,6 +10,7 @@
 
 #include "VideoAPI.hpp"
 #include "VideoSockets.h"
+#include "VideoCallProcessor.h"
 
 //#include "ObjectiveCInterFace.h"
 
@@ -64,6 +65,25 @@ void notifyClientMethodWithAudioDataIos(LongLong lFriendID, short data[], int da
 void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType) //Video Notification Added
 {
     cout<<"Found EventType = "<<eventType<<endl;
+    //return;
+    
+    CVideoAPI::GetInstance()->m_EventQueue.push(eventType);
+    return;
+    
+    
+    
+    
+    
+    if(eventType == 206)
+    {
+        if(CVideoAPI::GetInstance()->m_bReInitialized == false)
+        {
+            [[VideoCallProcessor GetInstance] ReInitializeCamera];
+            CVideoAPI::GetInstance()->m_bReInitialized = true;
+            
+        }
+        
+    }
 }
 void notifyClientMethodWithAudiPacketDataIos(LongLong lFriendID, unsigned char data[], int dataLenth)
 {
@@ -153,6 +173,7 @@ CVideoAPI::CVideoAPI()
 {
     cout<<"Inside CVideoAPI constructor"<<endl;
     pthread_mutex_init(&pRenderQueueMutex, NULL);
+    m_bReInitialized = false;
     /*
     virtual bool SetAuthenticationServer(const CIPVStdString& sAuthServerIP, int iAuthServerPort, const CIPVStdString& sAppSessionId);
     virtual SessionStatus CreateSession(const IPVLongType& lFriendID, MediaType iMedia, const CIPVStdString& sRelayServerIP, int iRelayServerPort);

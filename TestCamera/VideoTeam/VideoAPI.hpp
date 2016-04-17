@@ -90,6 +90,11 @@ public:
     int m_iReceivedHeight;
     int m_iReceivedWidth;
     
+    queue<int> m_EventQueue;
+    
+    
+    bool m_bReInitialized;
+    
     
 };
 

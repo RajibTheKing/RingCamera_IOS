@@ -28,6 +28,7 @@
 @protocol ViewControllerDelegate <NSObject>
 @required
 -(int)RenderImage:(UIImage *)uiImageToDraw;
+-(void)ReinitializeCameraFromViewController;
 @end
 
 
@@ -89,6 +90,7 @@
                            withLayer:(AVCaptureVideoPreviewLayer **)previewLayer
                           withHeight:(int *)iHeight
                            withWidth:(int *)iWidth;
+-(void)ReInitializeCamera;
 -(G729CodecNative *)GetG729;
 -(long long)GetUserId;
 -(long long)GetFriendId;

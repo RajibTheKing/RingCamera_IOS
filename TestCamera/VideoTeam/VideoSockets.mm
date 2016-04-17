@@ -31,7 +31,7 @@ using namespace std;
 //#define printf(...)
 #include "VideoCallProcessor.h"
 
-string g_sServerIP = "38.127.68.60"; //"192.168.57.113";
+string g_sServerIP = "192.168.57.113"; //"192.168.57.113";
 
 int g_iVideoSocketPort = 15001;
 int g_iServerPort = 10001;

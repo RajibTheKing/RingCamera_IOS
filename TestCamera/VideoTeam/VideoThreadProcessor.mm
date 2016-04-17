@@ -20,6 +20,7 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
     NSLog(@"Inside VideoThreadProcessor Constructor");
     _bRenderThreadActive = false;
     _bEncodeThreadActive = false;
+    _bEventThreadActive = false;
     m_iFrameNumber = 0;
     return self;
 }
@@ -54,6 +55,41 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
     m_iCameraWidth = iHeight;
 }
 
+- (void)EventThread
+{
+    @autoreleasepool
+    {
+        printf("Starting EventThread....\n");
+        
+        while(_bEventThreadActive)
+        {
+            
+            if(m_pVideoAPI->m_EventQueue.empty())
+            {
+                usleep(5*1000);
+                continue;
+            }
+            
+            int iEvent;
+            iEvent = m_pVideoAPI->m_EventQueue.front();
+            m_pVideoAPI->m_EventQueue.pop();
+            
+            if(m_pVideoAPI->m_bReInitialized == false && iEvent == 206)
+            {
+                //[[VideoCallProcessor GetInstance] ReInitializeCamera];
+                
+                [self.delegate ReInitializeCamera];
+                m_pVideoAPI->m_bReInitialized = true;
+                
+            }
+            usleep(1000);
+            break;
+            
+        }
+        
+    }
+
+}
 
 - (void)RenderThread
 {
