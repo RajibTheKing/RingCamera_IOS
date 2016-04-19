@@ -134,7 +134,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     long long lServerIP = /*645874748*/ 1011121958;
     int iFriendPort = m_iActualFriendPort;
     
-    NSString *nsServerIP =  @"38.127.68.60"/*@"192.168.57.134"*/;
+    NSString *nsServerIP =  /*@"38.127.68.60"*/@"192.168.57.117";
     cout<<"Check--> sRemoteIP = "<<m_sRemoteIP<<endl;
     
     //m_pVideoAPI->SetLoggingState(true,5);
@@ -146,9 +146,9 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
     cout<<"CreateSession, Video, iRet = "<<iRet<<endl;
     
-    CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)1/*Audio*/,  lServerIP, iFriendPort);
+    CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
     
-    CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  lServerIP, iFriendPort);
+    CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
     
 
     iRet = m_pVideoAPI->StartAudioCall(200);

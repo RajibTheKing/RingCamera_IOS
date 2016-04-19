@@ -66,13 +66,7 @@ void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType)
 {
     cout<<"Found EventType = "<<eventType<<endl;
     //return;
-    
-    CVideoAPI::GetInstance()->m_EventQueue.push(eventType);
-    return;
-    
-    
-    
-    
+    //CVideoAPI::GetInstance()->m_EventQueue.push(eventType);
     
     if(eventType == 206)
     {

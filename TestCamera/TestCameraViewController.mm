@@ -489,7 +489,7 @@ int g_iPort;
     
     //CVideoAPI::GetInstance()->StopVideoCall(200);
     
-    CVideoAPI::GetInstance()->StartVideoCall(200, m_iCameraHeight, m_iCameraWidth);
+    //CVideoAPI::GetInstance()->StartVideoCall(200, m_iCameraHeight, m_iCameraWidth);
     
     
     
