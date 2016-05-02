@@ -64,20 +64,35 @@ void notifyClientMethodWithAudioDataIos(LongLong lFriendID, short data[], int da
 }
 void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType) //Video Notification Added
 {
-    cout<<"Found EventType = "<<eventType<<endl;
-    //return;
+    cout<<"Found Event type = "<<eventType<<endl;
+    
     //CVideoAPI::GetInstance()->m_EventQueue.push(eventType);
     
-    if(eventType == 206)
+    if(eventType == SET_CAMERA_RESOLUTION_640x480_25FPS_NOT_SUPPORTED)
     {
-        if(CVideoAPI::GetInstance()->m_bReInitialized == false)
-        {
-            [[VideoCallProcessor GetInstance] ReInitializeCamera];
-            CVideoAPI::GetInstance()->m_bReInitialized = true;
-            
-        }
-        
+        cout<<"Found SET_CAMERA_RESOLUTION_640x480_25FPS_NOT_SUPPORTED = "<<eventType<<endl;
+        [[VideoCallProcessor GetInstance] CheckCapabilityAgain];
     }
+    
+    if(eventType == SET_CAMERA_RESOLUTION_352x288_25FPS_NOT_SUPPORTED)
+    {
+        cout<<"Found SET_CAMERA_RESOLUTION_352x288_25FPS_NOT_SUPPORTED = "<<eventType<<endl;
+        [[VideoCallProcessor GetInstance] StopCheckCapability];
+    }
+    
+    if(eventType == SET_CAMERA_RESOLUTION_640x480_25FPS)
+    {
+        cout<<"Found SET_CAMERA_RESOLUTION_640x480_25FPS = "<<eventType<<endl;
+        [[VideoCallProcessor GetInstance] StopCheckCapability];
+    }
+    if(eventType == SET_CAMERA_RESOLUTION_352x288_25FPS)
+    {
+        cout<<"Found SET_CAMERA_RESOLUTION_352x288_25FPS = "<<eventType<<endl;
+        [[VideoCallProcessor GetInstance] StopCheckCapability];
+    }
+    
+    
+    
 }
 void notifyClientMethodWithAudiPacketDataIos(LongLong lFriendID, unsigned char data[], int dataLenth)
 {
@@ -270,7 +285,7 @@ int CVideoAPI::EncodeAndTransferV(long long lFriendID, unsigned char *in_data, u
 }
 */
 
-int CVideoAPI::SendVideoDataV(long long lFriendID, unsigned char *in_data, unsigned int in_size)
+int CVideoAPI::SendVideoDataV(long long lFriendID, unsigned char *in_data, unsigned int in_size, int device_orientation, int iOrientation)
 {
     return SendVideoData(lFriendID, in_data, in_size);
 }

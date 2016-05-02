@@ -509,6 +509,92 @@ int g_iPort;
     [session startRunning];
 }
 
+
+- (IBAction)CheckCapabilityAction:(id)sender
+{
+    NSLog(@"Inside CheckCapabilityAction");
+    
+    [self CheckCapability:200 withHeight:640 withWidth:480 withCheckNumber:1];
+    
+}
+
+- (void)CheckCapabilityAgain
+{
+    [self CheckCapability:200 withHeight:352 withWidth:288 withCheckNumber:2];
+}
+
+- (void)CheckCapability:(long long)llFriendId withHeight:(int)iHeight withWidth:(int)iWidth withCheckNumber:(int)iCheckNumber
+{
+    cout<<"Inside CheckCapability function iCheckNumber = "<<iCheckNumber<<endl;
+    //CVideoAPI::GetInstance()->StopVideoCall(200);
+    
+    
+    m_iCameraHeight = iHeight;
+    m_iCameraWidth = iWidth;
+    
+    if(iCheckNumber == 1)
+    {
+        [g_pVideoCallProcessor InitializeCameraSession:&session
+                                      withDeviceOutput:&videoDataOutput
+                                             withLayer:&previewLayer
+                                            withHeight:&m_iCameraHeight
+                                             withWidth:&m_iCameraWidth];
+        
+        
+        string sLOG_PATH = "Device/log.txt";
+        int iDEBUG_INFO = 1;
+        if(CVideoAPI::GetInstance()->Init(100, sLOG_PATH.c_str(), iDEBUG_INFO) == 1)
+        {
+            printf("myVideoAPI Initialized\n");
+        }
+        else
+        {
+            printf("myVideoAPI is not Initialized\n");
+        }
+        
+        string sAppSessionId = "12345678";
+        int iFriendPort = 60001;
+        
+        NSString *nsServerIP =  @"38.127.68.60"/*@"192.168.57.151"*/;
+        int iRet;
+        
+        //iRet = (int)CVideoAPI::GetInstance()->CreateSession(llFriendId, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], llFriendId);
+        //iRet = (int)CVideoAPI::GetInstance()->CreateSession(llFriendId, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], llFriendId);
+        //CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
+        //CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
+    
+        iRet = CVideoAPI::GetInstance()->CheckDeviceCapability(200, m_iCameraHeight, m_iCameraWidth);
+        
+        [session startRunning];
+    }
+    else if(iCheckNumber == 2)
+    {
+        CVideoAPI::GetInstance()->CheckDeviceCapability(200, m_iCameraHeight, m_iCameraWidth);
+        MyCustomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, m_iCameraWidth, m_iCameraHeight)];
+        [session setSessionPreset:AVCaptureSessionPreset352x288];
+        [session startRunning];
+    }
+    
+    //[session stopRunning];
+
+    //CVideoAPI::GetInstance()->StopVideoCall(200);
+    
+    //CVideoAPI::GetInstance()->StartVideoCall(200, m_iCameraHeight, m_iCameraWidth);
+    
+    //MyCustomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, m_iCameraWidth, m_iCameraHeight)];
+    
+    //[session setSessionPreset:AVCaptureSessionPreset352x288];
+    
+    //[session startRunning];
+    
+    
+    
+}
+-(void)StopCheckCapability
+{
+    [session stopRunning];
+}
+
 - (void)dealloc
 {
     [self teardownAVCapture];
@@ -530,6 +616,7 @@ int g_iPort;
     [_ChangeResBtn release];
     [_ResLabel release];
     [_ResField release];
+    [_CheckCapabilityBtn release];
     [super dealloc];
 }
 

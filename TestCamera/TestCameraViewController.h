@@ -55,6 +55,7 @@
 @property bool bP2PSocketInitialized;
 @property (retain, nonatomic) IBOutlet UILabel *ResLabel;
 @property (retain, nonatomic) IBOutlet UITextField *ResField;
+@property (retain, nonatomic) IBOutlet UIButton *CheckCapabilityBtn;
 
 - (void)setupAVCapture;
 - (void)teardownAVCapture;
@@ -69,7 +70,10 @@
 
 
 
-
+- (void)CheckCapability:(long long)llFriendId withHeight:(int)iHeight withWidth:(int)iWidth withCheckNumber:(int)iCheckNumber;
+- (void)CheckCapabilityAgain;
+- (void)StopCheckCapability;
+- (IBAction)CheckCapabilityAction:(id)sender;
 
 
 void WriteToFile(byte *pData);

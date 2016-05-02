@@ -29,6 +29,8 @@
 @required
 -(int)RenderImage:(UIImage *)uiImageToDraw;
 -(void)ReinitializeCameraFromViewController;
+-(void)CheckCapabilityAgain;
+-(void)StopCheckCapability;
 @end
 
 
@@ -60,6 +62,8 @@
     
     FILE *m_FileForDump;
     
+    bool m_bCheckCall;
+    
 }
 
 
@@ -90,6 +94,9 @@
                            withLayer:(AVCaptureVideoPreviewLayer **)previewLayer
                           withHeight:(int *)iHeight
                            withWidth:(int *)iWidth;
+
+- (void)CheckCapabilityAgain;
+- (void)StopCheckCapability;
 -(void)ReInitializeCamera;
 -(G729CodecNative *)GetG729;
 -(long long)GetUserId;

@@ -27,6 +27,13 @@ using namespace std;
 //class CCppInterfaceOfVideoEngine;
 
 //extern CCppInterfaceOfVideoEngine *g_pVideoEngineInterface;
+
+#define SET_CAMERA_RESOLUTION_640x480_25FPS 205
+#define SET_CAMERA_RESOLUTION_640x480_25FPS_NOT_SUPPORTED 206
+#define SET_CAMERA_RESOLUTION_352x288_25FPS 207
+#define SET_CAMERA_RESOLUTION_352x288_25FPS_NOT_SUPPORTED 208
+
+
 class CVideoAPI;
 
 class CVideoAPI : public CRingIDSDK
@@ -55,7 +62,7 @@ public:
     
     int EncodeAndTransferV(long long lFriendID, unsigned char *in_data, unsigned int in_size);
 
-    int SendVideoDataV(long long lFriendID, unsigned char *in_data, unsigned int in_size);
+    int SendVideoDataV(long long lFriendID, unsigned char *in_data, unsigned int in_size, int device_orientation, int  iOrientation);
     int SendAudioDataV(long long lFriendID, short *in_data, unsigned int in_size);
     
     int PushPacketForDecodingV(long long lFriendID, unsigned char *in_data, unsigned int in_size);

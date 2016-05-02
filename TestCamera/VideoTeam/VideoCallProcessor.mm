@@ -134,7 +134,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     long long lServerIP = /*645874748*/ 1011121958;
     int iFriendPort = m_iActualFriendPort;
     
-    NSString *nsServerIP =  /*@"38.127.68.60"*/@"192.168.57.117";
+    NSString *nsServerIP =  @"38.127.68.60"/*@"192.168.57.151"*/;
     cout<<"Check--> sRemoteIP = "<<m_sRemoteIP<<endl;
     
     //m_pVideoAPI->SetLoggingState(true,5);
@@ -154,6 +154,9 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     iRet = m_pVideoAPI->StartAudioCall(200);
     iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth,0); //Added NetworkType
     
+    
+    //iRet = m_pVideoAPI->CheckDeviceCapability(200, m_iCameraHeight, m_iCameraWidth);
+    //m_bCheckCall = true;
     
     [m_pVTP SetVideoAPI:m_pVideoAPI];
     [m_pVideoSockets SetVideoAPI:m_pVideoAPI];
@@ -182,7 +185,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
             
         }*/
         int iRet = -1;
-        iRet = m_pVideoAPI->SendVideoDataV(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
+        iRet = m_pVideoAPI->SendVideoDataV(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2,0,0);
         cout<<"ClientEnd--> iRet = "<<iRet<<", Size = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<endl;
         usleep(60*1000);
     }
@@ -365,22 +368,23 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     return error;
 }
-- (void)ReInitializeCamera
+
+- (void)StopCheckCapability
+{
+    [self.delegate StopCheckCapability];
+}
+- (void)CheckCapabilityAgain
 {
     cout<<"Here inside video call processor, sendint info to view controller to reinitialize"<<endl;
-    [self.delegate ReinitializeCameraFromViewController];
-    //[self InitializeCameraSession:&session
-      //                            withDeviceOutput:&videoDataOutput
-       //                                  withLayer:&previewLayer
-         //                               withHeight:&m_iCameraHeight
-           //                              withWidth:&m_iCameraWidth];
-    
+    //[self.delegate ReinitializeCameraFromViewController];
+    [self.delegate StopCheckCapability];
+    [self.delegate CheckCapabilityAgain];
     
 }
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
     
-    if(!_m_bStartVideoSending) return;
+    //if(!_m_bStartVideoSending) return;
     
     [self FrontConversion: sampleBuffer fromConnection:connection];
 }
@@ -393,14 +397,18 @@ int tempCounter = 0;
     {
         cout<<"First Frame after camera Initialization = "<<[self GetTimeStamp2] - _m_lCameraInitializationStartTime<<endl;
     }
+    
     tempCounter++;
     printf("Rajib_Check: Inside FrontConversion\n");
-
+    
+    
     [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
     [connection setVideoMirrored:true];
     
     
     usleep(15*1000);
+    
+    //if(m_bCheckCall == true && tempCounter>200) return 0;
     
     //### Step 2: Controlling FPS, Currently disabled
     //[connection setVideoMinFrameDuration:CMTimeMake(1, 15.0)];
@@ -417,6 +425,7 @@ int tempCounter = 0;
     printf("VideoTeam_Check: iHeight = %d, iWidth = %d\n", iHeight , iWidth);
     CVPixelBufferLockBaseAddress(IB,0);
     CVPixelBufferLockBaseAddress(IB,1);
+    
     byte *y_ch0 = (byte *)CVPixelBufferGetBaseAddressOfPlane(IB, 0); // Y-Plane = y_ch0
     byte *y_ch1 = (byte *)CVPixelBufferGetBaseAddressOfPlane(IB, 1); // UV-Plane = y_ch1
     
@@ -439,13 +448,15 @@ int tempCounter = 0;
     //int UVPlaneMidPoint = YPlaneLength + VPlaneLength;
     //int UVPlaneEnd = UVPlaneMidPoint + VPlaneLength;
     
+    
+    
     memcpy(pRawYuv, y_ch0, YPlaneLength);
     memcpy(pRawYuv+YPlaneLength, y_ch1, VPlaneLength+VPlaneLength);
 
-    int iRet = m_pVideoAPI->SendVideoDataV(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
+    int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0);
     //cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
     
-    printf("Rajib_Check: SendVideoDataV, iRet = %d\n", iRet);
+    printf("Rajib_Check: Trying to SendVideoDataV\n");
     
     /*
     if(tempCounter<500)
