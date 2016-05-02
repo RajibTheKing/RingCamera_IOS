@@ -151,6 +151,8 @@ public:
     
     int SetBitRate(const LongLong& lFriendID, int bitRate);
     
+    int CheckDeviceCapability(const LongLong& lFriendID, int iVideoWidth, int iVideoHeight);
+    
     bool StopAudioCall(const LongLong& lFriendID);
     
     bool StopVideoCall(const LongLong& lFriendID);
