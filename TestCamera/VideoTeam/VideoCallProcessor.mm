@@ -375,10 +375,15 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 }
 - (void)CheckCapabilityAgain
 {
-    cout<<"Here inside video call processor, sendint info to view controller to reinitialize"<<endl;
-    //[self.delegate ReinitializeCameraFromViewController];
+
     [self.delegate StopCheckCapability];
     [self.delegate CheckCapabilityAgain];
+    
+}
+- (void)ReInitializeCamera:(int)iHeight withWidth:(int)iWidth
+{
+    cout<<"Here inside video call processor, sendint info to view controller to reinitialize"<<endl;
+    [self.delegate ReinitializeCameraFromViewController:iHeight withWidth:iWidth];
     
 }
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
@@ -453,8 +458,8 @@ int tempCounter = 0;
     memcpy(pRawYuv, y_ch0, YPlaneLength);
     memcpy(pRawYuv+YPlaneLength, y_ch1, VPlaneLength+VPlaneLength);
 
-    int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0);
-    //cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
+    int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
+    cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
     
     printf("Rajib_Check: Trying to SendVideoDataV\n");
     

@@ -475,16 +475,16 @@ int g_iPort;
     }
 }
 
-- (void)ReinitializeCameraFromViewController
+- (void)ReinitializeCameraFromViewController:(int)iHeight withWidth:(int)iWidth
 {
     cout<<"Re-initializing Camera From ViewController";
     
-    [session stopRunning];
+    //[session stopRunning];
     //m_iCameraHeight = 352;
     //m_iCameraWidth = 288;
     
-    m_iCameraHeight = 352;
-    m_iCameraWidth = 288;
+    m_iCameraHeight = iHeight;
+    m_iCameraWidth = iWidth;
     
     
     //CVideoAPI::GetInstance()->StopVideoCall(200);
@@ -503,8 +503,10 @@ int g_iPort;
                                          withWidth:&m_iCameraWidth];*/
     
     
-    
-    [session setSessionPreset:AVCaptureSessionPreset352x288];
+    if(iHeight==352)
+        [session setSessionPreset:AVCaptureSessionPreset352x288];
+    if(iHeight == 640)
+        [session setSessionPreset:AVCaptureSessionPreset640x480];
     
     [session startRunning];
 }

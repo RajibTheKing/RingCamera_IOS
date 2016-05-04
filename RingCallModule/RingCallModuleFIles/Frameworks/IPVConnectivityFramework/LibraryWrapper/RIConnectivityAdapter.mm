@@ -173,7 +173,7 @@ destinationPort:(int) dstPort
 {
     unsigned char *temp_data = (unsigned char*)[data bytes];
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    return cIPVConnectivity->SendVideoData(friendID,temp_data, size);
+    return cIPVConnectivity->SendVideoData(friendID,temp_data, size,0,0);
 }
 +(BOOL)stopAudioCall:(const LongLong)friendID
 {

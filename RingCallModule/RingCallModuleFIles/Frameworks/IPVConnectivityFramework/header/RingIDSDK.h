@@ -30,7 +30,7 @@ void NotifyClientMethodWithReceivedBytes(int event, LongLong friendId, int media
 // Start Video Team
 
 void NotifyClientMethodWithPacket(LongLong lFriendID, unsigned char data[], int dataLenth);
-void NotifyClientMethodWithVideoData(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth);
+void NotifyClientMethodWithVideoData(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
 void NotifyClientMethodWithVideoNotification(LongLong lCallID, int eventType);
 void NotifyClientMethodWithAudioData(LongLong lFriendID, short data[], int dataLenth);
 void NotifyClientMethodWithAudiPacketData(LongLong lFriendID, unsigned char data[], int dataLenth);
@@ -54,7 +54,7 @@ void notifyClientMethodWithReceivedIos(int eventType, long long friendName, int 
 // Start Video Team
 
 void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], int dataLenth);
-void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth);
+void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
 void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType);
 void notifyClientMethodWithAudioDataIos(LongLong lFriendID, short data[], int dataLenth);
 void notifyClientMethodWithAudiPacketDataIos(LongLong lFriendID, unsigned char data[], int dataLenth);
@@ -135,6 +135,14 @@ public:
     
     // Start Video Team
     
+    int StartAudioEncodeDecodeSession();
+    
+    int EncodeAudioFrame(short *psaEncodingDataBuffer, int nAudioFrameSize, unsigned char *ucaEncodedDataBuffer);
+    
+    int DecodeAudioFrame(unsigned char *ucaDecodedDataBuffer, int nAudioFrameSize, short *psaDecodingDataBuffer);
+    
+    int StopAudioEncodeDecodeSession();
+    
     bool StartAudioCall(const LongLong& lFriendID);
     
     bool StartVideoCall(const LongLong& lFriendID, int iVideoHeight, int iVideoWidth, int iNetworkType = 0);
@@ -145,23 +153,23 @@ public:
     
     int SendAudioData(const LongLong& lFriendID, short *in_data, unsigned int in_size);
     
-    int SendVideoData(const LongLong& lFriendID, unsigned char *in_data, unsigned int in_size, unsigned int orientation_type=0);
+    int SendVideoData(const LongLong& lFriendID, unsigned char *in_data, unsigned int in_size, unsigned int orientation_type, int device_orientation);
     
     int SetHeightWidth(const LongLong& lFriendID, int width, int height);
     
     int SetBitRate(const LongLong& lFriendID, int bitRate);
     
-    int CheckDeviceCapability(const LongLong& lFriendID, int iVideoWidth, int iVideoHeight);
-    
     bool StopAudioCall(const LongLong& lFriendID);
     
     bool StopVideoCall(const LongLong& lFriendID);
+    
+    int CheckDeviceCapability(const LongLong& lFriendID, int width, int height);
     
     bool SetLoggingState(bool loggingState, int logLevel=5);
     
     void SetNotifyClientWithPacketCallback(void(*callBackFunctionPointer)(LongLong, unsigned char*, int));
     
-    void SetNotifyClientWithVideoDataCallback(void(*callBackFunctionPointer)(LongLong, unsigned char*, int, int, int));
+    void SetNotifyClientWithVideoDataCallback(void(*callBackFunctionPointer)(LongLong, unsigned char*, int, int, int, int));
     
     void SetNotifyClientWithVideoNotificationCallback(void(*callBackFunctionPointer)(LongLong, int));
     
@@ -171,7 +179,7 @@ public:
     
     static void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], int dataLenth);
     
-    static void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth);
+    static void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
     
     static void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType);
     

@@ -28,7 +28,7 @@
 @protocol ViewControllerDelegate <NSObject>
 @required
 -(int)RenderImage:(UIImage *)uiImageToDraw;
--(void)ReinitializeCameraFromViewController;
+- (void)ReinitializeCameraFromViewController:(int)iHeight withWidth:(int)iWidth;
 -(void)CheckCapabilityAgain;
 -(void)StopCheckCapability;
 @end
@@ -97,7 +97,7 @@
 
 - (void)CheckCapabilityAgain;
 - (void)StopCheckCapability;
--(void)ReInitializeCamera;
+- (void)ReInitializeCamera:(int)iHeight withWidth:(int)iWidth;
 -(G729CodecNative *)GetG729;
 -(long long)GetUserId;
 -(long long)GetFriendId;

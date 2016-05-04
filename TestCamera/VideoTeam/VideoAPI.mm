@@ -45,8 +45,10 @@ void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], i
         CVideoAPI::GetInstance()->SendPakcetFragments(data, dataLenth);
     }
 }
-void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth)
+void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrientation)
 {
+    cout<<"Found Orientation  = "<<iOrientation<<endl;
+    
     if(data != NULL)
     {
         //cout << "lenghth2 " << dataLenth << endl;
@@ -91,7 +93,20 @@ void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType)
         [[VideoCallProcessor GetInstance] StopCheckCapability];
     }
     
+    if(eventType == SET_CAMERA_RESOLUTION_352x288)
+    {
+        cout<<"Found SET_CAMERA_RESOLUTION_352x288## = "<<eventType<<endl;
+        [[VideoCallProcessor GetInstance] ReInitializeCamera:352 withWidth:288];
+        cout<<"Call back operatin done"<<endl;
+    }
     
+    if(eventType == SET_CAMERA_RESOLUTION_640x480)
+    {
+        cout<<"Found SET_CAMERA_RESOLUTION_640x480## = "<<eventType<<endl;
+        [[VideoCallProcessor GetInstance] ReInitializeCamera:640 withWidth:480];
+    }
+    
+    cout<<"Returing from Notify call back"<<endl;
     
 }
 void notifyClientMethodWithAudiPacketDataIos(LongLong lFriendID, unsigned char data[], int dataLenth)
@@ -287,7 +302,7 @@ int CVideoAPI::EncodeAndTransferV(long long lFriendID, unsigned char *in_data, u
 
 int CVideoAPI::SendVideoDataV(long long lFriendID, unsigned char *in_data, unsigned int in_size, int device_orientation, int iOrientation)
 {
-    return SendVideoData(lFriendID, in_data, in_size);
+    return SendVideoData(lFriendID, in_data, in_size,0,0);
 }
 
 int CVideoAPI::SendAudioDataV(long long lFriendID, short *in_data, unsigned int in_size)
