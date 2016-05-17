@@ -189,6 +189,8 @@ void notifyClientMethodForFriendIos(int eventType, IPVLongType friendName, int i
 }
 void notifyClientMethodWithReceivedIos(int eventType, IPVLongType friendName, int iMedia, int dataLenth, unsigned char data[])
 {
+    if(eventType !=107) return;
+    
     NSData *receivedData = [NSData dataWithBytes:data length:dataLenth];
     if (receivedData != nil) {
         if (iMedia == MEDIA_TYPE_AUDIO) {

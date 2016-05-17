@@ -47,7 +47,7 @@ void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], i
 }
 void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrientation)
 {
-   // cout<<"Found Orientation  = "<<iOrientation<<", iVideoHeight = "<<iVideoHeight<<", iVideoWidth = "<<iVideoWidth<<", dataLen = "<<dataLenth<<endl;
+    cout<<"Found Orientation  = "<<iOrientation<<", iVideoHeight = "<<iVideoHeight<<", iVideoWidth = "<<iVideoWidth<<", dataLen = "<<dataLenth<<endl;
     
     if(data != NULL)
     {
