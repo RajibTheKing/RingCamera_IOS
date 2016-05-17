@@ -186,7 +186,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         }*/
         int iRet = -1;
         iRet = m_pVideoAPI->SendVideoDataV(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2,0,3);
-        cout<<"ClientEnd--> iRet = "<<iRet<<", Size = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<endl;
+        //cout<<"ClientEnd--> iRet = "<<iRet<<", Size = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<endl;
         usleep(60*1000);
     }
 }
@@ -459,7 +459,7 @@ int tempCounter = 0;
     memcpy(pRawYuv+YPlaneLength, y_ch1, VPlaneLength+VPlaneLength);
 
     int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
-    cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
+    //cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
     
     printf("Rajib_Check: Trying to SendVideoDataV\n");
     

@@ -565,13 +565,13 @@ int g_iPort;
         //CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
         //CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
     
-        iRet = CVideoAPI::GetInstance()->CheckDeviceCapability(200, m_iCameraHeight, m_iCameraWidth);
+        //iRet = CVideoAPI::GetInstance()->CheckDeviceCapability(200, m_iCameraHeight, m_iCameraWidth);
         
         [session startRunning];
     }
     else if(iCheckNumber == 2)
     {
-        CVideoAPI::GetInstance()->CheckDeviceCapability(200, m_iCameraHeight, m_iCameraWidth);
+        //CVideoAPI::GetInstance()->CheckDeviceCapability(200, m_iCameraHeight, m_iCameraWidth);
         MyCustomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, m_iCameraWidth, m_iCameraHeight)];
         [session setSessionPreset:AVCaptureSessionPreset352x288];
         [session startRunning];

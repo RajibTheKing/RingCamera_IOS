@@ -685,7 +685,7 @@ static OSStatus playbackCallback(void *inRefCon,
         //[[RingCallAudioManager sharedInstance] playMyReceivedAudioData:shortArray withLength:availableBytes/2];
         
         
-        cout<<"TheKing-------> SendingAudio = "<<availableBytes/2<<endl;
+        //cout<<"TheKing-------> SendingAudio = "<<availableBytes/2<<endl;
         
         if (success < 0) {
             //RICallLog(@"Faild to send audio data...................");
@@ -724,12 +724,12 @@ static OSStatus playbackCallback(void *inRefCon,
     NSUInteger len = [receivedRTP length];
     byte* byteData = (byte*)[receivedRTP bytes];
     
-    cout<<"Rajib_Check: trying to push audio received rtp"<<endl;
+    //cout<<"Rajib_Check: trying to push audio received rtp"<<endl;
     
     long long lUser = [[VideoCallProcessor GetInstance] GetUserId];
     
     
-    cout<<"RingCallAudioManager:: VideoAPI->PushAudioForDecoding --> "<<"lUser = "<<lUser<<", len = "<<len<<endl;
+    //cout<<"RingCallAudioManager:: VideoAPI->PushAudioForDecoding --> "<<"lUser = "<<lUser<<", len = "<<len<<endl;
     CVideoAPI::GetInstance()->PushAudioForDecoding(lUser, byteData, len);
     
     /*
