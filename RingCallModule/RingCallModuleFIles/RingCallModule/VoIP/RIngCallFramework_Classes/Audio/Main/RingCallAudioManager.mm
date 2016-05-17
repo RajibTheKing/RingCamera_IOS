@@ -679,8 +679,13 @@ static OSStatus playbackCallback(void *inRefCon,
         
         int success = -1;
         //success = [[RIConnectivityManager sharedInstance] sendAudioData:[IDCallManager sharedInstance].currentCallInfoModel.callInfo.callID  audioData:shortArray dataSize:availableBytes/2];
+        
         success = CVideoAPI::GetInstance()->SendAudioDataV(200, shortArray, availableBytes/2);
-        //cout<<"TheKing-------> SendingAudio = "<<availableBytes/2<<endl;
+        
+        //[[RingCallAudioManager sharedInstance] playMyReceivedAudioData:shortArray withLength:availableBytes/2];
+        
+        
+        cout<<"TheKing-------> SendingAudio = "<<availableBytes/2<<endl;
         
         if (success < 0) {
             //RICallLog(@"Faild to send audio data...................");

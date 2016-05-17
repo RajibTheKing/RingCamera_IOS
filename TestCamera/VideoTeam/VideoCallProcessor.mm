@@ -134,7 +134,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     long long lServerIP = /*645874748*/ 1011121958;
     int iFriendPort = m_iActualFriendPort;
     
-    NSString *nsServerIP =  @"38.127.68.60"/*@"192.168.57.151"*/;
+    NSString *nsServerIP =  @"38.127.68.60"  /*@"192.168.57.155"@"192.168.2.53"*/;
     cout<<"Check--> sRemoteIP = "<<m_sRemoteIP<<endl;
     
     //m_pVideoAPI->SetLoggingState(true,5);
@@ -185,7 +185,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
             
         }*/
         int iRet = -1;
-        iRet = m_pVideoAPI->SendVideoDataV(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2,0,0);
+        iRet = m_pVideoAPI->SendVideoDataV(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2,0,3);
         cout<<"ClientEnd--> iRet = "<<iRet<<", Size = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<endl;
         usleep(60*1000);
     }
@@ -408,7 +408,7 @@ int tempCounter = 0;
     
     
     [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
-    [connection setVideoMirrored:true];
+    [connection setVideoMirrored:false];
     
     
     usleep(15*1000);
