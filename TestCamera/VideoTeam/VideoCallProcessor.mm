@@ -134,7 +134,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     long long lServerIP = /*645874748*/ 1011121958;
     int iFriendPort = m_iActualFriendPort;
     
-    NSString *nsServerIP =  @"38.127.68.60"  /*@"192.168.57.155"@"192.168.2.53"*/;
+    NSString *nsServerIP =  @"38.127.68.60"/*@"192.168.57.155"@"192.168.2.53"*/;
     cout<<"Check--> sRemoteIP = "<<m_sRemoteIP<<endl;
     
     //m_pVideoAPI->SetLoggingState(true,5);
