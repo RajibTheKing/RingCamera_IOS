@@ -48,6 +48,11 @@ void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], i
 void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrientation)
 {
     cout<<"Found Orientation  = "<<iOrientation<<", iVideoHeight = "<<iVideoHeight<<", iVideoWidth = "<<iVideoWidth<<", dataLen = "<<dataLenth<<endl;
+    string sStatusMessage = "Orientation = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iOrientation) +
+                            ", Height = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoHeight) +
+                            ", Width = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoWidth);
+    
+    [[VideoCallProcessor GetInstance] UpdateStatusMessage:sStatusMessage];
     
     if(data != NULL)
     {
@@ -70,43 +75,46 @@ void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType)
     
     //CVideoAPI::GetInstance()->m_EventQueue.push(eventType);
     
+    string sStatusMessage = "";
+
     if(eventType == SET_CAMERA_RESOLUTION_640x480_25FPS_NOT_SUPPORTED)
     {
-        cout<<"Found SET_CAMERA_RESOLUTION_640x480_25FPS_NOT_SUPPORTED = "<<eventType<<endl;
+        sStatusMessage = "Found SET_CAMERA_RESOLUTION_640x480_25FPS_NOT_SUPPORTED = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
         [[VideoCallProcessor GetInstance] CheckCapabilityAgain];
     }
     
     if(eventType == SET_CAMERA_RESOLUTION_352x288_25FPS_NOT_SUPPORTED)
     {
-        cout<<"Found SET_CAMERA_RESOLUTION_352x288_25FPS_NOT_SUPPORTED = "<<eventType<<endl;
+        sStatusMessage = "Found SET_CAMERA_RESOLUTION_352x288_25FPS_NOT_SUPPORTED = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
         [[VideoCallProcessor GetInstance] StopCheckCapability];
     }
     
     if(eventType == SET_CAMERA_RESOLUTION_640x480_25FPS)
     {
-        cout<<"Found SET_CAMERA_RESOLUTION_640x480_25FPS = "<<eventType<<endl;
+        sStatusMessage = "Found SET_CAMERA_RESOLUTION_640x480_25FPS = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
         [[VideoCallProcessor GetInstance] StopCheckCapability];
     }
     if(eventType == SET_CAMERA_RESOLUTION_352x288_25FPS)
     {
-        cout<<"Found SET_CAMERA_RESOLUTION_352x288_25FPS = "<<eventType<<endl;
+        sStatusMessage = "Found SET_CAMERA_RESOLUTION_352x288_25FPS = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
         [[VideoCallProcessor GetInstance] StopCheckCapability];
     }
     
     if(eventType == SET_CAMERA_RESOLUTION_352x288)
     {
-        cout<<"Found SET_CAMERA_RESOLUTION_352x288## = "<<eventType<<endl;
-        [[VideoCallProcessor GetInstance] ReInitializeCamera:352 withWidth:288];
+        sStatusMessage = "Found SET_CAMERA_RESOLUTION_352x288 = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
+        //[[VideoCallProcessor GetInstance] ReInitializeCamera:352 withWidth:288];
         cout<<"Call back operatin done"<<endl;
     }
     
     if(eventType == SET_CAMERA_RESOLUTION_640x480)
     {
-        cout<<"Found SET_CAMERA_RESOLUTION_640x480## = "<<eventType<<endl;
+        sStatusMessage = "Found SET_CAMERA_RESOLUTION_640x480 = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
         [[VideoCallProcessor GetInstance] ReInitializeCamera:640 withWidth:480];
     }
     
-    cout<<"Returing from Notify call back"<<endl;
+    cout<<sStatusMessage<<endl;
+    [[VideoCallProcessor GetInstance] UpdateStatusMessage:sStatusMessage];
     
 }
 void notifyClientMethodWithAudiPacketDataIos(LongLong lFriendID, unsigned char data[], int dataLenth)
@@ -367,6 +375,23 @@ void CVideoAPI::DeleteStringV(string pString)
 void CVideoAPI::SetLoggerPathV(string sLoggerPath)
 {
     //SetLoggerPathV(sLoggerPath);
+}
+
+string CVideoAPI::IntegertoStringConvert(int nConvertingNumber)
+{
+    char cConvertedCharArray[12];
+    
+#ifdef _WIN32
+    
+    _itoa_s(nConvertingNumber, cConvertedCharArray, 10);
+    
+#else
+    
+    sprintf(cConvertedCharArray, "%d", nConvertingNumber);
+    
+#endif
+    
+    return (std::string)cConvertedCharArray;
 }
 
 /*void CVideoAPI::SendPakcetFragments(unsigned char*data, int dataLenth)

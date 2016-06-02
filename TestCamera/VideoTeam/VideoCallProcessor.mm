@@ -134,7 +134,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     long long lServerIP = /*645874748*/ 1011121958;
     int iFriendPort = m_iActualFriendPort;
     
-    NSString *nsServerIP =  @"38.127.68.60"/*@"192.168.57.155"@"192.168.2.53"*/;
+    NSString *nsServerIP =  /*@"38.127.68.60"*/@"192.168.57.113";
     cout<<"Check--> sRemoteIP = "<<m_sRemoteIP<<endl;
     
     //m_pVideoAPI->SetLoggingState(true,5);
@@ -394,6 +394,10 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     [self FrontConversion: sampleBuffer fromConnection:connection];
 }
 
+- (void)UpdateStatusMessage: (string)sMsg
+{
+    [self.delegate UpdateStatusMessage:sMsg];
+}
 
 int tempCounter = 0;
 - (int)FrontConversion:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
@@ -459,7 +463,7 @@ int tempCounter = 0;
     memcpy(pRawYuv+YPlaneLength, y_ch1, VPlaneLength+VPlaneLength);
 
     int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
-    //cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
+    cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
     
     printf("Rajib_Check: Trying to SendVideoDataV\n");
     

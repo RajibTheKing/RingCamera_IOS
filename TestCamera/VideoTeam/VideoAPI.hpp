@@ -92,7 +92,8 @@ public:
     
     void ReleaseV();
 
-   
+    string IntegertoStringConvert(int nConvertingNumber);
+    
     queue<byte*> m_RenderQueue;
     queue<int> m_RenderDataLenQueue;
     pthread_mutex_t pRenderQueueMutex;

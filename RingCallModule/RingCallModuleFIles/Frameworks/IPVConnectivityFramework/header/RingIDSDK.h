@@ -91,6 +91,8 @@ public:
     
     bool InitializeLibrary(const LongLong& lUserID);
     
+    bool IsLoadRingIDSDK();
+    
     // Start NAT Traversal Team
     
     bool SetAuthenticationServer(const LongLong& sAuthServerIP, int iAuthServerPort, const std::string& sAppSessionId);
@@ -98,6 +100,10 @@ public:
     void SetTimeOutForSocket(int time_in_sec);
     
     int CreateSession(const LongLong& lFriendID, int mediaType, const LongLong& sRelayServerIP, int iRelayServerPort);
+    
+    int TransferFile(const LongLong& fileID, const LongLong& lFriendID, bool isSender, const std::string &filePath, LongLong fileOffset = -1);
+    
+    void CancelTransferFile(const LongLong& fileID, const LongLong& lFriendID, bool deleteFile);
     
     void SetRelayServerInformation(const LongLong& lFriendID, int mediaType, const LongLong& sRelayServerIP, int iRelayServerPort);
     
@@ -118,6 +124,8 @@ public:
     void SetNotifyClientMethodForFriendCallback(void (*ptr)(int, LongLong, int));
     
     void SetNotifyClientMethodWithReceivedBytesCallback(void (*ptr)(int, LongLong, int, int, unsigned char*));
+    
+    void SetNotifierForFileTransfer(void(*ptr)(int, LongLong, LongLong, LongLong, LongLong, double));
     
     static void notifyClientMethodIos(int eventType);
     static void notifyClientMethodForFriendIos(int eventType, LongLong friendName, int iMedia);
@@ -153,7 +161,7 @@ public:
     
     int SendAudioData(const LongLong& lFriendID, short *in_data, unsigned int in_size);
     
-    int SendVideoData(const LongLong& lFriendID, unsigned char *in_data, unsigned int in_size, unsigned int orientation_type = 0, int device_orientation = 0);
+    int SendVideoData(const LongLong& lFriendID, unsigned char *in_data, unsigned int in_size, unsigned int orientation_type=0, int device_orientation=0);
     
     int SetHeightWidth(const LongLong& lFriendID, int width, int height);
     
@@ -163,7 +171,7 @@ public:
     
     bool StopVideoCall(const LongLong& lFriendID);
     
-    int CheckDeviceCapability(const LongLong& lFriendID, int width, int height);
+    int CheckDeviceCapability(const LongLong& lFriendID, int iHeightHigh, int iWidthHigh, int iHeightLow, int iWidthLow);
     
     bool SetLoggingState(bool loggingState, int logLevel=5);
     

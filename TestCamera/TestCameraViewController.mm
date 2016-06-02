@@ -105,6 +105,7 @@ int g_iPort;
     g_iPort = 60008;
     [self UpdatePort];
     [g_pVideoCallProcessor SetFriendPort:g_iPort];
+    [self UpdateStatusMessage:"Started Application"];
     
 }
 
@@ -152,12 +153,14 @@ int g_iPort;
     
     
     long long lUserId  = 200;
-    NSString *nsRemoteIp = _remoteIPTextField.text;
+    /*
+    NSString *nsRemoteIp = @"192.168.57.113";
     string sRemoteIp([nsRemoteIp UTF8String]);
-    
     InitializeSocketForRemoteUser(sRemoteIp);
-    
     [g_pVideoCallProcessor SetRemoteIP:sRemoteIp];
+    */
+    
+    
     
     [g_pVideoCallProcessor Initialize:lUserId];
     
@@ -565,13 +568,13 @@ int g_iPort;
         //CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
         //CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
     
-        iRet = CVideoAPI::GetInstance()->CheckDeviceCapability(200, m_iCameraHeight, m_iCameraWidth);
+        iRet = CVideoAPI::GetInstance()->CheckDeviceCapability(200, 640, 480,352,288);
         
         [session startRunning];
     }
     else if(iCheckNumber == 2)
     {
-        CVideoAPI::GetInstance()->CheckDeviceCapability(200, m_iCameraHeight, m_iCameraWidth);
+        CVideoAPI::GetInstance()->CheckDeviceCapability(200, 640, 480,352,288);
         MyCustomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, m_iCameraWidth, m_iCameraHeight)];
         [session setSessionPreset:AVCaptureSessionPreset352x288];
         [session startRunning];
@@ -597,6 +600,24 @@ int g_iPort;
     [session stopRunning];
 }
 
+- (void)UpdateStatusMessage: (string)sMsg
+{
+    
+    string param = "Status: "; // <-- input
+    param+=sMsg;
+    NSString* result = [NSString stringWithUTF8String:param.c_str()];
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_statusMessage setText:result];
+        [_statusMessage setFont:[UIFont systemFontOfSize:8]];
+        [_statusMessage setTextColor:[UIColor colorWithRed:255 green:0 blue:0 alpha:255]];
+        //[label setFont:[UIFont systemFontOfSize:9]];
+    });
+    
+   
+}
+
 - (void)dealloc
 {
     [self teardownAVCapture];
@@ -619,6 +640,7 @@ int g_iPort;
     [_ResLabel release];
     [_ResField release];
     [_CheckCapabilityBtn release];
+    [_statusMessage release];
     [super dealloc];
 }
 

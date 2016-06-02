@@ -56,6 +56,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *ResLabel;
 @property (retain, nonatomic) IBOutlet UITextField *ResField;
 @property (retain, nonatomic) IBOutlet UIButton *CheckCapabilityBtn;
+@property (retain, nonatomic) IBOutlet UILabel *statusMessage;
 
 - (void)setupAVCapture;
 - (void)teardownAVCapture;
@@ -70,6 +71,7 @@
 
 
 
+
 - (void)CheckCapability:(long long)llFriendId withHeight:(int)iHeight withWidth:(int)iWidth withCheckNumber:(int)iCheckNumber;
 - (void)CheckCapabilityAgain;
 - (void)StopCheckCapability;
@@ -81,6 +83,7 @@ unsigned int timeGetTime();
 void CalculateFPS();
 long long GetTimeStamp();
 - (void)UpdatePort;
+- (void)UpdateStatusMessage: (string)sMsg;
 
 
 @end

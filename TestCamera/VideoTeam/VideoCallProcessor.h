@@ -28,9 +28,10 @@
 @protocol ViewControllerDelegate <NSObject>
 @required
 -(int)RenderImage:(UIImage *)uiImageToDraw;
-- (void)ReinitializeCameraFromViewController:(int)iHeight withWidth:(int)iWidth;
+-(void)ReinitializeCameraFromViewController:(int)iHeight withWidth:(int)iWidth;
 -(void)CheckCapabilityAgain;
 -(void)StopCheckCapability;
+-(void)UpdateStatusMessage: (string)sMsg;
 @end
 
 
@@ -108,6 +109,7 @@
 int ConvertNV12ToI420(unsigned char *convertingData, int iheight, int iwidth);
 -(void)SendDummyData;
 -(long long)GetTimeStamp2;
+- (void)UpdateStatusMessage: (string)sMsg;
 @property (nonatomic,strong) id delegate;
 
 

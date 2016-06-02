@@ -23,32 +23,16 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="IP:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FRQ-dD-Wg3">
-                                <rect key="frame" x="11" y="368" width="20" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="loginButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="UX1-YT-bOK">
-                                <rect key="frame" x="1" y="430" width="52" height="30"/>
+                                <rect key="frame" x="1" y="440" width="52" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Login"/>
                                 <connections>
                                     <action selector="LoginButtonAction:" destination="2" eventType="touchUpInside" id="xcT-zD-FSW"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="192.168.57.131" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="x5c-KY-OyZ">
-                                <rect key="frame" x="44" y="362" width="111" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="2" id="Suc-Zt-iM9"/>
-                                </connections>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="endButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Vb3-bJ-rzz">
-                                <rect key="frame" x="241" y="430" width="59" height="30"/>
+                                <rect key="frame" x="241" y="440" width="59" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="EndCall"/>
                                 <connections>
@@ -56,7 +40,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="7Fz-kt-MBd">
-                                <rect key="frame" x="157" y="430" width="61" height="30"/>
+                                <rect key="frame" x="157" y="440" width="61" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="StartCall"/>
                                 <connections>
@@ -64,7 +48,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="startButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="mAs-rc-dti">
-                                <rect key="frame" x="67" y="430" width="71" height="30"/>
+                                <rect key="frame" x="67" y="440" width="71" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="ServerCall"/>
                                 <connections>
@@ -72,7 +56,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="btB-ro-XiA">
-                                <rect key="frame" x="163" y="362" width="82" height="30"/>
+                                <rect key="frame" x="163" y="372" width="82" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="ChangePort"/>
                                 <connections>
@@ -80,13 +64,13 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="60001" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="SBx-et-y2C">
-                                <rect key="frame" x="250" y="362" width="61" height="30"/>
+                                <rect key="frame" x="250" y="372" width="61" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="JvL-GG-apj">
-                                <rect key="frame" x="9" y="396" width="129" height="30"/>
+                                <rect key="frame" x="9" y="410" width="129" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Change Resolution"/>
                                 <connections>
@@ -94,7 +78,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="352x288" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="zdQ-zk-8UY">
-                                <rect key="frame" x="163" y="398" width="90" height="30"/>
+                                <rect key="frame" x="163" y="410" width="90" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -103,13 +87,20 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="lMh-jH-wzd">
-                                <rect key="frame" x="104" y="324" width="112" height="30"/>
+                                <rect key="frame" x="9" y="372" width="112" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="CheckCapability"/>
                                 <connections>
                                     <action selector="CheckCapabilityAction:" destination="2" eventType="touchUpInside" id="RAH-Mg-Mvd"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status: No Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tvc-w2-gsO">
+                                <rect key="frame" x="9" y="337" width="302" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -125,7 +116,7 @@
                         <outlet property="ResField" destination="zdQ-zk-8UY" id="5Cu-61-HBN"/>
                         <outlet property="SelfView" destination="3qS-LM-QOC" id="8eC-2k-N9R"/>
                         <outlet property="ServerCall" destination="mAs-rc-dti" id="oDA-Qf-XfQ"/>
-                        <outlet property="remoteIPTextField" destination="x5c-KY-OyZ" id="UA8-04-CJ6"/>
+                        <outlet property="statusMessage" destination="tvc-w2-gsO" id="see-uo-cTx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
