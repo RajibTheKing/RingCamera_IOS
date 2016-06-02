@@ -692,6 +692,9 @@ void CalculateFPS()
     if(timeGetTime() - iRenderCallTime >= 1000)
     {
         cout<<"\n\n\n--------->>>>>>>> FPS = ("<<iRenderFrameCount<<")\n\n\n";
+        string sStatusMessage = "FPS = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iRenderFrameCount);
+        [[VideoCallProcessor GetInstance] UpdateStatusMessage:sStatusMessage];
+        
         iRenderFrameCount = 0;
         iRenderCallTime = timeGetTime();
         

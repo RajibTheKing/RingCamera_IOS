@@ -104,7 +104,7 @@ public:
     
     
     bool m_bReInitialized;
-    
+    int m_iRecvFrameCounter;
     
 };
 

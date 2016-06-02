@@ -47,12 +47,17 @@ void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], i
 }
 void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrientation)
 {
+    CVideoAPI::GetInstance()->m_iRecvFrameCounter++;
+    
     cout<<"Found Orientation  = "<<iOrientation<<", iVideoHeight = "<<iVideoHeight<<", iVideoWidth = "<<iVideoWidth<<", dataLen = "<<dataLenth<<endl;
     string sStatusMessage = "Orientation = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iOrientation) +
                             ", Height = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoHeight) +
                             ", Width = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoWidth);
     
-    [[VideoCallProcessor GetInstance] UpdateStatusMessage:sStatusMessage];
+    if(CVideoAPI::GetInstance()->m_iRecvFrameCounter%20 == 0)
+    {
+        [[VideoCallProcessor GetInstance] UpdateStatusMessage:sStatusMessage];
+    }
     
     if(data != NULL)
     {
@@ -206,6 +211,7 @@ CVideoAPI::CVideoAPI()
     cout<<"Inside CVideoAPI constructor"<<endl;
     pthread_mutex_init(&pRenderQueueMutex, NULL);
     m_bReInitialized = false;
+    m_iRecvFrameCounter = 0;
     /*
     virtual bool SetAuthenticationServer(const CIPVStdString& sAuthServerIP, int iAuthServerPort, const CIPVStdString& sAppSessionId);
     virtual SessionStatus CreateSession(const IPVLongType& lFriendID, MediaType iMedia, const CIPVStdString& sRelayServerIP, int iRelayServerPort);
