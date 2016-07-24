@@ -172,6 +172,7 @@ public:
     bool StopVideoCall(const LongLong& lFriendID);
     
     int CheckDeviceCapability(const LongLong& lFriendID, int iHeightHigh, int iWidthHigh, int iHeightLow, int iWidthLow);
+    int SetDeviceCapabilityResults(int iNotification, int iHeightHigh, int iWidthHigh, int iHeightLow, int iWidthLow);
     
     bool SetLoggingState(bool loggingState, int logLevel=5);
     

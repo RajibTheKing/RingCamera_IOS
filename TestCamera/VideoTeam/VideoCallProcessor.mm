@@ -134,7 +134,8 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     long long lServerIP = /*645874748*/ 1011121958;
     int iFriendPort = m_iActualFriendPort;
     
-    NSString *nsServerIP =  /*@"38.127.68.60"*/@"192.168.57.113";
+    NSString *nsServerIP =  @"38.127.68.60"/*@"192.168.57.113"*/;
+    //NSString *nsServerIP =  @"192.168.57.104";
     cout<<"Check--> sRemoteIP = "<<m_sRemoteIP<<endl;
     
     //m_pVideoAPI->SetLoggingState(true,5);
@@ -150,7 +151,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
     
-
+    CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 640, 480, 352, 288);
     iRet = m_pVideoAPI->StartAudioCall(200);
     iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth,0); //Added NetworkType
     
@@ -448,7 +449,8 @@ int tempCounter = 0;
     //int iWritebleIndex[1];
     //byte* pRawYuv = m_pEncodeBuffer->getWritableAddress(iWritebleIndex);
     
-    //m_pVideoConverter->Convert_YUVNV12_To_YUVI420(pCameraData, pRawYuv, m_iCameraHeight, m_iCameraWidth);
+    //m_pVideoConverter->Convert_YUVNV12_To_YUVI420(y_ch0, y_ch1, pRawYuv, m_iCameraHeight, m_iCameraWidth);
+    
     
     int iVideoHeight = m_iCameraHeight;
     int iVideoWidth = m_iCameraWidth;
@@ -467,16 +469,17 @@ int tempCounter = 0;
     
     printf("Rajib_Check: Trying to SendVideoDataV\n");
     
-    /*
-    if(tempCounter<500)
+    
+    if(tempCounter<10000)
     {
         printf("TheKing--> tempCounter = %d\n", tempCounter);
+        cout<<"TheKing--> tempCounter = "<<tempCounter<<endl;
         tempCounter++;
         ConvertNV12ToI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
         
         [self WriteToFile:pRawYuv dataLength:m_iCameraHeight * m_iCameraWidth * 3 / 2 filePointer:m_FileForDump];
     }
-    */
+    
     return 0;
 }
 
