@@ -107,6 +107,7 @@ int g_iPort;
     [g_pVideoCallProcessor SetFriendPort:g_iPort];
     [self UpdateStatusMessage:"Started Application"];
     
+    
 }
 
 - (void)setupAVCapture
@@ -160,9 +161,7 @@ int g_iPort;
     [g_pVideoCallProcessor SetRemoteIP:sRemoteIp];
     */
     
-    
-    
-    [g_pVideoCallProcessor Initialize:lUserId];
+    [g_pVideoCallProcessor Initialize:lUserId withServerIP: [_IPTextField text]];
     
     
     [[RingCallAudioManager sharedInstance] startRecordAndPlayAudio];
@@ -641,6 +640,7 @@ int g_iPort;
     [_ResField release];
     [_CheckCapabilityBtn release];
     [_statusMessage release];
+    [_IPTextField release];
     [super dealloc];
 }
 

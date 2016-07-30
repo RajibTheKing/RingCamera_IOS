@@ -65,6 +65,8 @@
     
     bool m_bCheckCall;
     
+    NSString *m_nsServerIP;
+    
 }
 
 
@@ -79,7 +81,7 @@
 - (void)SetRemoteIP:(string)sRemoteIP;
 - (void)SetFriendId:(long long)lFriendId;
 
-- (void) Initialize : (long long)lUserId;
+- (void) Initialize : (long long)lUserId withServerIP:(NSString *)sMyIP;
 - (void) InitializeVideoEngine:(long long) lUserId;
 
 - (void)SetWidthAndHeight:(int)iWidth withHeight:(int)iHeight;

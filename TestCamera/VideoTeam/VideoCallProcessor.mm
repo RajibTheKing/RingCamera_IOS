@@ -78,9 +78,11 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     return m_pVideoCallProcessor;
 }
 
-- (void) Initialize:(long long)lUserId
+- (void) Initialize:(long long)lUserId withServerIP:(NSString *)sMyIP
 {
     m_lUserId = lUserId;
+    m_nsServerIP = sMyIP;
+    
     [self InitializeVideoEngine:lUserId];
 }
 - (void)SetRemoteIP:(string)sRemoteIP
@@ -134,8 +136,11 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     long long lServerIP = /*645874748*/ 1011121958;
     int iFriendPort = m_iActualFriendPort;
     
-    NSString *nsServerIP =  @"38.127.68.60"/*@"192.168.57.113"*/;
+    //NSString *nsServerIP =  @"38.127.68.60"/*@"192.168.57.113"*/;
     //NSString *nsServerIP =  @"192.168.57.104";
+    
+    NSString *nsServerIP = m_nsServerIP;
+    
     cout<<"Check--> sRemoteIP = "<<m_sRemoteIP<<endl;
     
     //m_pVideoAPI->SetLoggingState(true,5);
@@ -151,7 +156,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
     
-    CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 640, 480, 352, 288);
+    CVideoAPI::GetInstance()->SetDeviceCapabilityResults(208, 640, 480, 352, 288);
     iRet = m_pVideoAPI->StartAudioCall(200);
     iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth,0); //Added NetworkType
     
@@ -467,10 +472,10 @@ int tempCounter = 0;
     int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
     cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
     
-    printf("Rajib_Check: Trying to SendVideoDataV\n");
+    //printf("Rajib_Check: Trying to SendVideoDataV\n");
     
     
-    if(tempCounter<10000)
+    /*if(tempCounter<10000)
     {
         printf("TheKing--> tempCounter = %d\n", tempCounter);
         cout<<"TheKing--> tempCounter = "<<tempCounter<<endl;
@@ -478,7 +483,7 @@ int tempCounter = 0;
         ConvertNV12ToI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
         
         [self WriteToFile:pRawYuv dataLength:m_iCameraHeight * m_iCameraWidth * 3 / 2 filePointer:m_FileForDump];
-    }
+    }*/
     
     return 0;
 }

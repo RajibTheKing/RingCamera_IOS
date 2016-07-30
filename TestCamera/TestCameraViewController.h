@@ -57,6 +57,7 @@
 @property (retain, nonatomic) IBOutlet UITextField *ResField;
 @property (retain, nonatomic) IBOutlet UIButton *CheckCapabilityBtn;
 @property (retain, nonatomic) IBOutlet UILabel *statusMessage;
+@property (retain, nonatomic) IBOutlet UITextField *IPTextField;
 
 - (void)setupAVCapture;
 - (void)teardownAVCapture;
