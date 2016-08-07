@@ -68,14 +68,8 @@
 - (IBAction) P2PButtonAction:(id)P2PButton;
 - (IBAction)ChangePort:(id)sender;
 - (IBAction)ChangeResBtnAction:(id)sender;
-- (void)ReinitializeCameraFromViewController:(int)iHeight withWidth:(int)iWidth;
 
-
-
-
-- (void)CheckCapability:(long long)llFriendId withHeight:(int)iHeight withWidth:(int)iWidth withCheckNumber:(int)iCheckNumber;
-- (void)CheckCapabilityAgain;
-- (void)StopCheckCapability;
+- (void)SetCameraResolutionByNotification:(int)iHeight withWidth:(int)iWidth;
 - (IBAction)CheckCapabilityAction:(id)sender;
 
 

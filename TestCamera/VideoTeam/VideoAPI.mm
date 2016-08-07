@@ -85,37 +85,33 @@ void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType)
     if(eventType == SET_CAMERA_RESOLUTION_640x480_25FPS_NOT_SUPPORTED)
     {
         sStatusMessage = "Found SET_CAMERA_RESOLUTION_640x480_25FPS_NOT_SUPPORTED = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
-        [[VideoCallProcessor GetInstance] CheckCapabilityAgain];
     }
     
     if(eventType == SET_CAMERA_RESOLUTION_352x288_25FPS_NOT_SUPPORTED)
     {
         sStatusMessage = "Found SET_CAMERA_RESOLUTION_352x288_25FPS_NOT_SUPPORTED = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
-        [[VideoCallProcessor GetInstance] StopCheckCapability];
     }
     
     if(eventType == SET_CAMERA_RESOLUTION_640x480_25FPS)
     {
         sStatusMessage = "Found SET_CAMERA_RESOLUTION_640x480_25FPS = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
-        [[VideoCallProcessor GetInstance] StopCheckCapability];
     }
     if(eventType == SET_CAMERA_RESOLUTION_352x288_25FPS)
     {
         sStatusMessage = "Found SET_CAMERA_RESOLUTION_352x288_25FPS = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
-        [[VideoCallProcessor GetInstance] StopCheckCapability];
     }
     
     if(eventType == SET_CAMERA_RESOLUTION_352x288)
     {
         sStatusMessage = "Found SET_CAMERA_RESOLUTION_352x288 = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
-        //[[VideoCallProcessor GetInstance] ReInitializeCamera:352 withWidth:288];
+        [[VideoCallProcessor GetInstance] SetCameraResolutionByNotification:352 withWidth:288];
         cout<<"Call back operatin done"<<endl;
     }
     
     if(eventType == SET_CAMERA_RESOLUTION_640x480)
     {
         sStatusMessage = "Found SET_CAMERA_RESOLUTION_640x480 = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
-        [[VideoCallProcessor GetInstance] ReInitializeCamera:640 withWidth:480];
+        [[VideoCallProcessor GetInstance] SetCameraResolutionByNotification:640 withWidth:480];
     }
     
     cout<<sStatusMessage<<endl;

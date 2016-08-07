@@ -28,9 +28,7 @@
 @protocol ViewControllerDelegate <NSObject>
 @required
 -(int)RenderImage:(UIImage *)uiImageToDraw;
--(void)ReinitializeCameraFromViewController:(int)iHeight withWidth:(int)iWidth;
--(void)CheckCapabilityAgain;
--(void)StopCheckCapability;
+-(void)SetCameraResolution:(int)iHeight withWidth:(int)iWidth;
 -(void)UpdateStatusMessage: (string)sMsg;
 @end
 
@@ -81,8 +79,8 @@
 - (void)SetRemoteIP:(string)sRemoteIP;
 - (void)SetFriendId:(long long)lFriendId;
 
-- (void) Initialize : (long long)lUserId withServerIP:(NSString *)sMyIP;
-- (void) InitializeVideoEngine:(long long) lUserId;
+- (int) Initialize : (long long)lUserId withServerIP:(NSString *)sMyIP;
+- (int)InitializeVideoEngine:(long long) lUserId;
 
 - (void)SetWidthAndHeight:(int)iWidth withHeight:(int)iHeight;
 
@@ -98,9 +96,7 @@
                           withHeight:(int *)iHeight
                            withWidth:(int *)iWidth;
 
-- (void)CheckCapabilityAgain;
-- (void)StopCheckCapability;
-- (void)ReInitializeCamera:(int)iHeight withWidth:(int)iWidth;
+- (void)SetCameraResolutionByNotification:(int)iHeight withWidth:(int)iWidth;
 -(G729CodecNative *)GetG729;
 -(long long)GetUserId;
 -(long long)GetFriendId;

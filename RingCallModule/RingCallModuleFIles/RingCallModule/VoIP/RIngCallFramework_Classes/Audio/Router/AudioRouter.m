@@ -50,7 +50,15 @@
         
         // Doubly force audio to come out of speaker
         UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
-        AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRouteOverride), &audioRouteOverride);
+        //AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRouteOverride), &audioRouteOverride);
+        
+        NSError *error;
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+        if(error)
+        {
+            NSLog(@"Error: AudioSession cannot use speakers");
+        }
         
         // fix issue with audio interrupting video recording - allow audio to mix on top of other media
         UInt32 doSetProperty = 1;
@@ -78,6 +86,16 @@
     // Remove forcing to built-in speaker
     UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_None;
     AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRouteOverride), &audioRouteOverride);
+    
+    
+    NSError *error;
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+    if(error)
+    {
+        NSLog(@"Error: AudioSession cannot use speakers");
+    }
+    
 }
 
 + (void) forceOutputToBuiltInSpeakers {
@@ -85,6 +103,13 @@
     UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
     AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRouteOverride), &audioRouteOverride);
     
+    NSError *error;
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+    if(error)
+    {
+        NSLog(@"Error: AudioSession cannot use speakers");
+    }
     
 }
 

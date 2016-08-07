@@ -78,12 +78,12 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     return m_pVideoCallProcessor;
 }
 
-- (void) Initialize:(long long)lUserId withServerIP:(NSString *)sMyIP
+- (int) Initialize:(long long)lUserId withServerIP:(NSString *)sMyIP
 {
     m_lUserId = lUserId;
     m_nsServerIP = sMyIP;
     
-    [self InitializeVideoEngine:lUserId];
+    return [self InitializeVideoEngine:lUserId];
 }
 - (void)SetRemoteIP:(string)sRemoteIP
 {
@@ -109,7 +109,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 {
     return g_G729CodecNative;
 }
-- (void) InitializeVideoEngine:(long long) lUserId
+- (int)InitializeVideoEngine:(long long) lUserId
 {
     m_pVideoAPI =  CVideoAPI::GetInstance();
     
@@ -156,11 +156,15 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
     
-    CVideoAPI::GetInstance()->SetDeviceCapabilityResults(208, 640, 480, 352, 288);
+    if(m_iCameraWidth == 288)
+        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 640, 480, 352, 288);
+    else
+        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
+    
     iRet = m_pVideoAPI->StartAudioCall(200);
-    iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth,0); //Added NetworkType
+    int iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth,0); //Added NetworkType
     
-    
+    NSLog(@"StartVideoCaLL returned, iRet = %d", iRet);
     //iRet = m_pVideoAPI->CheckDeviceCapability(200, m_iCameraHeight, m_iCameraWidth);
     //m_bCheckCall = true;
     
@@ -172,6 +176,8 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     dispatch_async(SendDummyDataQ, ^{
         [self SendDummyData];
     });*/
+    
+    return iRetStartVideoCall;
 }
 
 -(void)SendDummyData
@@ -375,23 +381,13 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     return error;
 }
 
-- (void)StopCheckCapability
-{
-    [self.delegate StopCheckCapability];
-}
-- (void)CheckCapabilityAgain
+- (void)SetCameraResolutionByNotification:(int)iHeight withWidth:(int)iWidth
 {
 
-    [self.delegate StopCheckCapability];
-    [self.delegate CheckCapabilityAgain];
+    [self.delegate SetCameraResolutionByNotification:iHeight withWidth:iWidth];
     
 }
-- (void)ReInitializeCamera:(int)iHeight withWidth:(int)iWidth
-{
-    cout<<"Here inside video call processor, sendint info to view controller to reinitialize"<<endl;
-    [self.delegate ReinitializeCameraFromViewController:iHeight withWidth:iWidth];
-    
-}
+
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
     
@@ -470,12 +466,12 @@ int tempCounter = 0;
     memcpy(pRawYuv+YPlaneLength, y_ch1, VPlaneLength+VPlaneLength);
 
     int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
-    cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
+    //cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
     
     //printf("Rajib_Check: Trying to SendVideoDataV\n");
     
     
-    /*if(tempCounter<10000)
+    if(tempCounter<300)
     {
         printf("TheKing--> tempCounter = %d\n", tempCounter);
         cout<<"TheKing--> tempCounter = "<<tempCounter<<endl;
@@ -483,7 +479,7 @@ int tempCounter = 0;
         ConvertNV12ToI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
         
         [self WriteToFile:pRawYuv dataLength:m_iCameraHeight * m_iCameraWidth * 3 / 2 filePointer:m_FileForDump];
-    }*/
+    }
     
     return 0;
 }
