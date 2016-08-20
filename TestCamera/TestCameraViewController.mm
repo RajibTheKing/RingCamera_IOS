@@ -521,7 +521,7 @@ int g_iPort;
                                          withWidth:&m_iCameraWidth];*/
     
     
-    [session startRunning];
+    [session stopRunning];
     
     if(iHeight==352)
         [session setSessionPreset:AVCaptureSessionPreset352x288];
