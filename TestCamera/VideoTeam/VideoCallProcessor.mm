@@ -157,9 +157,9 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
     
     if(m_iCameraWidth == 288)
-        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
+        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(208, 640, 480, 352, 288);
     else
-        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
+        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(208, 640, 480, 352, 288);
     
     iRet = m_pVideoAPI->StartAudioCall(200);
     int iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth,0); //Added NetworkType
@@ -465,7 +465,7 @@ int tempCounter = 0;
     memcpy(pRawYuv, y_ch0, YPlaneLength);
     memcpy(pRawYuv+YPlaneLength, y_ch1, VPlaneLength+VPlaneLength);
 
-    int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
+    //int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
     //cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
     
     //printf("Rajib_Check: Trying to SendVideoDataV\n");
@@ -473,8 +473,8 @@ int tempCounter = 0;
     
     if(tempCounter<300)
     {
-        printf("TheKing--> tempCounter = %d\n", tempCounter);
-        cout<<"TheKing--> tempCounter = "<<tempCounter<<endl;
+        //printf("TheKing--> tempCounter = %d\n", tempCounter);
+        //cout<<"TheKing--> tempCounter = "<<tempCounter<<endl;
         tempCounter++;
         ConvertNV12ToI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
         

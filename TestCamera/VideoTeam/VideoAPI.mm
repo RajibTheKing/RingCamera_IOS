@@ -68,11 +68,23 @@ void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[]
         CVideoAPI::GetInstance()->ReceiveFullFrame(data, dataLenth);
     }
 }
+
+void WriteToFileVideoAPI(byte *pData, int iLen);
 void notifyClientMethodWithAudioDataIos(LongLong lFriendID, short data[], int dataLenth)
 {
     //cout<<"Check: Found Audio Data, datalen = "<<dataLenth<<endl;
+    byte *temp = new byte[dataLenth*2];
+    for(int i=0;i<dataLenth;i++)
+    {
+        temp[i*2] = data[i]>>8;
+        temp[i*2+1] = data[i] & 0xFF;
+        
+    }
+    WriteToFileVideoAPI(temp, dataLenth*2);
     
     [[RingCallAudioManager sharedInstance] playMyReceivedAudioData:data withLength:dataLenth];
+    delete[] temp;
+    
 }
 void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType) //Video Notification Added
 {
@@ -409,5 +421,29 @@ string CVideoAPI::IntegertoStringConvert(int nConvertingNumber)
     //SendToServer(data, iLen);
     
 }*/
+
+FILE *fpVideoApi;
+bool isFpOpenVideoAPI = false;
+
+void WriteToFileVideoAPI(byte *pData, int iLen)
+{
+    
+    
+    if(isFpOpenVideoAPI == false)
+    {
+        isFpOpenVideoAPI = true;
+        NSFileHandle *handle;
+        NSArray *Docpaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [Docpaths objectAtIndex:0];
+        NSString *filePathyuv = [documentsDirectory stringByAppendingPathComponent:@"AudioReceiving.pcm"];
+        handle = [NSFileHandle fileHandleForUpdatingAtPath:filePathyuv];
+        char *filePathcharyuv = (char*)[filePathyuv UTF8String];
+        fpVideoApi = fopen(filePathcharyuv, "wb");
+    }
+    
+    printf("Writing to File\n");
+    fwrite(pData, 1, iLen, fpVideoApi);
+}
+
 
 

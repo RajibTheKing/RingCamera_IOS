@@ -106,14 +106,48 @@ NSTimer *networkStrengthCheckTimmer;
 BOOL isRingToneSilenceSwitchSilenced;
 MPMusicPlaybackState musicPlaybackState;
 
-
+byte inputPCM[900000];
+int inputPCMPointerPos;
+int inputPCMTotalBytes;
+FILE *fpInputPCM;
 +(RingCallAudioManager *)sharedInstance
 {
     pVideoSocket = [VideoSockets GetInstance];
     pVideoCallProcessor = [VideoCallProcessor GetInstance];
     
-    if (sharedInstance == nil) {
+    if (sharedInstance == nil)
+    {
         sharedInstance = [[RingCallAudioManager alloc] init];
+        
+        inputPCMPointerPos = 0;
+        inputPCMTotalBytes = 0;
+        
+        NSFileHandle *handle;
+        NSArray *Docpaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [Docpaths objectAtIndex:0];
+        NSString *filePathyuv = [documentsDirectory stringByAppendingPathComponent:@"PcmfileForNayembhai2222.pcm"];
+        handle = [NSFileHandle fileHandleForUpdatingAtPath:filePathyuv];
+        char *filePathcharyuv = (char*)[filePathyuv UTF8String];
+        fpInputPCM = fopen(filePathcharyuv, "rb");
+        
+        
+        int64_t i_size = 0;
+        if (fpInputPCM != NULL)
+        {
+            if (!fseek(fpInputPCM, 0, SEEK_END)) {
+                i_size = ftell(fpInputPCM);
+                fseek(fpInputPCM, 0, SEEK_SET);
+            }
+        }
+        else {
+            cout << "file open error\n";
+        }
+        inputPCMTotalBytes = (int)i_size;
+        
+        int iRet = fread(inputPCM, 1, i_size, fpInputPCM);
+        cout<<"inputPCM, iRet = "<<iRet<<endl;
+        
+        
     }
     return sharedInstance;
 }
@@ -648,20 +682,20 @@ static OSStatus playbackCallback(void *inRefCon,
     void *buffer = TPCircularBufferTail(&recordedPCMBuffer, &availableBytes);
     //if(iProcessRTPPacketCounter%2==0) return;
     
-    if (availableBytes)
+    if (availableBytes >= 960 * 2)
     {
-        if( availableBytes > AUDIO_MAXIMUM_PACKET_LENGTH) {
-         
-         int randomRawDataPacketSize = (arc4random()%10)*160;
-         availableBytes = AUDIO_MINIMUM_PACKET_LENGTH + randomRawDataPacketSize;
-         } else if (availableBytes >= AUDIO_MINIMUM_PACKET_LENGTH && availableBytes <= AUDIO_MAXIMUM_PACKET_LENGTH) {
-         availableBytes = (availableBytes/160)*160;
-         // RICallLog(@"general Length : %d",dataLength);
-         } else {
-         // Data not enough to send ignor this case..
-         return;
-         }
-        
+//        if( availableBytes > AUDIO_MAXIMUM_PACKET_LENGTH) {
+//         
+////         int randomRawDataPacketSize = (arc4random()%10)*160;
+//         availableBytes = AUDIO_MINIMUM_PACKET_LENGTH + randomRawDataPacketSize;
+//         } else if (availableBytes >= AUDIO_MINIMUM_PACKET_LENGTH && availableBytes <= AUDIO_MAXIMUM_PACKET_LENGTH) {
+//         availableBytes = (availableBytes/160)*160;
+//         // RICallLog(@"general Length : %d",dataLength);
+//         } else {
+//         // Data not enough to send ignor this case..
+//         return;
+//         }
+        availableBytes = 960 * 2;
         /*
         if(availableBytes >= AUDIO_FIXED_PACKET_LENGTH)
         {
@@ -674,8 +708,19 @@ static OSStatus playbackCallback(void *inRefCon,
         }
          */
         
-        short shortArray[availableBytes];
+        short shortArray[availableBytes / 2];
         memcpy(shortArray, buffer, availableBytes);
+        
+        memcpy(shortArray, inputPCM+inputPCMPointerPos, 960*2);
+        inputPCMPointerPos+=(960*2);
+        if(inputPCMPointerPos>=inputPCMTotalBytes)
+        {
+            inputPCMPointerPos=0;
+        }
+        
+        
+        
+        //WriteToFileV((byte *)buffer, availableBytes);
         
         int success = -1;
         //success = [[RIConnectivityManager sharedInstance] sendAudioData:[IDCallManager sharedInstance].currentCallInfoModel.callInfo.callID  audioData:shortArray dataSize:availableBytes/2];
@@ -2424,7 +2469,7 @@ void WriteToFileV(byte *pData, int iLen)
         NSFileHandle *handle;
         NSArray *Docpaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [Docpaths objectAtIndex:0];
-        NSString *filePathyuv = [documentsDirectory stringByAppendingPathComponent:@"AudioSecondAttempt33.g729"];
+        NSString *filePathyuv = [documentsDirectory stringByAppendingPathComponent:@"AudioSending.pcm"];
         handle = [NSFileHandle fileHandleForUpdatingAtPath:filePathyuv];
         char *filePathcharyuv = (char*)[filePathyuv UTF8String];
         fp2 = fopen(filePathcharyuv, "wb");
