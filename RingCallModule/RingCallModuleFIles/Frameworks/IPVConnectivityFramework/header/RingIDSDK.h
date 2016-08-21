@@ -33,6 +33,7 @@ void NotifyClientMethodWithPacket(LongLong lFriendID, unsigned char data[], int 
 void NotifyClientMethodWithVideoData(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
 void NotifyClientMethodWithVideoNotification(LongLong lCallID, int eventType);
 void NotifyClientMethodWithAudioData(LongLong lFriendID, short data[], int dataLenth);
+void NotifyClientMethodWithAudioAlarm(LongLong lEventType, short data[], int dataLenth);
 void NotifyClientMethodWithAudiPacketData(LongLong lFriendID, unsigned char data[], int dataLenth);
 
 void AudioDecoding(LongLong lFriendID, unsigned char *in_data, int in_size);
@@ -57,6 +58,8 @@ void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], i
 void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
 void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType);
 void notifyClientMethodWithAudioDataIos(LongLong lFriendID, short data[], int dataLenth);
+void notifyClientMethodWithAudioAlarmIos(LongLong lFriendID, short data[], int dataLenth);
+void notifyClientMethodWithAudioAlarmIos(LongLong lEventType, short data[], int dataLenth);
 void notifyClientMethodWithAudiPacketDataIos(LongLong lFriendID, unsigned char data[], int dataLenth);
 
 // End Video Team
@@ -184,7 +187,10 @@ public:
     
     void SetNotifyClientWithAudioDataCallback(void(*callBackFunctionPointer)(LongLong, short*, int));
     
+    void SetNotifyClientWithAudioAlarmCallback(void(*callBackFunctionPointer)(LongLong, short*, int));
+    
     void SetNotifyClientWithAudioPacketDataCallback(void(*callBackFunctionPointer)(LongLong, unsigned char*, int));
+    
     
     static void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], int dataLenth);
     
@@ -193,6 +199,8 @@ public:
     static void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType);
     
     static void notifyClientMethodWithAudioDataIos(LongLong lFriendID, short data[], int dataLenth);
+    
+    static void notifyClientMethodWithAudioAlarmIos(LongLong lEventType, short data[], int dataLenth);
     
     static void notifyClientMethodWithAudioPacketDataIos(LongLong lFriendID, unsigned char data[], int dataLenth);
     

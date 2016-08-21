@@ -157,7 +157,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
     
     if(m_iCameraWidth == 288)
-        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 640, 480, 352, 288);
+        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
     else
         CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
     

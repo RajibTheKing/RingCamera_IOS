@@ -137,6 +137,11 @@ void notifyClientMethodWithAudiPacketDataIos(LongLong lFriendID, unsigned char d
     //CVideoAPI::GetInstance()->Send(200, 1, bAudioData, dataLenth+1);
 }
 
+void notifyClientMethodWithAudioAlarmIos(LongLong lFriendID, short *data, int dataLenth)
+{
+    printf("notifyClientMethodWithAudioAlarmIos dataLenth = %d\n", dataLenth);
+}
+
 /*
 void notifyClientMethodWithPacketIos(IPVLongType lFriendID, unsigned char data[], int dataLenth)
 {
