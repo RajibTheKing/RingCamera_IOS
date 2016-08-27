@@ -154,6 +154,10 @@ void notifyClientMethodWithAudioAlarmIos(LongLong lFriendID, short *data, int da
     printf("notifyClientMethodWithAudioAlarmIos dataLenth = %d\n", dataLenth);
 }
 
+void notifyClientMethodWithNetworkStrengthNotificationIos(LongLong lCallID, int eventType)
+{
+    printf("notifyClientWithNetworkStrengthNotificationCallback eventType = %d\n", eventType);
+}
 /*
 void notifyClientMethodWithPacketIos(IPVLongType lFriendID, unsigned char data[], int dataLenth)
 {

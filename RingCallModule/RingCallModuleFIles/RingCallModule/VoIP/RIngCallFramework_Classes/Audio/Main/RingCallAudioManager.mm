@@ -144,8 +144,8 @@ FILE *fpInputPCM;
         }
         inputPCMTotalBytes = (int)i_size;
         
-        int iRet = fread(inputPCM, 1, i_size, fpInputPCM);
-        cout<<"inputPCM, iRet = "<<iRet<<endl;
+        //int iRet = fread(inputPCM, 1, i_size, fpInputPCM);
+        //cout<<"inputPCM, iRet = "<<iRet<<endl;
         
         
     }
@@ -711,12 +711,12 @@ static OSStatus playbackCallback(void *inRefCon,
         short shortArray[availableBytes / 2];
         memcpy(shortArray, buffer, availableBytes);
         
-        memcpy(shortArray, inputPCM+inputPCMPointerPos, 960*2);
+        /*memcpy(shortArray, inputPCM+inputPCMPointerPos, 960*2);
         inputPCMPointerPos+=(960*2);
         if(inputPCMPointerPos>=inputPCMTotalBytes)
         {
             inputPCMPointerPos=0;
-        }
+        }*/
         
         
         

@@ -465,7 +465,7 @@ int tempCounter = 0;
     memcpy(pRawYuv, y_ch0, YPlaneLength);
     memcpy(pRawYuv+YPlaneLength, y_ch1, VPlaneLength+VPlaneLength);
 
-    //int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
+    int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
     //cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
     
     //printf("Rajib_Check: Trying to SendVideoDataV\n");

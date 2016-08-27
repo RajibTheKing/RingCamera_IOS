@@ -32,6 +32,7 @@ void NotifyClientMethodWithReceivedBytes(int event, LongLong friendId, int media
 void NotifyClientMethodWithPacket(LongLong lFriendID, unsigned char data[], int dataLenth);
 void NotifyClientMethodWithVideoData(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
 void NotifyClientMethodWithVideoNotification(LongLong lCallID, int eventType);
+void NotifyClientMethodWithNetworkStrengthNotification(LongLong lCallID, int eventType);
 void NotifyClientMethodWithAudioData(LongLong lFriendID, short data[], int dataLenth);
 void NotifyClientMethodWithAudioAlarm(LongLong lEventType, short data[], int dataLenth);
 void NotifyClientMethodWithAudiPacketData(LongLong lFriendID, unsigned char data[], int dataLenth);
@@ -57,6 +58,7 @@ void notifyClientMethodWithReceivedIos(int eventType, long long friendName, int 
 void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], int dataLenth);
 void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
 void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType);
+void notifyClientMethodWithNetworkStrengthNotificationIos(LongLong lCallID, int eventType);
 void notifyClientMethodWithAudioDataIos(LongLong lFriendID, short data[], int dataLenth);
 void notifyClientMethodWithAudioAlarmIos(LongLong lFriendID, short data[], int dataLenth);
 void notifyClientMethodWithAudioAlarmIos(LongLong lEventType, short data[], int dataLenth);
@@ -185,6 +187,8 @@ public:
     
     void SetNotifyClientWithVideoNotificationCallback(void(*callBackFunctionPointer)(LongLong, int));
     
+    void SetNotifyClientWithNetworkStrengthNotificationCallback(void(*callBackFunctionPointer)(LongLong, int));
+    
     void SetNotifyClientWithAudioDataCallback(void(*callBackFunctionPointer)(LongLong, short*, int));
     
     void SetNotifyClientWithAudioAlarmCallback(void(*callBackFunctionPointer)(LongLong, short*, int));
@@ -197,6 +201,8 @@ public:
     static void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
     
     static void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType);
+    
+    static void notifyClientMethodWithNetworkStrengthNotificationIos(LongLong lCallID, int eventType);
     
     static void notifyClientMethodWithAudioDataIos(LongLong lFriendID, short data[], int dataLenth);
     
