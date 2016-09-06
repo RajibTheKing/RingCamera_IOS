@@ -82,7 +82,6 @@
 		18EB2B2E1C02E78300153D45 /* RingSocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18EB2B291C02E78300153D45 /* RingSocket.framework */; };
 		18F66BFB1BCB6D8A00FEE798 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 18F66BF91BCB6D8A00FEE798 /* MainStoryboard_iPhone.storyboard */; };
 		1B3C9A27139D4E0F0042676B /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3C9A26139D4E0F0042676B /* CoreVideo.framework */; };
-		1B3C9A2A139D4E150042676B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3C9A29139D4E150042676B /* AVFoundation.framework */; };
 		1B3C9A2C139D4E1C0042676B /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3C9A2B139D4E1C0042676B /* CoreImage.framework */; };
 		1B3C9A2E139D4E350042676B /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3C9A2D139D4E350042676B /* AssetsLibrary.framework */; };
 		1B3C9A30139D4E5F0042676B /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B3C9A2F139D4E5F0042676B /* CoreMedia.framework */; };
@@ -98,6 +97,7 @@
 		2BA4851013F1E6CC000BABB3 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2BA4850C13F1E6CC000BABB3 /* MainStoryboard_iPad.storyboard */; };
 		2BA4851713F1E6DB000BABB3 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4851313F1E6DB000BABB3 /* main.mm */; };
 		619176C51C02ED760052A12A /* RingCallModuleResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 619176C41C02ED760052A12A /* RingCallModuleResource.bundle */; };
+		DA6366391D74215400EB2DF5 /* libAudioVideoEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6366381D74215400EB2DF5 /* libAudioVideoEngine.a */; };
 		DAAB12271C466970001A4B91 /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAB12261C466970001A4B91 /* libRingIDSDK.a */; };
 /* End PBXBuildFile section */
 
@@ -333,6 +333,7 @@
 		2BA4851313F1E6DB000BABB3 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = main.mm; path = TestCamera/main.mm; sourceTree = SOURCE_ROOT; };
 		2BA4851413F1E6DB000BABB3 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = TestCamera/Prefix.pch; sourceTree = SOURCE_ROOT; };
 		619176C41C02ED760052A12A /* RingCallModuleResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RingCallModuleResource.bundle; sourceTree = "<group>"; };
+		DA6366381D74215400EB2DF5 /* libAudioVideoEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAudioVideoEngine.a; path = RingCallModule/RingCallModuleFIles/Frameworks/IPVConnectivityFramework/lib/libAudioVideoEngine.a; sourceTree = "<group>"; };
 		DAAB12241C465DDD001A4B91 /* RingIDSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingIDSDK.h; sourceTree = "<group>"; };
 		DAAB12261C466970001A4B91 /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = RingCallModule/RingCallModuleFIles/Frameworks/IPVConnectivityFramework/lib/libRingIDSDK.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -344,13 +345,13 @@
 			files = (
 				1B3C9A34139D4EAA0042676B /* ImageIO.framework in Frameworks */,
 				18EB2B2E1C02E78300153D45 /* RingSocket.framework in Frameworks */,
+				DA6366391D74215400EB2DF5 /* libAudioVideoEngine.a in Frameworks */,
 				1B3C9A32139D4E740042676B /* QuartzCore.framework in Frameworks */,
 				1B3C9A30139D4E5F0042676B /* CoreMedia.framework in Frameworks */,
 				DAAB12271C466970001A4B91 /* libRingIDSDK.a in Frameworks */,
 				1B867FE1139D4AD300AD6B47 /* CoreGraphics.framework in Frameworks */,
 				1B3C9A2E139D4E350042676B /* AssetsLibrary.framework in Frameworks */,
 				1B3C9A2C139D4E1C0042676B /* CoreImage.framework in Frameworks */,
-				1B3C9A2A139D4E150042676B /* AVFoundation.framework in Frameworks */,
 				1B3C9A27139D4E0F0042676B /* CoreVideo.framework in Frameworks */,
 				1B867FDD139D4AD300AD6B47 /* UIKit.framework in Frameworks */,
 				1B867FDF139D4AD300AD6B47 /* Foundation.framework in Frameworks */,
@@ -815,6 +816,7 @@
 			isa = PBXGroup;
 			children = (
 				DAAB12261C466970001A4B91 /* libRingIDSDK.a */,
+				DA6366381D74215400EB2DF5 /* libAudioVideoEngine.a */,
 				9DC00C551C02E02E00966587 /* RingCallModule */,
 				18747B031BFDD0CD0010CAA3 /* VideoTeam */,
 				1B867FE2139D4AD300AD6B47 /* TestCamera */,

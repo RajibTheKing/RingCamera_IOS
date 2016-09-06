@@ -157,6 +157,7 @@ void notifyClientMethodWithAudioAlarmIos(LongLong lFriendID, short *data, int da
 void notifyClientMethodWithNetworkStrengthNotificationIos(LongLong lCallID, int eventType)
 {
     printf("notifyClientWithNetworkStrengthNotificationCallback eventType = %d\n", eventType);
+    cout<<"notifyClientWithNetworkStrengthNotificationCallback : "<<eventType<<endl;
 }
 /*
 void notifyClientMethodWithPacketIos(IPVLongType lFriendID, unsigned char data[], int dataLenth)
