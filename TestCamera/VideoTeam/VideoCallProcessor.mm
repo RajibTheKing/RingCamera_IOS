@@ -330,8 +330,8 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     colorOutputSettings = [NSDictionary dictionaryWithObject:
                            [NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange] forKey:(id)kCVPixelBufferPixelFormatTypeKey];
     [*videoDataOutput setVideoSettings:colorOutputSettings];
-    [*videoDataOutput setAlwaysDiscardsLateVideoFrames:YES]; // discard if the data output queue is blocked (as we process the still image)
-    
+    [*videoDataOutput setAlwaysDiscardsLateVideoFrames:NO]; // discard if the data output queue is blocked (as we process the still image)
+
     
     
     
@@ -362,24 +362,138 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         desiredPosition = AVCaptureDevicePositionFront;
      */
     desiredPosition = AVCaptureDevicePositionFront;
+    //desiredPosition = AVCaptureDevicePositionBack;
     
-    
-    for (AVCaptureDevice *d in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
-        if ([d position] == desiredPosition) {
+    for (AVCaptureDevice *d in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo])
+    {
+        if ([d position] == desiredPosition)
+        {
             [[*previewLayer session] beginConfiguration];
+            
+            //d.activeVideoMinFrameDuration = CMTimeMake(1, (int32_t)30);
+            
+            //d->activeVideoMaxFrameDuration = CMTimeMake(1, (int32_t)30);
+            
+            //[d setActiveVideoMaxFrameDuration:CMTimeMake(1, (int32_t)30)];
+            
+            if ([AVCaptureDevice respondsToSelector:@selector(requestAccessForMediaType: completionHandler:)]) {
+                [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+                    // Will get here on both iOS 7 & 8 even though camera permissions weren't required
+                    // until iOS 8. So for iOS 7 permission will always be granted.
+                    if (granted) {
+                        // Permission has been granted. Use dispatch_async for any UI updating
+                        // code because this block may be executed in a thread.
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            //[self doStuff];
+                            NSLog(@"Here 1");
+                            if ([d lockForConfiguration:nil]) {
+                                
+                                NSLog(@"selected format");
+                                //d.activeFormat = selectedFormat;
+                                d.activeVideoMinFrameDuration = CMTimeMake(1, (int32_t)30);
+                                d.activeVideoMaxFrameDuration = CMTimeMake(1, (int32_t)30);
+                                [d unlockForConfiguration];
+                            }
+                            
+                        });
+                    } else {
+                        // Permission has been denied.
+                    }
+                }];
+            } else {
+                // We are on iOS <= 6. Just do what we need to do.
+                //[self doStuff];
+                NSLog(@"Here 2");
+            }
+            
+            
+            
+            
             AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:d error:nil];
-            for (AVCaptureInput *oldInput in [[*previewLayer session] inputs]) {
+            
+            for (AVCaptureInput *oldInput in [[*previewLayer session] inputs])
+            {
                 [[*previewLayer session] removeInput:oldInput];
             }
+            
             [[*previewLayer session] addInput:input];
             [[*previewLayer session] commitConfiguration];
             break;
         }
     }
     
+    /*
+    //Getting Permission
+    if ([AVCaptureDevice respondsToSelector:@selector(requestAccessForMediaType: completionHandler:)]) {
+        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+            // Will get here on both iOS 7 & 8 even though camera permissions weren't required
+            // until iOS 8. So for iOS 7 permission will always be granted.
+            if (granted) {
+                // Permission has been granted. Use dispatch_async for any UI updating
+                // code because this block may be executed in a thread.
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    //[self doStuff];
+                    NSLog(@"Here 1");
+                });
+            } else {
+                // Permission has been denied.
+            }
+        }];
+    } else {
+        // We are on iOS <= 6. Just do what we need to do.
+        //[self doStuff];
+        NSLog(@"Here 2");
+    }
+    //Permission procedure done
+    
+    
+    
+    //Setting Force FPS to IOS Camera:
+    
+    
+    int desiredFPS = 30;
+    AVCaptureDevice *videoDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    AVCaptureDeviceFormat *selectedFormat = nil;
+    int32_t maxWidth = 0;
+    AVFrameRateRange *frameRateRange = nil;
+    
+    for (AVCaptureDeviceFormat *format in [videoDevice formats]) {
+        
+        for (AVFrameRateRange *range in format.videoSupportedFrameRateRanges) {
+            
+            CMFormatDescriptionRef desc = format.formatDescription;
+            CMVideoDimensions dimensions = CMVideoFormatDescriptionGetDimensions(desc);
+            int32_t width = dimensions.width;
+            
+            if (range.minFrameRate <= desiredFPS && desiredFPS <= range.maxFrameRate && width >= maxWidth) {
+                
+                selectedFormat = format;
+                frameRateRange = range;
+                maxWidth = width;
+                NSLog(@"selected format:%@", selectedFormat);
+                
+            }
+        }
+    }
+    
+    if (selectedFormat) {
+        
+        if ([videoDevice lockForConfiguration:nil]) {
+            
+            NSLog(@"selected format:%@", selectedFormat);
+            videoDevice.activeFormat = selectedFormat;
+            videoDevice.activeVideoMinFrameDuration = CMTimeMake(1, (int32_t)desiredFPS);
+            videoDevice.activeVideoMaxFrameDuration = CMTimeMake(1, (int32_t)desiredFPS);
+            [videoDevice unlockForConfiguration];
+        }
+    }
+    //End of procedure for force fps to camera
+    */
+    
     
     return error;
 }
+
 
 - (void)SetCameraResolutionByNotification:(int)iHeight withWidth:(int)iWidth
 {
@@ -412,18 +526,20 @@ int tempCounter = 0;
     tempCounter++;
     printf("Rajib_Check: Inside FrontConversion\n");
     
-    
     [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
     [connection setVideoMirrored:false];
     
     
-    usleep(15*1000);
+    //usleep(15*1000);
     
     //if(m_bCheckCall == true && tempCounter>200) return 0;
     
     //### Step 2: Controlling FPS, Currently disabled
     //[connection setVideoMinFrameDuration:CMTimeMake(1, 15.0)];
     //[connection setVideoMaxFrameDuration:CMTimeMake(1, 17.0)];
+    
+    
+    
     
     
     
