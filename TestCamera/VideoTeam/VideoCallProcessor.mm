@@ -156,10 +156,12 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
     
+    cout<<"Here height and width = "<<m_iCameraHeight<<", "<<m_iCameraWidth<<endl;
+    
     if(m_iCameraWidth == 288)
-        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(208, 640, 480, 352, 288);
+        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 640, 480, 352, 288);
     else
-        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(208, 640, 480, 352, 288);
+        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
     
     iRet = m_pVideoAPI->StartAudioCall(200);
     int iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth,0); //Added NetworkType
