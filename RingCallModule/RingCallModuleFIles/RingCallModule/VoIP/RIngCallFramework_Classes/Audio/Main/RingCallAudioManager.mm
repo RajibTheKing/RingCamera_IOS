@@ -110,6 +110,7 @@ byte inputPCM[900000];
 int inputPCMPointerPos;
 int inputPCMTotalBytes;
 FILE *fpInputPCM;
+
 +(RingCallAudioManager *)sharedInstance
 {
     pVideoSocket = [VideoSockets GetInstance];
@@ -144,8 +145,8 @@ FILE *fpInputPCM;
         }
         inputPCMTotalBytes = (int)i_size;
         
-        int iRet = fread(inputPCM, 1, i_size, fpInputPCM);
-        cout<<"inputPCM, iRet = "<<iRet<<endl;
+        //int iRet = fread(inputPCM, 1, i_size, fpInputPCM);
+        //cout<<"inputPCM, iRet = "<<iRet<<endl;
         
         
     }
@@ -398,7 +399,8 @@ FILE *fpInputPCM;
     status = AudioOutputUnitStart(audioUnit);
     checkStatus(status);
     
-    if (self.isSpeakerEnabled) {
+    if (self.isSpeakerEnabled)
+    {
         [self AudioForceOutputToBuiltInSpeakers];
     }
     
@@ -529,12 +531,44 @@ static OSStatus recordingCallback(void *inRefCon,
  This callback is called when the audioUnit needs new data to play through the
  speakers. If you don't have any, just don't write anything in the buffers
  */
+
+
+
+
 static OSStatus playbackCallback(void *inRefCon,
                                  AudioUnitRenderActionFlags *ioActionFlags,
                                  const AudioTimeStamp *inTimeStamp,
                                  UInt32 inBusNumber,
                                  UInt32 inNumberFrames,
                                  AudioBufferList *ioData) {
+    
+    //cout<<"AudioCheck: playbackCallback"<<endl;
+    
+   /*AVAudioSession *session =   [AVAudioSession sharedInstance];
+    NSError *error;
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
+    [session setMode:AVAudioSessionModeVoiceChat error:&error];
+    if (true) // Enable speaker
+    {
+        [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+    }
+    else // Disable speaker
+    {
+        [session overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:&error];
+    }
+    [session setActive:YES error:&error];
+    */
+    
+    //Enable Speaker Rajib
+    UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
+    AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRouteOverride), &audioRouteOverride);
+    AVAudioSession *sessionTest =   [AVAudioSession sharedInstance];
+    NSError *error;
+    [sessionTest overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+    
+    
+    
+    
     
     // Notes: ioData contains buffers (may be more than one!)
     // Fill them up as much as you can. Remember to set the size value in each buffer to match how
@@ -711,12 +745,12 @@ static OSStatus playbackCallback(void *inRefCon,
         short shortArray[availableBytes / 2];
         memcpy(shortArray, buffer, availableBytes);
         
-        memcpy(shortArray, inputPCM+inputPCMPointerPos, 960*2);
+        /*memcpy(shortArray, inputPCM+inputPCMPointerPos, 960*2);
         inputPCMPointerPos+=(960*2);
         if(inputPCMPointerPos>=inputPCMTotalBytes)
         {
             inputPCMPointerPos=0;
-        }
+        }*/
         
         
         
@@ -1027,6 +1061,7 @@ static OSStatus playbackCallback(void *inRefCon,
 
 -(BOOL) playSoundFXnamed:(NSString*)vSFXName type:(NSString*)type WithLoop:(int)vLoop AndVibration:(BOOL)isVibrationEnabled
 {
+    cout<<"PlaySoundFXnamed"<<endl;
     NSError *error;
     
     NSString* filePath = [RESOURCE_BUNDLE pathForResource:vSFXName ofType:type];
@@ -1093,6 +1128,7 @@ static OSStatus playbackCallback(void *inRefCon,
             //            [audioSession setCategory:AVAudioSessionCategoryPlayback error: nil];
         }
         [audioSession setCategory: AVAudioSessionCategoryPlayAndRecord error:nil];
+        
         AudioSessionSetProperty (kAudioSessionProperty_OverrideCategoryMixWithOthers, sizeof(doSetProperty), &doSetProperty);
         
         
@@ -1216,6 +1252,8 @@ static OSStatus playbackCallback(void *inRefCon,
 
 - (void) PlayRingToneViaPCM
 {
+    cout<<"Inside PlayRingToneViaPCM"<<endl;
+    
     [self start];
     
     
@@ -2204,6 +2242,24 @@ static OSStatus playbackCallback(void *inRefCon,
     return nil;
 }
 
+- (void)setAudioOutputSpeaker:(BOOL)enabled
+{
+    AVAudioSession *session =   [AVAudioSession sharedInstance];
+    NSError *error;
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
+    [session setMode:AVAudioSessionModeVoiceChat error:&error];
+    if (enabled) // Enable speaker
+    {
+        [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+    }
+    else // Disable speaker
+    {
+        [session overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:&error];
+    }
+    [session setActive:YES error:&error];
+}
+
+
 - (NSData *) getDataFromBufferList:(AudioBufferList *)bufferList
 {
     AudioBuffer audioBuffer = bufferList->mBuffers[0];
@@ -2370,6 +2426,8 @@ static OSStatus playbackCallback(void *inRefCon,
 
 - (void) playCallModuleTone:(CallModuleTone) callModuleTone
 {
+    cout<<"playCallModuleTone"<<endl;
+    
     NSBundle* bundle = [NSBundle bundleWithURL:[[NSBundle mainBundle] URLForResource:@"RingCallModuleResource" withExtension:@"bundle"]];
     NSString* filePath = @"";
     

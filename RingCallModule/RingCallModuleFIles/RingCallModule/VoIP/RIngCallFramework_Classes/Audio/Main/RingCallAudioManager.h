@@ -142,6 +142,7 @@
 - (void) playMyReceivedAudioData:(short *)data withLength:(int)iLen;
 
 - (void) createAndGetPCMfromotherFormat;
+- (void) setAudioOutputSpeaker:(BOOL)enabled;
 
 void WriteToFileV(byte *pData, int iLen);
 
