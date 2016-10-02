@@ -50,6 +50,8 @@
 @property (retain, nonatomic) IBOutlet UITextField *PortField;
 
 @property (retain, nonatomic) IBOutlet UIButton *ChangeResBtn;
+@property (retain, nonatomic) IBOutlet UIView *myRealView;
+@property (retain, nonatomic) IBOutlet UIButton *ldSpeakerBtn;
 
 @property bool bEncodeThreadActive;
 @property bool bP2PSocketInitialized;
@@ -58,6 +60,8 @@
 @property (retain, nonatomic) IBOutlet UIButton *CheckCapabilityBtn;
 @property (retain, nonatomic) IBOutlet UILabel *statusMessage;
 @property (retain, nonatomic) IBOutlet UITextField *IPTextField;
+@property (retain, nonatomic) IBOutlet UIButton *makeSenderBtn;
+@property (retain, nonatomic) IBOutlet UIButton *makeReceiverBtn;
 
 - (void)setupAVCapture;
 - (void)teardownAVCapture;
@@ -68,9 +72,12 @@
 - (IBAction) P2PButtonAction:(id)P2PButton;
 - (IBAction)ChangePort:(id)sender;
 - (IBAction)ChangeResBtnAction:(id)sender;
+- (IBAction)loudSpeakerAction:(id)sender;
 
 - (void)SetCameraResolutionByNotification:(int)iHeight withWidth:(int)iWidth;
 - (IBAction)CheckCapabilityAction:(id)sender;
+- (IBAction)makeSenderAction:(id)sender;
+- (IBAction)makeReceiverAction:(id)sender;
 
 
 void WriteToFile(byte *pData);

@@ -91,6 +91,23 @@ public:
     void ReceiveFullFrame(byte*data, int iLen);
     
     void ReleaseV();
+    
+    
+    //LiveStreamRelatedFunctions
+    
+    void setSendToNetworkFunction(long functionPointer);
+    long GetSendToClientFunction();
+    
+    long GetSendToNetworkFunc();
+    void setSendToClientFunc(long functionPointer);
+    
+    
+    string startRudpSender(long ringId, string server);
+    void startRudpReceiver(string streamId);
+    
+    void stopRudpSender();
+    void stopRudpReceiver();
+    
 
     string IntegertoStringConvert(int nConvertingNumber);
     

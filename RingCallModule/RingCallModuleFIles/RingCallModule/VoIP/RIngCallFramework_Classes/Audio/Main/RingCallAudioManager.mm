@@ -534,7 +534,7 @@ static OSStatus recordingCallback(void *inRefCon,
 
 
 
-
+int g_prevSpeakerState = -1;
 static OSStatus playbackCallback(void *inRefCon,
                                  AudioUnitRenderActionFlags *ioActionFlags,
                                  const AudioTimeStamp *inTimeStamp,
@@ -560,11 +560,17 @@ static OSStatus playbackCallback(void *inRefCon,
     */
     
     //Enable Speaker Rajib
-    UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
-    AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRouteOverride), &audioRouteOverride);
-    AVAudioSession *sessionTest =   [AVAudioSession sharedInstance];
-    NSError *error;
-    [sessionTest overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+    if(pVideoCallProcessor.m_bLoudSpeakerEnable == true && g_prevSpeakerState!=1)
+    {
+        g_prevSpeakerState = 1;
+        
+        UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
+        AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRouteOverride), &audioRouteOverride);
+        AVAudioSession *sessionTest =   [AVAudioSession sharedInstance];
+        NSError *error;
+        [sessionTest overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+        
+    }
     
     
     

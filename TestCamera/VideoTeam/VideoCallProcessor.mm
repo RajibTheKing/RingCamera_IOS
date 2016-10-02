@@ -63,6 +63,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     [self InitializeFilePointer:m_FileForDump fileName:@"YuvTest.yuv"];
     
+    _m_bLoudSpeakerEnable=false;
     return self;
 }
 
@@ -146,7 +147,8 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     //m_pVideoAPI->SetLoggingState(true,5);
     
     int iRet;
-
+    
+#if 1
     iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
     cout<<"CreateSession, Audio, iRet = "<<iRet<<endl;
     iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
@@ -169,6 +171,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     NSLog(@"StartVideoCaLL returned, iRet = %d", iRet);
     //iRet = m_pVideoAPI->CheckDeviceCapability(200, m_iCameraHeight, m_iCameraWidth);
     //m_bCheckCall = true;
+#endif
     
     [m_pVTP SetVideoAPI:m_pVideoAPI];
     [m_pVideoSockets SetVideoAPI:m_pVideoAPI];
@@ -179,7 +182,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         [self SendDummyData];
     });*/
     
-    return iRetStartVideoCall;
+    return 1;
 }
 
 -(void)SendDummyData

@@ -68,7 +68,7 @@
 }
 
 
-
+@property bool m_bLoudSpeakerEnable;
 @property bool m_bStartVideoSending;
 @property long long m_lCameraInitializationStartTime;
 +(long long)convertStringIPtoLongLong:(NSString *)ipAddr;

@@ -224,6 +224,12 @@ int g_iPort;
         self.ResField.text = @"640x480";
     }
 }
+
+- (IBAction)loudSpeakerAction:(id)sender
+{
+    g_pVideoCallProcessor.m_bLoudSpeakerEnable = true;
+    [_ldSpeakerBtn setEnabled:false];
+}
 - (IBAction)ChangePort:(id)sender
 {
     [self UpdatePort];
@@ -506,6 +512,40 @@ int g_iPort;
     //
 }
 
+- (IBAction)makeSenderAction:(id)sender
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MyCustomView setHidden:true];
+        [SelfView setHidden:false];
+        
+        [_makeSenderBtn setEnabled:false];
+        [_makeReceiverBtn setEnabled:true];
+        
+        
+        SelfView.frame = CGRectMake(0,0,_myRealView.frame.size.width, _myRealView.frame.size.height);
+        SelfView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        SelfView.contentMode = UIViewContentModeScaleAspectFit;
+        
+    });
+}
+
+- (IBAction)makeReceiverAction:(id)sender
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [SelfView setHidden:true];
+        [MyCustomView setHidden:false];
+        
+        [_makeSenderBtn setEnabled:true];
+        [_makeReceiverBtn setEnabled:false];
+        
+        MyCustomView.frame = CGRectMake(0,0,_myRealView.frame.size.width, _myRealView.frame.size.height);
+        MyCustomView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        MyCustomView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        
+    });
+}
+
 - (void)SetCameraResolutionByNotification:(int)iHeight withWidth:(int)iWidth
 {
     
@@ -574,6 +614,10 @@ int g_iPort;
     [_CheckCapabilityBtn release];
     [_statusMessage release];
     [_IPTextField release];
+    [_makeSenderBtn release];
+    [_makeReceiverBtn release];
+    [_myRealView release];
+    [_ldSpeakerBtn release];
     [super dealloc];
 }
 

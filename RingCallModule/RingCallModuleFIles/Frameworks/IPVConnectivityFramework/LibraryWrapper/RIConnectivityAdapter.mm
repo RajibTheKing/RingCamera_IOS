@@ -31,14 +31,15 @@ sourceLogFilePath:(NSString *) sLogFilePath
     std::string logFilePath([sLogFilePath UTF8String]);
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
     success = cIPVConnectivity->Init(userID, logFilePath, logLevel);
-    cIPVConnectivity-> SetLoggingState(false);
+    //cIPVConnectivity-> SetLoggingState(false);
     return success;
 }
 
 +(BOOL)initializeLibrary:(const LongLong) userID
 {
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    return cIPVConnectivity->InitializeLibrary(userID);
+    //return cIPVConnectivity->InitializeLibrary(userID);
+    return false;
 }
 
 +(int)createSession:(const LongLong) friendID
@@ -50,14 +51,16 @@ sourceLogFilePath:(NSString *) sLogFilePath
         return -1;
     }
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    return cIPVConnectivity->CreateSession(friendID, sMedia, [RIConnectivityAdapter convertStringIPtoLongLong:relayServerIP], relayServerPort);
+    //return cIPVConnectivity->CreateSession(friendID, sMedia, [RIConnectivityAdapter convertStringIPtoLongLong:relayServerIP], relayServerPort);
+    return false;
 }
 
 +(void)startP2PCall:(const LongLong) friendID mediaType:(int) sMedia isCaller:(bool)isCaller
 {
     //return; //StartP2PCall is disabled for Test Purpose by RajibTheKing
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    cIPVConnectivity->StartP2PCall(friendID, sMedia, isCaller);
+    //cIPVConnectivity->StartP2PCall(friendID, sMedia, isCaller);
+    return;
 }
 
 +(void)setRelayServerInformation:(const LongLong) friendID
@@ -69,7 +72,8 @@ sourceLogFilePath:(NSString *) sLogFilePath
         return;
     }
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    cIPVConnectivity->SetRelayServerInformation(friendID, sMedia, [RIConnectivityAdapter convertStringIPtoLongLong:relayServerIPAddress], relayServerPort);
+    //cIPVConnectivity->SetRelayServerInformation(friendID, sMedia, [RIConnectivityAdapter convertStringIPtoLongLong:relayServerIPAddress], relayServerPort);
+    return;
 }
 
 +(int)sendTo:(const LongLong) friendID
@@ -85,7 +89,9 @@ destinationPort:(int) dstPort
     unsigned char *sentData = (unsigned char *)[data bytes];
     int dataLength = (int)data.length;
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    return cIPVConnectivity->SendTo(friendID, sMedia, sentData, dataLength, [RIConnectivityAdapter convertStringIPtoLongLong:dstAddress], dstPort);
+    
+    //return cIPVConnectivity->SendTo(friendID, sMedia, sentData, dataLength, [RIConnectivityAdapter convertStringIPtoLongLong:dstAddress], dstPort);
+    return -1;
 }
 
 
@@ -94,26 +100,30 @@ destinationPort:(int) dstPort
 {
     
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    return cIPVConnectivity->CloseSession(friendID, sMedia);
+    //return cIPVConnectivity->CloseSession(friendID, sMedia);
+    return false;
 }
 
 +(void)setLogFileLocation:(NSString *) logFileLocation
 {
     std::string logFileLocationStr([logFileLocation UTF8String]);
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    cIPVConnectivity->SetLogFileLocation(logFileLocationStr);
+    //cIPVConnectivity->SetLogFileLocation(logFileLocationStr);
+    return;
 }
 
 +(void)updateInformation
 {
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    cIPVConnectivity->UpdateInformation();
+    //cIPVConnectivity->UpdateInformation();
+    return;
 }
 
 +(void)release
 {
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    cIPVConnectivity->Release();
+    //cIPVConnectivity->Release();
+    return ;
 }
 
 +(NSString *)getSelectedIPAddress:(const LongLong) friendID
@@ -121,8 +131,8 @@ destinationPort:(int) dstPort
 {
     
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    std::string ipAddress = cIPVConnectivity->GetSelectedIPAddress(friendID, sMedia);
-    
+    //std::string ipAddress = cIPVConnectivity->GetSelectedIPAddress(friendID, sMedia);
+    std::string ipAddress = "";
     return [NSString stringWithCString:ipAddress.c_str()
                               encoding:[NSString defaultCStringEncoding]];
 }
@@ -132,14 +142,16 @@ destinationPort:(int) dstPort
 {
     
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    return cIPVConnectivity->GetSelectedPort(friendID, sMedia);
+    //return cIPVConnectivity->GetSelectedPort(friendID, sMedia);
+    return -1;
     
 }
 
 +(void)releaseLib {
     
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    return cIPVConnectivity->Release();
+    //return cIPVConnectivity->Release();
+    return;
 }
 
 +(BOOL)setAuthenticationServerWith:(NSString *)authIp withPort:(int)port withSessionId:(NSString *)appSessionId {
@@ -148,47 +160,55 @@ destinationPort:(int) dstPort
     }
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
     std::string sAppSessionId([appSessionId UTF8String]);
-    return  cIPVConnectivity->SetAuthenticationServer([RIConnectivityAdapter convertStringIPtoLongLong:authIp], port, sAppSessionId);
+    //return  cIPVConnectivity->SetAuthenticationServer([RIConnectivityAdapter convertStringIPtoLongLong:authIp], port, sAppSessionId);
+    return false;
 }
 //AudioVideoLibMethods
 
 +(BOOL)startAudioCall:(const LongLong)friendID
 {
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    return cIPVConnectivity->StartAudioCall(friendID);
+    //return cIPVConnectivity->StartAudioCall(friendID);
+    return false;
 }
 
 +(int)sendAudioData:(const LongLong)friendID audioData:(short *)data dataSize:(unsigned int)size
 {
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    return cIPVConnectivity->SendAudioData(friendID, data, size);
+    //return cIPVConnectivity->SendAudioData(friendID, data, size);
+    return -1;
 }
 +(BOOL)startVideoCall:(const LongLong)friendID videoHeight:(int)height videoWidth:(int)width
 {
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    cIPVConnectivity->SetLoggingState(false);
-    return cIPVConnectivity->StartVideoCall(friendID, height, width);
+    //cIPVConnectivity->SetLoggingState(false);
+    //return cIPVConnectivity->StartVideoCall(friendID, height, width);
+    return false;
 }
 +(int)sendVideoData:(const LongLong)friendID videoData:(NSData *)data dataSize:(unsigned int)size
 {
     unsigned char *temp_data = (unsigned char*)[data bytes];
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    return cIPVConnectivity->SendVideoData(friendID,temp_data, size,0,0);
+    //return cIPVConnectivity->SendVideoData(friendID,temp_data, size,0,0);
+    return -1;
 }
 +(BOOL)stopAudioCall:(const LongLong)friendID
 {
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    return cIPVConnectivity->StopAudioCall(friendID);
+    //return cIPVConnectivity->StopAudioCall(friendID);
+    return false;
 }
 +(BOOL)stopVideoCall:(const LongLong)friendID
 {
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    return cIPVConnectivity->StopVideoCall(friendID);
+    //return cIPVConnectivity->StopVideoCall(friendID);
+    return false;
 }
 +(BOOL)setLoggingState:(bool)state logLevel:(int)level
 {
     CRingIDSDK *cIPVConnectivity = [[self class] getCIPVConnectivityDLL];
-    return cIPVConnectivity->SetLoggingState(state);
+    //return cIPVConnectivity->SetLoggingState(state);
+    return false;
 }
 +(long long)convertStringIPtoLongLong:(NSString *)ipAddr
 {
