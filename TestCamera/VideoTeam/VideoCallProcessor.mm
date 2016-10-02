@@ -63,7 +63,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     [self InitializeFilePointer:m_FileForDump fileName:@"YuvTest.yuv"];
     
-    _m_bLoudSpeakerEnable=false;
+    _m_iLoudSpeakerEnable=0;
     return self;
 }
 

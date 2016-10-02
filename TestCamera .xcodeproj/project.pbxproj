@@ -97,8 +97,8 @@
 		2BA4851013F1E6CC000BABB3 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2BA4850C13F1E6CC000BABB3 /* MainStoryboard_iPad.storyboard */; };
 		2BA4851713F1E6DB000BABB3 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4851313F1E6DB000BABB3 /* main.mm */; };
 		619176C51C02ED760052A12A /* RingCallModuleResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 619176C41C02ED760052A12A /* RingCallModuleResource.bundle */; };
-		DA299DF91DA10B1F0065E171 /* libAudioVideoEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA299DF81DA10B1F0065E171 /* libAudioVideoEngine.a */; };
-		DA299DFB1DA10B2D0065E171 /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA299DFA1DA10B2D0065E171 /* libRingIDSDK.a */; };
+		DA299DFD1DA10FF80065E171 /* libAudioVideoEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA299DFC1DA10FF80065E171 /* libAudioVideoEngine.a */; };
+		DA299DFF1DA110000065E171 /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA299DFE1DA110000065E171 /* libRingIDSDK.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -337,7 +337,7 @@
 		1B3C9A2F139D4E5F0042676B /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		1B3C9A31139D4E740042676B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1B3C9A33139D4EAA0042676B /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
-		1B867FD8139D4AD300AD6B47 /* Version-2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Version-2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1B867FD8139D4AD300AD6B47 /* Version-4.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Version-4.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B867FDC139D4AD300AD6B47 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1B867FDE139D4AD300AD6B47 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1B867FE0139D4AD300AD6B47 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -352,8 +352,8 @@
 		619176C41C02ED760052A12A /* RingCallModuleResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RingCallModuleResource.bundle; sourceTree = "<group>"; };
 		DA299DEC1DA1089A0065E171 /* RingIDSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RingIDSDK.xcodeproj; path = "../IPV-RingIDSDK/RingIDSDK.xcodeproj"; sourceTree = "<group>"; };
 		DA299DF21DA1089E0065E171 /* AudioVideoEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioVideoEngine.xcodeproj; path = "../IPV-MediaEngine/AudioVideoEngine.xcodeproj"; sourceTree = "<group>"; };
-		DA299DF81DA10B1F0065E171 /* libAudioVideoEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAudioVideoEngine.a; path = "Build/Products/Debug-iphoneos/libAudioVideoEngine.a"; sourceTree = "<group>"; };
-		DA299DFA1DA10B2D0065E171 /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = "Build/Products/Debug-iphoneos/libRingIDSDK.a"; sourceTree = "<group>"; };
+		DA299DFC1DA10FF80065E171 /* libAudioVideoEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAudioVideoEngine.a; path = "Build/Products/Debug-iphoneos/libAudioVideoEngine.a"; sourceTree = "<group>"; };
+		DA299DFE1DA110000065E171 /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = "Build/Products/Debug-iphoneos/libRingIDSDK.a"; sourceTree = "<group>"; };
 		DAAB12241C465DDD001A4B91 /* RingIDSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingIDSDK.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -364,9 +364,9 @@
 			files = (
 				1B3C9A34139D4EAA0042676B /* ImageIO.framework in Frameworks */,
 				18EB2B2E1C02E78300153D45 /* RingSocket.framework in Frameworks */,
-				DA299DF91DA10B1F0065E171 /* libAudioVideoEngine.a in Frameworks */,
+				DA299DFD1DA10FF80065E171 /* libAudioVideoEngine.a in Frameworks */,
 				1B3C9A32139D4E740042676B /* QuartzCore.framework in Frameworks */,
-				DA299DFB1DA10B2D0065E171 /* libRingIDSDK.a in Frameworks */,
+				DA299DFF1DA110000065E171 /* libRingIDSDK.a in Frameworks */,
 				1B3C9A30139D4E5F0042676B /* CoreMedia.framework in Frameworks */,
 				1B867FE1139D4AD300AD6B47 /* CoreGraphics.framework in Frameworks */,
 				1B3C9A2E139D4E350042676B /* AssetsLibrary.framework in Frameworks */,
@@ -834,8 +834,8 @@
 		1B867FCD139D4AD300AD6B47 = {
 			isa = PBXGroup;
 			children = (
-				DA299DFA1DA10B2D0065E171 /* libRingIDSDK.a */,
-				DA299DF81DA10B1F0065E171 /* libAudioVideoEngine.a */,
+				DA299DFE1DA110000065E171 /* libRingIDSDK.a */,
+				DA299DFC1DA10FF80065E171 /* libAudioVideoEngine.a */,
 				DA299DF21DA1089E0065E171 /* AudioVideoEngine.xcodeproj */,
 				DA299DEC1DA1089A0065E171 /* RingIDSDK.xcodeproj */,
 				9DC00C551C02E02E00966587 /* RingCallModule */,
@@ -849,7 +849,7 @@
 		1B867FD9139D4AD300AD6B47 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1B867FD8139D4AD300AD6B47 /* Version-2.app */,
+				1B867FD8139D4AD300AD6B47 /* Version-4.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -939,7 +939,7 @@
 			);
 			name = TestCamera;
 			productName = StacheCam;
-			productReference = 1B867FD8139D4AD300AD6B47 /* Version-2.app */;
+			productReference = 1B867FD8139D4AD300AD6B47 /* Version-4.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1238,7 +1238,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.TestCamera;
-				PRODUCT_NAME = "Version-2";
+				PRODUCT_NAME = "Version-4";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -1286,7 +1286,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.TestCamera;
-				PRODUCT_NAME = "Version-2";
+				PRODUCT_NAME = "Version-4";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

@@ -215,7 +215,6 @@ FILE *fpInputPCM;
 - (void) setUpAudioUnit {
     
     OSStatus status;
-    
     // Describe audio component
     audioComponentDescription.componentType = kAudioUnitType_Output;
     audioComponentDescription.componentSubType = kAudioUnitSubType_VoiceProcessingIO;
@@ -534,7 +533,6 @@ static OSStatus recordingCallback(void *inRefCon,
 
 
 
-int g_prevSpeakerState = -1;
 static OSStatus playbackCallback(void *inRefCon,
                                  AudioUnitRenderActionFlags *ioActionFlags,
                                  const AudioTimeStamp *inTimeStamp,
@@ -560,9 +558,9 @@ static OSStatus playbackCallback(void *inRefCon,
     */
     
     //Enable Speaker Rajib
-    if(pVideoCallProcessor.m_bLoudSpeakerEnable == true && g_prevSpeakerState!=1)
+    if(pVideoCallProcessor.m_iLoudSpeakerEnable == 1)
     {
-        g_prevSpeakerState = 1;
+        pVideoCallProcessor.m_iLoudSpeakerEnable = 2;
         
         UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
         AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRouteOverride), &audioRouteOverride);

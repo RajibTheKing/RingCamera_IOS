@@ -227,7 +227,7 @@ int g_iPort;
 
 - (IBAction)loudSpeakerAction:(id)sender
 {
-    g_pVideoCallProcessor.m_bLoudSpeakerEnable = true;
+    g_pVideoCallProcessor.m_iLoudSpeakerEnable = 1;
     [_ldSpeakerBtn setEnabled:false];
 }
 - (IBAction)ChangePort:(id)sender
@@ -345,6 +345,8 @@ int g_iPort;
     
     
     [session stopRunning];
+    [_ldSpeakerBtn setEnabled:true];
+    g_pVideoCallProcessor.m_iLoudSpeakerEnable = 0;
     
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         MyCustomImageView.image = nil;
