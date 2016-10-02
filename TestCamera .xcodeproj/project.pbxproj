@@ -97,9 +97,26 @@
 		2BA4851013F1E6CC000BABB3 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2BA4850C13F1E6CC000BABB3 /* MainStoryboard_iPad.storyboard */; };
 		2BA4851713F1E6DB000BABB3 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4851313F1E6DB000BABB3 /* main.mm */; };
 		619176C51C02ED760052A12A /* RingCallModuleResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 619176C41C02ED760052A12A /* RingCallModuleResource.bundle */; };
-		DA6366391D74215400EB2DF5 /* libAudioVideoEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6366381D74215400EB2DF5 /* libAudioVideoEngine.a */; };
-		DAAB12271C466970001A4B91 /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAB12261C466970001A4B91 /* libRingIDSDK.a */; };
+		DA299DF91DA10B1F0065E171 /* libAudioVideoEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA299DF81DA10B1F0065E171 /* libAudioVideoEngine.a */; };
+		DA299DFB1DA10B2D0065E171 /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA299DFA1DA10B2D0065E171 /* libRingIDSDK.a */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DA299DF01DA1089A0065E171 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA299DEC1DA1089A0065E171 /* RingIDSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FF6FF2741C0B218200CD104A;
+			remoteInfo = RingIDSDK;
+		};
+		DA299DF61DA1089F0065E171 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA299DF21DA1089E0065E171 /* AudioVideoEngine.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1852B3471BCE1D3A000FF5C4;
+			remoteInfo = AudioVideoEngine;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		18747AE71BFDD0C50010CAA3 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = TestCamera/VideoTeam/Common.h; sourceTree = "<group>"; };
@@ -333,9 +350,11 @@
 		2BA4851313F1E6DB000BABB3 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = main.mm; path = TestCamera/main.mm; sourceTree = SOURCE_ROOT; };
 		2BA4851413F1E6DB000BABB3 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = TestCamera/Prefix.pch; sourceTree = SOURCE_ROOT; };
 		619176C41C02ED760052A12A /* RingCallModuleResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = RingCallModuleResource.bundle; sourceTree = "<group>"; };
-		DA6366381D74215400EB2DF5 /* libAudioVideoEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAudioVideoEngine.a; path = RingCallModule/RingCallModuleFIles/Frameworks/IPVConnectivityFramework/lib/libAudioVideoEngine.a; sourceTree = "<group>"; };
+		DA299DEC1DA1089A0065E171 /* RingIDSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RingIDSDK.xcodeproj; path = "../IPV-RingIDSDK/RingIDSDK.xcodeproj"; sourceTree = "<group>"; };
+		DA299DF21DA1089E0065E171 /* AudioVideoEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioVideoEngine.xcodeproj; path = "../IPV-MediaEngine/AudioVideoEngine.xcodeproj"; sourceTree = "<group>"; };
+		DA299DF81DA10B1F0065E171 /* libAudioVideoEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAudioVideoEngine.a; path = "Build/Products/Debug-iphoneos/libAudioVideoEngine.a"; sourceTree = "<group>"; };
+		DA299DFA1DA10B2D0065E171 /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = "Build/Products/Debug-iphoneos/libRingIDSDK.a"; sourceTree = "<group>"; };
 		DAAB12241C465DDD001A4B91 /* RingIDSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingIDSDK.h; sourceTree = "<group>"; };
-		DAAB12261C466970001A4B91 /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = RingCallModule/RingCallModuleFIles/Frameworks/IPVConnectivityFramework/lib/libRingIDSDK.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -345,10 +364,10 @@
 			files = (
 				1B3C9A34139D4EAA0042676B /* ImageIO.framework in Frameworks */,
 				18EB2B2E1C02E78300153D45 /* RingSocket.framework in Frameworks */,
-				DA6366391D74215400EB2DF5 /* libAudioVideoEngine.a in Frameworks */,
+				DA299DF91DA10B1F0065E171 /* libAudioVideoEngine.a in Frameworks */,
 				1B3C9A32139D4E740042676B /* QuartzCore.framework in Frameworks */,
+				DA299DFB1DA10B2D0065E171 /* libRingIDSDK.a in Frameworks */,
 				1B3C9A30139D4E5F0042676B /* CoreMedia.framework in Frameworks */,
-				DAAB12271C466970001A4B91 /* libRingIDSDK.a in Frameworks */,
 				1B867FE1139D4AD300AD6B47 /* CoreGraphics.framework in Frameworks */,
 				1B3C9A2E139D4E350042676B /* AssetsLibrary.framework in Frameworks */,
 				1B3C9A2C139D4E1C0042676B /* CoreImage.framework in Frameworks */,
@@ -815,8 +834,10 @@
 		1B867FCD139D4AD300AD6B47 = {
 			isa = PBXGroup;
 			children = (
-				DAAB12261C466970001A4B91 /* libRingIDSDK.a */,
-				DA6366381D74215400EB2DF5 /* libAudioVideoEngine.a */,
+				DA299DFA1DA10B2D0065E171 /* libRingIDSDK.a */,
+				DA299DF81DA10B1F0065E171 /* libAudioVideoEngine.a */,
+				DA299DF21DA1089E0065E171 /* AudioVideoEngine.xcodeproj */,
+				DA299DEC1DA1089A0065E171 /* RingIDSDK.xcodeproj */,
 				9DC00C551C02E02E00966587 /* RingCallModule */,
 				18747B031BFDD0CD0010CAA3 /* VideoTeam */,
 				1B867FE2139D4AD300AD6B47 /* TestCamera */,
@@ -885,6 +906,22 @@
 			name = RingCallModule;
 			sourceTree = "<group>";
 		};
+		DA299DED1DA1089A0065E171 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DA299DF11DA1089A0065E171 /* libRingIDSDK.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DA299DF31DA1089E0065E171 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DA299DF71DA1089F0065E171 /* libAudioVideoEngine.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -928,12 +965,39 @@
 			mainGroup = 1B867FCD139D4AD300AD6B47;
 			productRefGroup = 1B867FD9139D4AD300AD6B47 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = DA299DF31DA1089E0065E171 /* Products */;
+					ProjectRef = DA299DF21DA1089E0065E171 /* AudioVideoEngine.xcodeproj */;
+				},
+				{
+					ProductGroup = DA299DED1DA1089A0065E171 /* Products */;
+					ProjectRef = DA299DEC1DA1089A0065E171 /* RingIDSDK.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1B867FD7139D4AD300AD6B47 /* TestCamera */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		DA299DF11DA1089A0065E171 /* libRingIDSDK.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRingIDSDK.a;
+			remoteRef = DA299DF01DA1089A0065E171 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DA299DF71DA1089F0065E171 /* libAudioVideoEngine.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAudioVideoEngine.a;
+			remoteRef = DA299DF61DA1089F0065E171 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1B867FD6139D4AD300AD6B47 /* Resources */ = {
@@ -1165,6 +1229,7 @@
 					"$(PROJECT_DIR)/TestCamera/NATTraversalTeam",
 					"$(PROJECT_DIR)/NATTraversalTeam",
 					"$(PROJECT_DIR)/TestCamera",
+					"$(PROJECT_DIR)/Build/Products/Debug-iphoneos",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -1212,6 +1277,7 @@
 					"$(PROJECT_DIR)/TestCamera/NATTraversalTeam",
 					"$(PROJECT_DIR)/NATTraversalTeam",
 					"$(PROJECT_DIR)/TestCamera",
+					"$(PROJECT_DIR)/Build/Products/Debug-iphoneos",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
