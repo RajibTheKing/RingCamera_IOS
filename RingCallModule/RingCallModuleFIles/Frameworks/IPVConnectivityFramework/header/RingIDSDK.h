@@ -168,7 +168,7 @@ public:
     
     int SendVideoData(const LongLong& lFriendID, unsigned char *in_data, unsigned int in_size, unsigned int orientation_type=0, int device_orientation=0);
     
-    int SetHeightWidth(const LongLong& lFriendID, int width, int height);
+    int SetEncoderHeightWidth(const LongLong& lFriendID, int height, int width);
     
     int SetBitRate(const LongLong& lFriendID, int bitRate);
     
