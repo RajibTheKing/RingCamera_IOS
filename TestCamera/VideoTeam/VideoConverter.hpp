@@ -56,6 +56,7 @@ public:
     int Convert_YUVNV12_To_YUVI420(byte* yPlane, byte* uvPlane, byte* outData, int m_iHeight, int m_iWidth);
     int Convert_YUVI420_To_YUVNV12(byte* pData,  byte *y_ch0, byte* y_ch1,int iRenderHeight, int iRenderWidth);
     CVPixelBufferRef Convert_YUVNV12_To_CVPixelBufferRef(byte* y_ch0, byte* y_ch1, int iRenderHeight, int iRenderWidth);
+    void mirrorRotateAndConvertNV12ToI420(unsigned char *m_pFrame, unsigned char *pData, int iVideoHeight, int iVideoWidth);
     
     int Convert_UIImage_To_RGBA8(UIImage *pImage, byte** outBuf);
     
@@ -73,7 +74,7 @@ public:
     int m_iTestCount;
     int iCiContextController;
     
-
+    int m_Multiplication[640][640];
     
     int ServerFd;
     struct sockaddr_in Server;

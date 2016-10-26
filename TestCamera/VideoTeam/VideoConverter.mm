@@ -26,6 +26,12 @@ CVideoConverter::CVideoConverter()
     temporaryContext = [[CIContext contextWithOptions:nil]retain];
     iCiContextController =0;
     m_iTestCount = 0;
+    
+    for (int i = 0; i < 481; i++)
+        for (int j = 0; j < 641; j++)
+        {
+            m_Multiplication[i][j] = i*j;
+        }
 }
 
 UIImage* CVideoConverter::Convert_CMSampleBufferRef_To_UIImage(CMSampleBufferRef sampleBuffer)
@@ -90,7 +96,7 @@ UIImage* CVideoConverter::Convert_CVPixelBufferRef_To_UIImage( CVPixelBufferRef 
 #endif
 
 #ifdef USE_CONTEXT
-    UIImage *pImage = [[UIImage alloc] initWithCGImage:videoImage/* scale:1.0 orientation:UIImageOrientationLeftMirrored*/];
+    UIImage *pImage = [[UIImage alloc] initWithCGImage:videoImage scale:1.0 orientation:UIImageOrientationUpMirrored];
 #else
     UIImage *pImage = [[UIImage alloc] initWithCIImage:ciImage scale:1.0 orientation:UIImageOrientationLeftMirrored];
     
@@ -125,6 +131,37 @@ int CVideoConverter::Convert_YUVNV12_To_YUVI420(byte* yPlane, byte* uvPlane, byt
     return 1;
 }
 */
+void CVideoConverter::mirrorRotateAndConvertNV12ToI420(unsigned char *m_pFrame, unsigned char *pData, int iVideoHeight, int iVideoWidth)
+{
+    //Locker lock(*m_pColorConverterMutex);
+    
+    int iWidth = iVideoHeight;
+    int iHeight = iVideoWidth;
+    
+    int i = 0;
+    
+    for (int x = iWidth - 1; x >-1; --x)
+    {
+        for (int y = 0; y <iHeight; ++y)
+        {
+            pData[i] = m_pFrame[m_Multiplication[y][iWidth] + x];
+            i++;
+        }
+    }
+    
+    int halfWidth = iWidth / 2;
+    int halfHeight = iHeight / 2;
+    int dimention = m_Multiplication[iHeight][iWidth];
+    int vIndex = dimention + m_Multiplication[halfHeight][halfWidth];
+    
+    for (int x = halfWidth - 1; x>-1; --x)
+        for (int y = 0; y < halfHeight; ++y)
+        {
+            int ind = ( m_Multiplication[y][halfWidth] + x) * 2;
+            pData[vIndex++] = m_pFrame[dimention + ind];
+            pData[i++] = m_pFrame[dimention + ind + 1];
+        }
+}
 
 int CVideoConverter::Convert_YUVI420_To_YUVNV12(unsigned char *convertingData, unsigned char *channel0, unsigned char *channel1,  int iVideoHeight, int iVideoWidth)
 {
