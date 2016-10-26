@@ -160,13 +160,16 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     cout<<"Here height and width = "<<m_iCameraHeight<<", "<<m_iCameraWidth<<endl;
     
-    if(m_iCameraWidth == 288)
-        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 640, 480, 352, 288);
+    if(m_iCameraHeight * m_iCameraWidth == 288 * 352)
+        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 480, 640, 288, 352);
     else
-        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
+        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 480, 640, 288, 352);
     
     iRet = m_pVideoAPI->StartAudioCall(200);
-    int iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth,0); //Added NetworkType
+    int iRetStartVideoCall;
+    
+    iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth);
+    //iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth,RECEIVE_SESSION);
     
     NSLog(@"StartVideoCaLL returned, iRet = %d", iRet);
     //iRet = m_pVideoAPI->CheckDeviceCapability(200, m_iCameraHeight, m_iCameraWidth);
@@ -207,12 +210,12 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         usleep(60*1000);
     }
 }
-- (void)SetWidthAndHeight:(int)iWidth withHeight:(int)iHeight
+- (void)SetHeightAndWidth:(int)iHeight withWidth:(int)iWidth
 {
-    m_iCameraHeight = iWidth;
-    m_iCameraWidth = iHeight;
+    m_iCameraHeight = iHeight;
+    m_iCameraWidth = iWidth;
     
-    [m_pVTP SetWidthAndHeight:iHeight withHeight:iWidth];
+    [m_pVTP SetHeightAndWidth:iHeight withWidth:iWidth];
     
 }
 
@@ -284,11 +287,12 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     *session = [AVCaptureSession new];
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
     {
-        if(*iHeight == 352 && *iWidth==288)
+        if(*iHeight * *iWidth== 288 * 352)
         {
             [*session setSessionPreset:AVCaptureSessionPreset352x288];
+            
         }
-        else if(*iHeight == 640 && *iWidth == 480)
+        else if(*iHeight * *iWidth == 480 * 640)
         {
             [*session setSessionPreset:AVCaptureSessionPreset640x480];
         }
@@ -305,7 +309,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         //*iWidth = 480;
         
         
-        [self SetWidthAndHeight:*iHeight withHeight:*iWidth];
+        [self SetHeightAndWidth:*iHeight withWidth:*iWidth];
         
         m_pEncodeBuffer = new RingBuffer<byte>(m_iCameraWidth,m_iCameraHeight,5);
         [m_pVTP SetEncodeBuffer:m_pEncodeBuffer];
@@ -337,6 +341,19 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     [*videoDataOutput setVideoSettings:colorOutputSettings];
     [*videoDataOutput setAlwaysDiscardsLateVideoFrames:NO]; // discard if the data output queue is blocked (as we process the still image)
 
+    [[*videoDataOutput connectionWithMediaType:AVMediaTypeVideo] setEnabled:NO];
+    [[*videoDataOutput connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:AVCaptureVideoOrientationPortrait];
+    
+    
+    
+    AVCaptureConnection *conn = [*videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
+    NSLog(@"Trying to Set AVCaptureVideoOrientationPortrait");
+    if([conn isVideoOrientationSupported])
+    {
+        NSLog(@"Setting VideoOrientation with AVCaptureVideoOrientationPortrait");
+        [conn setVideoOrientation:AVCaptureVideoOrientationPortrait];
+    }
+    
     
     
     
@@ -346,17 +363,24 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     }
     
     
-    [[*videoDataOutput connectionWithMediaType:AVMediaTypeVideo] setEnabled:NO];
     
     
     
     videoDataOutputQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
     [*videoDataOutput setSampleBufferDelegate:self queue:videoDataOutputQueue];
     
+
     
     *previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:*session];
     [*previewLayer setBackgroundColor:[[UIColor blackColor] CGColor]];
     [*previewLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
+    
+    //[*previewLayer setOrientation:AVCaptureVideoOrientationPortrait];
+    
+    
+    
+    
+    
     
     
     
@@ -374,6 +398,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         if ([d position] == desiredPosition)
         {
             [[*previewLayer session] beginConfiguration];
+            
             
             //d.activeVideoMinFrameDuration = CMTimeMake(1, (int32_t)30);
             
@@ -403,12 +428,13 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
                         });
                     } else {
                         // Permission has been denied.
+                        NSLog(@"selected Permission has been denied.");
                     }
                 }];
             } else {
                 // We are on iOS <= 6. Just do what we need to do.
                 //[self doStuff];
-                NSLog(@"Here 2");
+                NSLog(@"We are on iOS <= 6. Just do what we need to do.");
             }
             
             
@@ -427,74 +453,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         }
     }
     
-    /*
-    //Getting Permission
-    if ([AVCaptureDevice respondsToSelector:@selector(requestAccessForMediaType: completionHandler:)]) {
-        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
-            // Will get here on both iOS 7 & 8 even though camera permissions weren't required
-            // until iOS 8. So for iOS 7 permission will always be granted.
-            if (granted) {
-                // Permission has been granted. Use dispatch_async for any UI updating
-                // code because this block may be executed in a thread.
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    //[self doStuff];
-                    NSLog(@"Here 1");
-                });
-            } else {
-                // Permission has been denied.
-            }
-        }];
-    } else {
-        // We are on iOS <= 6. Just do what we need to do.
-        //[self doStuff];
-        NSLog(@"Here 2");
-    }
-    //Permission procedure done
-    
-    
-    
-    //Setting Force FPS to IOS Camera:
-    
-    
-    int desiredFPS = 30;
-    AVCaptureDevice *videoDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-    AVCaptureDeviceFormat *selectedFormat = nil;
-    int32_t maxWidth = 0;
-    AVFrameRateRange *frameRateRange = nil;
-    
-    for (AVCaptureDeviceFormat *format in [videoDevice formats]) {
-        
-        for (AVFrameRateRange *range in format.videoSupportedFrameRateRanges) {
-            
-            CMFormatDescriptionRef desc = format.formatDescription;
-            CMVideoDimensions dimensions = CMVideoFormatDescriptionGetDimensions(desc);
-            int32_t width = dimensions.width;
-            
-            if (range.minFrameRate <= desiredFPS && desiredFPS <= range.maxFrameRate && width >= maxWidth) {
-                
-                selectedFormat = format;
-                frameRateRange = range;
-                maxWidth = width;
-                NSLog(@"selected format:%@", selectedFormat);
-                
-            }
-        }
-    }
-    
-    if (selectedFormat) {
-        
-        if ([videoDevice lockForConfiguration:nil]) {
-            
-            NSLog(@"selected format:%@", selectedFormat);
-            videoDevice.activeFormat = selectedFormat;
-            videoDevice.activeVideoMinFrameDuration = CMTimeMake(1, (int32_t)desiredFPS);
-            videoDevice.activeVideoMaxFrameDuration = CMTimeMake(1, (int32_t)desiredFPS);
-            [videoDevice unlockForConfiguration];
-        }
-    }
-    //End of procedure for force fps to camera
-    */
-    
+   
     
     return error;
 }
@@ -519,89 +478,100 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 {
     [self.delegate UpdateStatusMessage:sMsg];
 }
-
 int tempCounter = 0;
+int stride = 352;
 - (int)FrontConversion:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
-    if(tempCounter == 0)
-    {
-        cout<<"First Frame after camera Initialization = "<<[self GetTimeStamp2] - _m_lCameraInitializationStartTime<<endl;
-    }
-    
-    tempCounter++;
-    printf("Rajib_Check: Inside FrontConversion\n");
-    
-    [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
-    [connection setVideoMirrored:false];
-    
-    
+
+    //[connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+    //[connection setVideoMirrored:false];
+
     //usleep(15*1000);
-    
-    //if(m_bCheckCall == true && tempCounter>200) return 0;
-    
     //### Step 2: Controlling FPS, Currently disabled
     //[connection setVideoMinFrameDuration:CMTimeMake(1, 15.0)];
     //[connection setVideoMaxFrameDuration:CMTimeMake(1, 17.0)];
     
     
-    
-    
-    
-    
     CVImageBufferRef IB = CMSampleBufferGetImageBuffer(sampleBuffer);
-    int iHeight = CVPixelBufferGetHeight(IB);
-    int iWidth = CVPixelBufferGetWidth(IB);
-    m_iCameraHeight = iHeight;
-    m_iCameraWidth = iWidth;
-    
-    printf("VideoTeam_Check: iHeight = %d, iWidth = %d\n", iHeight , iWidth);
     CVPixelBufferLockBaseAddress(IB,0);
     CVPixelBufferLockBaseAddress(IB,1);
     
+    int iHeight = CVPixelBufferGetHeight(IB);
+    int iWidth = CVPixelBufferGetWidth(IB);
+    int bytesPerRow = CVPixelBufferGetBytesPerRow(IB);
+    
+    m_iCameraHeight = iHeight;
+    m_iCameraWidth = iWidth;
+    
+    byte *base = (byte *)CVPixelBufferGetBaseAddress(IB); // baseAddress
     byte *y_ch0 = (byte *)CVPixelBufferGetBaseAddressOfPlane(IB, 0); // Y-Plane = y_ch0
     byte *y_ch1 = (byte *)CVPixelBufferGetBaseAddressOfPlane(IB, 1); // UV-Plane = y_ch1
     
-    //byte *pCameraData = (byte *)malloc(m_iCameraHeight * m_iCameraWidth * 3 / 2);
-    //memcpy(pCameraData, y_ch0, bytesPerRow0);
-    //memcpy(pCameraData + bytesPerRow0, y_ch1, bytesPerRow1);
-    CVPixelBufferUnlockBaseAddress(IB,0);
-    CVPixelBufferUnlockBaseAddress(IB,1);
-    
-    
-    //int iWritebleIndex[1];
-    //byte* pRawYuv = m_pEncodeBuffer->getWritableAddress(iWritebleIndex);
-    
-    //m_pVideoConverter->Convert_YUVNV12_To_YUVI420(y_ch0, y_ch1, pRawYuv, m_iCameraHeight, m_iCameraWidth);
+    int baseDiff = y_ch0 - base;     //y_base = 64;
+    int uv_y = y_ch1-y_ch0;       //uv_y = 176640;
+    int delta = uv_y - iWidth*iHeight;
+    int padding = delta /  iHeight; //Calculate Padding
+    //NSLog(@"VideoTeam_Check: iHeight = %i, iWidth = %i, bytesPerRow = %i, ExtendedWidth = %i, (baseDiff,uv-y,delta) = (%i,%i,%i)\n", iHeight , iWidth, bytesPerRow, bytesPerRow/4, baseDiff, uv_y, delta);
     
     
     int iVideoHeight = m_iCameraHeight;
     int iVideoWidth = m_iCameraWidth;
     int YPlaneLength = iVideoHeight*iVideoWidth;
     int VPlaneLength = YPlaneLength >> 2;
-    //int UVPlaneMidPoint = YPlaneLength + VPlaneLength;
-    //int UVPlaneEnd = UVPlaneMidPoint + VPlaneLength;
     
+    unsigned char *p = pRawYuv;
+    for(int i=0;i<iVideoHeight;i++)
+    {
+        memcpy(p + i * iVideoWidth, y_ch0 + i * (iVideoWidth+padding), iVideoWidth);
+    }
     
+    p = p + YPlaneLength;
+    for(int i=0; i*iVideoWidth < (VPlaneLength*2); i++)
+    {
+        memcpy(p + i * iVideoWidth, y_ch1 + i * (iVideoWidth+padding), iVideoWidth);
+    }
     
-    memcpy(pRawYuv, y_ch0, YPlaneLength);
-    memcpy(pRawYuv+YPlaneLength, y_ch1, VPlaneLength+VPlaneLength);
+        
+    //memcpy(pRawYuv, y_ch0, YPlaneLength);
+    //memcpy(pRawYuv+YPlaneLength, y_ch1, VPlaneLength+VPlaneLength);
 
-    int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
+    //
+    
+    CVPixelBufferUnlockBaseAddress(IB,0);
+    CVPixelBufferUnlockBaseAddress(IB,1);
+    
+    //int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
+    
+    //Sending to OwnReceiving Thread Directly using VideoAPI
+    CVideoAPI::GetInstance()->m_iReceivedHeight = iVideoHeight;
+    CVideoAPI::GetInstance()->m_iReceivedWidth = iVideoWidth;
+    CVideoAPI::GetInstance()->ReceiveFullFrame(pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
+    
+    //Sending to OwnViewer Directly
+    //m_iRenderHeight = iVideoHeight;
+    //m_iRenderWidth = iVideoWidth;
+    //[self BackConversion:pRawYuv];
+    
     //cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
     
     //printf("Rajib_Check: Trying to SendVideoDataV\n");
     
-    
+    /*
     if(tempCounter<300)
     {
         //printf("TheKing--> tempCounter = %d\n", tempCounter);
         //cout<<"TheKing--> tempCounter = "<<tempCounter<<endl;
         tempCounter++;
-        ConvertNV12ToI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
+        
+        //ConvertNV12ToI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
+        
+        //byte newData[352*288*3/2];
+        
+        //m_pVideoConverter->mirrorRotateAndConvertNV12ToI420(pRawYuv, newData, iVideoHeight, iVideoWidth);
         
         [self WriteToFile:pRawYuv dataLength:m_iCameraHeight * m_iCameraWidth * 3 / 2 filePointer:m_FileForDump];
     }
-    
+    */
     return 0;
 }
 

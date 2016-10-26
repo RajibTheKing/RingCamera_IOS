@@ -133,13 +133,17 @@ int g_iPort;
      */
     if([self.ResField.text isEqual:@"640x480"])
     {
-        m_iCameraHeight = 640;
-        m_iCameraWidth = 480;
+        m_iCameraHeight = 480;
+        m_iCameraWidth = 640;
+        
     }
     else
     {
-        m_iCameraHeight = 352;
-        m_iCameraWidth = 288;
+        m_iCameraHeight = 288;
+        m_iCameraWidth = 352;
+        
+        
+        
     }
     
     g_pVideoCallProcessor.m_lCameraInitializationStartTime = GetTimeStamp();

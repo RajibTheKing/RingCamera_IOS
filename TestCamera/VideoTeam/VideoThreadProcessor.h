@@ -47,7 +47,7 @@
 
 - (id) init;
 + (id)GetInstance;
-- (void)SetWidthAndHeight:(int)iWidth withHeight:(int)iHeight;
+- (void)SetHeightAndWidth:(int)iHeight withWidth:(int)iHeight;
 - (void)SetVideoAPI:(CVideoAPI *)pVideoAPI;
 
 - (void)SetEncodeBuffer:(RingBuffer<byte> *)pBuffer;

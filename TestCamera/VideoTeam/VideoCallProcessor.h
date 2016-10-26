@@ -82,7 +82,7 @@
 - (int) Initialize : (long long)lUserId withServerIP:(NSString *)sMyIP;
 - (int)InitializeVideoEngine:(long long) lUserId;
 
-- (void)SetWidthAndHeight:(int)iWidth withHeight:(int)iHeight;
+- (void)SetHeightAndWidth:(int)iHeight withWidth:(int)iHeight;
 
 - (void)SetVideoSockets:(VideoSockets *)pVideoSockets;
 

@@ -49,10 +49,10 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
 }
 
 
-- (void)SetWidthAndHeight:(int)iWidth withHeight:(int)iHeight
+- (void)SetHeightAndWidth:(int)iHeight withWidth:(int)iWidth
 {
-    m_iCameraHeight = iWidth;
-    m_iCameraWidth = iHeight;
+    m_iCameraHeight = iHeight;
+    m_iCameraWidth = iWidth;
 }
 
 - (void)EventThread
