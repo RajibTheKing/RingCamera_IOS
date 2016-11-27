@@ -7,7 +7,7 @@
 #include "RingBuffer.hpp"
 #include <stdio.h>
 #include "VideoCallProcessor.h"
-#include "common.h"
+#include "common.hpp"
 
 
 @interface TestCameraViewController : UIViewController <UIGestureRecognizerDelegate, AVCaptureVideoDataOutputSampleBufferDelegate, UITextFieldDelegate, ViewControllerDelegate>

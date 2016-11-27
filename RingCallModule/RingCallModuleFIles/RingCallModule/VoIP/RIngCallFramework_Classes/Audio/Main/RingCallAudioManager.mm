@@ -813,7 +813,7 @@ static OSStatus playbackCallback(void *inRefCon,
     
     
     //cout<<"RingCallAudioManager:: VideoAPI->PushAudioForDecoding --> "<<"lUser = "<<lUser<<", len = "<<len<<endl;
-    CVideoAPI::GetInstance()->PushAudioForDecoding(lUser, byteData, len);
+    //CVideoAPI::GetInstance()->PushAudioForDecoding(lUser, byteData, len);
     
     /*
     //memcpy(shortArray, byteData, len);

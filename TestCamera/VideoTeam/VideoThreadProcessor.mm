@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #include "VideoThreadProcessor.h"
 
+
 @implementation VideoThreadProcessor
 
 byte baVideoRenderBuffer[MAXWIDTH * MAXHEIGHT * 3 / 2 + 100];
@@ -22,6 +23,7 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
     _bEncodeThreadActive = false;
     _bEventThreadActive = false;
     m_iFrameNumber = 0;
+    m_pRenderingAvg = new CAverageCalculator("RenderignAverage");
     return self;
 }
 
@@ -95,7 +97,8 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
 {
     @autoreleasepool {
         printf("Starting RenderThread....\n");
-        
+        long long llPrevTime = -1;
+        int kounter = 0;
         while(_bRenderThreadActive)
         {
             //break;
@@ -161,8 +164,14 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
             
             if(height > 0 && width > 0)
             {
+                kounter++;
+                llPrevTime = m_pVideoAPI->GetCurrentTimeStamp();
                 [self.delegate SetWidthAndHeightForRendering:width withHeight:height];
                 [self.delegate BackConversion:baVideoRenderBuffer];
+                m_pRenderingAvg->UpdateData(m_pVideoAPI->GetCurrentTimeStamp() - llPrevTime);
+                
+                if(kounter%100==0)
+                    cout<<"RenderingAverage : "<<m_pRenderingAvg->GetAverage()<<endl;
                 
             }
             if(pGotData!= NULL)

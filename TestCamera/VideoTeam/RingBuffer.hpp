@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <pthread.h>
-#include "common.h"
+#include "common.hpp"
 using namespace std;
 
 #define AVAILABLE_TO_WRITE	0

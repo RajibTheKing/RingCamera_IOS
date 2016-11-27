@@ -12,9 +12,10 @@
 #import <AVFoundation/AVFoundation.h>
 
 
-#include "Common.h"
+#include "Common.hpp"
 #include "RingBuffer.hpp"
 #include "VideoAPI.hpp"
+#include "AverageCalculator.h" 
 
 @protocol VideoThreadProcessorDelegate <NSObject>
 @required
@@ -32,6 +33,7 @@
     int m_iCameraHeight;
     int m_iCameraWidth;
     int m_iFrameNumber;
+    CAverageCalculator  *m_pRenderingAvg;
     
     id <VideoThreadProcessorDelegate> _delegate;
 

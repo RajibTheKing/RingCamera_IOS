@@ -23,7 +23,7 @@
 #import <CoreTelephony/CTCall.h>
 #import <sys/sysctl.h>
 
-#include "Common.h"
+//#include "Common.hpp"
 
 #ifndef max
 #define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
@@ -144,7 +144,7 @@
 - (void) createAndGetPCMfromotherFormat;
 - (void) setAudioOutputSpeaker:(BOOL)enabled;
 
-void WriteToFileV(byte *pData, int iLen);
+void WriteToFileV(unsigned char *pData, int iLen);
 
 
 

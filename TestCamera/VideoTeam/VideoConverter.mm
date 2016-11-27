@@ -131,36 +131,70 @@ int CVideoConverter::Convert_YUVNV12_To_YUVI420(byte* yPlane, byte* uvPlane, byt
     return 1;
 }
 */
-void CVideoConverter::mirrorRotateAndConvertNV12ToI420(unsigned char *m_pFrame, unsigned char *pData, int iVideoHeight, int iVideoWidth)
+int CVideoConverter::ConvertI420ToNV12(unsigned char *convertingData, int iVideoHeight, int iVideoWidth)
 {
     //Locker lock(*m_pColorConverterMutex);
     
-    int iWidth = iVideoHeight;
-    int iHeight = iVideoWidth;
+    int i, j, k;
+    
+    int YPlaneLength = iVideoHeight*iVideoWidth;
+    int VPlaneLength = YPlaneLength >> 2;
+    int UVPlaneMidPoint = YPlaneLength + VPlaneLength;
+    int UVPlaneEnd = UVPlaneMidPoint + VPlaneLength;
+    
+    memcpy(m_pUPlane, convertingData + YPlaneLength, VPlaneLength);
+    
+    for (i = YPlaneLength, j = 0, k = UVPlaneMidPoint; i < UVPlaneEnd; i += 2, j++, k++)
+    {
+        convertingData[i] = m_pUPlane[j];
+        convertingData[i + 1] = convertingData[k];
+    }
+    
+    return UVPlaneEnd;
+}
+void CVideoConverter::mirrorRotateAndConvertNV12ToI420(unsigned char *m_pFrame, unsigned char *pData, int &iVideoHeight, int &iVideoWidth)
+{
+    //Locker lock(*m_pColorConverterMutex);
+    
+    int iWidth = iVideoWidth;
+    int iHeight = iVideoHeight;
     
     int i = 0;
     
-    for (int x = iWidth - 1; x >-1; --x)
+    for (int x = iWidth-1; x>=0 ; x--)
     {
-        for (int y = 0; y <iHeight; ++y)
+        for (int y = 0; y <iHeight; y++)
         {
-            pData[i] = m_pFrame[m_Multiplication[y][iWidth] + x];
+            int indx =m_Multiplication[y][iWidth] - x-1;
+            if(indx<0)
+                indx = iWidth-x-1;
+            else if(indx >= (iHeight -1) * iWidth)
+            {
+                indx = iHeight-y;
+            }
+            
+            pData[i] = m_pFrame[indx];
             i++;
         }
     }
+    
     
     int halfWidth = iWidth / 2;
     int halfHeight = iHeight / 2;
     int dimention = m_Multiplication[iHeight][iWidth];
     int vIndex = dimention + m_Multiplication[halfHeight][halfWidth];
     
-    for (int x = halfWidth - 1; x>-1; --x)
-        for (int y = 0; y < halfHeight; ++y)
+    for (int x = halfWidth-1; x>=0; x--)
+        for (int y = 0; y < halfHeight; y++)
         {
-            int ind = ( m_Multiplication[y][halfWidth] + x) * 2;
-            pData[vIndex++] = m_pFrame[dimention + ind];
-            pData[i++] = m_pFrame[dimention + ind + 1];
+            
+            int ind = ( m_Multiplication[y][halfWidth] - x-1) * 2;
+            if(ind<0) ind = (halfWidth-x-1)*2;
+            
+            pData[i++] = m_pFrame[dimention + ind];
+            pData[vIndex++] = m_pFrame[dimention + ind + 1];
         }
+    
 }
 
 int CVideoConverter::Convert_YUVI420_To_YUVNV12(unsigned char *convertingData, unsigned char *channel0, unsigned char *channel1,  int iVideoHeight, int iVideoWidth)
@@ -346,4 +380,213 @@ int CVideoConverter::Convert_UIImage_To_RGBA8(UIImage *pImage, byte** outBuf)
     return 1;
     
 }
+
+int CVideoConverter::DownScaleVideoData(byte* pData, int &iHeight, int &iWidth, byte* outputData)
+{
+    
+    int YPlaneLength = iHeight*iWidth;
+    int indx = 0;
+
+    for(int i=0;i<iHeight;i+=4)
+    {
+        for(int j=0;j<iWidth;j+=2)
+        {
+            outputData[indx++] = pData[i*iWidth + j];
+        }
+        
+        for(int j=0;j<iWidth;j+=2)
+        {
+            outputData[indx++] = pData[(i+1)*iWidth + j];
+        }
+    }
+    
+    byte*p = pData+YPlaneLength;
+    
+    for(int i=0;i<iHeight/2;i+=2)
+    {
+        for(int j=0;j<iWidth;j+=4)
+        {
+            outputData[indx++] = p[i*iWidth + j];
+            outputData[indx++] = p[i*iWidth + j+1];
+        }
+    }
+    
+    //cout<<"CurrentLen = "<<indx<<endl;
+    
+    iHeight = iHeight>>1;
+    iWidth = iWidth>>1;
+    
+    
+    return indx;
+    
+}
+
+int CVideoConverter::DownScaleVideoDataWithAverage(byte* pData, int &iHeight, int &iWidth, byte* outputData)
+{
+    
+    int YPlaneLength = iHeight*iWidth;
+    int indx = 0;
+    
+    for(int i=0;i<iHeight;i+=4)
+    {
+        for(int j=0;j<iWidth;j+=2)
+        {
+            //outputData[indx++] = pData[i*iWidth + j];
+            
+            int w,x,y,z;
+            w = pData[i*iWidth + j];
+            x = pData[i*iWidth + j+2];
+            y = pData[(i+2)*iWidth + j];
+            z = pData[(i+2)*iWidth + j+2];
+            int avg = (w+x+y+z)/4;
+            outputData[indx++] = (byte)avg;
+            
+        }
+        
+        for(int j=0;j<iWidth;j+=2)
+        {
+            int I = i+1;
+            
+            int w,x,y,z;
+            w = pData[I*iWidth + j];
+            x = pData[I*iWidth + j+2];
+            y = pData[(I+2)*iWidth + j];
+            z = pData[(I+2)*iWidth + j+2];
+            int avg = (w+x+y+z)/4;
+            outputData[indx++] = (byte)avg;
+        }
+    }
+    
+    byte*p = pData+YPlaneLength;
+    for(int i=0;i<iHeight/2;i+=2)
+    {
+        for(int j=0;j<iWidth;j+=4)
+        {
+            int w,x,y,z, J, avg;
+            
+            
+            w = p[i*iWidth + j];
+            x = p[i*iWidth + j+2];
+            y = p[(i+1)*iWidth + j];
+            z = p[(i+1)*iWidth + j+2];
+            avg = (w+x+y+z)/4;
+            outputData[indx++] = (byte)avg;
+            //outputData[indx++] = p[i*iWidth + j];
+            
+            J = j+1;
+            w = p[i*iWidth + J];
+            x = p[i*iWidth + J+2];
+            y = p[(i+1)*iWidth + J];
+            z = p[(i+1)*iWidth + J+2];
+            avg = (w+x+y+z)/4;
+            outputData[indx++] = (byte)avg;
+            //outputData[indx++] = p[i*iWidth + j+1];
+        }
+    }
+    
+    cout<<"CurrentLen = "<<indx<<endl;
+    
+    iHeight = iHeight>>1;
+    iWidth = iWidth>>1;
+    
+    
+    return indx;
+    
+}
+
+
+int CVideoConverter::DownScaleVideoDataWithAverageVersion2(byte* pData, int &iHeight, int &iWidth, byte* outputData)
+{
+    
+    int YPlaneLength = iHeight*iWidth;
+    int indx = 0;
+    
+    for(int i=0;i<iHeight;i+=4)
+    {
+        for(int j=0;j<iWidth;j+=2)
+        {
+            //outputData[indx++] = pData[i*iWidth + j];
+            int w,x,y,z;
+            if(j%2==0)
+            {
+                w = pData[i*iWidth + j];
+                x = pData[i*iWidth + j+1];
+                y = pData[(i+1)*iWidth + j];
+                z = pData[(i+1)*iWidth + j+1];
+                int avg = (w+x+y+z)/4;
+                outputData[indx++] = (byte)avg;
+            }
+            else
+            {
+                w = pData[i*iWidth + j+1];
+                x = pData[i*iWidth + j+2];
+                y = pData[(i+1)*iWidth + j+1];
+                z = pData[(i+1)*iWidth + j+2];
+                int avg = (w+x+y+z)/4;
+                outputData[indx++] = (byte)avg;
+            }
+        }
+        
+        for(int j=0;j<iWidth;j+=2)
+        {
+            int I = i+1;
+            
+            int w,x,y,z;
+            if(j%2==0)
+            {
+                w = pData[(I+1)*iWidth + j];
+                x = pData[(I+1)*iWidth + j+1];
+                y = pData[(I+2)*iWidth + j];
+                z = pData[(I+2)*iWidth + j+1];
+                int avg = (w+x+y+z)/4;
+                outputData[indx++] = (byte)avg;
+            }
+            else
+            {
+                w = pData[(I+1)*iWidth + j+1];
+                x = pData[(I+1)*iWidth + j+2];
+                y = pData[(I+2)*iWidth + j+1];
+                z = pData[(I+2)*iWidth + j+2];
+                int avg = (w+x+y+z)/4;
+                outputData[indx++] = (byte)avg;
+            }
+        }
+    }
+    
+    byte*p = pData+YPlaneLength;
+    for(int i=0;i<iHeight/2;i+=2)
+    {
+        for(int j=0;j<iWidth;j+=4)
+        {
+            int w,x,y,z, J, avg;
+            
+            
+            w = p[i*iWidth + j];
+            x = p[i*iWidth + j+2];
+            y = p[(i+1)*iWidth + j];
+            z = p[(i+1)*iWidth + j+2];
+            avg = (w+x+y+z)/4;
+            outputData[indx++] = (byte)avg;
+            
+            J = j+1;
+            w = p[i*iWidth + J];
+            x = p[i*iWidth + J+2];
+            y = p[(i+1)*iWidth + J];
+            z = p[(i+1)*iWidth + J+2];
+            avg = (w+x+y+z)/4;
+            outputData[indx++] = (byte)avg;
+        }
+    }
+    
+    cout<<"CurrentLen = "<<indx<<endl;
+    
+    iHeight = iHeight>>1;
+    iWidth = iWidth>>1;
+    
+    
+    return indx;
+    
+}
+
+
 

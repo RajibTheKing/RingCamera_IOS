@@ -33,7 +33,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <arpa/inet.h>
-#include "common.h"
+#include "common.hpp"
 
 
 
@@ -56,7 +56,8 @@ public:
     int Convert_YUVNV12_To_YUVI420(byte* yPlane, byte* uvPlane, byte* outData, int m_iHeight, int m_iWidth);
     int Convert_YUVI420_To_YUVNV12(byte* pData,  byte *y_ch0, byte* y_ch1,int iRenderHeight, int iRenderWidth);
     CVPixelBufferRef Convert_YUVNV12_To_CVPixelBufferRef(byte* y_ch0, byte* y_ch1, int iRenderHeight, int iRenderWidth);
-    void mirrorRotateAndConvertNV12ToI420(unsigned char *m_pFrame, unsigned char *pData, int iVideoHeight, int iVideoWidth);
+    void mirrorRotateAndConvertNV12ToI420(unsigned char *m_pFrame, unsigned char *pData, int &iVideoHeight, int &iVideoWidth);
+    int ConvertI420ToNV12(unsigned char *convertingData, int iVideoHeight, int iVideoWidth);
     
     int Convert_UIImage_To_RGBA8(UIImage *pImage, byte** outBuf);
     
@@ -64,6 +65,10 @@ public:
     
     void SendPakcetFragments(byte*data, int iLen);
     void ReceiveFullFrame(byte*data, int iLen, int frameNumber);
+    
+    int DownScaleVideoData(byte* pData, int &iHeight, int &iWidth, byte* outputData);
+    int DownScaleVideoDataWithAverage(byte* pData, int &iHeight, int &iWidth, byte* outputData);
+    int DownScaleVideoDataWithAverageVersion2(byte* pData, int &iHeight, int &iWidth, byte* outputData);
     
     CIContext *temporaryContext, *temporaryContext2;
     

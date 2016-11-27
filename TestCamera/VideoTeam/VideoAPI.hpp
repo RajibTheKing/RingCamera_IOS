@@ -20,7 +20,7 @@ using namespace std;
 #include "RingIDSDK.h"
 
 
-#include "Common.h"
+#include "Common.hpp"
 
 
 
@@ -60,7 +60,7 @@ public:
     
     bool SetUserNameV(long long lUserName);
     
-    bool StartVideoCallV(long long lFriendID, int iVideoHeight, int iVideoWidth);
+    bool StartVideoCallV(long long lFriendID, int iVideoHeight, int iVideoWidth, int nServiceType);
     
     int EncodeAndTransferV(long long lFriendID, unsigned char *in_data, unsigned int in_size);
 
@@ -91,7 +91,7 @@ public:
     void ReceiveFullFrame(byte*data, int iLen);
     
     void ReleaseV();
-    
+    long long GetCurrentTimeStamp();
     
     //LiveStreamRelatedFunctions
     

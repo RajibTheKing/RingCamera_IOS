@@ -18,7 +18,7 @@
 #include "VideoConverter.hpp"
 #include "Constants.h"
 #include "MessageProcessor.hpp"
-#include "common.h"
+#include "common.hpp"
 #include "VideoThreadProcessor.h"
 #include "VideoAPI.hpp"
 #include "VideoSockets.h"
@@ -60,6 +60,7 @@
     string m_sRemoteIP;
     
     FILE *m_FileForDump;
+    FILE *m_FileReadFromDump;
     
     bool m_bCheckCall;
     

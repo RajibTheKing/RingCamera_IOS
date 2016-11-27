@@ -30,16 +30,16 @@ void NotifyClientMethodWithReceivedBytes(int event, LongLong friendId, int media
 // Start Video Team
 
 void NotifyClientMethodWithPacket(LongLong lFriendID, unsigned char data[], int dataLenth);
-void NotifyClientMethodWithVideoData(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
+void NotifyClientMethodWithVideoData(LongLong lFriendID, int eventType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
 void NotifyClientMethodWithVideoNotification(LongLong lCallID, int eventType);
 void NotifyClientMethodWithNetworkStrengthNotification(LongLong lCallID, int eventType);
-void NotifyClientMethodWithAudioData(LongLong lFriendID, short data[], int dataLenth);
+void NotifyClientMethodWithAudioData(LongLong lFriendID, int eventType, short data[], int dataLenth);
 void NotifyClientMethodWithAudioAlarm(LongLong lEventType, short data[], int dataLenth);
 void NotifyClientMethodWithAudiPacketData(LongLong lFriendID, unsigned char data[], int dataLenth);
 
 void AudioDecoding(LongLong lFriendID, unsigned char *in_data, int in_size);
 void VideoDecoding(LongLong lFriendID, unsigned char *in_data, int in_size);
-void SendFunction(LongLong lFriendID, int mediaType, unsigned char* data, int iLen);
+void SendFunction(LongLong lFriendID, int mediaType, unsigned char* data, int iLen, int TimeDiff);
 
 // End Video Team
 
@@ -56,10 +56,10 @@ void notifyClientMethodWithReceivedIos(int eventType, long long friendName, int 
 // Start Video Team
 
 void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], int dataLenth);
-void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
+void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int eventType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
 void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType);
 void notifyClientMethodWithNetworkStrengthNotificationIos(LongLong lCallID, int eventType);
-void notifyClientMethodWithAudioDataIos(LongLong lFriendID, short data[], int dataLenth);
+void notifyClientMethodWithAudioDataIos(LongLong lFriendID, int eventType, short data[], int dataLenth);
 void notifyClientMethodWithAudioAlarmIos(LongLong lFriendID, short data[], int dataLenth);
 void notifyClientMethodWithAudioAlarmIos(LongLong lEventType, short data[], int dataLenth);
 void notifyClientMethodWithAudiPacketDataIos(LongLong lFriendID, unsigned char data[], int dataLenth);
@@ -156,13 +156,17 @@ public:
     
     int StopAudioEncodeDecodeSession();
     
-    bool StartAudioCall(const LongLong& lFriendID);
+    bool StartAudioCall(const LongLong& lFriendID, int nServiceType);
     
-    bool StartVideoCall(const LongLong& lFriendID, int iVideoHeight, int iVideoWidth, int iNetworkType = 0);
+    bool SetVolume(const LongLong& lFriendID, int iVolume);
+    
+    bool SetLoudSpeaker(const LongLong& lFriendID, bool bOn);
+    
+    bool StartVideoCall(const LongLong& lFriendID, int iVideoHeight, int iVideoWidth, int nServiceType, int nLivePacketLength = 0, int iNetworkType = 0);
     
     void PushPacketForDecoding(LongLong lFriendID, unsigned char *in_data, int in_size );
     
-    void PushAudioForDecoding(LongLong lFriendID, unsigned char *in_data, int in_size);
+    void PushAudioForDecoding(LongLong lFriendID, int mediaType, unsigned char *in_data, int in_size);
     
     int SendAudioData(const LongLong& lFriendID, short *in_data, unsigned int in_size);
     
@@ -183,13 +187,13 @@ public:
     
     void SetNotifyClientWithPacketCallback(void(*callBackFunctionPointer)(LongLong, unsigned char*, int));
     
-    void SetNotifyClientWithVideoDataCallback(void(*callBackFunctionPointer)(LongLong, unsigned char*, int, int, int, int));
+    void SetNotifyClientWithVideoDataCallback(void(*callBackFunctionPointer)(LongLong, int, unsigned char*, int, int, int, int));
     
     void SetNotifyClientWithVideoNotificationCallback(void(*callBackFunctionPointer)(LongLong, int));
     
     void SetNotifyClientWithNetworkStrengthNotificationCallback(void(*callBackFunctionPointer)(LongLong, int));
     
-    void SetNotifyClientWithAudioDataCallback(void(*callBackFunctionPointer)(LongLong, short*, int));
+    void SetNotifyClientWithAudioDataCallback(void(*callBackFunctionPointer)(LongLong, int, short*, int));
     
     void SetNotifyClientWithAudioAlarmCallback(void(*callBackFunctionPointer)(LongLong, short*, int));
     
@@ -198,13 +202,13 @@ public:
     
     static void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], int dataLenth);
     
-    static void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
+    static void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int eventType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
     
     static void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType);
     
     static void notifyClientMethodWithNetworkStrengthNotificationIos(LongLong lCallID, int eventType);
     
-    static void notifyClientMethodWithAudioDataIos(LongLong lFriendID, short data[], int dataLenth);
+    static void notifyClientMethodWithAudioDataIos(LongLong lFriendID, int eventType, short data[], int dataLenth);
     
     static void notifyClientMethodWithAudioAlarmIos(LongLong lEventType, short data[], int dataLenth);
     

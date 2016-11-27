@@ -34,6 +34,7 @@
 
 byte baVideoRenderBufferUVChannel [MAXWIDTH * MAXHEIGHT/2];
 byte pRawYuv[MAXWIDTH * MAXHEIGHT*3/2 + 10];
+byte pScaledVideo[MAXWIDTH * MAXHEIGHT*3/2 + 10];
 
 template class RingBuffer<int>;
 template class RingBuffer<byte>;
@@ -41,6 +42,9 @@ template class RingBuffer<byte>;
 
 int g_iDEBUG_INFO = 1;
 string g_sLOG_PATH = "Document/VideoEngine.log";
+
+//#define USE_FORCE_HIGH_FPS_INITIALIZATION
+
 
 @implementation VideoCallProcessor
 
@@ -62,6 +66,21 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     cout <<  "Open returned " << iRet << "\n";
     
     [self InitializeFilePointer:m_FileForDump fileName:@"YuvTest.yuv"];
+    
+    NSFileHandle *handle;
+    NSArray *Docpaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [Docpaths objectAtIndex:0];
+    NSString *filePathyuv = [documentsDirectory stringByAppendingPathComponent:@"test_chunk.mp4"];
+    handle = [NSFileHandle fileHandleForUpdatingAtPath:filePathyuv];
+    char *filePathcharyuv = (char*)[filePathyuv UTF8String];
+    m_FileReadFromDump = fopen(filePathcharyuv, "rb");
+    
+    /*unsigned char c;
+    while(fscanf(m_FileReadFromDump, "%u", &c)==1)
+    {
+        
+    }*/
+
     
     _m_iLoudSpeakerEnable=0;
     return self;
@@ -161,14 +180,14 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     cout<<"Here height and width = "<<m_iCameraHeight<<", "<<m_iCameraWidth<<endl;
     
     if(m_iCameraHeight * m_iCameraWidth == 288 * 352)
-        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 480, 640, 288, 352);
+        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 640, 480, 352, 288);
     else
-        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 480, 640, 288, 352);
+        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
     
-    iRet = m_pVideoAPI->StartAudioCall(200);
+    iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
     int iRetStartVideoCall;
     
-    iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth);
+    iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_LIVE_STREAM,1000);
     //iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth,RECEIVE_SESSION);
     
     NSLog(@"StartVideoCaLL returned, iRet = %d", iRet);
@@ -318,7 +337,8 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     else
         [*session setSessionPreset:AVCaptureSessionPresetPhoto];
     
-    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    
+    /*AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
     
     AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
@@ -326,6 +346,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 
     if ( [*session canAddInput:deviceInput] )
         [*session addInput:deviceInput];
+    */
     
     *videoDataOutput = [AVCaptureVideoDataOutput new];
     
@@ -385,14 +406,11 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     
     AVCaptureDevicePosition desiredPosition;
-    /*if (isUsingFrontFacingCamera)
-        desiredPosition = AVCaptureDevicePositionBack;
-    else
-        desiredPosition = AVCaptureDevicePositionFront;
-     */
     desiredPosition = AVCaptureDevicePositionFront;
     //desiredPosition = AVCaptureDevicePositionBack;
     
+
+#ifdef USE_FORCE_HIGH_FPS_INITIALIZATION
     for (AVCaptureDevice *d in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo])
     {
         if ([d position] == desiredPosition)
@@ -452,6 +470,27 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
             break;
         }
     }
+#else
+    for (AVCaptureDevice *d in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo])
+    {
+        if ([d position] == desiredPosition)
+        {
+            [[*previewLayer session] beginConfiguration];
+            
+            /*for (AVCaptureInput *oldInput in [[*previewLayer session] inputs])
+            {
+                [[*previewLayer session] removeInput:oldInput];
+            }*/
+            
+            AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:d error:nil];
+            [[*previewLayer session] addInput:input];
+            [[*previewLayer session] commitConfiguration];
+        }
+        
+    }
+    //Do Nothing
+#endif
+    
     
    
     
@@ -480,11 +519,12 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 }
 int tempCounter = 0;
 int stride = 352;
+byte newData[640*480*3/2];
 - (int)FrontConversion:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
 
-    //[connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
-    //[connection setVideoMirrored:false];
+    [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
+    [connection setVideoMirrored:false];
 
     //usleep(15*1000);
     //### Step 2: Controlling FPS, Currently disabled
@@ -511,7 +551,7 @@ int stride = 352;
     int uv_y = y_ch1-y_ch0;       //uv_y = 176640;
     int delta = uv_y - iWidth*iHeight;
     int padding = delta /  iHeight; //Calculate Padding
-    //NSLog(@"VideoTeam_Check: iHeight = %i, iWidth = %i, bytesPerRow = %i, ExtendedWidth = %i, (baseDiff,uv-y,delta) = (%i,%i,%i)\n", iHeight , iWidth, bytesPerRow, bytesPerRow/4, baseDiff, uv_y, delta);
+    NSLog(@"VideoTeam_Check: iHeight = %i, iWidth = %i, bytesPerRow = %i, ExtendedWidth = %i, (baseDiff,uv-y,delta) = (%i,%i,%i)\n", iHeight , iWidth, bytesPerRow, bytesPerRow/4, baseDiff, uv_y, delta);
     
     
     int iVideoHeight = m_iCameraHeight;
@@ -540,12 +580,27 @@ int stride = 352;
     CVPixelBufferUnlockBaseAddress(IB,0);
     CVPixelBufferUnlockBaseAddress(IB,1);
     
-    //int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
+    /*
+    * // DownScaleTest Code
+    int iNewHeight = m_iCameraHeight, iNewWidth = m_iCameraWidth;
+    memcpy(pScaledVideo, pRawYuv, iNewHeight*iNewWidth*3/2);
+    int iRett = fread(pRawYuv, iNewHeight*iNewWidth*3/2, 1, m_FileReadFromDump);
+    long long ScaleStartTime = CurrentTimeStamp();
+    m_pVideoConverter->DownScaleVideoData(pRawYuv, iNewHeight, iNewWidth, pScaledVideo);
+    cout<<"DownScale TimeDiff = "<< CurrentTimeStamp() - ScaleStartTime<<endl;
+    */
+    
+    
+    
+    int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
     
     //Sending to OwnReceiving Thread Directly using VideoAPI
-    CVideoAPI::GetInstance()->m_iReceivedHeight = iVideoHeight;
-    CVideoAPI::GetInstance()->m_iReceivedWidth = iVideoWidth;
-    CVideoAPI::GetInstance()->ReceiveFullFrame(pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
+    //m_pVideoConverter->mirrorRotateAndConvertNV12ToI420(pRawYuv, newData, iVideoHeight, iVideoWidth);
+    //m_pVideoConverter->ConvertI420ToNV12(newData, iVideoHeight, iVideoWidth);
+    
+    //CVideoAPI::GetInstance()->m_iReceivedHeight = iVideoHeight;
+   // CVideoAPI::GetInstance()->m_iReceivedWidth = iVideoWidth;
+    //CVideoAPI::GetInstance()->ReceiveFullFrame(newData, m_iCameraHeight * m_iCameraWidth * 3 / 2);
     
     //Sending to OwnViewer Directly
     //m_iRenderHeight = iVideoHeight;
@@ -556,8 +611,8 @@ int stride = 352;
     
     //printf("Rajib_Check: Trying to SendVideoDataV\n");
     
-    /*
-    if(tempCounter<300)
+    
+    /*if(tempCounter<300)
     {
         //printf("TheKing--> tempCounter = %d\n", tempCounter);
         //cout<<"TheKing--> tempCounter = "<<tempCounter<<endl;
@@ -571,7 +626,10 @@ int stride = 352;
         
         [self WriteToFile:pRawYuv dataLength:m_iCameraHeight * m_iCameraWidth * 3 / 2 filePointer:m_FileForDump];
     }
-    */
+    else
+    {
+        cout<<"DONE!!"<<endl;
+    }*/
     return 0;
 }
 
@@ -620,6 +678,7 @@ int ConvertNV12ToI420(unsigned char *convertingData, int iheight, int iwidth)
         
         int iVideoHeight = m_iRenderHeight;
         int iVideoWidth = m_iRenderWidth;
+        
         int YPlaneLength = iVideoHeight*iVideoWidth;
         int VPlaneLength = YPlaneLength >> 2;
         int UVPlaneMidPoint = YPlaneLength + VPlaneLength;
@@ -675,20 +734,6 @@ int ConvertNV12ToI420(unsigned char *convertingData, int iheight, int iwidth)
     }
     return ip;
 }
-
--(long long)GetTimeStamp2
-{
-    namespace sc = std::chrono;
-    auto time = sc::system_clock::now(); // get the current time
-    auto since_epoch = time.time_since_epoch(); // get the duration since epoch
-    // I don't know what system_clock returns
-    // I think it's uint64_t nanoseconds since epoch
-    // Either way this duration_cast will do the right thing
-    auto millis = sc::duration_cast<sc::milliseconds>(since_epoch);
-    long long now = millis.count(); // just like java (new Date()).getTime();
-    return now;
-}
-
 
 - (void)dealloc {
     [super dealloc];

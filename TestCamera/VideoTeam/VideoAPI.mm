@@ -12,6 +12,8 @@
 #include "VideoSockets.h"
 #include "VideoCallProcessor.h"
 
+
+
 //#include "ObjectiveCInterFace.h"
 
 byte bAudioData[1000];
@@ -45,11 +47,11 @@ void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], i
         CVideoAPI::GetInstance()->SendPakcetFragments(data, dataLenth);
     }
 }
-void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrientation)
+void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int mediaType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrientation)
 {
     CVideoAPI::GetInstance()->m_iRecvFrameCounter++;
     
-    cout<<"Found Orientation  = "<<iOrientation<<", iVideoHeight = "<<iVideoHeight<<", iVideoWidth = "<<iVideoWidth<<", dataLen = "<<dataLenth<<endl;
+    cout<<"Found Orientation  = "<<iOrientation<<", iVideoHeight = "<<iVideoHeight<<", iVideoWidth = "<<iVideoWidth<<", dataLen = "<<dataLenth<<", mediaType = "<<mediaType<<endl;
     string sStatusMessage = "Orientation = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iOrientation) +
                             ", Height = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoHeight) +
                             ", Width = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoWidth);
@@ -70,9 +72,9 @@ void notifyClientMethodWithVideoDataIos(LongLong lFriendID, unsigned char data[]
 }
 
 void WriteToFileVideoAPI(byte *pData, int iLen);
-void notifyClientMethodWithAudioDataIos(LongLong lFriendID, short data[], int dataLenth)
+void notifyClientMethodWithAudioDataIos(LongLong lFriendID, int mediaType, short data[], int dataLenth)
 {
-    //cout<<"Check: Found Audio Data, datalen = "<<dataLenth<<endl;
+    cout<<"Check: Found Audio Data, datalen = "<<dataLenth<<", mediaType = "<<mediaType<<endl;
     byte *temp = new byte[dataLenth*2];
     for(int i=0;i<dataLenth;i++)
     {
@@ -320,9 +322,9 @@ bool CVideoAPI::SetUserNameV(long long lUserName)
     //return SetUserName(lUserName);
 }
 
-bool CVideoAPI::StartVideoCallV(long long lFriendID, int iVideoHeight, int iVideoWidth)
+bool CVideoAPI::StartVideoCallV(long long lFriendID, int iVideoHeight, int iVideoWidth, int nServiceType)
 {
-    return StartVideoCall(lFriendID, iVideoHeight, iVideoWidth);
+    return StartVideoCall(lFriendID, iVideoHeight, iVideoWidth, nServiceType);
 }
 
 /*
@@ -365,7 +367,7 @@ int CVideoAPI::DecodeV(long long lFriendID, unsigned char *in_data, unsigned int
 
 int CVideoAPI::SetHeightWidthV(long long lFriendID, int &width, int &height)
 {
-    return SetHeightWidth(lFriendID, width, height);
+    return SetEncoderHeightWidth(lFriendID, width, height);
 }
 
 int CVideoAPI::SetBitRateV(long long lFriendID, int &bitRate)
@@ -416,6 +418,19 @@ string CVideoAPI::IntegertoStringConvert(int nConvertingNumber)
 #endif
     
     return (std::string)cConvertedCharArray;
+}
+
+long long CVideoAPI::GetCurrentTimeStamp()
+{
+    namespace sc = std::chrono;
+    auto time = sc::system_clock::now(); // get the current time
+    auto since_epoch = time.time_since_epoch(); // get the duration since epoch
+    // I don't know what system_clock returns
+    // I think it's uint64_t nanoseconds since epoch
+    // Either way this duration_cast will do the right thing
+    auto millis = sc::duration_cast<sc::milliseconds>(since_epoch);
+    long long now = millis.count(); // just like java (new Date()).getTime();
+    return now;
 }
 
 /*void CVideoAPI::SendPakcetFragments(unsigned char*data, int dataLenth)
