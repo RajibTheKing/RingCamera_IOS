@@ -91,7 +91,6 @@ public:
     void ReceiveFullFrame(byte*data, int iLen);
     
     void ReleaseV();
-    long long GetCurrentTimeStamp();
     
     //LiveStreamRelatedFunctions
     

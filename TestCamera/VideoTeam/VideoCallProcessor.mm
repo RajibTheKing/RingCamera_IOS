@@ -185,9 +185,13 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
     
     iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
+    //iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL);
+    
     int iRetStartVideoCall;
     
-    iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_LIVE_STREAM,1000);
+    iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_LIVE_STREAM, 1000);
+    //iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_CALL);
+    
     //iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth,RECEIVE_SESSION);
     
     NSLog(@"StartVideoCaLL returned, iRet = %d", iRet);
@@ -551,7 +555,7 @@ byte newData[640*480*3/2];
     int uv_y = y_ch1-y_ch0;       //uv_y = 176640;
     int delta = uv_y - iWidth*iHeight;
     int padding = delta /  iHeight; //Calculate Padding
-    NSLog(@"VideoTeam_Check: iHeight = %i, iWidth = %i, bytesPerRow = %i, ExtendedWidth = %i, (baseDiff,uv-y,delta) = (%i,%i,%i)\n", iHeight , iWidth, bytesPerRow, bytesPerRow/4, baseDiff, uv_y, delta);
+    //NSLog(@"VideoTeam_Check: iHeight = %i, iWidth = %i, bytesPerRow = %i, ExtendedWidth = %i, (baseDiff,uv-y,delta) = (%i,%i,%i)\n", iHeight , iWidth, bytesPerRow, bytesPerRow/4, baseDiff, uv_y, delta);
     
     
     int iVideoHeight = m_iCameraHeight;

@@ -107,7 +107,6 @@
 - (void)InitializeFilePointer:(FILE *)fp fileName:(NSString *)fileName;
 int ConvertNV12ToI420(unsigned char *convertingData, int iheight, int iwidth);
 -(void)SendDummyData;
--(long long)GetTimeStamp2;
 - (void)UpdateStatusMessage: (string)sMsg;
 @property (nonatomic,strong) id delegate;
 

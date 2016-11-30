@@ -165,10 +165,10 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
             if(height > 0 && width > 0)
             {
                 kounter++;
-                llPrevTime = m_pVideoAPI->GetCurrentTimeStamp();
+                llPrevTime = CurrentTimeStamp();
                 [self.delegate SetWidthAndHeightForRendering:width withHeight:height];
                 [self.delegate BackConversion:baVideoRenderBuffer];
-                m_pRenderingAvg->UpdateData(m_pVideoAPI->GetCurrentTimeStamp() - llPrevTime);
+                m_pRenderingAvg->UpdateData(CurrentTimeStamp() - llPrevTime);
                 
                 if(kounter%100==0)
                     cout<<"RenderingAverage : "<<m_pRenderingAvg->GetAverage()<<endl;
