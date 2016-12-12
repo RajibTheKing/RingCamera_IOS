@@ -588,5 +588,227 @@ int CVideoConverter::DownScaleVideoDataWithAverageVersion2(byte* pData, int &iHe
     
 }
 
+float arrWght[352][352][10][10];
+float arrWsum[352][352];
+int g_first = 0;
+void CVideoConverter::GaussianBlur(unsigned char* scl, unsigned char* tcl, int h, int w, float r)
+{
+    float rs = ceil(r * 2.57);     // significant radius
+    
+    rs = 1;
+    if(g_first == 0)
+    {
+        g_first = 1;
+        for(int i=0; i<h; i++)
+        {
+            
+            for(int j=0; j<w; j++)
+            {
+                float val = 0, wsum = 0;
+                
+                for(int iy = i-rs; iy<i+rs+1; iy++)
+                {
+                    for(int ix = j-rs; ix<j+rs+1; ix++)
+                    {
+                        int x = min(w-1, max(0, ix));
+                        int y = min(h-1, max(0, iy));
+                        int dsq = (ix-j)*(ix-j)+(iy-i)*(iy-i);
+                        
+                        float wght = exp( -dsq / (2*r*r) ) / (3.1416*2*r*r);
+                        
+                        arrWght[i][j][x % w][y % h] = wght;
+                        
+                        val += scl[y*w+x] * arrWght[i][j][x % w][y % h];
+                        
+                        wsum += wght;
+                        
+                    }
+                }
+                
+                arrWsum[i][j] = wsum;
+                
+                
+                tcl[i*w+j] = (unsigned char)floor(val/arrWsum[i][j] + 0.5);
+            }
+        }
+    
+    }
+    else
+    {
+        for(int i=0; i<h; i++)
+        {
+            
+            for(int j=0; j<w; j++)
+            {
+                float val = 0, wsum = 0;
+                
+                for(int iy = i-rs; iy<i+rs+1; iy++)
+                {
+                    for(int ix = j-rs; ix<j+rs+1; ix++)
+                    {
+                        int x = min(w-1, max(0, ix));
+                        int y = min(h-1, max(0, iy));
+                        
+                        //int dsq = (ix-j)*(ix-j)+(iy-i)*(iy-i);
+                        //float wght = exp( -dsq / (2*r*r) ) / (3.1416*2*r*r);
+                        
+                        //arrWght[i][j][x % h][y % w] = wght;
+                        
+                        val += scl[y*w+x] * arrWght[i][j][x % w][y % h];
+                        
+                        //wsum += wght;
+                        
+                    }
+                }
+                
+                //arrWsum[i][j] = wsum;
+                
+                
+                tcl[i*w+j] = (unsigned char)floor(val/arrWsum[i][j] + 0.5);
+            }
+        }
+        
+    }
+}
+
+int sizes[3];
+
+void CVideoConverter::boxesForGauss(float sigma, int n)  // standard deviation, number of boxes
+{
+    float wIdeal = sqrt((12*sigma*sigma/n)+1);  // Ideal averaging filter width
+    int wl = floor(wIdeal);  if(wl%2==0) wl--;
+    int wu = wl+2;
+				
+    float mIdeal = (12*sigma*sigma - n*wl*wl - 4*n*wl - 3*n)/(-4*wl - 4);
+    int m = floor(mIdeal + 0.5);
+    
+    // var sigmaActual = Math.sqrt( (m*wl*wl + (n-m)*wu*wu - n)/12 );
+				
+    for(int i=0; i<n; i++)
+    {
+        sizes[i]=i<m?wl:wu;
+    }
+    
+    return;
+}
+
+void CVideoConverter::GaussianBlur_4thApproach(unsigned char* scl, unsigned char* tcl, int h, int w, float r)
+{
+    boxesForGauss(r, 3);
+
+    boxBlur_4 (scl, tcl, h, w, (sizes[0]-1)/2);
+    boxBlur_4 (tcl, scl, h, w, (sizes[1]-1)/2);
+    boxBlur_4 (scl, tcl, h, w, (sizes[2]-1)/2);
+}
+
+
+void CVideoConverter::boxBlur_4 (unsigned char *scl, unsigned char *tcl, int h, int w, int r)
+{
+    //for(var i=0; i<scl.length; i++) tcl[i] = scl[i];
+    
+    boxBlurH_4(tcl, scl, h, w, r);
+    boxBlurT_4(scl, tcl, h, w, r);
+}
+
+void CVideoConverter::boxBlurH_4 (unsigned char *scl, unsigned char *tcl, int h, int w, int r)
+{
+    float iarr = (1*1.0) / ((r+r+1)*1.0);
+    for(int i=0; i<h; i++)
+    {
+        int ti = i*w, li = ti, ri = ti+r;
+        int fv = scl[ti], lv = scl[ti+w-1], val = (r+1)*fv;
+        for(int j=0; j<r; j++) val += scl[ti+j];
+        for(int j=0  ; j<=r ; j++) { val += scl[ri++] - fv       ;   tcl[ti++] = (unsigned char)floor(val*iarr + 0.5); }
+        for(int j=r+1; j<w-r; j++) { val += scl[ri++] - scl[li++];   tcl[ti++] = (unsigned char)floor(val*iarr + 0.5); }
+        for(int j=w-r; j<w  ; j++) { val += lv        - scl[li++];   tcl[ti++] = (unsigned char)floor(val*iarr + 0.5); }
+    }
+}
+void CVideoConverter::boxBlurT_4 (unsigned char *scl, unsigned char *tcl, int h, int w, int r)
+{
+    float iarr = (1*1.0) / ((r+r+1)*1.0);
+    
+    for(int i=0; i<w; i++)
+    {
+        int ti = i, li = ti, ri = ti+r*w;
+        int fv = scl[ti], lv = scl[ti+w*(h-1)], val = (r+1)*fv;
+        
+        for(int j=0; j<r; j++) val += scl[ti+j*w];
+        for(int j=0  ; j<=r ; j++) { val += scl[ri] - fv     ;  tcl[ti] = (unsigned char)floor(val*iarr + 0.5);  ri+=w; ti+=w; }
+        for(int j=r+1; j<h-r; j++) { val += scl[ri] - scl[li];  tcl[ti] = (unsigned char)floor(val*iarr + 0.5);  li+=w; ri+=w; ti+=w; }
+        for(int j=h-r; j<h  ; j++) { val += lv      - scl[li];  tcl[ti] = (unsigned char)floor(val*iarr + 0.5);  li+=w; ti+=w; }
+    }
+}
+
+
+void CVideoConverter::EnhanceTemperature (unsigned char *scl, int iHeight, int iWidth, int iThreshold)
+{
+    
+    //if((yVal > 65 && yVal < 170) &&(uVal > 85 && uVal < 180) && (vVal > 85 && vVal < 180))
+        
+        
+    int iLen = iHeight * iWidth * 3 / 2;
+    int iStartInd = iHeight*iWidth;
+    
+    int increase = 0;
+    for(int i=iStartInd; i<iLen; i++)
+    {
+        if(i%2==0)
+        {
+            //Changing U data
+            scl[i] = scl[i]-iThreshold < 0 ? 0 : scl[i]-iThreshold;
+        }
+        else
+        {
+            //Changing V Data
+            scl[i] = scl[i]+iThreshold > 255 ? 255 : scl[i]+iThreshold;
+        }
+        
+        scl[i] = scl[i]+increase>255? 255:scl[i]+increase;
+    }
+}
+
+int yuCon[352*288];
+int yvCon[352*288];
+
+
+void generateUVIndex(int imageWidth, int imageHeight)
+{
+    int iHeight = imageHeight;
+    int iWidth = imageWidth;
+    int yLength = iHeight * iWidth;
+    int uLength = yLength/2;
+    
+    int yConIndex = 0;
+    int vIndex = yLength + 1;
+    int uIndex = yLength;
+    int heightIndex = 1;
+    
+    for(int i = 0;  ;)
+    {
+        if(i == iWidth*heightIndex)
+        {
+            i+=iWidth;
+            heightIndex+=2;
+        }
+        if(i>=yLength) break;
+        yConIndex = i;
+        
+        yuCon[yConIndex] = uIndex;
+        yuCon[yConIndex + 1] = uIndex;
+        yuCon[yConIndex + iWidth] = uIndex;
+        yuCon[yConIndex + iWidth + 1] = uIndex;
+        
+        yvCon[yConIndex] = vIndex;
+        yvCon[yConIndex + 1] = vIndex;
+        yvCon[yConIndex + iWidth] = vIndex;
+        yvCon[yConIndex + iWidth + 1] = vIndex;
+        
+        
+        uIndex += 2;
+        vIndex += 2;
+        i+=2;
+    }
+}
+
 
 

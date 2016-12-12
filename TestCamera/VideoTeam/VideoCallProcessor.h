@@ -68,6 +68,8 @@
     
 }
 
+@property float m_fR;
+@property int m_Threashold;
 
 @property bool m_iLoudSpeakerEnable;
 @property bool m_bStartVideoSending;

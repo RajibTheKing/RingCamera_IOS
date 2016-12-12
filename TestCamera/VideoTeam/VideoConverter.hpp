@@ -60,6 +60,15 @@ public:
     int ConvertI420ToNV12(unsigned char *convertingData, int iVideoHeight, int iVideoWidth);
     
     int Convert_UIImage_To_RGBA8(UIImage *pImage, byte** outBuf);
+    void GaussianBlur(unsigned char* scl, unsigned char* tcl, int h, int w, float r);
+    
+    
+    void boxesForGauss(float sigma, int n);
+    void GaussianBlur_4thApproach(unsigned char* scl, unsigned char* tcl, int h, int w, float r);
+    void boxBlur_4 (unsigned char *scl, unsigned char *tcl, int h, int w, int r);
+    void boxBlurH_4 (unsigned char *scl, unsigned char *tcl, int h, int w, int r);
+    void boxBlurT_4 (unsigned char *scl, unsigned char *tcl, int h, int w, int r);
+    void EnhanceTemperature (unsigned char *scl, int iHeight, int iWidth, int iThreshold);
     
     
     

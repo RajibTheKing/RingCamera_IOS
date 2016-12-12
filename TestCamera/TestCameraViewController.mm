@@ -520,6 +520,18 @@ int g_iPort;
 
 - (IBAction)makeSenderAction:(id)sender
 {
+    g_pVideoCallProcessor.m_fR+=0.5;
+    g_pVideoCallProcessor.m_Threashold+=2;
+    
+    string s = "MINUS: ";
+    NSString *str = [NSString stringWithFormat:@"%s%i",s.c_str(), g_pVideoCallProcessor.m_Threashold];
+    [_makeReceiverBtn setTitle:str forState:UIControlStateNormal];
+    
+    string s2 = "PLUS: ";
+    NSString *str2 = [NSString stringWithFormat:@"%s%i",s2.c_str(), g_pVideoCallProcessor.m_Threashold];
+    [_makeSenderBtn setTitle:str2 forState:UIControlStateNormal];
+   
+    /*
     dispatch_async(dispatch_get_main_queue(), ^{
         [MyCustomView setHidden:true];
         [SelfView setHidden:false];
@@ -533,10 +545,23 @@ int g_iPort;
         SelfView.contentMode = UIViewContentModeScaleAspectFit;
         
     });
+     */
 }
 
 - (IBAction)makeReceiverAction:(id)sender
 {
+    g_pVideoCallProcessor.m_fR-=0.5;
+     g_pVideoCallProcessor.m_Threashold-=2;
+    string s = "MINUS: ";
+    NSString *str = [NSString stringWithFormat:@"%s%i",s.c_str(), g_pVideoCallProcessor.m_Threashold];
+    [_makeReceiverBtn setTitle:str forState:UIControlStateNormal];
+    
+    string s2 = "PLUS: ";
+    NSString *str2 = [NSString stringWithFormat:@"%s%i",s2.c_str(), g_pVideoCallProcessor.m_Threashold];
+    [_makeSenderBtn setTitle:str2 forState:UIControlStateNormal];
+    
+    
+    /*
     dispatch_async(dispatch_get_main_queue(), ^{
         [SelfView setHidden:true];
         [MyCustomView setHidden:false];
@@ -550,6 +575,7 @@ int g_iPort;
         
         
     });
+    */
 }
 
 - (void)SetCameraResolutionByNotification:(int)iHeight withWidth:(int)iWidth
