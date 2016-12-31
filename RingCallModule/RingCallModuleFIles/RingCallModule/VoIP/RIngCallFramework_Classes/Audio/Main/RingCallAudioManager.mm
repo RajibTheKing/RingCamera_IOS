@@ -712,6 +712,8 @@ static OSStatus playbackCallback(void *inRefCon,
     }
 }
 
+//#define AUDIO_FRAME_LENGTH 960
+#define AUDIO_FRAME_LENGTH 800
 
 -(void) processRTPPacketToSent
 {
@@ -720,7 +722,7 @@ static OSStatus playbackCallback(void *inRefCon,
     void *buffer = TPCircularBufferTail(&recordedPCMBuffer, &availableBytes);
     //if(iProcessRTPPacketCounter%2==0) return;
     
-    if (availableBytes >= 960 * 2)
+    if (availableBytes >= AUDIO_FRAME_LENGTH * 2)
     {
 //        if( availableBytes > AUDIO_MAXIMUM_PACKET_LENGTH) {
 //         
@@ -733,7 +735,7 @@ static OSStatus playbackCallback(void *inRefCon,
 //         // Data not enough to send ignor this case..
 //         return;
 //         }
-        availableBytes = 960 * 2;
+        availableBytes = AUDIO_FRAME_LENGTH * 2;
         /*
         if(availableBytes >= AUDIO_FIXED_PACKET_LENGTH)
         {
@@ -768,7 +770,7 @@ static OSStatus playbackCallback(void *inRefCon,
         //[[RingCallAudioManager sharedInstance] playMyReceivedAudioData:shortArray withLength:availableBytes/2];
         
         
-        //cout<<"TheKing-------> SendingAudio = "<<availableBytes/2<<endl;
+        cout<<"TheKing-------> Client SendingAudio = "<<availableBytes/2<<endl;
         
         if (success < 0) {
             //RICallLog(@"Faild to send audio data...................");

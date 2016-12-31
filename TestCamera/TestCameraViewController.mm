@@ -524,11 +524,11 @@ int g_iPort;
     g_pVideoCallProcessor.m_Threashold+=2;
     
     string s = "MINUS: ";
-    NSString *str = [NSString stringWithFormat:@"%s%i",s.c_str(), g_pVideoCallProcessor.m_Threashold];
+    NSString *str = [NSString stringWithFormat:@"%s%0.2f",s.c_str(), g_pVideoCallProcessor.m_fR];
     [_makeReceiverBtn setTitle:str forState:UIControlStateNormal];
     
     string s2 = "PLUS: ";
-    NSString *str2 = [NSString stringWithFormat:@"%s%i",s2.c_str(), g_pVideoCallProcessor.m_Threashold];
+    NSString *str2 = [NSString stringWithFormat:@"%s%0.2f",s2.c_str(), g_pVideoCallProcessor.m_fR];
     [_makeSenderBtn setTitle:str2 forState:UIControlStateNormal];
    
     /*
@@ -553,11 +553,11 @@ int g_iPort;
     g_pVideoCallProcessor.m_fR-=0.5;
      g_pVideoCallProcessor.m_Threashold-=2;
     string s = "MINUS: ";
-    NSString *str = [NSString stringWithFormat:@"%s%i",s.c_str(), g_pVideoCallProcessor.m_Threashold];
+    NSString *str = [NSString stringWithFormat:@"%s%0.2f",s.c_str(), g_pVideoCallProcessor.m_fR];
     [_makeReceiverBtn setTitle:str forState:UIControlStateNormal];
     
     string s2 = "PLUS: ";
-    NSString *str2 = [NSString stringWithFormat:@"%s%i",s2.c_str(), g_pVideoCallProcessor.m_Threashold];
+    NSString *str2 = [NSString stringWithFormat:@"%s%0.2f",s2.c_str(), g_pVideoCallProcessor.m_fR];
     [_makeSenderBtn setTitle:str2 forState:UIControlStateNormal];
     
     

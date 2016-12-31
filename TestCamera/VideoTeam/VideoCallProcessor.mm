@@ -182,7 +182,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     cout<<"Here height and width = "<<m_iCameraHeight<<", "<<m_iCameraWidth<<endl;
     
     if(m_iCameraHeight * m_iCameraWidth == 288 * 352)
-        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 640, 480, 352, 288);
+        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(208, 640, 480, 352, 288);
     else
         CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
     
@@ -191,8 +191,8 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     int iRetStartVideoCall;
     
-    //iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_LIVE_STREAM, 1000);
-    iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_CALL);
+    //iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_LIVE_STREAM, 500);
+    iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
     
     //iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth,RECEIVE_SESSION);
     
@@ -589,45 +589,61 @@ byte newData[640*480*3/2];
     CVPixelBufferUnlockBaseAddress(IB,1);
     
     
-    // DownScaleTest Code
+    
+    /*****
+    *DownScaleTest Code
+    ***/
     /*int iNewHeight = m_iCameraHeight, iNewWidth = m_iCameraWidth;
     memcpy(pScaledVideo, pRawYuv, iNewHeight*iNewWidth*3/2);
     m_pVideoConverter->DownScaleVideoData(pRawYuv, iNewHeight, iNewWidth, pScaledVideo);
     m_iCameraWidth = iNewWidth;
     m_iCameraHeight = iNewHeight;
-    memcpy(pRawYuv, pScaledVideo, iNewHeight*iNewWidth*3/2);*/
-    
-    
-    
-    
-    /*
-     * // GaussianBlur
-     */
-    
-    /*int iNewHeight = m_iCameraHeight, iNewWidth = m_iCameraWidth;
-    memcpy(pScaledVideo, pRawYuv, iNewHeight*iNewWidth*3/2);
-    m_pVideoConverter->GaussianBlur_4thApproach(pScaledVideo, pRawYuv, iNewHeight, iNewWidth, _m_fR);
+    memcpy(pRawYuv, pScaledVideo, iNewHeight*iNewWidth*3/2);
     */
     
     
-    /*
-     * // Enhance Temperature
-     */
     
+    /*****
+     *GaussianBlur
+     **/
+    /*
+    long long now = CurrentTimeStamp();
+    int iNewHeight = m_iCameraHeight, iNewWidth = m_iCameraWidth;
+    memcpy(pScaledVideo, pRawYuv, iNewHeight*iNewWidth*3/2);
+    m_pVideoConverter->GaussianBlur_4thApproach(pScaledVideo, pRawYuv, iNewHeight, iNewWidth, _m_fR);
+    m_iCameraWidth = iNewWidth;
+    m_iCameraHeight = iNewHeight;
+    memcpy(pRawYuv, pScaledVideo, iNewHeight*iNewWidth*3/2);
+    cout<<"GaussianBlur_4thApproach Time needed = "<<CurrentTimeStamp() - now<<endl;
+    
+    */
+    
+    /*****
+     *Enhance Temperature
+     **/
     /*int iNewHeight = m_iCameraHeight, iNewWidth = m_iCameraWidth;
      memcpy(pScaledVideo, pRawYuv, iNewHeight*iNewWidth*3/2);
     m_pVideoConverter->EnhanceTemperature(pRawYuv, iNewHeight, iNewWidth, _m_Threashold);*/
     
     
+    /******
+     * Detect Skin
+     ***/
+    //int iNewHeight = m_iCameraHeight, iNewWidth = m_iCameraWidth;
+    //m_pVideoConverter->DetectAndShowOnlySkin(pRawYuv, iNewHeight, iNewWidth);
     
+
     int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
+    
+    
     
     //Sending to OwnReceiving Thread Directly using VideoAPI
     //m_pVideoConverter->mirrorRotateAndConvertNV12ToI420(pRawYuv, newData, iVideoHeight, iVideoWidth);
     //m_pVideoConverter->ConvertI420ToNV12(newData, iVideoHeight, iVideoWidth);
     
     
-    /*CVideoAPI::GetInstance()->m_iReceivedHeight = iVideoHeight;
+    /*
+    CVideoAPI::GetInstance()->m_iReceivedHeight = iVideoHeight;
     CVideoAPI::GetInstance()->m_iReceivedWidth = iVideoWidth;
     CVideoAPI::GetInstance()->ReceiveFullFrame(pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
     */
@@ -703,6 +719,7 @@ int ConvertNV12ToI420(unsigned char *convertingData, int iheight, int iwidth)
         
         int iRet;
         
+        //[self WriteToFile:pRenderBuffer dataLength:m_iRenderHeight * m_iRenderWidth * 3 / 2 filePointer:m_FileForDump];
         
         //iRet = m_pVideoConverter->Convert_YUVI420_To_YUVNV12(pRenderBuffer, pRenderBuffer, baVideoRenderBufferUVChannel, m_iRenderHeight, m_iRenderWidth);
         

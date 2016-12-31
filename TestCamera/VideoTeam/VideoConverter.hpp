@@ -70,6 +70,14 @@ public:
     void boxBlurT_4 (unsigned char *scl, unsigned char *tcl, int h, int w, int r);
     void EnhanceTemperature (unsigned char *scl, int iHeight, int iWidth, int iThreshold);
     
+    void generateUVIndex(int imageWidth, int imageHeight);
+    void DetectAndShowOnlySkin(unsigned char *pRawYuv, int iHeight, int iWidth);
+    bool isSkin (int r, int g, int b);
+    int getMin(int a, int b, int c);
+    int getAbs(int a);
+    int getMax(int a, int b, int c);
+    bool isSkin2(int R, int G, int B);
+    
     
     
     void SendPakcetFragments(byte*data, int iLen);

@@ -156,19 +156,31 @@ public:
     
     int StopAudioEncodeDecodeSession();
     
+    int StartVideoMuxingAndEncodeSession(unsigned char *pBMP32Data,int iLen, int nVideoHeight, int nVideoWidth);
+    int FrameMuxAndEncode( unsigned char *pVideoYuv, int iHeight, int iWidth);
+    int StopVideoMuxingAndEncodeSession(unsigned char *finalData);
+    
     bool StartAudioCall(const LongLong& lFriendID, int nServiceType);
     
-    bool SetVolume(const LongLong& lFriendID, int iVolume);
+    bool StartCallInLive(const LongLong& lFriendID, int iRole);
+    
+    bool EndCallInLive(const LongLong& lFriendID);
+    
+    bool SetVolume(const LongLong& lFriendID, int iVolume, bool bRecorder);
     
     bool SetLoudSpeaker(const LongLong& lFriendID, bool bOn);
     
-    bool StartVideoCall(const LongLong& lFriendID, int iVideoHeight, int iVideoWidth, int nServiceType, int nLivePacketLength = 0, int iNetworkType = 0);
+    bool SetEchoCanceller(const LongLong& lFriendID, bool bOn);
     
-    void PushPacketForDecoding(LongLong lFriendID, unsigned char *in_data, int in_size );
+    bool StartVideoCall(const LongLong& lFriendID, int iVideoHeight, int iVideoWidth, int nServiceType, int nEntityType, int nLivePacketLength = 0, int iNetworkType = 0);
+    
+    void PushPacketForDecoding(LongLong lFriendID, int mediaType, int nEntityType, unsigned char *in_data, int in_size);
     
     void PushAudioForDecoding(LongLong lFriendID, int mediaType, unsigned char *in_data, int in_size);
     
     int SendAudioData(const LongLong& lFriendID, short *in_data, unsigned int in_size);
+    
+    int CancelAudioData(const LongLong& lFriendID, short *in_data, unsigned int in_size);
     
     int SendVideoData(const LongLong& lFriendID, unsigned char *in_data, unsigned int in_size, unsigned int orientation_type=0, int device_orientation=0);
     
@@ -183,7 +195,12 @@ public:
     int CheckDeviceCapability(const LongLong& lFriendID, int iHeightHigh, int iWidthHigh, int iHeightLow, int iWidthLow);
     int SetDeviceCapabilityResults(int iNotification, int iHeightHigh, int iWidthHigh, int iHeightLow, int iWidthLow);
     
+    void InterruptOccured(const LongLong& lFriendID);
+    
+    void InterruptOver(const LongLong& lFriendID);
+    
     bool SetLoggingState(bool loggingState, int logLevel=5);
+    
     
     void SetNotifyClientWithPacketCallback(void(*callBackFunctionPointer)(LongLong, unsigned char*, int));
     

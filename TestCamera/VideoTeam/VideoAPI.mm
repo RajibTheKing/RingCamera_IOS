@@ -74,7 +74,7 @@ void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int mediaType, unsig
 void WriteToFileVideoAPI(byte *pData, int iLen);
 void notifyClientMethodWithAudioDataIos(LongLong lFriendID, int mediaType, short data[], int dataLenth)
 {
-    cout<<"Check: Found Audio Data, datalen = "<<dataLenth<<", mediaType = "<<mediaType<<endl;
+    //cout<<"Check: Found Audio Data, datalen = "<<dataLenth<<", mediaType = "<<mediaType<<endl;
     byte *temp = new byte[dataLenth*2];
     for(int i=0;i<dataLenth;i++)
     {
@@ -322,9 +322,9 @@ bool CVideoAPI::SetUserNameV(long long lUserName)
     //return SetUserName(lUserName);
 }
 
-bool CVideoAPI::StartVideoCallV(long long lFriendID, int iVideoHeight, int iVideoWidth, int nServiceType)
+bool CVideoAPI::StartVideoCallV(long long lFriendID, int iVideoHeight, int iVideoWidth, int nServiceType, int nEntityType)
 {
-    return StartVideoCall(lFriendID, iVideoHeight, iVideoWidth, nServiceType);
+    return StartVideoCall(lFriendID, iVideoHeight, iVideoWidth, nServiceType, nEntityType);
 }
 
 /*
@@ -346,7 +346,7 @@ int CVideoAPI::SendAudioDataV(long long lFriendID, short *in_data, unsigned int 
 
 int CVideoAPI::PushPacketForDecodingV(long long lFriendID, unsigned char *in_data, unsigned int in_size)
 {
-    PushPacketForDecoding(lFriendID, in_data, in_size);
+    //PushPacketForDecoding(lFriendID, in_data, in_size);
     
     return 1;
 }

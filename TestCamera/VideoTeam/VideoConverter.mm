@@ -696,8 +696,8 @@ void CVideoConverter::GaussianBlur_4thApproach(unsigned char* scl, unsigned char
 {
     boxesForGauss(r, 3);
 
-    boxBlur_4 (scl, tcl, h, w, (sizes[0]-1)/2);
-    boxBlur_4 (tcl, scl, h, w, (sizes[1]-1)/2);
+    //boxBlur_4 (scl, tcl, h, w, (sizes[0]-1)/2);
+    //boxBlur_4 (tcl, scl, h, w, (sizes[1]-1)/2);
     boxBlur_4 (scl, tcl, h, w, (sizes[2]-1)/2);
 }
 
@@ -707,20 +707,21 @@ void CVideoConverter::boxBlur_4 (unsigned char *scl, unsigned char *tcl, int h, 
     //for(var i=0; i<scl.length; i++) tcl[i] = scl[i];
     
     boxBlurH_4(tcl, scl, h, w, r);
-    boxBlurT_4(scl, tcl, h, w, r);
+    //boxBlurT_4(scl, tcl, h, w, r);
 }
 
 void CVideoConverter::boxBlurH_4 (unsigned char *scl, unsigned char *tcl, int h, int w, int r)
 {
-    float iarr = (1*1.0) / ((r+r+1)*1.0);
+    int iarr = (r+r+1);
     for(int i=0; i<h; i++)
     {
         int ti = i*w, li = ti, ri = ti+r;
         int fv = scl[ti], lv = scl[ti+w-1], val = (r+1)*fv;
+        
         for(int j=0; j<r; j++) val += scl[ti+j];
-        for(int j=0  ; j<=r ; j++) { val += scl[ri++] - fv       ;   tcl[ti++] = (unsigned char)floor(val*iarr + 0.5); }
-        for(int j=r+1; j<w-r; j++) { val += scl[ri++] - scl[li++];   tcl[ti++] = (unsigned char)floor(val*iarr + 0.5); }
-        for(int j=w-r; j<w  ; j++) { val += lv        - scl[li++];   tcl[ti++] = (unsigned char)floor(val*iarr + 0.5); }
+        for(int j=0  ; j<=r ; j++) { val += scl[ri++] - fv       ;   tcl[ti++] = (unsigned char)(val/iarr); }
+        for(int j=r+1; j<w-r; j++) { val += scl[ri++] - scl[li++];   tcl[ti++] = (unsigned char)(val/iarr); }
+        //for(int j=w-r; j<w  ; j++) { val += lv        - scl[li++];   tcl[ti++] = (unsigned char)floor(val*iarr + 0.5); }
     }
 }
 void CVideoConverter::boxBlurT_4 (unsigned char *scl, unsigned char *tcl, int h, int w, int r)
@@ -771,7 +772,7 @@ int yuCon[352*288];
 int yvCon[352*288];
 
 
-void generateUVIndex(int imageWidth, int imageHeight)
+void CVideoConverter::generateUVIndex(int imageWidth, int imageHeight)
 {
     int iHeight = imageHeight;
     int iWidth = imageWidth;
@@ -809,6 +810,142 @@ void generateUVIndex(int imageWidth, int imageHeight)
         i+=2;
     }
 }
+
+#define CLIP(X) ( (X) > 255 ? 255 : (X) < 0 ? 0 : X)
+
+#define C(Y) ( (Y) - 16  )
+#define D(U) ( (U) - 128 )
+#define E(V) ( (V) - 128 )
+
+#define YUV2R(Y, U, V) CLIP(( 298 * C(Y)              + 409 * E(V) + 128) >> 8)
+#define YUV2G(Y, U, V) CLIP(( 298 * C(Y) - 100 * D(U) - 208 * E(V) + 128) >> 8)
+#define YUV2B(Y, U, V) CLIP(( 298 * C(Y) + 516 * D(U)              + 128) >> 8)
+
+
+void CVideoConverter::DetectAndShowOnlySkin(unsigned char *pRawYuv, int iHeight, int iWidth)
+{
+    generateUVIndex(iHeight, iWidth);
+    int iLen = iHeight * iWidth * 3 / 2;
+    
+    int Y,U,V, uIndex, vIndex, R, G, B;
+    
+    for(int i=0;i<iHeight*iWidth;i++)
+    {
+        Y = (int)pRawYuv[i];
+        uIndex = yuCon[i];
+        vIndex = yvCon[i];
+        
+        U = (int)pRawYuv[uIndex];
+        V = (int)pRawYuv[vIndex];
+        
+        /*R = Y + 1.140 * V;
+        G = Y - 0.395 * U - 0.581 * V;
+        B = Y + 2.032 * U;*/
+        
+        /*Y = 0.299R + 0.587G + 0.114B
+         U = 0.492 (B-Y)
+         V = 0.877 (R-Y)*/
+        
+        
+        
+        /*R = (int)(R < 0 ? 0 : R > 255 ? 255 : R);
+        G = (int)(G < 0 ? 0 : G > 255 ? 255 : G);
+        B = (int)(B < 0 ? 0 : B > 255 ? 255 : B);*/
+        
+        R = YUV2R(Y,U,V);
+        G = YUV2G(Y,U,V);
+        B = YUV2B(Y,U,V);
+        
+        
+       /*cout<<"Y,U,V = "<<Y<<", "<<U<<", "<<V<<" --> ";
+        cout<<"R,G,B = "<<R<<", "<<G<<", "<<B<<endl;*/
+        
+        //if(!isSkin(R,G,B))
+        if((U>=95 && U<=125) && ( V >=135 && V<=175))
+        {
+            
+        }
+        else
+        {
+            pRawYuv[i] = (unsigned char) 100;
+            pRawYuv[uIndex] = (unsigned char) 185;
+            pRawYuv[vIndex] = (unsigned char) 239;
+            
+            pRawYuv[i] = (unsigned char) 0;
+            pRawYuv[uIndex] = (unsigned char) 0;
+            pRawYuv[vIndex] = (unsigned char) 0;
+        }
+    }
+    
+}
+
+bool CVideoConverter::isSkin2(int R, int G, int B)
+{
+    return R > 60 && (G < R * 0.85) && (B < R * 0.7) && (G > R * 0.4) && (B > R * 0.2);
+}
+
+bool CVideoConverter::isSkin (int r, int g, int b)
+{
+    
+    // classify based on RGB
+    bool rgbClassifier = ((r > 95) && (g > 40 && g < 100) && (b > 20) && ((getMax(r, g, b) - getMin(r, g, b)) > 15) && (getAbs(r - g) > 15) && (r > g) && (r > b));
+    
+    // classify based on normalized RGB
+    int sum = r + g + b;
+    
+    float nr = (r / sum), ng = (g / sum), nb = (b / sum);
+    
+    bool normRgbClassifier = (((nr / ng) > 1.185) && (((r * b) / (pow(r + g + b, 2))) > 0.107) && (((r * g) / (pow(r + g + b, 2))) > 0.112));
+    
+    // classify based on hue
+    float h = 0,
+    mx = getMax(r, g, b),
+    mn = getMin(r, g, b),
+    dif = mx - mn;
+    
+    if (mx == r)
+    {
+        h = (g - b) / dif;
+    }
+    else if (mx == g)
+    {
+        h = 2 + ((g - r) / dif);
+    }
+    else
+    {
+        h = 4 + ((r - g) / dif);
+    }
+    
+    h = h * 60;
+    
+    if (h < 0)
+    {
+        h = h + 360;
+    }
+    
+    float s = 1 - (3 * ((getMin(r, g, b)) / (r + g + b)));
+    
+    bool hsvClassifier = (h > 0 && h < 35 && s > 0.23 && s < 0.68);
+    
+    //cout<<"rgb,norm,hsv = "<<rgbClassifier<<","<<normRgbClassifier<<","<<hsvClassifier<<endl;
+    
+    // match either of the classifiers
+    return (rgbClassifier || normRgbClassifier || hsvClassifier); // 
+}
+int CVideoConverter::getMin(int a, int b, int c)
+{
+    return min(a,min(b,c));
+}
+int CVideoConverter::getAbs(int a)
+{
+    if(a<0) return a*(-1);
+    return a;
+}
+int CVideoConverter::getMax(int a, int b, int c)
+{
+    return max(a,max(b,c));
+}
+
 
 
 

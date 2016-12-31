@@ -101,6 +101,7 @@
 		DA299DFD1DA10FF80065E171 /* libAudioVideoEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA299DFC1DA10FF80065E171 /* libAudioVideoEngine.a */; };
 		DA299DFF1DA110000065E171 /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA299DFE1DA110000065E171 /* libRingIDSDK.a */; };
 		DA5222AC1DC5CF62000EB084 /* AverageCalculator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA5222AA1DC5CF62000EB084 /* AverageCalculator.cpp */; };
+		DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA971EFB1E07A9D600645151 /* FastBilateral.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -359,6 +360,7 @@
 		DA5222AB1DC5CF62000EB084 /* AverageCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AverageCalculator.h; path = TestCamera/VideoTeam/AverageCalculator.h; sourceTree = "<group>"; };
 		DA7C89E51DEE91C2002C939F /* RingIDSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RingIDSDK.xcodeproj; path = "../IPV-RingIDSDK/RingIDSDK.xcodeproj"; sourceTree = "<group>"; };
 		DA7C89EB1DEE91CA002C939F /* AudioVideoEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioVideoEngine.xcodeproj; path = "../IPV-MediaEngine/AudioVideoEngine.xcodeproj"; sourceTree = "<group>"; };
+		DA971EFB1E07A9D600645151 /* FastBilateral.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = FastBilateral.mm; path = TestCamera/VideoTeam/FastBilateral.mm; sourceTree = "<group>"; };
 		DAAB12241C465DDD001A4B91 /* RingIDSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingIDSDK.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -410,6 +412,7 @@
 				18747AF71BFDD0C60010CAA3 /* VideoSockets.mm */,
 				18747AF81BFDD0C60010CAA3 /* VideoThreadProcessor.h */,
 				18747AF91BFDD0C60010CAA3 /* VideoThreadProcessor.mm */,
+				DA971EFB1E07A9D600645151 /* FastBilateral.mm */,
 			);
 			name = VideoTeam;
 			sourceTree = "<group>";
@@ -1104,6 +1107,7 @@
 				18EB2AE61C02E76500153D45 /* dec_lag3.c in Sources */,
 				18EB2B011C02E76500153D45 /* AudioRouter.m in Sources */,
 				18EB2AED1C02E76500153D45 /* lpc.c in Sources */,
+				DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */,
 				18EB2ADF1C02E76500153D45 /* acelp_ca.c in Sources */,
 				18EB2AF61C02E76500153D45 /* pre_proc.c in Sources */,
 				18747AFA1BFDD0C60010CAA3 /* Constants.cpp in Sources */,

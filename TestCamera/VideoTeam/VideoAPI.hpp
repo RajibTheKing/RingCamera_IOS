@@ -60,7 +60,7 @@ public:
     
     bool SetUserNameV(long long lUserName);
     
-    bool StartVideoCallV(long long lFriendID, int iVideoHeight, int iVideoWidth, int nServiceType);
+    bool StartVideoCallV(long long lFriendID, int iVideoHeight, int iVideoWidth, int nServiceType, int nEntityType);
     
     int EncodeAndTransferV(long long lFriendID, unsigned char *in_data, unsigned int in_size);
 
