@@ -35,6 +35,8 @@
     int m_iRenderWidth;
     int m_iRenderHeight;
     
+    int myCustomUIViewState, myCustomUIViewHeight, myCustomUIViewWidth, myCustomUIViewLocationX, myCustomUIViewLocationY;
+    
 }
 
 @property (nonatomic,strong) id delegate;

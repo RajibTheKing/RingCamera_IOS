@@ -65,7 +65,15 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     int iRet = g_G729CodecNative->Open();
     cout <<  "Open returned " << iRet << "\n";
     
-    [self InitializeFilePointer:m_FileForDump fileName:@"YuvTest.yuv"];
+    m_nsServerIP = @"";
+    
+    long long currentTime = CurrentTimeStamp()%10000;
+    char charCurrentTime[50];
+    sprintf(charCurrentTime, "%lld", currentTime);
+    string sWriteFileName = "YuvTest_" + string(charCurrentTime) + ".yuv";
+    NSString* nsWriteFileName = [NSString stringWithUTF8String:sWriteFileName.c_str()];
+    
+    [self InitializeFilePointer:m_FileForDump fileName:nsWriteFileName];
     
     NSFileHandle *handle;
     NSArray *Docpaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -166,6 +174,12 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     cout<<"Check--> sRemoteIP = "<<m_sRemoteIP<<endl;
     
     //m_pVideoAPI->SetLoggingState(true,5);
+    string sActualServerIP = [m_nsServerIP UTF8String];
+    
+    //VideoSockets::GetInstance()->InitializeSocket(sActualServerIP, m_iActualFriendPort);
+    
+    //VideoSockets::GetInstance()->StartDataReceiverThread();
+    
     
     int iRet;
     
@@ -182,19 +196,34 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     cout<<"Here height and width = "<<m_iCameraHeight<<", "<<m_iCameraWidth<<endl;
     
     if(m_iCameraHeight * m_iCameraWidth == 288 * 352)
-        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(208, 640, 480, 352, 288);
+        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 640, 480, 352, 288);
     else
         CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
     
-    //iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
+    
+    
+    
+    /*if(m_iActualFriendPort == 60001)
+        iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
+    else
+        iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
+    */
+    
+    
     iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL);
     
     int iRetStartVideoCall;
     
-    //iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_LIVE_STREAM, 500);
+    /*if(m_iActualFriendPort == 60001)
+        iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 500);
+    else
+        iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 500);
+    
+    */
+    
     iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
     
-    //iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth,RECEIVE_SESSION);
+    
     
     NSLog(@"StartVideoCaLL returned, iRet = %d", iRet);
     //iRet = m_pVideoAPI->CheckDeviceCapability(200, m_iCameraHeight, m_iCameraWidth);
@@ -202,9 +231,6 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 #endif
     
     [m_pVTP SetVideoAPI:m_pVideoAPI];
-    [m_pVideoSockets SetVideoAPI:m_pVideoAPI];
-    [m_pVideoSockets SetUserID:lUserId];
-    
     /*dispatch_queue_t SendDummyDataQ = dispatch_queue_create("SendDummyDataQ",DISPATCH_QUEUE_CONCURRENT);
     dispatch_async(SendDummyDataQ, ^{
         [self SendDummyData];
@@ -293,6 +319,8 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     m_pVTP.bEncodeThreadActive = false;
     
     m_pVTP.bEventThreadActive = false;
+    
+    VideoSockets::GetInstance()->StopDataReceiverThread();
     //CVideoAPI::GetInstance()->StopVideoCallV(m_lUserId);
     //CVideoAPI::GetInstance()->ReleaseV();
 
@@ -531,7 +559,7 @@ byte newData[640*480*3/2];
 {
 
     [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
-    //[connection setVideoMirrored:true];
+    [connection setVideoMirrored:false];
 
     //usleep(15*1000);
     //### Step 2: Controlling FPS, Currently disabled
@@ -589,13 +617,28 @@ byte newData[640*480*3/2];
     CVPixelBufferUnlockBaseAddress(IB,1);
     
     
+    /*****
+     *DownScale 2 / 3
+     ***/
+    /*int iNewHeight = m_iCameraHeight, iNewWidth = m_iCameraWidth;
+     memcpy(pScaledVideo, pRawYuv, iNewHeight*iNewWidth*3/2);
+    long long llDownSclae_3_2_Now = CurrentTimeStamp();
+     m_pVideoConverter->DownScale_3_2_YUV420(pRawYuv, iNewHeight, iNewWidth, pScaledVideo);
+    printf("long long llDownSclae_3_2_Now = CurrentTimeStamp(); needed = %lld\n", CurrentTimeStamp() - llDownSclae_3_2_Now);
+     m_iCameraWidth = iNewWidth;
+     m_iCameraHeight = iNewHeight;
+     memcpy(pRawYuv, pScaledVideo, iNewHeight*iNewWidth*3/2);
+    */
+    
     
     /*****
     *DownScaleTest Code
     ***/
     /*int iNewHeight = m_iCameraHeight, iNewWidth = m_iCameraWidth;
     memcpy(pScaledVideo, pRawYuv, iNewHeight*iNewWidth*3/2);
-    m_pVideoConverter->DownScaleVideoData(pRawYuv, iNewHeight, iNewWidth, pScaledVideo);
+    long long llDownScale = CurrentTimeStamp();
+    m_pVideoConverter->DownScaleVideoDataWithAverage(pRawYuv, iNewHeight, iNewWidth, pScaledVideo);
+    printf("DownScaleVideoDataWithAverage needed = %lld\n", CurrentTimeStamp() - llDownScale);
     m_iCameraWidth = iNewWidth;
     m_iCameraHeight = iNewHeight;
     memcpy(pRawYuv, pScaledVideo, iNewHeight*iNewWidth*3/2);
@@ -642,23 +685,26 @@ byte newData[640*480*3/2];
     //m_pVideoConverter->ConvertI420ToNV12(newData, iVideoHeight, iVideoWidth);
     
     
+    
     /*
     CVideoAPI::GetInstance()->m_iReceivedHeight = iVideoHeight;
     CVideoAPI::GetInstance()->m_iReceivedWidth = iVideoWidth;
     CVideoAPI::GetInstance()->ReceiveFullFrame(pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
     */
     
+    /*
     //Sending to OwnViewer Directly
-    //m_iRenderHeight = iVideoHeight;
-    //m_iRenderWidth = iVideoWidth;
-    //[self BackConversion:pRawYuv];
+    m_iRenderHeight = iVideoHeight;
+    m_iRenderWidth = iVideoWidth;
+    [self BackConversion:pRawYuv];
+    */
     
     //cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
     
     //printf("Rajib_Check: Trying to SendVideoDataV\n");
     
-    
-    /*if(tempCounter<300)
+    /*
+    if(tempCounter<300)
     {
         //printf("TheKing--> tempCounter = %d\n", tempCounter);
         //cout<<"TheKing--> tempCounter = "<<tempCounter<<endl;
@@ -675,7 +721,9 @@ byte newData[640*480*3/2];
     else
     {
         cout<<"DONE!!"<<endl;
-    }*/
+        [self UpdateStatusMessage:"FileWrite Completed!!!!"];
+    }
+    */
     return 0;
 }
 
@@ -732,11 +780,12 @@ int ConvertNV12ToI420(unsigned char *convertingData, int iheight, int iwidth)
         int UVPlaneEnd = UVPlaneMidPoint + VPlaneLength;
         memcpy(baVideoRenderBufferUVChannel, pRenderBuffer + YPlaneLength, VPlaneLength + VPlaneLength);
                
-        
+        /*
         printf("Check inside backconversion: ");
         for(int i=0;i<20;i++)
             printf("%d ", pRenderBuffer[i]);
         printf("\n");
+        */
         CVPixelBufferRef pixelBuffer;
         pixelBuffer = m_pVideoConverter->Convert_YUVNV12_To_CVPixelBufferRef(pRenderBuffer, baVideoRenderBufferUVChannel, m_iRenderHeight, m_iRenderWidth);
         
@@ -767,7 +816,7 @@ int ConvertNV12ToI420(unsigned char *convertingData, int iheight, int iwidth)
 
 - (void)WriteToFile:(unsigned char *)data dataLength:(int)datalen filePointer:(FILE *)fp
 {
-    printf("Writing to yuv");
+    printf("Writing to yuv\n");
     fwrite(data, 1, datalen, m_FileForDump);
 }
 

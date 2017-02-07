@@ -79,6 +79,7 @@ int g_iPort;
     //CInterfaceOfConnectivityEngine *m_pInterfaceOfConnectivityEngine = new CInterfaceOfConnectivityEngine();
 
     MyCustomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, m_iCameraWidth, m_iCameraHeight)];
+    //MyCustomImageView.transform = CGAffineTransformScale(MyCustomImageView.transform, -1.0, 1.0);
     
     [_LoginButton setEnabled:false];
     [_ServerCall setEnabled:false];
@@ -88,7 +89,8 @@ int g_iPort;
     
     //g_pVideoSockets = [[VideoSockets alloc] init];
     
-    g_pVideoSockets = [VideoSockets GetInstance];
+    //g_pVideoSockets = [VideoSockets GetInstance];
+    g_pVideoSockets = VideoSockets::GetInstance();
     
     //### VideoTeam: Initialization Procedure...
   
@@ -99,6 +101,8 @@ int g_iPort;
 
     //End
     
+    session = nil;
+    
     [g_pVideoCallProcessor SetVideoSockets:g_pVideoSockets];
     
     [_PortField setEnabled:false];
@@ -106,6 +110,18 @@ int g_iPort;
     [self UpdatePort];
     [g_pVideoCallProcessor SetFriendPort:g_iPort];
     [self UpdateStatusMessage:"Started Application"];
+    
+    //The setup code (in viewDidLoad in your view controller)
+    UITapGestureRecognizer *singleFingerTap =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(handleSingleTap:)];
+    [MyCustomView addGestureRecognizer:singleFingerTap];
+    [singleFingerTap release];
+    myCustomUIViewState = 0;
+    myCustomUIViewHeight = MyCustomView.frame.size.height;
+    myCustomUIViewWidth = MyCustomView.frame.size.width;
+    myCustomUIViewLocationX = MyCustomView.frame.origin.x;
+    myCustomUIViewLocationY = MyCustomView.frame.origin.y;
     
     
 }
@@ -147,13 +163,17 @@ int g_iPort;
     }
     
     g_pVideoCallProcessor.m_lCameraInitializationStartTime = CurrentTimeStamp();
-    
-    [g_pVideoCallProcessor InitializeCameraSession:&session
+    if(session == nil)
+    {
+        
+        [g_pVideoCallProcessor InitializeCameraSession:&session
                                   withDeviceOutput:&videoDataOutput
                                          withLayer:&previewLayer
                                         withHeight:&m_iCameraHeight
                                          withWidth:&m_iCameraWidth];
-    [self setupAVCapture]; //This Method is needed to Initialize Self View with Camera output
+        [self setupAVCapture]; //This Method is needed to Initialize Self View with Camera output
+    }
+    
     [session startRunning];
     
     
@@ -287,7 +307,8 @@ int g_iPort;
     
     pMessageProcessor->prepareLoginRequestMessageR(sMyId, sFrinedId, message);
     
-    SendToVideoSocket(message, iLength);
+    VideoSockets::GetInstance()->SendToVideoSocket(message, iLength);
+    
     [g_pVideoCallProcessor Initialize:g_iMyId];
     
 #endif
@@ -343,8 +364,11 @@ int g_iPort;
     
     
     NSLog(@"Inside EndCall Button");
+    CVideoAPI::GetInstance()->StopAudioCall(200);
     CVideoAPI::GetInstance()->StopVideoCall(200);
+    
     [[RingCallAudioManager sharedInstance] stopRecordAndPlayAudio];
+    
     [g_pVideoCallProcessor CloseAllThreads];
     
     
@@ -443,6 +467,8 @@ int g_iPort;
 
 -(int)RenderImage:(UIImage *)uiImageToDraw
 {
+    
+    
     @autoreleasepool {
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -621,6 +647,57 @@ int g_iPort;
     
    
 }
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    
+    UITouch *touch1 = [touches anyObject];
+    printf("TheKing--> Inside Here %d\n", [touch1 shouldGroupAccessibilityChildren]);
+    /*
+    CGPoint touchLocation = [touch1 locationInView:self.finalScore];
+    CGRect startRect = [[[cup layer] presentationLayer] frame];
+    CGRectContainsPoint(startRect, touchLocation);
+    
+    [UIView animateWithDuration:0.7
+                          delay:0.0
+                        options:UIViewAnimationCurveEaseOut
+                     animations:^{cup.transform = CGAffineTransformMakeScale(1.25, 0.75);}
+                     completion:^(BOOL finished) {
+                         [UIView animateWithDuration:2.0
+                                               delay:2.0
+                                             options:0
+                                          animations:^{cup.alpha = 0.0;}
+                                          completion:^(BOOL finished) {
+                                              [cup removeFromSuperview];
+                                              cup = nil;}];
+                     }];
+    */
+}
+
+-(void)handleSingleTap:(UITapGestureRecognizer *)sender
+{
+    //here you can use sender.view to get the touched view
+    float screenHeight, screenWidth;
+    screenHeight = [[UIScreen mainScreen] bounds].size.height;
+    screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    
+    printf("TheKing--> Inside Here expandActivity, H:W --> %f:%f\n", screenHeight, screenWidth);
+    if(myCustomUIViewState == 0)
+    {
+        CGRect newFrame = MyCustomView.frame;
+        newFrame = CGRectMake( 0, 0, screenWidth, screenHeight);
+        [MyCustomView setFrame:newFrame];
+        myCustomUIViewState = 1;
+    }
+    else
+    {
+        CGRect newFrame = MyCustomView.frame;
+        newFrame = CGRectMake(myCustomUIViewLocationX, myCustomUIViewLocationY, myCustomUIViewWidth, myCustomUIViewHeight);
+        [MyCustomView setFrame:newFrame];
+        myCustomUIViewState = 0;
+    }
+    
+}
+
 
 - (void)dealloc
 {

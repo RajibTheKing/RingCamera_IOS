@@ -932,6 +932,104 @@ bool CVideoConverter::isSkin (int r, int g, int b)
     // match either of the classifiers
     return (rgbClassifier || normRgbClassifier || hsvClassifier); // 
 }
+
+
+
+int tmp[10];
+void CVideoConverter::ChangeBlock_9x9_To_4x4(unsigned char *inData, int iHeight, int iWidth, int i, int j, int iNewHeight, int iNewWidth, int m, int n, unsigned char *outData, int iw)
+{
+    int tmpindx = 0, x, y;
+    
+    x = inData[iw + j];
+    y = inData[iw + j+1];
+    tmp[tmpindx++] = (x+y)>>1;
+    
+    x = inData[iw + j+2];
+    y = inData[iw + j+1];
+    tmp[tmpindx++] = (x+y)>>1;
+    
+    iw += iWidth;
+    x = inData[iw + j];
+    y = inData[iw + j+1];
+    tmp[tmpindx++] = (x+y)>>1;
+    
+    x = inData[iw + j+2];
+    y = inData[iw + j+1];
+    tmp[tmpindx++] = (x+y)>>1;
+    
+    iw += iWidth;
+    x = inData[iw + j];
+    y = inData[iw + j+1];
+    tmp[tmpindx++] = (x+y)>>1;
+    
+    x = inData[iw + j+2];
+    y = inData[iw + j+1];
+    tmp[tmpindx++] = (x+y)>>1;
+    
+    
+    
+    
+    outData[m*iNewWidth + n] = (tmp[0] + tmp[2]) >> 1;
+    outData[m*iNewWidth + n+1] = (tmp[1] + tmp[3]) >> 1;
+    outData[(m+1)*iNewWidth + n] = (tmp[2] + tmp[4]) >> 1;
+    outData[(m+1)*iNewWidth + n+1] = (tmp[3] + tmp[5]) >> 1;
+    
+}
+
+int CVideoConverter::DownScale_3_2_YUV420(unsigned char* pData, int &iHeight, int &iWidth, unsigned char* outputData)
+{
+    int YPlaneLength = iHeight*iWidth;
+    int UPlaneLength = YPlaneLength >> 2;
+    
+    int iNewWidth, iNewHeight;
+    iNewWidth = (iWidth * 2) / 3;
+    iNewHeight = (iHeight * 2) / 3;
+    
+    int m = 0, n=0;
+    
+    for(int i=0, iw = 0, m=0;i+2<iHeight; i+=3, m+=2, iw += iWidth + iWidth + iWidth)
+    {
+        for(int j=0, n=0; j+2<iWidth; j+=3, n+=2)
+        {
+            ChangeBlock_9x9_To_4x4(pData, iHeight, iWidth, i, j, iNewHeight, iNewWidth, m, n, outputData, iw);
+            
+        }
+    }
+    
+    int uIndex = iNewHeight * iNewWidth;
+    int Hello = uIndex;
+    int shiftedHello = Hello>>2;
+    int vIndex = uIndex + shiftedHello;
+    
+    int halfWidth, halfheight, newHalfWidth, newHalfHeight;
+    
+    halfWidth = iWidth>>1;
+    halfheight = iHeight>>1;
+    newHalfWidth = iNewWidth>>1;
+    newHalfHeight = iNewHeight>>1;
+    
+    for(int i=0, iw = 0, m=0;i<halfheight; i+=3, m+=2, iw += halfWidth + halfWidth + halfWidth)
+    {
+        for(int j=0, n=0; j<halfWidth; j+=3, n+=2)
+        {
+            ChangeBlock_9x9_To_4x4(pData + YPlaneLength, halfheight, halfWidth, i, j, newHalfHeight, newHalfWidth, m, n, outputData + uIndex, iw);
+            
+            ChangeBlock_9x9_To_4x4(pData + YPlaneLength + UPlaneLength, halfheight, halfWidth, i, j, newHalfHeight, newHalfWidth, m, n, outputData + vIndex, iw);
+            
+        }
+    }
+    
+    iHeight = iNewHeight;
+    iWidth = iNewWidth;
+    printf("Finally Scaling, iNewHeight = %d, iNewWidth = %d, Actual H:W = %d:%d, uIndex = %d, vIndex = %d\n", iNewHeight, iNewWidth, iHeight, iWidth, uIndex, vIndex);
+    printf("Scaling Done\n");
+    return iNewHeight*iNewWidth*3/2;
+}
+
+
+
+
+
 int CVideoConverter::getMin(int a, int b, int c)
 {
     return min(a,min(b,c));

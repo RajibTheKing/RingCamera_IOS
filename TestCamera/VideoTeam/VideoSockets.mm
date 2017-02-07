@@ -25,16 +25,14 @@
 #include <sstream>
 #include <queue>
 #include <sys/time.h>
-using namespace std;
+
+
 #include "VideoSockets.h"
 #include "Constants.h"
-//#define printf(...)
 #include "VideoCallProcessor.h"
 
-string g_sServerIP = "192.168.57.113"; //"192.168.57.113";
 
-int g_iVideoSocketPort = 15001;
-int g_iServerPort = 10001;
+using namespace std;
 
 struct sockaddr_in si_me, si_other, si_VideoSocket, si_VideoSendSocket;
 struct sockaddr_in Server;
@@ -43,39 +41,34 @@ int ServerFd, s, i, slen = sizeof(si_other) , recv_len, s_VideoSocket, s_VideoSe
 
 byte baDataReceiverBuffer[MAXBUFFER_SIZE];
 byte baVideoReceiverBuffer[MAXBUFFER_SIZE];
+byte baActualData[MAXBUFFER_SIZE];
 
 
-@implementation VideoSockets
 
-- (id) init
+VideoSockets::VideoSockets()
 {
-    self = [super init];
+    m_bDataReceiverThread = false;
     NSLog(@"Inside VideoSockets Constructor");
-    [self InitializeSocket];
-    return self;
 }
 
-+ (id)GetInstance
+VideoSockets::~VideoSockets()
 {
-    if(!m_pVideoSockets)
+    
+}
+VideoSockets* VideoSockets::GetInstance()
+{
+    if(m_pVideoSockets == NULL)
     {
-        cout<<"Video_Team: m_pVideoCallProcessor Initialized"<<endl;
-        
-        m_pVideoSockets = [[VideoSockets alloc] init];
-        
+        m_pVideoSockets = new VideoSockets();
     }
     return m_pVideoSockets;
 }
 
-- (void)SetVideoAPI:(CVideoAPI *)pVideoAPI
-{
-    m_pVideoAPI = pVideoAPI;
-}
 
--(void)InitializeSocket
+void VideoSockets::InitializeSocket(string sActualServerIP, int sActualServerPort)
 {
     
-    if ( (s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
+    /*if ( (s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
     {
         printf("socket");
     }
@@ -89,7 +82,7 @@ byte baVideoReceiverBuffer[MAXBUFFER_SIZE];
         fprintf(stderr, "inet_aton() failed\n");
         exit(1);
     }
-    
+    */
     
     if ( (s_VideoSocket=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
     {
@@ -98,33 +91,53 @@ byte baVideoReceiverBuffer[MAXBUFFER_SIZE];
     
     memset((char *) &si_VideoSocket, 0, sizeof(si_VideoSocket));
     si_VideoSocket.sin_family = AF_INET;
-    si_VideoSocket.sin_port = htons(g_iVideoSocketPort);
+    si_VideoSocket.sin_port = htons(sActualServerPort);
     
-    if (inet_aton(g_sServerIP.c_str() , &si_VideoSocket.sin_addr) == 0)
+    if (inet_aton(sActualServerIP.c_str() , &si_VideoSocket.sin_addr) == 0)
     {
         fprintf(stderr, "inet_aton() failed\n");
         exit(1);
     }
     
     
-    dispatch_queue_t PacketReceiverQ = dispatch_queue_create("PacketReceiverQ",DISPATCH_QUEUE_CONCURRENT);
+    /*dispatch_queue_t PacketReceiverQ = dispatch_queue_create("PacketReceiverQ",DISPATCH_QUEUE_CONCURRENT);
     dispatch_async(PacketReceiverQ, ^{
-        [self PacketReceiver];
+        //[self PacketReceiver];
+        PacketReceiver();
     });
     
     dispatch_queue_t PacketReceiverForVideoDataQ = dispatch_queue_create("PacketReceiverForVideoDataQ",DISPATCH_QUEUE_CONCURRENT);
     dispatch_async(PacketReceiverForVideoDataQ, ^{
-        [self PacketReceiverForVideoData];
-    });
+        //[self PacketReceiverForVideoData];
+        PacketReceiverForVideoData();
+    });*/
+    
+    
     
 }
-
-- (void) SetUserID:(long long)lUserId
+void VideoSockets::StartDataReceiverThread()
+{
+    if(m_bDataReceiverThread == true) return;
+    
+    m_bDataReceiverThread = true;
+    
+    dispatch_queue_t PacketReceiverQ = dispatch_queue_create("PacketReceiverQ",DISPATCH_QUEUE_CONCURRENT);
+    dispatch_async(PacketReceiverQ, ^{
+        //[self PacketReceiver];
+        DataReceiverThread();
+    });
+}
+void VideoSockets::StopDataReceiverThread()
+{
+    m_bDataReceiverThread = false;
+    
+}
+void VideoSockets::SetUserID(long long lUserId)
 {
     m_lUserId = lUserId;
 }
 
--(void) BindSocketToReceiveRemoteData
+void  VideoSockets::BindSocketToReceiveRemoteData()
 {
     if ( (s_VideoSendSocket =socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
     {
@@ -148,11 +161,12 @@ byte baVideoReceiverBuffer[MAXBUFFER_SIZE];
     
     dispatch_queue_t PacketReceiverForVideoSendSocketQ = dispatch_queue_create("PacketReceiverForVideoSendSocketQ",DISPATCH_QUEUE_SERIAL);
     dispatch_async(PacketReceiverForVideoSendSocketQ, ^{
-        [self PacketReceiverForVideoSendSocket];
+        //[self PacketReceiverForVideoSendSocket];
+        PacketReceiverForVideoSendSocket();
     });
 }
 
-void SendToVideoSocket(byte sendingBytePacket[], int length)
+void VideoSockets::SendToVideoSocket(byte sendingBytePacket[], int length)
 {
     int iRet;
     iRet = sendto(s_VideoSocket, sendingBytePacket, length, 0, (struct sockaddr*) &si_VideoSocket, sizeof(si_VideoSocket));
@@ -161,7 +175,7 @@ void SendToVideoSocket(byte sendingBytePacket[], int length)
     
 }
 
-void SendToVideoSendSocket(byte sendingBytePacket[], int length)
+void VideoSockets::SendToVideoSendSocket(byte sendingBytePacket[], int length)
 {
     int iRet;
     printf("First byte of sending video data = %d\n", (int)sendingBytePacket[0]);
@@ -172,7 +186,7 @@ void SendToVideoSendSocket(byte sendingBytePacket[], int length)
 }
 
 
-- (void)PacketReceiverForVideoSendSocket
+void VideoSockets::PacketReceiverForVideoSendSocket()
 {
     printf("Rajib_Check: Inside PacketReceiveerforVideoSocket called\n");
     struct sockaddr_in sss_other;
@@ -245,8 +259,53 @@ void SendToVideoSendSocket(byte sendingBytePacket[], int length)
     
 }
 
+void VideoSockets::DataReceiverThread()
+{
+    byte testServer[] = "HudaiEktaMessage";
+    
+    SendToServer(testServer, 16);
+    
+    SendToServer(testServer, 16);
+    
+    SendToServer(testServer, 16);
+    
+    SendToServer(testServer, 16);
+    
+    SendToServer(testServer, 16);
+    
+    SendToServer(testServer, 16);
+    
+    int startPrefix = 0;
+    
+    while(m_bDataReceiverThread)
+    {
+        printf("Waiting for data, PacketReceiverForVideoData\n");
+        fflush(stdout);
+        
+        //try to receive some data, this is a blocking call
+        if ((recv_len = recvfrom(s_VideoSocket, baDataReceiverBuffer, MAXBUFFER_SIZE, 0, (struct sockaddr *) &si_VideoSocket, (socklen_t*)&sVideoSocketLen)) == -1)
+        {
+            printf("Data recv error with code = %d\n", recv_len);
+        }
+        
+        printf("Inside VIdeo Socket Received packet from %s:%d, recv_len = %d\n", inet_ntoa(si_VideoSocket.sin_addr), ntohs(si_VideoSocket.sin_port), recv_len);
+        
+        int iPacketType = (int)baDataReceiverBuffer[0];
+        
+        cout<<"Packet Type = "<<iPacketType<<endl;
+        
+        /*if(iPacketType == 39)
+            CVideoAPI::GetInstance()->PushPacketForDecoding(200, MEDIA_TYPE_VIDEO, ENTITY_TYPE_CALLER, baDataReceiverBuffer, recv_len);
+        else
+            CVideoAPI::GetInstance()->PushPacketForDecoding(200, MEDIA_TYPE_AUDIO, ENTITY_TYPE_CALLER, baDataReceiverBuffer, recv_len);
+        */
+        
+        CVideoAPI::GetInstance()->PushPacketForDecoding(200, 3, ENTITY_TYPE_VIEWER, baDataReceiverBuffer, recv_len);
 
-- (void)PacketReceiverForVideoData
+    }
+}
+
+void VideoSockets::PacketReceiverForVideoData()
 {
     
     while(true)
@@ -278,34 +337,34 @@ void SendToVideoSendSocket(byte sendingBytePacket[], int length)
             int iFriendPort = ByteArrayToIntegerConvert((byte*)baDataReceiverBuffer, ++start);
             
             
-            cout<<"VideoSocket:: VideoAPI->SetRelayServerInformation --> "<<"lUser = "<<[[VideoCallProcessor GetInstance] GetFriendId]<<", g_serverip  = "<<g_sServerIP<<", iFriendPort = "<<iFriendPort<<endl;
+            //cout<<"VideoSocket:: VideoAPI->SetRelayServerInformation --> "<<"lUser = "<<[[VideoCallProcessor GetInstance] GetFriendId]<<", g_serverip  = "<<g_sServerIP<<", iFriendPort = "<<iFriendPort<<endl;
             //CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Audio*/,  "38.127.68.60", 60001);
             //CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)1/*Audio*/,  "38.127.68.60", 60001);
             
             /*
-            if ( (s_VideoSendSocket =socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
-            {
-                printf("socket");
-            }
-            
-            
-            InitializeServerSocketForRemoteUser(s_VideoSendSocket, g_sServerIP, iFriendPort);
-            
-            dispatch_queue_t PacketReceiverForVideoSendSocketQ = dispatch_queue_create("PacketReceiverForVideoSendSocketQ",DISPATCH_QUEUE_SERIAL);
-            dispatch_async(PacketReceiverForVideoSendSocketQ, ^{
-                [self PacketReceiverForVideoSendSocket];
-            });
-            */
+             if ( (s_VideoSendSocket =socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
+             {
+             printf("socket");
+             }
+             
+             
+             InitializeServerSocketForRemoteUser(s_VideoSendSocket, g_sServerIP, iFriendPort);
+             
+             dispatch_queue_t PacketReceiverForVideoSendSocketQ = dispatch_queue_create("PacketReceiverForVideoSendSocketQ",DISPATCH_QUEUE_SERIAL);
+             dispatch_async(PacketReceiverForVideoSendSocketQ, ^{
+             [self PacketReceiverForVideoSendSocket];
+             });
+             */
             
             
             /*
-            
-            bStartVideoSending = true;
-            [g_pVideoCallProcessor StartAllThreads];
-            //[self StartCameraSession];
-            [session startRunning];
              
-            */
+             bStartVideoSending = true;
+             [g_pVideoCallProcessor StartAllThreads];
+             //[self StartCameraSession];
+             [session startRunning];
+             
+             */
             
         }
         else
@@ -317,7 +376,7 @@ void SendToVideoSendSocket(byte sendingBytePacket[], int length)
 
 
 
-- (void)PacketReceiver
+void VideoSockets::PacketReceiver()
 {
     
     while(true)
@@ -376,7 +435,7 @@ void SendToVideoSendSocket(byte sendingBytePacket[], int length)
 }
 
 
-void InitializeSocketForRemoteUser(string sRemoteIp)
+void VideoSockets::InitializeSocketForRemoteUser(string sRemoteIp)
 {
     if ( (ServerFd=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
     {
@@ -396,7 +455,7 @@ void InitializeSocketForRemoteUser(string sRemoteIp)
 }
 
 
-void InitializeServerSocketForRemoteUser(int &SocketFd, string sRemoteIp, int iRemotePort)
+void VideoSockets::InitializeServerSocketForRemoteUser(int &SocketFd, string sRemoteIp, int iRemotePort)
 {
     
     if ( (ServerFd=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
@@ -416,19 +475,65 @@ void InitializeServerSocketForRemoteUser(int &SocketFd, string sRemoteIp, int iR
     SocketFd = ServerFd;
 }
 
-void SendToServer(byte sendingBytePacket[], int length)
+void VideoSockets::SendToServer(byte sendingBytePacket[], int length)
 {
     int iRet;
     //s_VideoSendSocket
     
-    iRet = sendto(ServerFd, sendingBytePacket, length, 0, (struct sockaddr*) &Server, sizeof(Server));
+    iRet = sendto(s_VideoSocket, sendingBytePacket, length, MAXBUFFER_SIZE, (struct sockaddr*) &si_VideoSocket, sizeof(si_VideoSocket));
+    
+    //iRet = send(s_VideoSocket, sendingBytePacket, length, 0);
+    
     //iRet = sendto(s_VideoSendSocket, sendingBytePacket, length, 0, (struct sockaddr*) &Server, sizeof(Server));
     
-    printf("-->SendPacketVideoSocket, iRet = %d\n", iRet);
+    printf("-->SendPacketVideoSocket, iRet = %d, errno = %d\n", iRet, errno);
+    
+//    fprintf(stderr, "socket() failed: %s\n", strerror(errno));
+    
     
 }
 
-void SendPacket(byte sendingBytePacket[], int length)
+
+byte g_dataToSend[8005];
+
+void VideoSockets::SendToServerWithPacketize(byte sendingBytePacket[], int length)
+{
+    int iRet;
+    //s_VideoSendSocket
+    int MaxPacketSize = 8000;
+    int sentSize = 0;
+    int counter = 0;
+    
+    while(sentSize<length)
+    {
+        int dataToSendSize = min(MaxPacketSize, length - sentSize);
+        
+        memcpy(g_dataToSend + 1 , sendingBytePacket+sentSize, dataToSendSize);
+        sentSize+=dataToSendSize;
+        if(sentSize == length)
+        {
+            g_dataToSend[0] = 111;
+        }
+        else
+        {
+            g_dataToSend[1] = 0;
+        }
+        
+        iRet = sendto(s_VideoSocket, g_dataToSend, dataToSendSize+1, 0, (struct sockaddr*) &si_VideoSocket, sizeof(si_VideoSocket));
+        
+        printf("-->SendPacketVideoSocket, counter = %d, iRet = %d\n", counter, iRet);
+    
+        usleep(10);
+        
+    }
+    
+    
+    
+    
+    
+}
+
+void VideoSockets::SendPacket(byte sendingBytePacket[], int length)
 {
     //now reply the client with the same data
     int iRet;
@@ -437,7 +542,7 @@ void SendPacket(byte sendingBytePacket[], int length)
     printf("SendPacket, iRet = %d\n", iRet);
     
 }
-int ByteArrayToIntegerConvert( byte* rawData, int stratPoint )
+int VideoSockets::ByteArrayToIntegerConvert( byte* rawData, int stratPoint )
 {
     int TotalDataLen = 0;
     
@@ -448,8 +553,3 @@ int ByteArrayToIntegerConvert( byte* rawData, int stratPoint )
     
     return TotalDataLen;
 }
-
-
-
-
-@end

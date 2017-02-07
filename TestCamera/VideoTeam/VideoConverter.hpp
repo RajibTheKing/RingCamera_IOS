@@ -78,6 +78,8 @@ public:
     int getMax(int a, int b, int c);
     bool isSkin2(int R, int G, int B);
     
+    void ChangeBlock_9x9_To_4x4(unsigned char *inData, int iHeight, int iWidth, int i, int j, int iNewHeight, int iNewWidth, int m, int n, unsigned char *outData, int iw);
+    int DownScale_3_2_YUV420(unsigned char* pData, int &iHeight, int &iWidth, unsigned char* outputData);
     
     
     void SendPakcetFragments(byte*data, int iLen);

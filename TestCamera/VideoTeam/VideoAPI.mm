@@ -82,7 +82,8 @@ void notifyClientMethodWithAudioDataIos(LongLong lFriendID, int mediaType, short
         temp[i*2+1] = data[i] & 0xFF;
         
     }
-    WriteToFileVideoAPI(temp, dataLenth*2);
+    
+    //WriteToFileVideoAPI(temp, dataLenth*2);
     
     [[RingCallAudioManager sharedInstance] playMyReceivedAudioData:data withLength:dataLenth];
     delete[] temp;
@@ -132,23 +133,34 @@ void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType)
     [[VideoCallProcessor GetInstance] UpdateStatusMessage:sStatusMessage];
     
 }
+int mx = 0;
 void notifyClientMethodWithAudiPacketDataIos(LongLong lFriendID, unsigned char data[], int dataLenth)
 {
     int iPacketType = (int)data[0];
     cout<<"NotifyClientMethodWithAudioPackt -->"<<dataLenth<<", packet = "<<iPacketType<< endl;
+    if(mx<dataLenth)
+    {
+        mx = dataLenth;
+        cout<<"MaxPacketLength -->"<<mx<<endl;
+    }
     
     //CVideoAPI::GetInstance()->SendPakcetFragments(data, dataLenth);
+    VideoSockets::GetInstance()->SendToServer(data, dataLenth);
+    
+    
+    
     
     //data[0] = (int)33;
     //printf("SendPacketFragment datalen = %d\n", iLen);
     
-    memcpy(bAudioData+1, data, dataLenth);
+    /*memcpy(bAudioData+1, data, dataLenth);
     
     bAudioData[0] = (int)43;
     
     SendToServer(bAudioData, dataLenth+1);
     
     //CVideoAPI::GetInstance()->Send(200, 1, bAudioData, dataLenth+1);
+     */
 }
 
 void notifyClientMethodWithAudioAlarmIos(LongLong lFriendID, short *data, int dataLenth)
@@ -265,7 +277,7 @@ void CVideoAPI::SendPakcetFragments(byte  *data, int iLen)
     data[0] = (int)33;
     printf("SendPacketFragment datalen = %d\n", iLen);
     
-    SendToServer(data, iLen);
+    //SendToServer(data, iLen);
 }
 
 void CVideoAPI::ReceiveFullFrame(byte*data, int iLen)

@@ -16,10 +16,10 @@ using namespace std;
 
 
 
-#define printf(...)
+//#define printf(...)
 #define MAXWIDTH 640
 #define MAXHEIGHT 640
-#define MAXBUFFER_SIZE 5000
+#define MAXBUFFER_SIZE 500000
 #define byte unsigned char
 #define MAX_FRAME_SIZE (MAXWIDTH * MAXHEIGHT * 3 / 2)
 

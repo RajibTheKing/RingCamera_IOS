@@ -102,7 +102,7 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
         while(_bRenderThreadActive)
         {
             //break;
-            printf("QQQ.size() = %lu\n", m_pVideoAPI->m_RenderQueue.size());
+            //printf("QQQ.size() = %lu\n", m_pVideoAPI->m_RenderQueue.size());
             
             if(m_pVideoAPI->m_RenderQueue.empty())
             {
@@ -135,11 +135,13 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
             //int height = 640;
             //int width = 480;
             
+            /*
             printf("Inside renderthread, iLen = %d --> ", iLen);
             for(int i=0;i<20;i++)
             {
                 printf("%d ", pGotData[i]);
             }
+            */
             printf("\n");
             if(iLen>=MAX_FRAME_SIZE || iLen < 0)
             {
