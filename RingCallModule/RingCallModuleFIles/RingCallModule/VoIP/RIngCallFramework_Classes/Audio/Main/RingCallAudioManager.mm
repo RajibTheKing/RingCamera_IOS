@@ -113,7 +113,7 @@ FILE *fpInputPCM;
 
 +(RingCallAudioManager *)sharedInstance
 {
-    pVideoSocket = [VideoSockets GetInstance];
+    pVideoSocket = VideoSockets::GetInstance();
     pVideoCallProcessor = [VideoCallProcessor GetInstance];
     
     if (sharedInstance == nil)
