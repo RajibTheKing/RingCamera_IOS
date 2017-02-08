@@ -43,11 +43,18 @@ public:
     void SendToVideoSocket(byte sendingBytePacket[], int length);
     void SendToVideoSendSocket(byte sendingBytePacket[], int length);
     void SendPacket(byte sendingBytePacket[], int length);
+    void ProcessReceivedData(byte *recievedData, int length);
     
     int ByteArrayToIntegerConvert( byte* rawData, int stratPoint );
     CVideoAPI *m_pVideoAPI;
     long long m_lUserId;
     bool m_bDataReceiverThread;
+    
+    unsigned char m_ucaDatatoSendBuffer[MAXBUFFER_SIZE];
+    unsigned char m_ucaDatatoReceiveBuffer[MAXBUFFER_SIZE];
+    int m_iReceiveBufferIndex;
+    
+    int m_iPort;
 };
 
 static VideoSockets *m_pVideoSockets = NULL;

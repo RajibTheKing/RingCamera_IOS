@@ -49,6 +49,7 @@ VideoSockets::VideoSockets()
 {
     m_bDataReceiverThread = false;
     NSLog(@"Inside VideoSockets Constructor");
+    m_iReceiveBufferIndex = 0;
 }
 
 VideoSockets::~VideoSockets()
@@ -67,22 +68,7 @@ VideoSockets* VideoSockets::GetInstance()
 
 void VideoSockets::InitializeSocket(string sActualServerIP, int sActualServerPort)
 {
-    
-    /*if ( (s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
-    {
-        printf("socket");
-    }
-    
-    memset((char *) &si_other, 0, sizeof(si_other));
-    si_other.sin_family = AF_INET;
-    si_other.sin_port = htons(g_iServerPort);
-    
-    if (inet_aton(g_sServerIP.c_str() , &si_other.sin_addr) == 0)
-    {
-        fprintf(stderr, "inet_aton() failed\n");
-        exit(1);
-    }
-    */
+    m_iPort = sActualServerPort;
     
     if ( (s_VideoSocket=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
     {
@@ -265,42 +251,53 @@ void VideoSockets::DataReceiverThread()
     
     SendToServer(testServer, 16);
     
-    SendToServer(testServer, 16);
-    
-    SendToServer(testServer, 16);
-    
-    SendToServer(testServer, 16);
-    
-    SendToServer(testServer, 16);
-    
-    SendToServer(testServer, 16);
-    
     int startPrefix = 0;
     
     while(m_bDataReceiverThread)
     {
-        printf("Waiting for data, PacketReceiverForVideoData\n");
         fflush(stdout);
         
         //try to receive some data, this is a blocking call
         if ((recv_len = recvfrom(s_VideoSocket, baDataReceiverBuffer, MAXBUFFER_SIZE, 0, (struct sockaddr *) &si_VideoSocket, (socklen_t*)&sVideoSocketLen)) == -1)
         {
             printf("Data recv error with code = %d\n", recv_len);
+            continue;
         }
         
-        printf("Inside VIdeo Socket Received packet from %s:%d, recv_len = %d\n", inet_ntoa(si_VideoSocket.sin_addr), ntohs(si_VideoSocket.sin_port), recv_len);
-        
         int iPacketType = (int)baDataReceiverBuffer[0];
-        
         cout<<"Packet Type = "<<iPacketType<<endl;
         
-        /*if(iPacketType == 39)
+        if(iPacketType == FULL_PACKET_CODE)
+        {
+            //CVideoAPI::GetInstance()->PushPacketForDecoding(200, 3, ENTITY_TYPE_VIEWER, baDataReceiverBuffer+1, recv_len-1);
+            ProcessReceivedData(baDataReceiverBuffer+1, recv_len - 1);
+            m_iReceiveBufferIndex = 0;
+        }
+        else
+        {
+            if(iPacketType == LAST_PACKET_CODE)
+            {
+                memcpy(m_ucaDatatoReceiveBuffer+m_iReceiveBufferIndex, baDataReceiverBuffer+1, recv_len-1);
+                m_iReceiveBufferIndex+=(recv_len-1);
+                //CVideoAPI::GetInstance()->PushPacketForDecoding(200, 3, ENTITY_TYPE_VIEWER, m_ucaDatatoReceiveBuffer, m_iReceiveBufferIndex);
+                ProcessReceivedData(m_ucaDatatoReceiveBuffer, m_iReceiveBufferIndex);
+                m_iReceiveBufferIndex=0;
+            }
+            else
+            {
+                memcpy(m_ucaDatatoReceiveBuffer+m_iReceiveBufferIndex, baDataReceiverBuffer+1, recv_len-1);
+                m_iReceiveBufferIndex+=(recv_len-1);
+            }
+        }
+        
+        /*
+         if(iPacketType == 39)
             CVideoAPI::GetInstance()->PushPacketForDecoding(200, MEDIA_TYPE_VIDEO, ENTITY_TYPE_CALLER, baDataReceiverBuffer, recv_len);
         else
             CVideoAPI::GetInstance()->PushPacketForDecoding(200, MEDIA_TYPE_AUDIO, ENTITY_TYPE_CALLER, baDataReceiverBuffer, recv_len);
         */
         
-        CVideoAPI::GetInstance()->PushPacketForDecoding(200, 3, ENTITY_TYPE_VIEWER, baDataReceiverBuffer, recv_len);
+        
 
     }
 }
@@ -499,36 +496,32 @@ byte g_dataToSend[8005];
 void VideoSockets::SendToServerWithPacketize(byte sendingBytePacket[], int length)
 {
     int iRet;
-    //s_VideoSendSocket
-    int MaxPacketSize = 8000;
-    int sentSize = 0;
-    int counter = 0;
-    
-    while(sentSize<length)
+    if(length < 9216)
     {
-        int dataToSendSize = min(MaxPacketSize, length - sentSize);
-        
-        memcpy(g_dataToSend + 1 , sendingBytePacket+sentSize, dataToSendSize);
-        sentSize+=dataToSendSize;
-        if(sentSize == length)
-        {
-            g_dataToSend[0] = 111;
-        }
-        else
-        {
-            g_dataToSend[1] = 0;
-        }
-        
-        iRet = sendto(s_VideoSocket, g_dataToSend, dataToSendSize+1, 0, (struct sockaddr*) &si_VideoSocket, sizeof(si_VideoSocket));
-        
-        printf("-->SendPacketVideoSocket, counter = %d, iRet = %d\n", counter, iRet);
-    
-        usleep(10);
-        
+        memcpy(m_ucaDatatoSendBuffer+1, sendingBytePacket, length);
+        m_ucaDatatoSendBuffer[0] = FULL_PACKET_CODE; //FullPacket
+        iRet = sendto(s_VideoSocket, m_ucaDatatoSendBuffer, length+1, MAXBUFFER_SIZE, (struct sockaddr*) &si_VideoSocket, sizeof(si_VideoSocket));
+        printf("-->SendPacketVideoSocket, iRet = %d, errno = %d\n", iRet, errno);
     }
-    
-    
-    
+    else
+    {
+        int cnt = 1;
+        int indx = 0;
+        while(indx<length)
+        {
+            int dataToSendSize = min(MAX_SEND_BUFFER_SIZE, length-indx);
+            memcpy(m_ucaDatatoSendBuffer+1, sendingBytePacket+indx, dataToSendSize);
+            m_ucaDatatoSendBuffer[0] = cnt++;
+            indx+=dataToSendSize;
+            if(indx>=length)
+            {
+                m_ucaDatatoSendBuffer[0] = LAST_PACKET_CODE;
+            }
+            
+            iRet = sendto(s_VideoSocket, m_ucaDatatoSendBuffer, dataToSendSize+1, MAXBUFFER_SIZE, (struct sockaddr*) &si_VideoSocket, sizeof(si_VideoSocket));
+            printf("-->SendPacketVideoSocket, iRet = %d, errno = %d\n", iRet, errno);
+        }
+    }
     
     
 }
@@ -552,4 +545,16 @@ int VideoSockets::ByteArrayToIntegerConvert( byte* rawData, int stratPoint )
     TotalDataLen += (rawData[stratPoint++] & 0xFF);
     
     return TotalDataLen;
+}
+void VideoSockets::ProcessReceivedData(byte *recievedData, int length)
+{
+    if(m_iPort == 60001)
+    {
+        CVideoAPI::GetInstance()->PushPacketForDecoding(200, 4, ENTITY_TYPE_PUBLISHER, recievedData, length);
+    }
+    else
+    {
+        CVideoAPI::GetInstance()->PushPacketForDecoding(200, 3, ENTITY_TYPE_VIEWER, recievedData, length);
+    }
+    
 }

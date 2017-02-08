@@ -176,9 +176,9 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     //m_pVideoAPI->SetLoggingState(true,5);
     string sActualServerIP = [m_nsServerIP UTF8String];
     
-    //VideoSockets::GetInstance()->InitializeSocket(sActualServerIP, m_iActualFriendPort);
+    VideoSockets::GetInstance()->InitializeSocket("192.168.0.107", m_iActualFriendPort);
     
-    //VideoSockets::GetInstance()->StartDataReceiverThread();
+    VideoSockets::GetInstance()->StartDataReceiverThread();
     
     
     int iRet;
@@ -203,25 +203,25 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     
     
-    /*if(m_iActualFriendPort == 60001)
+    if(m_iActualFriendPort == 60001)
         iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
     else
         iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
-    */
     
     
-    iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL);
+    
+    //iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL);
     
     int iRetStartVideoCall;
     
-    /*if(m_iActualFriendPort == 60001)
+    if(m_iActualFriendPort == 60001)
         iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 500);
     else
         iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 500);
     
-    */
     
-    iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
+    
+    //iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
     
     
     
@@ -235,7 +235,6 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     dispatch_async(SendDummyDataQ, ^{
         [self SendDummyData];
     });*/
-    
     return 1;
 }
 

@@ -111,10 +111,8 @@ int g_iPort;
     [g_pVideoCallProcessor SetFriendPort:g_iPort];
     [self UpdateStatusMessage:"Started Application"];
     
-    //The setup code (in viewDidLoad in your view controller)
-    UITapGestureRecognizer *singleFingerTap =
-    [[UITapGestureRecognizer alloc] initWithTarget:self
-                                            action:@selector(handleSingleTap:)];
+    //ActionListener for MyCustomView
+    UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTapforRemoteView:)];
     [MyCustomView addGestureRecognizer:singleFingerTap];
     [singleFingerTap release];
     myCustomUIViewState = 0;
@@ -122,6 +120,16 @@ int g_iPort;
     myCustomUIViewWidth = MyCustomView.frame.size.width;
     myCustomUIViewLocationX = MyCustomView.frame.origin.x;
     myCustomUIViewLocationY = MyCustomView.frame.origin.y;
+    
+    //ActionListener for SelfView
+    UITapGestureRecognizer *singleFingerTapSelfView = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTapforOwnView:)];
+    [SelfView addGestureRecognizer:singleFingerTapSelfView];
+    [singleFingerTapSelfView release];
+    selfUIViewState = 0;
+    selfUIViewHeight = SelfView.frame.size.height;
+    selfUIViewWidth = SelfView.frame.size.width;
+    selfUIViewLocationX = SelfView.frame.origin.x;
+    selfUIViewLocationY = SelfView.frame.origin.y;
     
     
 }
@@ -131,7 +139,6 @@ int g_iPort;
     
     CALayer *rootLayer;
     rootLayer = [SelfView layer];
-    
     [rootLayer setMasksToBounds:YES];
     [previewLayer setFrame:[rootLayer bounds]];
     [rootLayer addSublayer:previewLayer];
@@ -604,6 +611,21 @@ int g_iPort;
     */
 }
 
+- (IBAction)startCallInLiveAction:(id)sender
+{
+    int role = CALL_NOT_RUNNING;
+    
+    if(g_iPort == 60001)
+    {
+        role = PUBLISHER_IN_CALL;
+    }
+    else
+    {
+        role = VIEWER_IN_CALL;
+    }
+    CVideoAPI::GetInstance()->StartCallInLive(200, role);
+}
+
 - (void)SetCameraResolutionByNotification:(int)iHeight withWidth:(int)iWidth
 {
     
@@ -673,7 +695,7 @@ int g_iPort;
     */
 }
 
--(void)handleSingleTap:(UITapGestureRecognizer *)sender
+-(void)handleSingleTapforRemoteView:(UITapGestureRecognizer *)sender
 {
     //here you can use sender.view to get the touched view
     float screenHeight, screenWidth;
@@ -686,6 +708,8 @@ int g_iPort;
         CGRect newFrame = MyCustomView.frame;
         newFrame = CGRectMake( 0, 0, screenWidth, screenHeight);
         [MyCustomView setFrame:newFrame];
+        
+        [_myRealView bringSubviewToFront:MyCustomView];
         myCustomUIViewState = 1;
     }
     else
@@ -697,6 +721,37 @@ int g_iPort;
     }
     
 }
+
+
+-(void)handleSingleTapforOwnView:(UITapGestureRecognizer *)sender
+{
+    //here you can use sender.view to get the touched view
+    float screenHeight, screenWidth;
+    screenHeight = [[UIScreen mainScreen] bounds].size.height;
+    screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    
+    printf("TheKing--> Inside Here expandActivity, H:W --> %f:%f\n", screenHeight, screenWidth);
+    if(selfUIViewState == 0)
+    {
+        CGRect newFrame = SelfView.frame;
+        newFrame = CGRectMake( 0, 0, screenWidth, screenHeight);
+        [SelfView setFrame:newFrame];
+        
+        [_myRealView bringSubviewToFront:SelfView];
+        [self setupAVCapture];
+        selfUIViewState = 1;
+    }
+    else
+    {
+        CGRect newFrame = SelfView.frame;
+        newFrame = CGRectMake(selfUIViewLocationX, selfUIViewLocationY, selfUIViewWidth, selfUIViewHeight);
+        [SelfView setFrame:newFrame];
+        [self setupAVCapture];
+        selfUIViewState = 0;
+    }
+    
+}
+
 
 
 - (void)dealloc
@@ -727,6 +782,7 @@ int g_iPort;
     [_makeReceiverBtn release];
     [_myRealView release];
     [_ldSpeakerBtn release];
+    [_startCallInLiveBtn release];
     [super dealloc];
 }
 

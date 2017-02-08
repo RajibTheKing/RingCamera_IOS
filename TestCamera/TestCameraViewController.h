@@ -36,6 +36,7 @@
     int m_iRenderHeight;
     
     int myCustomUIViewState, myCustomUIViewHeight, myCustomUIViewWidth, myCustomUIViewLocationX, myCustomUIViewLocationY;
+    int selfUIViewState, selfUIViewHeight, selfUIViewWidth, selfUIViewLocationX, selfUIViewLocationY;
     
 }
 
@@ -64,6 +65,7 @@
 @property (retain, nonatomic) IBOutlet UITextField *IPTextField;
 @property (retain, nonatomic) IBOutlet UIButton *makeSenderBtn;
 @property (retain, nonatomic) IBOutlet UIButton *makeReceiverBtn;
+@property (retain, nonatomic) IBOutlet UIButton *startCallInLiveBtn;
 
 - (void)setupAVCapture;
 - (void)teardownAVCapture;
@@ -80,6 +82,7 @@
 - (IBAction)CheckCapabilityAction:(id)sender;
 - (IBAction)makeSenderAction:(id)sender;
 - (IBAction)makeReceiverAction:(id)sender;
+- (IBAction)startCallInLiveAction:(id)sender;
 
 
 void WriteToFile(byte *pData);

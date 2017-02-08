@@ -40,6 +40,14 @@ using namespace std;
 #define ENTITY_TYPE_VIEWER_CALLEE 2
 #define ENTITY_TYPE_PUBLISHER_CALLER 1
 
+#define FULL_PACKET_CODE 100
+#define LAST_PACKET_CODE 99
+#define MAX_SEND_BUFFER_SIZE 9000
+
+#define PUBLISHER_IN_CALL 1
+#define VIEWER_IN_CALL 2
+#define CALL_NOT_RUNNING 4;
+
 class CCommon
 {
 public:

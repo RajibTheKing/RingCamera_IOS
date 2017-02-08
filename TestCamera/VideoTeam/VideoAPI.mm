@@ -145,7 +145,8 @@ void notifyClientMethodWithAudiPacketDataIos(LongLong lFriendID, unsigned char d
     }
     
     //CVideoAPI::GetInstance()->SendPakcetFragments(data, dataLenth);
-    VideoSockets::GetInstance()->SendToServer(data, dataLenth);
+    //VideoSockets::GetInstance()->SendToServer(data, dataLenth);
+    VideoSockets::GetInstance()->SendToServerWithPacketize(data, dataLenth);
     
     
     
