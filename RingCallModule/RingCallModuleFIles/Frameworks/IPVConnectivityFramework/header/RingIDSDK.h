@@ -176,7 +176,7 @@ public:
     
     void PushPacketForDecoding(LongLong lFriendID, int mediaType, int nEntityType, unsigned char *in_data, int in_size);
     
-    void PushAudioForDecoding(LongLong lFriendID, int mediaType, unsigned char *in_data, int in_size);
+    void PushAudioForDecoding(LongLong lFriendID, int mediaType, int nEntityType, unsigned char *in_data, int in_size);
     
     int SendAudioData(const LongLong& lFriendID, short *in_data, unsigned int in_size);
     
@@ -187,6 +187,10 @@ public:
     int SetEncoderHeightWidth(const LongLong& lFriendID, int height, int width);
     
     int SetBitRate(const LongLong& lFriendID, int bitRate);
+    
+    int SetDeviceDisplayHeightWidth(int nVideoHeight, int nVideoWidth);
+    
+    int SetVideoEffect(const IPVLongType llFriendID, int nEffectStatus);
     
     bool StopAudioCall(const LongLong& lFriendID);
     
@@ -232,7 +236,6 @@ public:
     static void notifyClientMethodWithAudioPacketDataIos(LongLong lFriendID, unsigned char data[], int dataLenth);
     
     // End Video Team
-    
     
     //private:
     

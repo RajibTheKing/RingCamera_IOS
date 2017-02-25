@@ -626,6 +626,31 @@ int g_iPort;
     CVideoAPI::GetInstance()->StartCallInLive(200, role);
 }
 
+- (IBAction)SetFilterOnOffAction:(id)sender
+{
+    NSString *nsFilterOnString =  @"SetFilterOn";
+    NSString *nsFilterOffString =  @"SetFilterOff";
+    
+    NSString *nsNow = [_FilterOnOffButton titleForState:UIControlStateNormal];
+    NSLog(@"%@", nsNow);
+    
+    bool flag = [nsNow isEqualToString:nsFilterOnString];
+    
+    if(flag)
+    {
+        CVideoAPI::GetInstance()->SetVideoEffect(200, 1);
+        [_FilterOnOffButton setTitle:nsFilterOffString forState:UIControlStateNormal];
+    }
+    else
+    {
+        CVideoAPI::GetInstance()->SetVideoEffect(200, 0);
+        [_FilterOnOffButton setTitle:nsFilterOnString forState:UIControlStateNormal];
+    }
+    
+    
+    //
+}
+
 - (void)SetCameraResolutionByNotification:(int)iHeight withWidth:(int)iWidth
 {
     
@@ -783,6 +808,7 @@ int g_iPort;
     [_myRealView release];
     [_ldSpeakerBtn release];
     [_startCallInLiveBtn release];
+    [_FilterOnOffButton release];
     [super dealloc];
 }
 

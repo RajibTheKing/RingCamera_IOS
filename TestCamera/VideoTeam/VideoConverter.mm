@@ -347,6 +347,7 @@ int CVideoConverter::Convert_YUVI420_To_YUVNV12(byte* pData,  byte *y_ch0, byte*
 }
 */
 
+#define MODIFIED_PIXELBUFFER_CREATION
 
 CVPixelBufferRef CVideoConverter::Convert_YUVNV12_To_CVPixelBufferRef(byte* y_ch0, byte* y_ch1, int iRenderHeight, int iRenderWidth)
 {
@@ -362,6 +363,8 @@ CVPixelBufferRef CVideoConverter::Convert_YUVNV12_To_CVPixelBufferRef(byte* y_ch
     CVPixelBufferLockBaseAddress(pixelBuffer,0);
     CVPixelBufferLockBaseAddress(pixelBuffer,1);
     
+#ifdef MODIFIED_PIXELBUFFER_CREATION
+    
     int iHeight = CVPixelBufferGetHeight(pixelBuffer);
     int iWidth = CVPixelBufferGetWidth(pixelBuffer);
     int bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
@@ -375,11 +378,10 @@ CVPixelBufferRef CVideoConverter::Convert_YUVNV12_To_CVPixelBufferRef(byte* y_ch
     int uv_y = p2-p1;       //uv_y = 176640;
     int delta = uv_y - iWidth*iHeight;
     int padding = delta /  iHeight; //Calculate Padding
-    NSLog(@"THeKing: iHeight = %i, iWidth = %i, bytesPerRow = %i, ExtendedWidth = %i, (baseDiff,uv-y,delta) = (%i,%i,%i), padding = %i\n", iHeight , iWidth, bytesPerRow, bytesPerRow/4, baseDiff, uv_y, delta, padding);
+    //NSLog(@"THeKing: iHeight = %i, iWidth = %i, bytesPerRow = %i, ExtendedWidth = %i, (baseDiff,uv-y,delta) = (%i,%i,%i), padding = %i\n", iHeight , iWidth, bytesPerRow, bytesPerRow/4, baseDiff, uv_y, delta, padding);
     
     
     byte *yDestPlane = (byte*)CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
-    //memcpy(yDestPlane, y_ch0, iRenderWidth * iRenderHeight);
     
     if(iHeight < iWidth )
     {
@@ -390,8 +392,9 @@ CVPixelBufferRef CVideoConverter::Convert_YUVNV12_To_CVPixelBufferRef(byte* y_ch
     {
         memcpy(p + i * (iWidth+padding),  y_ch0 + i * iWidth, iWidth);
     }
+    
+    
     byte *uvDestPlane = (byte*)CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
-    //memcpy(uvDestPlane, y_ch1, iRenderWidth * iRenderHeight / 2);
     
     
     p = uvDestPlane;
@@ -399,7 +402,14 @@ CVPixelBufferRef CVideoConverter::Convert_YUVNV12_To_CVPixelBufferRef(byte* y_ch
     {
         memcpy(p +i * (iWidth+padding) , y_ch1 +  i * iWidth , iWidth);
     }
-
+    
+#else
+    byte *uvDestPlane = (byte*)CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
+    memcpy(uvDestPlane, y_ch1, iRenderWidth * iRenderHeight / 2);
+    
+    byte *yDestPlane = (byte*)CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
+    memcpy(yDestPlane, y_ch0, iRenderWidth * iRenderHeight);
+#endif
     
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 1);

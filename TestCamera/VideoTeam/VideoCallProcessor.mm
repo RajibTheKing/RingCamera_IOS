@@ -176,7 +176,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     //m_pVideoAPI->SetLoggingState(true,5);
     string sActualServerIP = [m_nsServerIP UTF8String];
     
-    VideoSockets::GetInstance()->InitializeSocket("192.168.0.107", m_iActualFriendPort);
+    VideoSockets::GetInstance()->InitializeSocket("192.168.67.101", m_iActualFriendPort);
     
     VideoSockets::GetInstance()->StartDataReceiverThread();
     
@@ -202,7 +202,6 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     
     
-    
     if(m_iActualFriendPort == 60001)
         iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
     else
@@ -213,6 +212,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     //iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL);
     
     int iRetStartVideoCall;
+    
     
     if(m_iActualFriendPort == 60001)
         iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 500);
@@ -757,6 +757,19 @@ int ConvertNV12ToI420(unsigned char *convertingData, int iheight, int iwidth)
 
 - (void)BackConversion:(byte*)pRenderBuffer //Delegate from RenderThread
 {
+    /*
+    if(tempCounter<300)
+    {
+        tempCounter++;
+        [self WriteToFile:pRenderBuffer dataLength:m_iRenderHeight * m_iRenderWidth * 3 / 2 filePointer:m_FileForDump];
+    }
+    else
+    {
+        cout<<"DONE!!"<<endl;
+        [self UpdateStatusMessage:"FileWrite Completed!!!!"];
+    }
+    */
+    
     @autoreleasepool {
         if(!pRenderBuffer)
         {
@@ -777,6 +790,7 @@ int ConvertNV12ToI420(unsigned char *convertingData, int iheight, int iwidth)
         int VPlaneLength = YPlaneLength >> 2;
         int UVPlaneMidPoint = YPlaneLength + VPlaneLength;
         int UVPlaneEnd = UVPlaneMidPoint + VPlaneLength;
+        
         memcpy(baVideoRenderBufferUVChannel, pRenderBuffer + YPlaneLength, VPlaneLength + VPlaneLength);
                
         /*
@@ -786,7 +800,7 @@ int ConvertNV12ToI420(unsigned char *convertingData, int iheight, int iwidth)
         printf("\n");
         */
         CVPixelBufferRef pixelBuffer;
-        pixelBuffer = m_pVideoConverter->Convert_YUVNV12_To_CVPixelBufferRef(pRenderBuffer, baVideoRenderBufferUVChannel, m_iRenderHeight, m_iRenderWidth);
+        pixelBuffer = m_pVideoConverter->Convert_YUVNV12_To_CVPixelBufferRef(pRenderBuffer, pRenderBuffer+YPlaneLength, m_iRenderHeight, m_iRenderWidth);
         
         
         

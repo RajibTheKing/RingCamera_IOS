@@ -66,6 +66,7 @@
 @property (retain, nonatomic) IBOutlet UIButton *makeSenderBtn;
 @property (retain, nonatomic) IBOutlet UIButton *makeReceiverBtn;
 @property (retain, nonatomic) IBOutlet UIButton *startCallInLiveBtn;
+@property (retain, nonatomic) IBOutlet UIButton *FilterOnOffButton;
 
 - (void)setupAVCapture;
 - (void)teardownAVCapture;
@@ -83,6 +84,7 @@
 - (IBAction)makeSenderAction:(id)sender;
 - (IBAction)makeReceiverAction:(id)sender;
 - (IBAction)startCallInLiveAction:(id)sender;
+- (IBAction)SetFilterOnOffAction:(id)sender;
 
 
 void WriteToFile(byte *pData);
