@@ -63,10 +63,10 @@
 @property (retain, nonatomic) IBOutlet UIButton *CheckCapabilityBtn;
 @property (retain, nonatomic) IBOutlet UILabel *statusMessage;
 @property (retain, nonatomic) IBOutlet UITextField *IPTextField;
-@property (retain, nonatomic) IBOutlet UIButton *makeSenderBtn;
-@property (retain, nonatomic) IBOutlet UIButton *makeReceiverBtn;
 @property (retain, nonatomic) IBOutlet UIButton *startCallInLiveBtn;
 @property (retain, nonatomic) IBOutlet UIButton *FilterOnOffButton;
+
+
 
 - (void)setupAVCapture;
 - (void)teardownAVCapture;

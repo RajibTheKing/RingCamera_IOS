@@ -17,14 +17,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9bu-qX-D6R">
-                                <rect key="frame" x="12" y="284" width="86" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="MakeSender"/>
-                                <connections>
-                                    <action selector="makeSenderAction:" destination="2" eventType="touchUpInside" id="tla-t2-GvU"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" restorationIdentifier="loginButton" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="UX1-YT-bOK">
                                 <rect key="frame" x="1" y="440" width="52" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -96,8 +88,8 @@
                                     <action selector="CheckCapabilityAction:" destination="2" eventType="touchUpInside" id="RAH-Mg-Mvd"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status: No Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tvc-w2-gsO">
-                                <rect key="frame" x="12" y="308" width="302" height="37"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Status: No Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tvc-w2-gsO">
+                                <rect key="frame" x="12" y="305" width="302" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -119,34 +111,26 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WG1-Lv-zOc">
-                                <rect key="frame" x="246" y="284" width="36" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WG1-Lv-zOc">
+                                <rect key="frame" x="261" y="280" width="36" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="LdSp"/>
                                 <connections>
                                     <action selector="loudSpeakerAction:" destination="2" eventType="touchUpInside" id="npR-PH-hBJ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="j9f-IB-4qU">
-                                <rect key="frame" x="122" y="284" width="96" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="MakeReceiver"/>
-                                <connections>
-                                    <action selector="makeReceiverAction:" destination="2" eventType="touchUpInside" id="L6k-XD-OEy"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" misplaced="YES" id="kGE-FL-FM1">
-                                <rect key="frame" x="173" y="20" width="131" height="191"/>
+                                <rect key="frame" x="195" y="20" width="109" height="93"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view contentMode="scaleToFill" misplaced="YES" id="3qS-LM-QOC" userLabel="SelfView">
-                                <rect key="frame" x="16" y="20" width="130" height="191"/>
+                                <rect key="frame" x="16" y="20" width="108" height="104"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="I9h-Y5-WUe">
-                                <rect key="frame" x="16" y="249" width="122" height="30"/>
+                                <rect key="frame" x="2" y="280" width="96" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="SetFilterOff"/>
                                 <connections>
@@ -154,7 +138,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="5oi-2M-n7t">
-                                <rect key="frame" x="147" y="245" width="123" height="38"/>
+                                <rect key="frame" x="112" y="275" width="113" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="StartCallInLive"/>
                                 <connections>
@@ -179,8 +163,6 @@
                         <outlet property="SelfView" destination="3qS-LM-QOC" id="8eC-2k-N9R"/>
                         <outlet property="ServerCall" destination="mAs-rc-dti" id="oDA-Qf-XfQ"/>
                         <outlet property="ldSpeakerBtn" destination="WG1-Lv-zOc" id="kcp-U6-665"/>
-                        <outlet property="makeReceiverBtn" destination="j9f-IB-4qU" id="hSO-rq-yoY"/>
-                        <outlet property="makeSenderBtn" destination="9bu-qX-D6R" id="4Ew-bQ-8T2"/>
                         <outlet property="myRealView" destination="3" id="Ufj-re-NL0"/>
                         <outlet property="startCallInLiveBtn" destination="5oi-2M-n7t" id="XHi-OO-ZVj"/>
                         <outlet property="statusMessage" destination="tvc-w2-gsO" id="see-uo-cTx"/>

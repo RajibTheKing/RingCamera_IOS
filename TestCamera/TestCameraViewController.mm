@@ -551,65 +551,6 @@ int g_iPort;
     //
 }
 
-- (IBAction)makeSenderAction:(id)sender
-{
-    g_pVideoCallProcessor.m_fR+=0.5;
-    g_pVideoCallProcessor.m_Threashold+=2;
-    
-    string s = "MINUS: ";
-    NSString *str = [NSString stringWithFormat:@"%s%0.2f",s.c_str(), g_pVideoCallProcessor.m_fR];
-    [_makeReceiverBtn setTitle:str forState:UIControlStateNormal];
-    
-    string s2 = "PLUS: ";
-    NSString *str2 = [NSString stringWithFormat:@"%s%0.2f",s2.c_str(), g_pVideoCallProcessor.m_fR];
-    [_makeSenderBtn setTitle:str2 forState:UIControlStateNormal];
-   
-    /*
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [MyCustomView setHidden:true];
-        [SelfView setHidden:false];
-        
-        [_makeSenderBtn setEnabled:false];
-        [_makeReceiverBtn setEnabled:true];
-        
-        
-        SelfView.frame = CGRectMake(0,0,_myRealView.frame.size.width, _myRealView.frame.size.height);
-        SelfView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        SelfView.contentMode = UIViewContentModeScaleAspectFit;
-        
-    });
-     */
-}
-
-- (IBAction)makeReceiverAction:(id)sender
-{
-    g_pVideoCallProcessor.m_fR-=0.5;
-     g_pVideoCallProcessor.m_Threashold-=2;
-    string s = "MINUS: ";
-    NSString *str = [NSString stringWithFormat:@"%s%0.2f",s.c_str(), g_pVideoCallProcessor.m_fR];
-    [_makeReceiverBtn setTitle:str forState:UIControlStateNormal];
-    
-    string s2 = "PLUS: ";
-    NSString *str2 = [NSString stringWithFormat:@"%s%0.2f",s2.c_str(), g_pVideoCallProcessor.m_fR];
-    [_makeSenderBtn setTitle:str2 forState:UIControlStateNormal];
-    
-    
-    /*
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [SelfView setHidden:true];
-        [MyCustomView setHidden:false];
-        
-        [_makeSenderBtn setEnabled:true];
-        [_makeReceiverBtn setEnabled:false];
-        
-        MyCustomView.frame = CGRectMake(0,0,_myRealView.frame.size.width, _myRealView.frame.size.height);
-        MyCustomView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-        MyCustomView.contentMode = UIViewContentModeScaleAspectFit;
-        
-        
-    });
-    */
-}
 
 - (IBAction)startCallInLiveAction:(id)sender
 {
@@ -803,8 +744,6 @@ int g_iPort;
     [_CheckCapabilityBtn release];
     [_statusMessage release];
     [_IPTextField release];
-    [_makeSenderBtn release];
-    [_makeReceiverBtn release];
     [_myRealView release];
     [_ldSpeakerBtn release];
     [_startCallInLiveBtn release];
