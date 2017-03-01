@@ -201,12 +201,12 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
     
     
-    
+   
     if(m_iActualFriendPort == 60001)
         iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
     else
         iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
-    
+   
     
     
     //iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL);

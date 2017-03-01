@@ -192,6 +192,8 @@ public:
     
     int SetVideoEffect(const IPVLongType llFriendID, int nEffectStatus);
     
+    int TestVideoEffect(const IPVLongType llFriendID, int *param, int size);
+    
     bool StopAudioCall(const LongLong& lFriendID);
     
     bool StopVideoCall(const LongLong& lFriendID);

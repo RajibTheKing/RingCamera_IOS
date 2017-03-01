@@ -38,6 +38,9 @@
     int myCustomUIViewState, myCustomUIViewHeight, myCustomUIViewWidth, myCustomUIViewLocationX, myCustomUIViewLocationY;
     int selfUIViewState, selfUIViewHeight, selfUIViewWidth, selfUIViewLocationX, selfUIViewLocationY;
     
+    int m_iParamSelector;
+    int params[4];
+    
 }
 
 @property (nonatomic,strong) id delegate;
@@ -65,11 +68,18 @@
 @property (retain, nonatomic) IBOutlet UITextField *IPTextField;
 @property (retain, nonatomic) IBOutlet UIButton *startCallInLiveBtn;
 @property (retain, nonatomic) IBOutlet UIButton *FilterOnOffButton;
+@property (retain, nonatomic) IBOutlet UIButton *plusBtn;
+@property (retain, nonatomic) IBOutlet UIButton *minusBtn;
+@property (retain, nonatomic) IBOutlet UIButton *paramBtn;
+@property (retain, nonatomic) IBOutlet UILabel *paramValueLbl;
 
 
 
 - (void)setupAVCapture;
 - (void)teardownAVCapture;
+- (IBAction)plusBtnAction:(id)sender;
+- (IBAction)minusBtnAction:(id)sender;
+- (IBAction)ParamBtnAction:(id)sender;
 
 - (IBAction) LoginButtonAction:(id)loginButton;
 - (IBAction) StartCallAction:(id)startButton;
@@ -85,6 +95,8 @@
 - (IBAction)makeReceiverAction:(id)sender;
 - (IBAction)startCallInLiveAction:(id)sender;
 - (IBAction)SetFilterOnOffAction:(id)sender;
+
+- (void)UpdateValue;
 
 
 void WriteToFile(byte *pData);

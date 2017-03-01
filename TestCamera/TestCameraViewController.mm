@@ -132,6 +132,15 @@ int g_iPort;
     selfUIViewLocationY = SelfView.frame.origin.y;
     
     
+    m_iParamSelector = 0;
+    params[0] = 100; //Sigma
+    params[1] = 5; //Radius
+    params[2] = 8; //Den
+    params[3] = 0;
+    [self UpdateValue];
+ 
+    
+    
 }
 
 - (void)setupAVCapture
@@ -748,6 +757,10 @@ int g_iPort;
     [_ldSpeakerBtn release];
     [_startCallInLiveBtn release];
     [_FilterOnOffButton release];
+    [_plusBtn release];
+    [_minusBtn release];
+    [_paramBtn release];
+    [_paramValueLbl release];
     [super dealloc];
 }
 
@@ -760,6 +773,72 @@ int g_iPort;
     [previewLayer release];
 }
 
+
+
+
+
+
+- (IBAction)plusBtnAction:(id)sender
+{
+    if(m_iParamSelector == 0)
+        params[m_iParamSelector]+=10;
+    else
+        params[m_iParamSelector]++;
+    
+    
+    [self UpdateValue];
+    CVideoAPI::GetInstance()->TestVideoEffect(200, params, 3);
+}
+
+- (IBAction)minusBtnAction:(id)sender
+{
+    if(m_iParamSelector == 0)
+        params[m_iParamSelector]-=10;
+    else
+        params[m_iParamSelector]--;
+    
+    if(params[m_iParamSelector] < 0)
+        params[m_iParamSelector] = 0;
+    
+    [self UpdateValue];
+    CVideoAPI::GetInstance()->TestVideoEffect(200, params, 3);
+}
+
+- (IBAction)ParamBtnAction:(id)sender
+{
+    m_iParamSelector++;
+    m_iParamSelector%=4;
+    
+    if(m_iParamSelector == 0) //Sigma
+    {
+        [_paramBtn setTitle:@"0->Sigma" forState:UIControlStateNormal];
+    }
+    else if(m_iParamSelector == 1) //Radius
+    {
+        [_paramBtn setTitle:@"1->Radius" forState:UIControlStateNormal];
+    }
+    else if(m_iParamSelector == 2) //Div
+    {
+        [_paramBtn setTitle:@"2->Div" forState:UIControlStateNormal];
+    }
+    else if(m_iParamSelector == 3) //abcd
+    {
+        [_paramBtn setTitle:@"3->abcd" forState:UIControlStateNormal];
+    }
+    
+    [self UpdateValue];
+}
+
+- (void)UpdateValue
+{
+    int value = params[m_iParamSelector];
+    
+    NSString *prefix=@"Value: ";
+    NSString *newString = [prefix stringByAppendingFormat:@"%i", value];
+    
+    [_paramValueLbl setText:newString];
+    
+}
 
 
 
