@@ -104,6 +104,12 @@
 		DA7B6AF41E6D2B6B00AC19C3 /* endBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AF21E6D2B6B00AC19C3 /* endBtn.png */; };
 		DA7B6AF51E6D2B6B00AC19C3 /* startBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AF31E6D2B6B00AC19C3 /* startBtn.png */; };
 		DA7B6AF71E6D30D300AC19C3 /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AF61E6D30D300AC19C3 /* appIcon.png */; };
+		DA7B6AFE1E6D348500AC19C3 /* iPhone_2x_AppIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AF81E6D348500AC19C3 /* iPhone_2x_AppIcon.png */; };
+		DA7B6AFF1E6D348500AC19C3 /* iPhone_2x_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AF91E6D348500AC19C3 /* iPhone_2x_settings.png */; };
+		DA7B6B001E6D348500AC19C3 /* iPhone_2x_spotlight.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AFA1E6D348500AC19C3 /* iPhone_2x_spotlight.png */; };
+		DA7B6B011E6D348500AC19C3 /* iphone_3x_appicon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AFB1E6D348500AC19C3 /* iphone_3x_appicon.png */; };
+		DA7B6B021E6D348500AC19C3 /* iphone_3x_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AFC1E6D348500AC19C3 /* iphone_3x_settings.png */; };
+		DA7B6B031E6D348500AC19C3 /* iphone_3x_spotlight.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AFD1E6D348500AC19C3 /* iphone_3x_spotlight.png */; };
 		DA835D861E6C5A6200C75A79 /* AppAsset.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */; };
 		DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA971EFB1E07A9D600645151 /* FastBilateral.mm */; };
 /* End PBXBuildFile section */
@@ -365,6 +371,12 @@
 		DA7B6AF21E6D2B6B00AC19C3 /* endBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = endBtn.png; path = TestCamera/images/endBtn.png; sourceTree = "<group>"; };
 		DA7B6AF31E6D2B6B00AC19C3 /* startBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = startBtn.png; path = TestCamera/images/startBtn.png; sourceTree = "<group>"; };
 		DA7B6AF61E6D30D300AC19C3 /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = appIcon.png; path = TestCamera/images/appIcon.png; sourceTree = "<group>"; };
+		DA7B6AF81E6D348500AC19C3 /* iPhone_2x_AppIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhone_2x_AppIcon.png; path = TestCamera/images/iPhone_2x_AppIcon.png; sourceTree = "<group>"; };
+		DA7B6AF91E6D348500AC19C3 /* iPhone_2x_settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhone_2x_settings.png; path = TestCamera/images/iPhone_2x_settings.png; sourceTree = "<group>"; };
+		DA7B6AFA1E6D348500AC19C3 /* iPhone_2x_spotlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iPhone_2x_spotlight.png; path = TestCamera/images/iPhone_2x_spotlight.png; sourceTree = "<group>"; };
+		DA7B6AFB1E6D348500AC19C3 /* iphone_3x_appicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iphone_3x_appicon.png; path = TestCamera/images/iphone_3x_appicon.png; sourceTree = "<group>"; };
+		DA7B6AFC1E6D348500AC19C3 /* iphone_3x_settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iphone_3x_settings.png; path = TestCamera/images/iphone_3x_settings.png; sourceTree = "<group>"; };
+		DA7B6AFD1E6D348500AC19C3 /* iphone_3x_spotlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iphone_3x_spotlight.png; path = TestCamera/images/iphone_3x_spotlight.png; sourceTree = "<group>"; };
 		DA7C89E51DEE91C2002C939F /* RingIDSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RingIDSDK.xcodeproj; path = "../IPV-RingIDSDK/RingIDSDK.xcodeproj"; sourceTree = "<group>"; };
 		DA7C89EB1DEE91CA002C939F /* AudioVideoEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioVideoEngine.xcodeproj; path = "../IPV-MediaEngine/AudioVideoEngine.xcodeproj"; sourceTree = "<group>"; };
 		DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppAsset.xcassets; sourceTree = "<group>"; };
@@ -853,9 +865,6 @@
 		1B867FCD139D4AD300AD6B47 = {
 			isa = PBXGroup;
 			children = (
-				DA7B6AF61E6D30D300AC19C3 /* appIcon.png */,
-				DA7B6AF21E6D2B6B00AC19C3 /* endBtn.png */,
-				DA7B6AF31E6D2B6B00AC19C3 /* startBtn.png */,
 				DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */,
 				DA299DFE1DA110000065E171 /* libRingIDSDK.a */,
 				DA299DFC1DA10FF80065E171 /* libAudioVideoEngine.a */,
@@ -864,6 +873,7 @@
 				9DC00C551C02E02E00966587 /* RingCallModule */,
 				18747B031BFDD0CD0010CAA3 /* VideoTeam */,
 				1B867FE2139D4AD300AD6B47 /* TestCamera */,
+				DA7B6B041E6D357700AC19C3 /* images */,
 				1B867FDB139D4AD300AD6B47 /* Frameworks */,
 				1B867FD9139D4AD300AD6B47 /* Products */,
 			);
@@ -927,6 +937,22 @@
 				18EB2A081C02E76500153D45 /* RingCallModule */,
 			);
 			name = RingCallModule;
+			sourceTree = "<group>";
+		};
+		DA7B6B041E6D357700AC19C3 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				DA7B6AF81E6D348500AC19C3 /* iPhone_2x_AppIcon.png */,
+				DA7B6AF91E6D348500AC19C3 /* iPhone_2x_settings.png */,
+				DA7B6AFA1E6D348500AC19C3 /* iPhone_2x_spotlight.png */,
+				DA7B6AFB1E6D348500AC19C3 /* iphone_3x_appicon.png */,
+				DA7B6AFC1E6D348500AC19C3 /* iphone_3x_settings.png */,
+				DA7B6AFD1E6D348500AC19C3 /* iphone_3x_spotlight.png */,
+				DA7B6AF61E6D30D300AC19C3 /* appIcon.png */,
+				DA7B6AF21E6D2B6B00AC19C3 /* endBtn.png */,
+				DA7B6AF31E6D2B6B00AC19C3 /* startBtn.png */,
+			);
+			name = images;
 			sourceTree = "<group>";
 		};
 		DA7C89E61DEE91C2002C939F /* Products */ = {
@@ -1032,13 +1058,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA7B6B021E6D348500AC19C3 /* iphone_3x_settings.png in Resources */,
 				DA7B6AF41E6D2B6B00AC19C3 /* endBtn.png in Resources */,
 				DA7B6AF51E6D2B6B00AC19C3 /* startBtn.png in Resources */,
 				DA7B6AF71E6D30D300AC19C3 /* appIcon.png in Resources */,
 				1B867FF0139D4AD300AD6B47 /* MainStoryboard_iPhone.storyboard in Resources */,
 				619176C51C02ED760052A12A /* RingCallModuleResource.bundle in Resources */,
+				DA7B6AFE1E6D348500AC19C3 /* iPhone_2x_AppIcon.png in Resources */,
 				DA835D861E6C5A6200C75A79 /* AppAsset.xcassets in Resources */,
+				DA7B6B031E6D348500AC19C3 /* iphone_3x_spotlight.png in Resources */,
+				DA7B6B011E6D348500AC19C3 /* iphone_3x_appicon.png in Resources */,
+				DA7B6B001E6D348500AC19C3 /* iPhone_2x_spotlight.png in Resources */,
 				1B867FF3139D4AD300AD6B47 /* MainStoryboard_iPad.storyboard in Resources */,
+				DA7B6AFF1E6D348500AC19C3 /* iPhone_2x_settings.png in Resources */,
 				18F66BFB1BCB6D8A00FEE798 /* MainStoryboard_iPhone.storyboard in Resources */,
 				2BA4851013F1E6CC000BABB3 /* MainStoryboard_iPad.storyboard in Resources */,
 			);
