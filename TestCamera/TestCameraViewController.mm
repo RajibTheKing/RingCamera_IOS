@@ -139,6 +139,20 @@ int g_iPort;
     params[3] = 0;
     [self UpdateValue];
  
+    int nMyCornerRadius = 10;
+    
+    self.P2PButton.layer.cornerRadius = nMyCornerRadius;
+    self.ChangePort.layer.cornerRadius = nMyCornerRadius;
+    self.ChangeResBtn.layer.cornerRadius = nMyCornerRadius;
+    self.ldSpeakerBtn.layer.cornerRadius = nMyCornerRadius;
+    
+    self.CheckCapabilityBtn.layer.cornerRadius = nMyCornerRadius;
+    self.startCallInLiveBtn.layer.cornerRadius = nMyCornerRadius;
+    self.FilterOnOffButton.layer.cornerRadius = nMyCornerRadius;
+    self.plusBtn.layer.cornerRadius = nMyCornerRadius;
+    self.minusBtn.layer.cornerRadius = nMyCornerRadius;
+    self.paramBtn.layer.cornerRadius = nMyCornerRadius;
+    self.endCallBtn.layer.cornerRadius = nMyCornerRadius;
     
     
 }
@@ -165,14 +179,14 @@ int g_iPort;
      */
     if([self.ResField.text isEqual:@"640x480"])
     {
-        m_iCameraHeight = 480;
-        m_iCameraWidth = 640;
+        m_iCameraHeight = 640;
+        m_iCameraWidth = 480;
         
     }
     else
     {
-        m_iCameraHeight = 288;
-        m_iCameraWidth = 352;
+        m_iCameraHeight = 352;
+        m_iCameraWidth = 288;
         
         
         
@@ -489,15 +503,15 @@ int g_iPort;
         
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             MyCustomImageView.image = uiImageToDraw;
-            int iBoxHeight = MyCustomView.bounds.size.height;
-            int iBoxWidth = MyCustomView.bounds.size.width;
+            int iBoxHeight = MyCustomView.bounds.size.height; //320
+            int iBoxWidth = MyCustomView.bounds.size.width; //240
             
             int iImageHeight = uiImageToDraw.size.height;
             int iImageWidth = uiImageToDraw.size.width;
             
             
             
-            if(iBoxHeight<iBoxWidth)
+           /* if(iBoxHeight<iBoxWidth)
             {
                 float fRatio = MyCustomView.bounds.size.height / iImageHeight;
                 
@@ -517,10 +531,10 @@ int g_iPort;
                 fOriginY = 0.0;
                 
                 MyCustomImageView.frame = CGRectMake(fOriginX, fOriginY, iImageWidth * fRatio, iImageHeight * fRatio);
-            }
+            }*/
             
             
-            
+            MyCustomImageView.frame = CGRectMake(0, 0, iBoxWidth, iBoxHeight);
             
             
             [MyCustomView addSubview:MyCustomImageView];
@@ -678,6 +692,7 @@ int g_iPort;
     screenWidth = [[UIScreen mainScreen] bounds].size.width;
     
     printf("TheKing--> Inside Here expandActivity, H:W --> %f:%f\n", screenHeight, screenWidth);
+    
     if(myCustomUIViewState == 0)
     {
         CGRect newFrame = MyCustomView.frame;
@@ -761,6 +776,7 @@ int g_iPort;
     [_minusBtn release];
     [_paramBtn release];
     [_paramValueLbl release];
+    [_endCallBtn release];
     [super dealloc];
 }
 
@@ -787,7 +803,7 @@ int g_iPort;
     
     
     [self UpdateValue];
-    CVideoAPI::GetInstance()->TestVideoEffect(200, params, 3);
+    //CVideoAPI::GetInstance()->TestVideoEffect(200, params, 3);
 }
 
 - (IBAction)minusBtnAction:(id)sender
@@ -801,7 +817,7 @@ int g_iPort;
         params[m_iParamSelector] = 0;
     
     [self UpdateValue];
-    CVideoAPI::GetInstance()->TestVideoEffect(200, params, 3);
+    //CVideoAPI::GetInstance()->TestVideoEffect(200, params, 3);
 }
 
 - (IBAction)ParamBtnAction:(id)sender

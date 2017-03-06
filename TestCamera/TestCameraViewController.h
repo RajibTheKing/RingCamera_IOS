@@ -72,6 +72,7 @@
 @property (retain, nonatomic) IBOutlet UIButton *minusBtn;
 @property (retain, nonatomic) IBOutlet UIButton *paramBtn;
 @property (retain, nonatomic) IBOutlet UILabel *paramValueLbl;
+@property (retain, nonatomic) IBOutlet UIButton *endCallBtn;
 
 
 

@@ -176,7 +176,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     //m_pVideoAPI->SetLoggingState(true,5);
     string sActualServerIP = [m_nsServerIP UTF8String];
     
-    VideoSockets::GetInstance()->InitializeSocket("192.168.67.101", m_iActualFriendPort);
+    VideoSockets::GetInstance()->InitializeSocket("192.168.67.100", m_iActualFriendPort);
     
     VideoSockets::GetInstance()->StartDataReceiverThread();
     
@@ -202,24 +202,29 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     
    
+    
     if(m_iActualFriendPort == 60001)
         iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
     else
         iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
-   
     
+   
     
     //iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL);
     
     int iRetStartVideoCall;
     
     
+    /*
     if(m_iActualFriendPort == 60001)
-        iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 500);
+        iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,320, 180, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 500);
     else
-        iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 500);
-    
-    
+        iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,320, 180, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 500);
+    */
+    if(m_iActualFriendPort == 60001)
+        iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 500);
+    else
+        iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 500);
     
     //iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
     
@@ -342,6 +347,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         if(*iHeight * *iWidth== 288 * 352)
         {
             [*session setSessionPreset:AVCaptureSessionPreset352x288];
+            //[*session setSessionPreset:AVCaptureSessionPreset1280x720];
             
         }
         else if(*iHeight * *iWidth == 480 * 640)
@@ -391,7 +397,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     //Video Setting for YUV Data
     colorOutputSettings = [NSDictionary dictionaryWithObject:
-                           [NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange] forKey:(id)kCVPixelBufferPixelFormatTypeKey];
+                           [NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8BiPlanarFullRange] forKey:(id)kCVPixelBufferPixelFormatTypeKey];
     [*videoDataOutput setVideoSettings:colorOutputSettings];
     [*videoDataOutput setAlwaysDiscardsLateVideoFrames:NO]; // discard if the data output queue is blocked (as we process the still image)
 
@@ -557,6 +563,8 @@ byte newData[640*480*3/2];
 - (int)FrontConversion:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {
 
+    
+    
     [connection setVideoOrientation:AVCaptureVideoOrientationPortrait];
     [connection setVideoMirrored:false];
 
@@ -636,7 +644,13 @@ byte newData[640*480*3/2];
     /*int iNewHeight = m_iCameraHeight, iNewWidth = m_iCameraWidth;
     memcpy(pScaledVideo, pRawYuv, iNewHeight*iNewWidth*3/2);
     long long llDownScale = CurrentTimeStamp();
-    m_pVideoConverter->DownScaleVideoDataWithAverage(pRawYuv, iNewHeight, iNewWidth, pScaledVideo);
+    m_pVideoConverter->DownScaleVideoDataWithAverageVersion2(pRawYuv, iNewHeight, iNewWidth, pScaledVideo);
+    printf("DownScaleVideoDataWithAverage needed = %lld\n", CurrentTimeStamp() - llDownScale);
+    m_iCameraWidth = iNewWidth;
+    m_iCameraHeight = iNewHeight;
+    memcpy(pRawYuv, pScaledVideo, iNewHeight*iNewWidth*3/2);
+    
+    m_pVideoConverter->DownScaleVideoDataWithAverageVersion2(pRawYuv, iNewHeight, iNewWidth, pScaledVideo);
     printf("DownScaleVideoDataWithAverage needed = %lld\n", CurrentTimeStamp() - llDownScale);
     m_iCameraWidth = iNewWidth;
     m_iCameraHeight = iNewHeight;

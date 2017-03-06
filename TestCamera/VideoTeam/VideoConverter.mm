@@ -367,26 +367,28 @@ CVPixelBufferRef CVideoConverter::Convert_YUVNV12_To_CVPixelBufferRef(byte* y_ch
     
     int iHeight = CVPixelBufferGetHeight(pixelBuffer);
     int iWidth = CVPixelBufferGetWidth(pixelBuffer);
+    
+    /*
     int bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer);
-    
-    
     byte *base = (byte *)CVPixelBufferGetBaseAddress(pixelBuffer); // baseAddress
     byte *p1 = (byte *)CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0); // Y-Plane = y_ch0
     byte *p2 = (byte *)CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1); // UV-Plane = y_ch1
-    
+     
     int baseDiff = p1 - base;     //y_base = 64;
     int uv_y = p2-p1;       //uv_y = 176640;
     int delta = uv_y - iWidth*iHeight;
     int padding = delta /  iHeight; //Calculate Padding
-    //NSLog(@"THeKing: iHeight = %i, iWidth = %i, bytesPerRow = %i, ExtendedWidth = %i, (baseDiff,uv-y,delta) = (%i,%i,%i), padding = %i\n", iHeight , iWidth, bytesPerRow, bytesPerRow/4, baseDiff, uv_y, delta, padding);
+    NSLog(@"THeKing: iHeight = %i, iWidth = %i, bytesPerRow = %i, ExtendedWidth = %i, (baseDiff,uv-y,delta) = (%i,%i,%i), padding = %i\n", iHeight , iWidth, bytesPerRow, bytesPerRow/4, baseDiff, uv_y, delta, padding);
     
+    */
+    int padding = 0;
+    if(iWidth%16!=0)
+    {
+        padding = 16 - (iWidth % 16);
+    }
+    NSLog(@"TheKing------------------------>>>>>>>>>>>>>>>>>>> padding = %i\n", padding);
     
     byte *yDestPlane = (byte*)CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
-    
-    if(iHeight < iWidth )
-    {
-        padding = 0;
-    }
     unsigned char *p = yDestPlane;
     for(int i=0;i<iHeight;i++)
     {
