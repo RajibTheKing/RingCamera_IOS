@@ -38,6 +38,18 @@ void notifyClientMethodWithReceivedIos(int eventType, long long friendName, int 
 }
 */
 // Audio
+void notifyClientMethodIos(int eventType)
+{
+    
+}
+void notifyClientMethodForFriendIos(int eventType, long long friendName, int iMedia)
+{
+    
+}
+void notifyClientMethodWithReceivedIos(int eventType, long long friendName, int iMedia, int dataLenth, unsigned char data[])
+{
+    
+}
 
 void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], int dataLenth)
 {
