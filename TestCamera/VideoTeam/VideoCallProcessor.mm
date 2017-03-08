@@ -60,10 +60,11 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     _m_bStartVideoSending = false;
     m_pVideoConverter = new CVideoConverter();
     
-    g_G729CodecNative = new G729CodecNative();
+    //g_G729CodecNative = new G729CodecNative();
     
-    int iRet = g_G729CodecNative->Open();
-    cout <<  "Open returned " << iRet << "\n";
+    //int iRet = g_G729CodecNative->Open();
+    
+    //cout <<  "Open returned " << iRet << "\n";
     
     m_nsServerIP = @"";
     
@@ -135,10 +136,13 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 {
     return m_lFriendId;
 }
+/*
 -(G729CodecNative *)GetG729
 {
     return g_G729CodecNative;
 }
+*/
+
 - (int)InitializeVideoEngine:(long long) lUserId
 {
     m_pVideoAPI =  CVideoAPI::GetInstance();
@@ -176,7 +180,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     //m_pVideoAPI->SetLoggingState(true,5);
     string sActualServerIP = [m_nsServerIP UTF8String];
     
-    VideoSockets::GetInstance()->InitializeSocket("192.168.67.100", m_iActualFriendPort);
+    VideoSockets::GetInstance()->InitializeSocket("192.168.67.101", m_iActualFriendPort);
     
     VideoSockets::GetInstance()->StartDataReceiverThread();
     
@@ -215,8 +219,8 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     int iRetStartVideoCall;
     
     
-    /*
-    if(m_iActualFriendPort == 60001)
+    
+    /*if(m_iActualFriendPort == 60001)
         iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,320, 180, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 500);
     else
         iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,320, 180, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 500);
@@ -225,6 +229,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 500);
     else
         iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 500);
+    
     
     //iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
     
@@ -688,8 +693,25 @@ byte newData[640*480*3/2];
     //int iNewHeight = m_iCameraHeight, iNewWidth = m_iCameraWidth;
     //m_pVideoConverter->DetectAndShowOnlySkin(pRawYuv, iNewHeight, iNewWidth);
     
-
-    int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
+    
+    /*****
+     *DynamicResizeTest
+     **/
+    m_pVideoConverter->Convert_YUVNV12_To_YUVI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
+    long long startTime = CurrentTimeStamp();
+    int iNewHeight = 114, iNewWidth = 94;
+    //m_pVideoConverter->DownScaleYUV420_Dynamic(pRawYuv, m_iCameraHeight, m_iCameraWidth, pScaledVideo, 3);
+    m_pVideoConverter->DownScaleYUV420_Dynamic(pRawYuv, m_iCameraHeight, m_iCameraWidth, pScaledVideo, iNewHeight,iNewWidth);
+    
+    NSLog(@"TimeElapsed = %lld", CurrentTimeStamp() - startTime);
+    
+    iVideoWidth = iNewWidth;
+    iVideoHeight = iNewHeight;
+    memcpy(pRawYuv, pScaledVideo, iNewHeight*iNewWidth*3/2);
+    m_pVideoConverter->ConvertI420ToNV12(pRawYuv, iVideoHeight, iVideoWidth);
+    
+    
+    //int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
     
     
     
@@ -705,12 +727,14 @@ byte newData[640*480*3/2];
     CVideoAPI::GetInstance()->ReceiveFullFrame(pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
     */
     
-    /*
+    
     //Sending to OwnViewer Directly
     m_iRenderHeight = iVideoHeight;
     m_iRenderWidth = iVideoWidth;
     [self BackConversion:pRawYuv];
-    */
+    string sStatusMessage = "Height = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoHeight) +
+                            ", Width = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoWidth);
+    [self UpdateStatusMessage:sStatusMessage];
     
     //cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
     

@@ -13,7 +13,7 @@
 
 byte pTemporaryEncodedData[WIDTH*HEIGHT*3/2];
 #include <sys/time.h>
-#define printf(...)
+//#define printf(...)
 
 extern unsigned int timeGetTime();
 
@@ -96,7 +96,7 @@ UIImage* CVideoConverter::Convert_CVPixelBufferRef_To_UIImage( CVPixelBufferRef 
 #endif
 
 #ifdef USE_CONTEXT
-    UIImage *pImage = [[UIImage alloc] initWithCGImage:videoImage scale:1.0 orientation:UIImageOrientationUpMirrored];
+    UIImage *pImage = [[UIImage alloc] initWithCGImage:videoImage scale:1.0 orientation:UIImageOrientationUp];
 #else
     UIImage *pImage = [[UIImage alloc] initWithCIImage:ciImage scale:1.0 orientation:UIImageOrientationLeftMirrored];
     
@@ -236,32 +236,14 @@ int CVideoConverter::Convert_YUVI420_To_YUVNV12(unsigned char *convertingData, u
     return UVPlaneEnd;
 }
 
-int CVideoConverter::Convert_YUVNV12_To_YUVI420(byte* yPlane, byte* uvPlane, byte* convertingData, int iVideoHeight, int iVideoWidth)
+int CVideoConverter::Convert_YUVNV12_To_YUVI420(byte* convertingData, int iVideoHeight, int iVideoWidth)
 {
-    /*
-    int iFrameSize = m_iHeight * m_iWidth * 3 / 2;
-    
-    memcpy(outData, yPlane, iFrameSize * 2/3);
-
-    
-    byte * outdataUPlane = outData + m_iHeight * m_iWidth;
-    byte * outdataVPlane = outData + m_iHeight * m_iWidth + m_iHeight * m_iWidth/4;
-    
-    int j = 0;
-    int iPlaneSize = iFrameSize * 1/6;
-    for(int i = 0; i < iPlaneSize; i++)
-    {
-        outdataUPlane[i] = uvPlane[j++];
-        outdataVPlane[i] = uvPlane[j++];
-    }
-    */
-    
-    int i, j, k;
-    
     int YPlaneLength = iVideoHeight*iVideoWidth;
     int VPlaneLength = YPlaneLength >> 2;
     int UVPlaneMidPoint = YPlaneLength + VPlaneLength;
     int UVPlaneEnd = UVPlaneMidPoint + VPlaneLength;
+    
+    int i, j, k;
     
     for (i = YPlaneLength, j = 0, k = i; i < UVPlaneEnd; i += 2, j++, k++)
     {
@@ -272,7 +254,6 @@ int CVideoConverter::Convert_YUVNV12_To_YUVI420(byte* yPlane, byte* uvPlane, byt
     memcpy(convertingData + UVPlaneMidPoint, m_pVPlane, VPlaneLength);
     
     return UVPlaneEnd;
-    return 1;
 }
 
 /*
@@ -1073,8 +1054,727 @@ int CVideoConverter::DownScale_3_2_YUV420(unsigned char* pData, int &iHeight, in
     return iNewHeight*iNewWidth*3/2;
 }
 
+int CVideoConverter::DownScaleYUV420_Dynamic(unsigned char* pData, int &iHeight, int &iWidth, unsigned char* outputData, int diff)
+{
+    //cout<<"inHeight,inWidth = "<<iHeight<<", "<<iWidth<<endl;
+    int YPlaneLength = iHeight*iWidth;
+    int UPlaneLength = YPlaneLength >> 2;
+    
+    
+    int indx = 0;
+    int H, W;
+    
+    int iNewHeight = iHeight/diff;
+    int iNewWidth = iWidth/diff;
+    
+    H =  iHeight - iHeight%diff;
+    W = iWidth - iWidth % diff;
+    
+    if(iNewHeight%2!=0)
+    {
+        iNewHeight--;
+        H = iNewHeight * diff;
+    }
+    
+    if(iNewWidth%2!=0)
+    {
+        iNewWidth--;
+        W = iNewWidth * diff;
+    }
+    
+    
+    
+    printf("iNewHeight, iNewWidth --> %d, %d\n", iNewHeight, iNewWidth);
+    
+    int avg;
+    
+    for(int i=0; i<H; i+=diff)
+    {
+        for(int j=0; j<W; j+=diff)
+        {
+            int sum = 0;
+            for(int k=i; k<(i+diff); k++)
+            {
+                for(int l=j; l<(j+diff); l++)
+                {
+                    sum+=pData[k*iWidth + l];
+                }
+            }
+            avg = sum/(diff*diff);
+            outputData[indx++] = (byte)avg;
+            
+        }
+    }
+    
+    printf("index = %d\n", indx);
+    
+    
+    
+    
+    byte *p = pData + YPlaneLength;
+    byte *q = pData + YPlaneLength + UPlaneLength;
+    int uIndex = indx;
+    int vIndex = indx + (iNewHeight * iNewWidth)/4;
+    
+    int halfH = H>>1, halfW = W>>1;
+    int www = iWidth>>1;
+    
+    for(int i=0;i<halfH;i+=diff)
+    {
+        for(int j=0;j<halfW;j+=diff)
+        {
+            int sum1 = 0, sum2 = 0;
+            
+            for(int k=i; k<(i+diff); k++)
+            {
+                for(int l=j; l<(j+diff); l++)
+                {
+                    sum1+=p[k*www + l];
+                    sum2+=q[k*www + l];
+                }
+            }
+            
+            avg = sum1/(diff*diff);
+            outputData[uIndex++] = (byte)avg;
+            
+            avg = sum2/(diff*diff);
+            outputData[vIndex++] = (byte)avg;
+        }
+    }
+    
+    printf("uIndex, vIndex = %d, %d\n", uIndex, vIndex);
+    
+    //cout<<"CurrentLen = "<<indx<<endl;
+    
+    iHeight = iNewHeight;
+    iWidth = iNewWidth;
+    
+    return iHeight * iWidth * 3 / 2;
+    
+}
+
+int CumulativeSum[640][640];
+int CumulativeSum_U[640][640];
+int CumulativeSum_V[640][640];
+
+int CVideoConverter::DownScaleYUV420_Dynamic(unsigned char* pData, int inHeight, int inWidth, unsigned char* outputData, int outHeight, int outWidth)
+{
+    //cout<<"inHeight,inWidth = "<<iHeight<<", "<<iWidth<<endl;
+    float ratioHeight, ratioWidth;
+    
+    int YPlaneLength = inHeight*inWidth;
+    int UPlaneLength = YPlaneLength >> 2;
+    int halfH = inHeight>>1, halfW = inWidth>>1;
+    
+    ratioHeight = inHeight * (1.0) / outHeight;
+    ratioWidth = inWidth * (1.0) / outWidth;
+    int MaximumFraction = 1000;
+    int factorH = floor(ratioHeight);
+    int factorW = floor(ratioWidth);
+    int fractionH = (ratioHeight - factorH) * MaximumFraction;
+    int fractionW = (ratioWidth - factorW) * MaximumFraction;
+    
+    cout<<"rH:rW = "<<ratioHeight<<":"<<ratioWidth<<endl;
+    
+    int indx = 0;
+    
+    int avg, sum, sum1, sum2, Valuecounter;
+    int ii, iiFraction,jj, jjFraction;
+    
+    int iHeightCounter = 0, iWidthCounter = 0;
+    
+    
+    CumulativeSum[0][0] = (int)pData[0];
+    
+    for(int i=1;i<inHeight; i++)
+    {
+        CumulativeSum[i][0] = (int)(CumulativeSum[i-1][0] + pData[i*inWidth]);
+    }
+    for(int j=1;j<inWidth;j++)
+    {
+        CumulativeSum[0][j] = (int)(CumulativeSum[0][j-1] + (int)pData[j]);
+    }
+    
+    for(int i=1;i<inHeight;i++)
+    {
+        for(int j=1;j<inWidth;j++)
+        {
+            CumulativeSum[i][j] = (int)(CumulativeSum[i][j-1]  + CumulativeSum[i-1][j] - CumulativeSum[i-1][j-1] + pData[i*inWidth+j]);
+        }
+    }
+    
+    for(ii=0, iiFraction = 0; ii<inHeight ; ii+=factorH, iiFraction+=fractionH)
+    {
+        if(iiFraction>=MaximumFraction)
+        {
+            ii++;
+            iiFraction-=MaximumFraction;
+        }
+        iHeightCounter++;
+        
+        if(iHeightCounter>outHeight) break;
+        iWidthCounter = 0;
+        
+        for(jj=0, jjFraction = 0; jj<inWidth ; jj+=factorW, jjFraction+=fractionW)
+        {
+            if(jjFraction>=MaximumFraction)
+            {
+                jj++;
+                jjFraction-=MaximumFraction;
+            }
+            
+            iWidthCounter++;
+            if(iWidthCounter>outWidth) break;
+            
+            sum = 0;
+            Valuecounter = 0;
+            
+            int startY = ii;
+            int endY = ii+factorH-1;
+            if(iiFraction + fractionH >= MaximumFraction) endY++;
+            
+            int startX = jj;
+            int endX = jj+factorW-1;
+            if(jjFraction + fractionW >= MaximumFraction) endX++;
+            
+            
+            Valuecounter = (endY - startY + 1) * (endX - startX + 1);
+            int now, corner, up, left;
+            
+            corner = (startX-1) < 0 ? 0: (startY-1) < 0 ? 0 : CumulativeSum[startY-1][startX-1];
+            left = (startX-1) < 0 ? 0: endY >= inHeight ? 0 : CumulativeSum[endY][startX-1];
+            up = endX >= inWidth ? 0: (startY-1) < 0 ? 0 : CumulativeSum[startY-1][endX];
+            now = endX >= inWidth ? 0: (endY) >= inHeight ? 0 : CumulativeSum[endY][endX];
+            
+            sum = now - up - left + corner;
+            avg = sum/Valuecounter;
+            outputData[indx++] = (byte)avg;
+            
+            //printf("RajibTheKing--> sum = %d values = %d ,now = %d ,up = %d, left = %d, corner = %d\n", sum, Valuecounter,now,up,left,corner);
+            
+        }
+    }
+    
+    printf("index = %d\n", indx);
+    
+    byte *p = pData + YPlaneLength;
+    byte *q = pData + YPlaneLength + UPlaneLength;
+    int uIndex = indx;
+    int vIndex = indx + (outHeight * outWidth)/4;
+    iHeightCounter = 0;
+    
+    
+    CumulativeSum_U[0][0] = (int)p[0];
+    CumulativeSum_V[0][0] = (int)q[0];
+    
+    for(int i=1;i<halfH; i++)
+    {
+        CumulativeSum_U[i][0] = (int)(CumulativeSum_U[i-1][0] + p[i*halfW]);
+        CumulativeSum_V[i][0] = (int)(CumulativeSum_V[i-1][0] + q[i*halfW]);
+    }
+    for(int j=1;j<halfW;j++)
+    {
+        CumulativeSum_U[0][j] = (int)(CumulativeSum_U[0][j-1] + (int)p[j]);
+        CumulativeSum_V[0][j] = (int)(CumulativeSum_V[0][j-1] + (int)q[j]);
+    }
+    
+    for(int i=1;i<halfH;i++)
+    {
+        for(int j=1;j<halfW;j++)
+        {
+            CumulativeSum_U[i][j] = (int)(CumulativeSum_U[i][j-1] + p[i*halfW+j] + CumulativeSum_U[i-1][j] - CumulativeSum_U[i-1][j-1]);
+            CumulativeSum_V[i][j] = (int)(CumulativeSum_V[i][j-1] + q[i*halfW+j] + CumulativeSum_V[i-1][j] - CumulativeSum_V[i-1][j-1]);
+        }
+    }
+    
+    for(ii=0, iiFraction = 0; ii<halfH ; ii+=factorH, iiFraction+=fractionH)
+    {
+        if(iiFraction>=MaximumFraction)
+        {
+            ii++;
+            iiFraction-=MaximumFraction;
+        }
+        iHeightCounter++;
+        
+        if(iHeightCounter > (outHeight>>1) ) break;
+        iWidthCounter = 0;
+        
+        for(jj=0, jjFraction = 0; jj<halfW ; jj+=factorW, jjFraction+=fractionW)
+        {
+            if(jjFraction>=MaximumFraction)
+            {
+                jj++;
+                jjFraction-=MaximumFraction;
+            }
+            iWidthCounter++;
+            if(iWidthCounter> (outWidth>>1) )  break;
+            
+            sum1 = 0;
+            sum2 = 0;
+            Valuecounter = 0;
+            
+            int startY = ii;
+            int endY = ii+factorH-1;
+            if(iiFraction + fractionH >= MaximumFraction) endY++;
+            
+            int startX = jj;
+            int endX = jj+factorW-1;
+            if(jjFraction + fractionW >= MaximumFraction) endX++;
+            
+            
+            Valuecounter = (endY - startY + 1) * (endX - startX + 1);
+            //printf("Valuecounter = %d\n", Valuecounter);
+            int now, corner, up, left;
+            
+            corner = (startX-1) < 0 ? 0: (startY-1) < 0 ? 0 : CumulativeSum_U[startY-1][startX-1];
+            left = (startX-1) < 0 ? 0: endY >= halfH ? 0 : CumulativeSum_U[endY][startX-1];
+            up = endX >= halfW ? 0: (startY-1) < 0 ? 0 : CumulativeSum_U[startY-1][endX];
+            now = endX >= halfW ? 0: (endY) >= halfH ? 0 : CumulativeSum_U[endY][endX];
+            
+            sum = now - up - left + corner;
+            avg = sum/Valuecounter;
+            outputData[uIndex++] = (byte)avg;
+            
+            
+            corner = (startX-1) < 0 ? 0: (startY-1) < 0 ? 0 : CumulativeSum_V[startY-1][startX-1];
+            left = (startX-1) < 0 ? 0: endY >= halfH ? 0 : CumulativeSum_V[endY][startX-1];
+            up = endX >= halfW ? 0: (startY-1) < 0 ? 0 : CumulativeSum_V[startY-1][endX];
+            now = endX >= halfW ? 0: (endY) >= halfH ? 0 : CumulativeSum_V[endY][endX];
+            
+            sum = now - up - left + corner;
+            avg = sum/Valuecounter;
+            outputData[vIndex++] = (byte)avg;
+            
+        }
+    }
+    
+    
+    printf("uIndex, vIndex = %d, %d\n", uIndex, vIndex);
+    cout<<"CurrentLen = "<<indx<<endl;
+    
+    return outHeight * outWidth * 3 / 2;
+    
+}
 
 
+/*
+//এইখানে শুধু কলাম আর রো ফেলে দেয়া হয়েছে।। আউটপুট ভাল নাহ।
+int CVideoConverter::DownScaleYUV420_Dynamic(unsigned char* pData, int inHeight, int inWidth, unsigned char* outputData, int outHeight, int outWidth)
+{
+    //cout<<"inHeight,inWidth = "<<iHeight<<", "<<iWidth<<endl;
+    float ratioHeight, ratioWidth;
+    
+    int YPlaneLength = inHeight*inWidth;
+    int UPlaneLength = YPlaneLength >> 2;
+    int halfH = inHeight>>1, halfW = inWidth>>1;
+    
+    ratioHeight = inHeight * (1.0) / outHeight;
+    ratioWidth = inWidth * (1.0) / outWidth;
+    
+    cout<<"rH:rW = "<<ratioHeight<<":"<<ratioWidth<<endl;
+    
+    int indx = 0;
+    float ii,jj;
+    int iHeightCounter = 0, iWidthCounter = 0;
+    for(ii=0; ii<inHeight ; ii+=ratioHeight)
+    {
+        iHeightCounter++;
+        
+        if(iHeightCounter>outHeight) break;
+        iWidthCounter = 0;
+        
+        for(jj=0; jj<inWidth ; jj+=ratioWidth)
+        {
+            iWidthCounter++;
+            if(iWidthCounter>outWidth) break;
+            int startY = floor(ii);
+            int startX = floor(jj);
+            outputData[indx++] = pData[startY*inWidth+startX];
+            //printf("TheKing--> sum = %d values = %d ,now = %d ,up = %d, left = %d, corner = %d\n", sum, Valuecounter,now,up,left,corner);
+            
+        }
+    }
+    
+    printf("index = %d\n", indx);
+    
+    byte *p = pData + YPlaneLength;
+    byte *q = pData + YPlaneLength + UPlaneLength;
+    int uIndex = indx;
+    int vIndex = indx + (outHeight * outWidth)/4;
+    iHeightCounter = 0;
+    
+    
+    for(ii=0; ii<halfH; ii+=ratioHeight)
+    {
+        iHeightCounter++;
+        
+        if(iHeightCounter > (outHeight>>1) ) break;
+        iWidthCounter = 0;
+        
+        for(jj=0; jj<halfW; jj+=ratioWidth)
+        {
+            iWidthCounter++;
+            if(iWidthCounter> (outWidth>>1) )  break;
+            int startY = floor(ii);
+            int startX = floor(jj);
+            
+            outputData[uIndex++] = p[startY*halfW+startX];
+            outputData[vIndex++] = q[startY*halfW+startX];
+            
+        }
+    }
+    
+    
+    printf("uIndex, vIndex = %d, %d\n", uIndex, vIndex);
+    cout<<"CurrentLen = "<<indx<<endl;
+    
+    return outHeight * outWidth * 3 / 2;
+    
+}
+*/
+
+/*
+এইখানে ২ ডাইমেনশনাল অ্যারে ব্যবহার করে হয়েছে ... কিন্তু কোন লাভ হয় নি ।
+int CumulativeSum[640][640];
+int CumulativeSum_U[640][640];
+int CumulativeSum_V[640][640];
+
+int CVideoConverter::DownScaleYUV420_Dynamic(unsigned char* pData, int inHeight, int inWidth, unsigned char* outputData, int outHeight, int outWidth)
+{
+    //cout<<"inHeight,inWidth = "<<iHeight<<", "<<iWidth<<endl;
+    float ratioHeight, ratioWidth;
+    
+    int YPlaneLength = inHeight*inWidth;
+    int UPlaneLength = YPlaneLength >> 2;
+    int halfH = inHeight>>1, halfW = inWidth>>1;
+    
+    ratioHeight = inHeight * (1.0) / outHeight;
+    ratioWidth = inWidth * (1.0) / outWidth;
+    
+    cout<<"rH:rW = "<<ratioHeight<<":"<<ratioWidth<<endl;
+    
+    int indx = 0;
+    
+    int avg, sum, sum1, sum2, Valuecounter;
+    float ii,jj;
+    
+    int iHeightCounter = 0, iWidthCounter = 0;
+    
+    
+    CumulativeSum[0][0] = (int)pData[0];
+    
+    for(int i=1;i<inHeight; i++)
+    {
+        CumulativeSum[i][0] = (int)(CumulativeSum[i-1][0] + pData[i*inWidth]);
+    }
+    for(int j=1;j<inWidth;j++)
+    {
+        CumulativeSum[0][j] = (int)(CumulativeSum[0][j-1] + (int)pData[j]);
+    }
+    
+    for(int i=1;i<inHeight;i++)
+    {
+        for(int j=1;j<inWidth;j++)
+        {
+            CumulativeSum[i][j] = (int)(CumulativeSum[i][j-1]  + CumulativeSum[i-1][j] - CumulativeSum[i-1][j-1] + pData[i*inWidth+j]);
+        }
+    }
+    
+    for(ii=0; ii<inHeight ; ii+=ratioHeight)
+    {
+        iHeightCounter++;
+        
+        if(iHeightCounter>outHeight) break;
+        iWidthCounter = 0;
+        
+        for(jj=0; jj<inWidth ; jj+=ratioWidth)
+        {
+            iWidthCounter++;
+            if(iWidthCounter>outWidth) break;
+            
+            sum = 0;
+            Valuecounter = 0;
+            
+            int startY = floor(ii);
+            int endY = floor(ii+ratioHeight-1);
+            int startX = floor(jj);
+            int endX = floor(jj+ratioWidth-1);
+            Valuecounter = (endY - startY + 1) * (endX - startX + 1);
+            int now, corner, up, left;
+            
+            corner = (startX-1) < 0 ? 0: (startY-1) < 0 ? 0 : CumulativeSum[startY-1][startX-1];
+            left = (startX-1) < 0 ? 0: endY >= inHeight ? 0 : CumulativeSum[endY][startX-1];
+            up = endX >= inWidth ? 0: (startY-1) < 0 ? 0 : CumulativeSum[startY-1][endX];
+            now = endX >= inWidth ? 0: (endY) >= inHeight ? 0 : CumulativeSum[endY][endX];
+            
+            sum = now - up - left + corner;
+            avg = sum/Valuecounter;
+            outputData[indx++] = (byte)avg;
+            
+            //printf("TheKing--> sum = %d values = %d ,now = %d ,up = %d, left = %d, corner = %d\n", sum, Valuecounter,now,up,left,corner);
+            
+        }
+    }
+    
+    printf("index = %d\n", indx);
+    
+    byte *p = pData + YPlaneLength;
+    byte *q = pData + YPlaneLength + UPlaneLength;
+    int uIndex = indx;
+    int vIndex = indx + (outHeight * outWidth)/4;
+    iHeightCounter = 0;
+    
+    
+    CumulativeSum_U[0][0] = (int)p[0];
+    CumulativeSum_V[0][0] = (int)q[0];
+    
+    for(int i=1;i<halfH; i++)
+    {
+        CumulativeSum_U[i][0] = (int)(CumulativeSum_U[i-1][0] + p[i*halfW]);
+        CumulativeSum_V[i][0] = (int)(CumulativeSum_V[i-1][0] + q[i*halfW]);
+    }
+    for(int j=1;j<halfW;j++)
+    {
+        CumulativeSum_U[0][j] = (int)(CumulativeSum_U[0][j-1] + (int)p[j]);
+        CumulativeSum_V[0][j] = (int)(CumulativeSum_V[0][j-1] + (int)q[j]);
+    }
+    
+    for(int i=1;i<halfH;i++)
+    {
+        for(int j=1;j<halfW;j++)
+        {
+            CumulativeSum_U[i][j] = (int)(CumulativeSum_U[i][j-1] + p[i*halfW+j] + CumulativeSum_U[i-1][j] - CumulativeSum_U[i-1][j-1]);
+            CumulativeSum_V[i][j] = (int)(CumulativeSum_V[i][j-1] + q[i*halfW+j] + CumulativeSum_V[i-1][j] - CumulativeSum_V[i-1][j-1]);
+        }
+    }
+    
+    for(ii=0; ii<halfH; ii+=ratioHeight)
+    {
+        iHeightCounter++;
+        
+        if(iHeightCounter > (outHeight>>1) ) break;
+        iWidthCounter = 0;
+        
+        for(jj=0; jj<halfW; jj+=ratioWidth)
+        {
+            iWidthCounter++;
+            if(iWidthCounter> (outWidth>>1) )  break;
+            
+            sum1 = 0;
+            sum2 = 0;
+            Valuecounter = 0;
+            
+            int startY = floor(ii);
+            int endY = floor(ii+ratioHeight-1);
+            int startX = floor(jj);
+            int endX = floor(jj+ratioWidth-1);
+            Valuecounter = (endY - startY + 1) * (endX - startX + 1);
+            //printf("Valuecounter = %d\n", Valuecounter);
+            int now, corner, up, left;
+            
+            corner = (startX-1) < 0 ? 0: (startY-1) < 0 ? 0 : CumulativeSum_U[startY-1][startX-1];
+            left = (startX-1) < 0 ? 0: endY >= halfH ? 0 : CumulativeSum_U[endY][startX-1];
+            up = endX >= halfW ? 0: (startY-1) < 0 ? 0 : CumulativeSum_U[startY-1][endX];
+            now = endX >= halfW ? 0: (endY) >= halfH ? 0 : CumulativeSum_U[endY][endX];
+            
+            sum = now - up - left + corner;
+            avg = sum/Valuecounter;
+            outputData[uIndex++] = (byte)avg;
+            
+            
+            corner = (startX-1) < 0 ? 0: (startY-1) < 0 ? 0 : CumulativeSum_V[startY-1][startX-1];
+            left = (startX-1) < 0 ? 0: endY >= halfH ? 0 : CumulativeSum_V[endY][startX-1];
+            up = endX >= halfW ? 0: (startY-1) < 0 ? 0 : CumulativeSum_V[startY-1][endX];
+            now = endX >= halfW ? 0: (endY) >= halfH ? 0 : CumulativeSum_V[endY][endX];
+            
+            sum = now - up - left + corner;
+            avg = sum/Valuecounter;
+            outputData[vIndex++] = (byte)avg;
+            
+        }
+    }
+    
+    
+    printf("uIndex, vIndex = %d, %d\n", uIndex, vIndex);
+    cout<<"CurrentLen = "<<indx<<endl;
+ 
+    return outHeight * outWidth * 3 / 2;
+    
+}
+
+
+/*
+//এইখানে 1 Dimension Array ব্যবহার করা হয়েছে...
+int CumulativeSum[640*640*3];
+int CumulativeSum_U[640*640*3];
+int CumulativeSum_V[640*640*3];
+
+int CVideoConverter::DownScaleYUV420_Dynamic(unsigned char* pData, int inHeight, int inWidth, unsigned char* outputData, int outHeight, int outWidth)
+{
+    //cout<<"inHeight,inWidth = "<<iHeight<<", "<<iWidth<<endl;
+    float ratioHeight, ratioWidth;
+    
+    int YPlaneLength = inHeight*inWidth;
+    int UPlaneLength = YPlaneLength >> 2;
+    int halfH = inHeight>>1, halfW = inWidth>>1;
+    
+    ratioHeight = inHeight * (1.0) / outHeight;
+    ratioWidth = inWidth * (1.0) / outWidth;
+    
+    cout<<"rH:rW = "<<ratioHeight<<":"<<ratioWidth<<endl;
+    
+    int indx = 0;
+    
+    int avg, i, j, k, l, sum, sum1, sum2, Valuecounter;
+    float ii,jj, kk, ll;
+    
+    int iHeightCounter = 0, iWidthCounter = 0;
+    
+    
+    CumulativeSum[0] = (int)pData[0];
+    
+    for(int i=1;i<inHeight; i++)
+    {
+        CumulativeSum[i*inWidth] = (int)(CumulativeSum[(i-1)*inWidth] + pData[i*inWidth]);
+    }
+    for(int j=1;j<inWidth;j++)
+    {
+        CumulativeSum[j] = (int)(CumulativeSum[j-1] + (int)pData[j]);
+    }
+    
+    for(int i=1;i<inHeight;i++)
+    {
+        for(int j=1;j<inWidth;j++)
+        {
+            CumulativeSum[i*inWidth+j] = (int)(CumulativeSum[i*inWidth+j-1] + pData[i*inWidth+j] + CumulativeSum[(i-1)*inWidth+j] - CumulativeSum[(i-1)*inWidth+(j-1)]);
+        }
+    }
+    
+    for(ii=0; ii<inHeight ; ii+=ratioHeight)
+    {
+        iHeightCounter++;
+        if(iHeightCounter>outHeight) break;
+        iWidthCounter = 0;
+        
+        for(jj=0; jj<inWidth ; jj+=ratioWidth)
+        {
+            iWidthCounter++;
+            if(iWidthCounter>outWidth) break;
+            sum = 0;
+            Valuecounter = 0;
+            
+            int startY = floor(ii);
+            int endY = floor(ii+ratioHeight-1);
+            int startX = floor(jj);
+            int endX = floor(jj+ratioWidth-1);
+            Valuecounter = (endY - startY + 1) * (endX - startX + 1);
+            int now, corner, up, left;
+            
+            corner = (startX-1) < 0 ? 0: (startY-1) < 0 ? 0 : CumulativeSum[(startY-1)*inWidth+(startX - 1)];
+            left = (startX-1) < 0 ? 0: endY >= inHeight ? 0 : CumulativeSum[(endY)*inWidth+(startX - 1)];
+            up = endX >= inWidth ? 0: (startY-1) < 0 ? 0 : CumulativeSum[(startY-1)*inWidth+(endX)];
+            now = endX >= inWidth ? 0: (endY) >= inHeight ? 0 : CumulativeSum[endY * inWidth + endX];
+            
+            sum = now - up - left + corner;
+            avg = sum/Valuecounter;
+            outputData[indx++] = (byte)avg;
+            
+            //printf("TheKing--> sum = %d values = %d ,now = %d ,up = %d, left = %d, corner = %d\n", sum, Valuecounter,now,up,left,corner);
+            
+        }
+    }
+    
+    printf("index = %d\n", indx);
+    
+    
+    
+    
+    
+    
+    
+    byte *p = pData + YPlaneLength;
+    byte *q = pData + YPlaneLength + UPlaneLength;
+    int uIndex = indx;
+    int vIndex = indx + (outHeight * outWidth)/4;
+    iHeightCounter = 0;
+    
+    
+    CumulativeSum_U[0] = (int)p[0];
+    CumulativeSum_V[0] = (int)q[0];
+    
+    for(int i=1;i<halfH; i++)
+    {
+        CumulativeSum_U[i*halfW] = (int)(CumulativeSum_U[(i-1)*halfW] + p[i*halfW]);
+        CumulativeSum_V[i*halfW] = (int)(CumulativeSum_V[(i-1)*halfW] + q[i*halfW]);
+    }
+    for(int j=1;j<halfW;j++)
+    {
+        CumulativeSum_U[j] = (int)(CumulativeSum_U[j-1] + (int)p[j]);
+        CumulativeSum_V[j] = (int)(CumulativeSum_V[j-1] + (int)q[j]);
+    }
+    
+    for(int i=1;i<halfH;i++)
+    {
+        for(int j=1;j<halfW;j++)
+        {
+            CumulativeSum_U[i*halfW+j] = (int)(CumulativeSum_U[i*halfW+j-1] + p[i*halfW+j] + CumulativeSum_U[(i-1)*halfW+j] - CumulativeSum_U[(i-1)*halfW+(j-1)]);
+            CumulativeSum_V[i*halfW+j] = (int)(CumulativeSum_V[i*halfW+j-1] + q[i*halfW+j] + CumulativeSum_V[(i-1)*halfW+j] - CumulativeSum_V[(i-1)*halfW+(j-1)]);
+        }
+    }
+    
+    for(ii=0; ii<halfH; ii+=ratioHeight)
+    {
+        iHeightCounter++;
+        if(iHeightCounter > (outHeight>>1) ) break;
+        iWidthCounter = 0;
+        
+        for(jj=0; jj<halfW; jj+=ratioWidth)
+        {
+            iWidthCounter++;
+            if(iWidthCounter> (outWidth>>1) )  break;
+            
+            sum1 = 0;
+            sum2 = 0;
+            Valuecounter = 0;
+            
+            int startY = floor(ii);
+            int endY = floor(ii+ratioHeight-1);
+            int startX = floor(jj);
+            int endX = floor(jj+ratioWidth-1);
+            Valuecounter = (endY - startY + 1) * (endX - startX + 1);
+            //printf("Valuecounter = %d\n", Valuecounter);
+            int now, corner, up, left;
+            
+            corner = (startX-1) < 0 ? 0: (startY-1) < 0 ? 0 : CumulativeSum_U[(startY-1)*halfW+(startX - 1)];
+            left = (startX-1) < 0 ? 0: endY >= halfH ? 0 : CumulativeSum_U[(endY)*halfW+(startX - 1)];
+            up = endX >= halfW ? 0: (startY-1) < 0 ? 0 : CumulativeSum_U[(startY-1)*halfW+(endX)];
+            now = endX >= halfW ? 0: (endY) >= halfH ? 0 : CumulativeSum_U[endY * halfW + endX];
+            
+            sum = now - up - left + corner;
+            avg = sum/Valuecounter;
+            outputData[uIndex++] = (byte)avg;
+            
+            
+            corner = (startX-1) < 0 ? 0: (startY-1) < 0 ? 0 : CumulativeSum_V[(startY-1)*halfW+(startX - 1)];
+            left = (startX-1) < 0 ? 0: endY >= halfH ? 0 : CumulativeSum_V[(endY)*halfW+(startX - 1)];
+            up = endX >= halfW ? 0: (startY-1) < 0 ? 0 : CumulativeSum_V[(startY-1)*halfW+(endX)];
+            now = endX >= halfW ? 0: (endY) >= halfH ? 0 : CumulativeSum_V[endY * halfW + endX];
+            
+            sum = now - up - left + corner;
+            avg = sum/Valuecounter;
+            outputData[vIndex++] = (byte)avg;
+            
+        }
+    }
+    
+    
+    printf("uIndex, vIndex = %d, %d\n", uIndex, vIndex);
+    cout<<"CurrentLen = "<<indx<<endl;
+    
+    return outHeight * outWidth * 3 / 2;
+    
+}
+*/
 
 
 int CVideoConverter::getMin(int a, int b, int c)

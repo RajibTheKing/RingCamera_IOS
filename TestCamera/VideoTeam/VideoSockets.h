@@ -9,7 +9,7 @@
 #ifndef VideoSockets_h
 #define VideoSockets_h
 
-#import "RingCallModule.h"
+//#import "RingCallModule.h"
 #include "Common.hpp"
 #include "VideoAPI.hpp"
 //#include "VideoCallProcessor.h"

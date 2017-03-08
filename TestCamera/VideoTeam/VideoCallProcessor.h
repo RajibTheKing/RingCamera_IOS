@@ -22,7 +22,7 @@
 #include "VideoThreadProcessor.h"
 #include "VideoAPI.hpp"
 #include "VideoSockets.h"
-#include "G729CodecNative.h" 
+//#include "G729CodecNative.h"
 
 
 @protocol ViewControllerDelegate <NSObject>
@@ -56,7 +56,7 @@
     
     id <ViewControllerDelegate> _delegate;
     CVideoAPI *m_pVideoAPI;
-    G729CodecNative *g_G729CodecNative;
+    //G729CodecNative *g_G729CodecNative;
     string m_sRemoteIP;
     
     FILE *m_FileForDump;
@@ -100,7 +100,7 @@
                            withWidth:(int *)iWidth;
 
 - (void)SetCameraResolutionByNotification:(int)iHeight withWidth:(int)iWidth;
--(G729CodecNative *)GetG729;
+//-(G729CodecNative *)GetG729;
 -(long long)GetUserId;
 -(long long)GetFriendId;
 - (int)FrontConversion:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection;

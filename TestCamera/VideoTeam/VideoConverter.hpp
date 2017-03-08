@@ -53,7 +53,7 @@ public:
     UIImage* Convert_CMSampleBufferRef_To_UIImage(CMSampleBufferRef sampleBuffer);
     UIImage* Convert_CVPixelBufferRef_To_UIImage(CVPixelBufferRef pixelBuffer);
     //int Convert_YUVNV12_To_YUVI420(byte* pCameraData, byte* outData, int m_iHeight = 0, int m_iWidth = 0);
-    int Convert_YUVNV12_To_YUVI420(byte* yPlane, byte* uvPlane, byte* outData, int m_iHeight, int m_iWidth);
+    int Convert_YUVNV12_To_YUVI420(byte* convertingData, int m_iHeight, int m_iWidth);
     int Convert_YUVI420_To_YUVNV12(byte* pData,  byte *y_ch0, byte* y_ch1,int iRenderHeight, int iRenderWidth);
     CVPixelBufferRef Convert_YUVNV12_To_CVPixelBufferRef(byte* y_ch0, byte* y_ch1, int iRenderHeight, int iRenderWidth);
     void mirrorRotateAndConvertNV12ToI420(unsigned char *m_pFrame, unsigned char *pData, int &iVideoHeight, int &iVideoWidth);
@@ -80,6 +80,9 @@ public:
     
     void ChangeBlock_9x9_To_4x4(unsigned char *inData, int iHeight, int iWidth, int i, int j, int iNewHeight, int iNewWidth, int m, int n, unsigned char *outData, int iw);
     int DownScale_3_2_YUV420(unsigned char* pData, int &iHeight, int &iWidth, unsigned char* outputData);
+    
+    int DownScaleYUV420_Dynamic(unsigned char* pData, int &iHeight, int &iWidth, unsigned char* outputData, int diff);
+    int DownScaleYUV420_Dynamic(unsigned char* pData, int inHeight, int inWidth, unsigned char* outputData, int outHeight, int outWidth);
     
     
     void SendPakcetFragments(byte*data, int iLen);
