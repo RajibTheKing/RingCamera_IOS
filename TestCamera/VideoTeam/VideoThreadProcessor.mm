@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #include "VideoThreadProcessor.h"
-
+#include "ClientRenderingBuffer.h"
 
 @implementation VideoThreadProcessor
 
@@ -24,6 +24,7 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
     _bEventThreadActive = false;
     m_iFrameNumber = 0;
     m_pRenderingAvg = new CAverageCalculator("RenderignAverage");
+    m_pClientRenderingBuffer = new ClientRenderingBuffer();
     return self;
 }
 
@@ -92,7 +93,51 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
     }
 
 }
+- (void)PushIntoClientRenderingBuffer:(unsigned char *)pData withLen:(int)iLen withHeight:(int)iHeight withWidth:(int)iWidth withOrientation:(int)iOrientation
+{
+    m_pClientRenderingBuffer->Queue(pData, iLen, iHeight, iWidth, iOrientation);
+}
 
+
+- (void)RenderThread
+{
+    int frameSize, videoHeight, videoWidth, orientation;
+    long long llPrevTime;
+    
+    @autoreleasepool
+    {
+        while (_bRenderThreadActive)
+        {
+            //CLogPrinter_WriteLog(CLogPrinter::INFO, THREAD_LOG ,"CVideoRenderingThread::RenderingThreadProcedure() RUNNING RenderingThreadProcedure method");
+            
+            if (m_pClientRenderingBuffer->GetQueueSize() == 0)
+            {
+                SOSleep(10);
+                continue;
+            }
+            else
+            {
+                frameSize = m_pClientRenderingBuffer->DeQueue(m_pRenderingData, videoHeight, videoWidth, orientation);
+                
+                if(videoHeight > 0 && videoWidth > 0)
+                {
+                    llPrevTime = CurrentTimeStamp();
+                    [self.delegate SetWidthAndHeightForRendering:videoWidth withHeight:videoHeight];
+                    [self.delegate BackConversion:m_pRenderingData];
+                    m_pRenderingAvg->UpdateData(CurrentTimeStamp() - llPrevTime);
+                }
+            }
+        }
+   
+    }
+}
+
+
+/**
+ *
+ *Previous Implementation
+ */
+/*
 - (void)RenderThread
 {
     @autoreleasepool {
@@ -134,14 +179,7 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
             
             //int height = 640;
             //int width = 480;
-            
-            /*
-            printf("Inside renderthread, iLen = %d --> ", iLen);
-            for(int i=0;i<20;i++)
-            {
-                printf("%d ", pGotData[i]);
-            }
-            */
+ 
             printf("\n");
             if(iLen>=MAX_FRAME_SIZE || iLen < 0)
             {
@@ -199,6 +237,8 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
         }
     }
 }
+*/
+
 
 /*
 - (void)EncodeThread
@@ -251,5 +291,4 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
     printf("\nClosing EncodeThread...\n");
 }
 */
-
 @end

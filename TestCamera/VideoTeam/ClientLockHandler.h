@@ -1,6 +1,6 @@
 
-#ifndef _LOCK_HANDLER_H_
-#define _LOCK_HANDLER_H_
+#ifndef _CLIENT_LOCK_HANDLER_H_
+#define _CLIENT_LOCK_HANDLER_H_
 
 #include <stdio.h>
 #include <mutex>
@@ -9,15 +9,15 @@
 #include <pthread.h>
 #endif
 
-class Locker;
+class ClientLocker;
 
-class CLockHandler
+class ClientLockHandler
 {
 
 public:
 
-	CLockHandler();
-	~CLockHandler();
+	ClientLockHandler();
+	~ClientLockHandler();
 
 	std::mutex* GetMutex();
 	void Lock();
@@ -28,12 +28,12 @@ private:
 	std::mutex *m_pMutex;
 };
 
-class Locker
+class ClientLocker
 {
 
 public:
 
-	Locker(CLockHandler& m):
+	ClientLocker(ClientLockHandler& m):
 
 	mutex(m) 
 
@@ -41,14 +41,14 @@ public:
 		mutex.Lock(); 
 	}
 
-	~Locker()
+	~ClientLocker()
 	{ 
 		mutex.UnLock(); 
 	}
 
 private:
 
-	CLockHandler& mutex;
+	ClientLockHandler& mutex;
 };
 
 

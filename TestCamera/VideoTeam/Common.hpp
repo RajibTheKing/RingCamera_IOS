@@ -9,9 +9,16 @@
 #ifndef Common_h
 #define Common_h
 
+#include <sstream>
+#include <cstdlib>
+
+
 #include <time.h>
 #include <chrono>
 #include <stdio.h>
+#include <ctime>
+#include <chrono>
+
 using namespace std;
 
 
@@ -67,6 +74,17 @@ static long long CurrentTimeStamp()
     auto millis = sc::duration_cast<sc::milliseconds>(since_epoch);
     long long now = millis.count(); // just like java (new Date()).getTime();
     return now;
+}
+static void SOSleep(int nSleepTimeout)
+{
+    timespec t;
+    
+    u_int32_t seconds = nSleepTimeout / 1000;
+    t.tv_sec = seconds;
+    t.tv_nsec = (nSleepTimeout - (seconds * 1000)) * (1000 * 1000);
+    
+    nanosleep(&t, NULL);
+    
 }
 //#define nullptr NULL
 

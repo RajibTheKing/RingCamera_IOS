@@ -265,7 +265,7 @@ void VideoSockets::DataReceiverThread()
         }
         
         int iPacketType = (int)baDataReceiverBuffer[0];
-        cout<<"Packet Type = "<<iPacketType<<endl;
+        //cout<<"Packet Type = "<<iPacketType<<endl;
         
         if(iPacketType == FULL_PACKET_CODE)
         {

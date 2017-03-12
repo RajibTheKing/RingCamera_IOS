@@ -1,14 +1,14 @@
 
-#include "LockHandler.h"
+#include "ClientLockHandler.h"
 
-CLockHandler::CLockHandler() :
+ClientLockHandler::ClientLockHandler() :
 m_pMutex(NULL)
 
 {
 	m_pMutex = new std::mutex;
 }
 
-CLockHandler::~CLockHandler()
+ClientLockHandler::~ClientLockHandler()
 {
 /*	
 	if (m_pMutex != NULL)
@@ -20,7 +20,7 @@ CLockHandler::~CLockHandler()
 */
 }
 
-std::mutex* CLockHandler::GetMutex()
+std::mutex* ClientLockHandler::GetMutex()
 {
 	if (NULL == m_pMutex)
 		return NULL;
@@ -28,7 +28,7 @@ std::mutex* CLockHandler::GetMutex()
 	return m_pMutex;
 }
 
-void CLockHandler::Lock()
+void ClientLockHandler::Lock()
 {
 	if (NULL == m_pMutex)
 		return;
@@ -36,7 +36,7 @@ void CLockHandler::Lock()
 	m_pMutex->lock();
 }
 
-void CLockHandler::UnLock()
+void ClientLockHandler::UnLock()
 {
 	if (NULL == m_pMutex)
 		return;

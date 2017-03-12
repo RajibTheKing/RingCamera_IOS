@@ -69,10 +69,12 @@ void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int mediaType, unsig
                             ", Height = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoHeight) +
                             ", Width = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoWidth);
     
+    
     if(CVideoAPI::GetInstance()->m_iRecvFrameCounter%20 == 0)
     {
         [[VideoCallProcessor GetInstance] UpdateStatusMessage:sStatusMessage];
     }
+    /*
     
     if(data != NULL)
     {
@@ -82,6 +84,11 @@ void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int mediaType, unsig
         
         CVideoAPI::GetInstance()->ReceiveFullFrame(data, dataLenth);
     }
+    */
+    
+    [[VideoThreadProcessor GetInstance] PushIntoClientRenderingBuffer:data withLen:dataLenth withHeight:iVideoHeight withWidth:iVideoWidth withOrientation:iOrientation];
+    
+    
 }
 
 void WriteToFileVideoAPI(byte *pData, int iLen);

@@ -8,6 +8,7 @@
 
 #ifndef VideoThreadProcessor_h
 #define VideoThreadProcessor_h
+
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
@@ -16,6 +17,9 @@
 #include "RingBuffer.hpp"
 #include "VideoAPI.hpp"
 #include "AverageCalculator.h" 
+#include "ClientLockHandler.h"
+
+class ClientRenderingBuffer;
 
 @protocol VideoThreadProcessorDelegate <NSObject>
 @required
@@ -28,6 +32,8 @@
 {
     RingBuffer<byte> *pEncodeBuffer;
     CVideoAPI *m_pVideoAPI;
+    ClientRenderingBuffer *m_pClientRenderingBuffer;
+    unsigned char m_pRenderingData[MAXWIDTH*MAXWIDTH*3/2];
     
     pthread_mutex_t pmEncodeMutex;
     int m_iCameraHeight;
@@ -56,7 +62,9 @@
 - (void)RenderThread;
 - (void)EncodeThread;
 - (void)EventThread;
+- (void)PushIntoClientRenderingBuffer:(unsigned char *)pData withLen:(int)iLen withHeight:(int)iHeight withWidth:(int)iWidth withOrientation:(int)iOrientation;
 @end
+
 
 
 static VideoThreadProcessor *m_pVideoThreadProcessor = nil;

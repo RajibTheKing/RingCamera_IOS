@@ -170,14 +170,10 @@ FILE *fpInputPCM;
 
 +(RingCallAudioManager *)sharedInstance
 {
-    printf("TheKingAudio--> sharedInstance\n");
-    pVideoSocket = VideoSockets::GetInstance();
-    printf("TheKingAudio--> sharedInstance  2\n");
-    pVideoCallProcessor = [VideoCallProcessor GetInstance];
-    printf("TheKingAudio--> sharedInstance  3\n");
-    
     if (sharedInstance == nil)
     {
+        pVideoSocket = VideoSockets::GetInstance();
+        pVideoCallProcessor = [VideoCallProcessor GetInstance];
         printf("TheKingAudio--> sharedInstance 4\n");
         sharedInstance = [[RingCallAudioManager alloc] init];
         printf("TheKingAudio--> sharedInstance 5\n");
