@@ -56,6 +56,8 @@
 		DA7FCB441E7512FE0035AA4C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7FCB431E7512FE0035AA4C /* SystemConfiguration.framework */; };
 		DA835D861E6C5A6200C75A79 /* AppAsset.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */; };
 		DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA971EFB1E07A9D600645151 /* FastBilateral.mm */; };
+		DAC7C1E51E7544850045242C /* ClientRenderingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC7C1E31E7544850045242C /* ClientRenderingBuffer.cpp */; };
+		DAC7C1EC1E7546180045242C /* ClientLockHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC7C1E81E7546180045242C /* ClientLockHandler.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,6 +156,10 @@
 		DA7FCB431E7512FE0035AA4C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppAsset.xcassets; sourceTree = "<group>"; };
 		DA971EFB1E07A9D600645151 /* FastBilateral.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = FastBilateral.mm; path = TestCamera/VideoTeam/FastBilateral.mm; sourceTree = "<group>"; };
+		DAC7C1E31E7544850045242C /* ClientRenderingBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientRenderingBuffer.cpp; path = TestCamera/VideoTeam/ClientRenderingBuffer.cpp; sourceTree = "<group>"; };
+		DAC7C1E41E7544850045242C /* ClientRenderingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientRenderingBuffer.h; path = TestCamera/VideoTeam/ClientRenderingBuffer.h; sourceTree = "<group>"; };
+		DAC7C1E81E7546180045242C /* ClientLockHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientLockHandler.cpp; path = TestCamera/VideoTeam/ClientLockHandler.cpp; sourceTree = "<group>"; };
+		DAC7C1E91E7546180045242C /* ClientLockHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientLockHandler.h; path = TestCamera/VideoTeam/ClientLockHandler.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +231,10 @@
 				18747AF81BFDD0C60010CAA3 /* VideoThreadProcessor.h */,
 				18747AF91BFDD0C60010CAA3 /* VideoThreadProcessor.mm */,
 				DA971EFB1E07A9D600645151 /* FastBilateral.mm */,
+				DAC7C1E31E7544850045242C /* ClientRenderingBuffer.cpp */,
+				DAC7C1E41E7544850045242C /* ClientRenderingBuffer.h */,
+				DAC7C1E81E7546180045242C /* ClientLockHandler.cpp */,
+				DAC7C1E91E7546180045242C /* ClientLockHandler.h */,
 			);
 			name = VideoTeam;
 			sourceTree = "<group>";
@@ -446,6 +456,8 @@
 				DA7CE48D1E6FFD97008895E5 /* AudioSessionManager.m in Sources */,
 				18747B011BFDD0C60010CAA3 /* VideoSockets.mm in Sources */,
 				2BA4850713F1E6AA000BABB3 /* TestCameraAppDelegate.m in Sources */,
+				DAC7C1E51E7544850045242C /* ClientRenderingBuffer.cpp in Sources */,
+				DAC7C1EC1E7546180045242C /* ClientLockHandler.cpp in Sources */,
 				DA7CE4901E6FFD97008895E5 /* RingCallAudioManager.mm in Sources */,
 				18747B001BFDD0C60010CAA3 /* VideoConverter.mm in Sources */,
 				DA07AA621DE2C3D800402BB9 /* Common.mm in Sources */,
