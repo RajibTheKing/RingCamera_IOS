@@ -52,6 +52,8 @@
 		DA7CE4911E6FFD97008895E5 /* SharkfoodMuteSwitchDetector.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7CE48B1E6FFD97008895E5 /* SharkfoodMuteSwitchDetector.m */; };
 		DA7CE4961E6FFE82008895E5 /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = DA7CE4921E6FFE82008895E5 /* TPCircularBuffer.c */; };
 		DA7CE4971E6FFE82008895E5 /* TPCircularBuffer+AudioBufferList.c in Sources */ = {isa = PBXBuildFile; fileRef = DA7CE4941E6FFE82008895E5 /* TPCircularBuffer+AudioBufferList.c */; };
+		DA7FCB3C1E7512710035AA4C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7FCB3B1E7512710035AA4C /* MediaPlayer.framework */; };
+		DA7FCB441E7512FE0035AA4C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7FCB431E7512FE0035AA4C /* SystemConfiguration.framework */; };
 		DA835D861E6C5A6200C75A79 /* AppAsset.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */; };
 		DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA971EFB1E07A9D600645151 /* FastBilateral.mm */; };
 /* End PBXBuildFile section */
@@ -148,6 +150,8 @@
 		DA7CE49A1E700092008895E5 /* CallCommonDefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CallCommonDefs.h; path = TestCamera/AudioTeam/CallCommonDefs.h; sourceTree = "<group>"; };
 		DA7CE49B1E700092008895E5 /* CallCommonImports.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CallCommonImports.h; path = TestCamera/AudioTeam/CallCommonImports.h; sourceTree = "<group>"; };
 		DA7CE49C1E700092008895E5 /* VoipConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VoipConstants.h; path = TestCamera/AudioTeam/VoipConstants.h; sourceTree = "<group>"; };
+		DA7FCB3B1E7512710035AA4C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		DA7FCB431E7512FE0035AA4C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppAsset.xcassets; sourceTree = "<group>"; };
 		DA971EFB1E07A9D600645151 /* FastBilateral.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = FastBilateral.mm; path = TestCamera/VideoTeam/FastBilateral.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -157,6 +161,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA7FCB441E7512FE0035AA4C /* SystemConfiguration.framework in Frameworks */,
+				DA7FCB3C1E7512710035AA4C /* MediaPlayer.framework in Frameworks */,
 				1B3C9A34139D4EAA0042676B /* ImageIO.framework in Frameworks */,
 				DA7CE47D1E6FECBE008895E5 /* libAudioVideoEngine.a in Frameworks */,
 				1B3C9A32139D4E740042676B /* QuartzCore.framework in Frameworks */,
@@ -250,6 +256,8 @@
 		1B867FDB139D4AD300AD6B47 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DA7FCB431E7512FE0035AA4C /* SystemConfiguration.framework */,
+				DA7FCB3B1E7512710035AA4C /* MediaPlayer.framework */,
 				1B3C9A33139D4EAA0042676B /* ImageIO.framework */,
 				1B3C9A31139D4E740042676B /* QuartzCore.framework */,
 				1B3C9A2F139D4E5F0042676B /* CoreMedia.framework */,
