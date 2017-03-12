@@ -216,6 +216,7 @@ int g_iPort;
     */
     
     int iRet = [g_pVideoCallProcessor Initialize:lUserId withServerIP: [_IPTextField text]];
+    
     if(iRet == 0)
     {
         [session stopRunning];

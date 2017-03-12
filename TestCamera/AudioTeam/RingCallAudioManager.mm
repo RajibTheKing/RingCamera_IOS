@@ -170,12 +170,17 @@ FILE *fpInputPCM;
 
 +(RingCallAudioManager *)sharedInstance
 {
+    printf("TheKingAudio--> sharedInstance\n");
     pVideoSocket = VideoSockets::GetInstance();
+    printf("TheKingAudio--> sharedInstance  2\n");
     pVideoCallProcessor = [VideoCallProcessor GetInstance];
+    printf("TheKingAudio--> sharedInstance  3\n");
     
     if (sharedInstance == nil)
     {
+        printf("TheKingAudio--> sharedInstance 4\n");
         sharedInstance = [[RingCallAudioManager alloc] init];
+        printf("TheKingAudio--> sharedInstance 5\n");
         
         inputPCMPointerPos = 0;
         inputPCMTotalBytes = 0;
@@ -189,6 +194,7 @@ FILE *fpInputPCM;
         fpInputPCM = fopen(filePathcharyuv, "rb");
         
         
+        printf("TheKingAudio--> sharedInstance 6\n");
         int64_t i_size = 0;
         if (fpInputPCM != NULL)
         {
@@ -197,11 +203,12 @@ FILE *fpInputPCM;
                 fseek(fpInputPCM, 0, SEEK_SET);
             }
         }
-        else {
+        else
+        {
             cout << "file open error\n";
         }
         inputPCMTotalBytes = (int)i_size;
-        
+        printf("TheKingAudio--> sharedInstance 7\n");
         //int iRet = fread(inputPCM, 1, i_size, fpInputPCM);
         //cout<<"inputPCM, iRet = "<<iRet<<endl;
         
@@ -216,12 +223,14 @@ FILE *fpInputPCM;
  */
 - (id) init {
     self = [super init];
-    
+    printf("TheKingAudio--> sharedInstance init 1\n");
     pcmRcordedData = [[BufferQueue alloc] init];
+    printf("TheKingAudio--> sharedInstance init 2\n");
     //g729EncoderDecoder = [[G729Wrapper alloc]init];
     
     [self setUpAudioUnit];
     
+    printf("TheKingAudio--> sharedInstance init 3\n");
     // Allocate our own buffers (1 channel, 16 bits per sample, thus 16 bits per frame, thus 2 bytes per frame).
     // Practice learns the buffers used contain 512 frames, if this changes it will be fixed in processAudio.
     tempBuffer.mNumberChannels = 1;
@@ -230,28 +239,45 @@ FILE *fpInputPCM;
     tempBuffer.mData = malloc( 1024 * 2 );
     
     // SIlence Switch detector call back block.
-    self.silenceSwitchDetector = [SharkfoodMuteSwitchDetector shared];
-    self.silenceSwitchDetector.silentNotify = ^(BOOL silent){
+    /*self.silenceSwitchDetector = [SharkfoodMuteSwitchDetector shared];
+    printf("TheKingAudio--> sharedInstance init 4\n");
+    self.silenceSwitchDetector.silentNotify = ^(BOOL silent)
+    {
         
-        if (!isAudioRecordingForIM) {
+        printf("TheKingAudio--> sharedInstance init 5\n");
+        if (!isAudioRecordingForIM)
+        {
+            printf("TheKingAudio--> sharedInstance init 6\n");
             isRingToneSilenceSwitchSilenced = silent;
             [self UpdateIsRingToneSilenceSwitchSilenced];
+            printf("TheKingAudio--> sharedInstance init 7\n");
             [self updateRingToneVolumeLevel:currentSystemVolumeLevel withSilence:isRingToneSilenceSwitchSilenced andVibration:VIBRATE_ON_TINGTONE];
-            if (silent) {
+            printf("TheKingAudio--> sharedInstance init 8\n");
+            if (silent)
+            {
                 
-            } else {
+            }
+            else
+            {
                 
             }
         }
     };
+    */
     
+    printf("TheKingAudio--> sharedInstance init 9\n");
     isAudioUnitRunning = false;
     isLocalRingBackToneEnabled = false;
     isCallHoldToneEnabled = false;
     isMuted = false;
-    isRingToneSilenceSwitchSilenced = [self getIsRingToneSilenceSwitchSilenced];
+    
+    //isRingToneSilenceSwitchSilenced = [self getIsRingToneSilenceSwitchSilenced];
+    
+    
+    printf("TheKingAudio--> sharedInstance init 10\n");
     isSpeakerEnabled = false;
     currentSystemVolumeLevel = [self getVolumeLevel];
+    printf("TheKingAudio--> sharedInstance init 11\n");
     isVibrating = false;
     isRIngtonePlaying = false;
     isAudioRecordingForIM = false;
@@ -262,9 +288,10 @@ FILE *fpInputPCM;
     signalStatusPercentageByReceivedRtpRate = 0.0f;
     
     [self loadSystemAudioFileList];
+    printf("TheKingAudio--> sharedInstance init 12\n");
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioUnitInterruptionHandler:) name:AVAudioSessionInterruptionNotification object:[AVAudioSession sharedInstance]];
-    
+    printf("TheKingAudio--> sharedInstance init 13\n");
     return self;
 }
 
@@ -928,14 +955,19 @@ static OSStatus playbackCallback(void *inRefCon,
 
 -(void)startRecordAndPlayAudio
 {
+    printf("TheKingAudio--> startRecordAndPlayAudio\n");
     [self stopRecordAndPlayAudio];
+    printf("TheKingAudio--> startRecordAndPlayAudio 1\n");
     [[RingCallAudioManager sharedInstance] start];
+    printf("TheKingAudio--> startRecordAndPlayAudio 2\n");
     self.rtpSenderTimer = [NSTimer scheduledTimerWithTimeInterval:RTP_SENDING_TIME_INTERVAL target:self selector:@selector(rtpSendingTimerMethod) userInfo:nil repeats:YES];
+    printf("TheKingAudio--> startRecordAndPlayAudio 3\n");
 }
 
 -(void)stopRecordAndPlayAudio
 {
-    if (self.rtpSenderTimer && self.rtpSenderTimer.isValid) {
+    if (self.rtpSenderTimer && self.rtpSenderTimer.isValid)
+    {
         [self.rtpSenderTimer invalidate];
         self.rtpSenderTimer = nil;
         [[RingCallAudioManager sharedInstance] stop];

@@ -118,6 +118,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 }
 - (void)SetRemoteIP:(string)sRemoteIP
 {
+    cout<<"SetRemoteAPI: "<<sRemoteIP<<endl;
     m_sRemoteIP = sRemoteIP;
 }
 - (void)SetFriendPort:(int)iPort
@@ -175,12 +176,12 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     NSString *nsServerIP = m_nsServerIP;
     
-    cout<<"Check--> sRemoteIP = "<<m_sRemoteIP<<endl;
+    cout<<"Check--> sRemoteIP = "<<nsServerIP<<endl;
     
     //m_pVideoAPI->SetLoggingState(true,5);
     string sActualServerIP = [m_nsServerIP UTF8String];
     
-    VideoSockets::GetInstance()->InitializeSocket("192.168.67.101", m_iActualFriendPort);
+    VideoSockets::GetInstance()->InitializeSocket("192.168.67.102", m_iActualFriendPort);
     
     VideoSockets::GetInstance()->StartDataReceiverThread();
     
@@ -697,7 +698,7 @@ byte newData[640*480*3/2];
     /*****
      *DynamicResizeTest
      **/
-    m_pVideoConverter->Convert_YUVNV12_To_YUVI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
+    /*m_pVideoConverter->Convert_YUVNV12_To_YUVI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
     long long startTime = CurrentTimeStamp();
     int iNewHeight = 114, iNewWidth = 94;
     //m_pVideoConverter->DownScaleYUV420_Dynamic(pRawYuv, m_iCameraHeight, m_iCameraWidth, pScaledVideo, 3);
@@ -709,9 +710,9 @@ byte newData[640*480*3/2];
     iVideoHeight = iNewHeight;
     memcpy(pRawYuv, pScaledVideo, iNewHeight*iNewWidth*3/2);
     m_pVideoConverter->ConvertI420ToNV12(pRawYuv, iVideoHeight, iVideoWidth);
+    */
     
-    
-    //int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
+    int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
     
     
     
@@ -729,12 +730,12 @@ byte newData[640*480*3/2];
     
     
     //Sending to OwnViewer Directly
-    m_iRenderHeight = iVideoHeight;
-    m_iRenderWidth = iVideoWidth;
-    [self BackConversion:pRawYuv];
-    string sStatusMessage = "Height = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoHeight) +
-                            ", Width = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoWidth);
-    [self UpdateStatusMessage:sStatusMessage];
+    //m_iRenderHeight = iVideoHeight;
+    //m_iRenderWidth = iVideoWidth;
+    //[self BackConversion:pRawYuv];
+    //string sStatusMessage = "Height = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoHeight) +
+    //                        ", Width = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoWidth);
+    //[self UpdateStatusMessage:sStatusMessage];
     
     //cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
     

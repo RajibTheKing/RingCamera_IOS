@@ -199,6 +199,7 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
         }
     }
 }
+
 /*
 - (void)EncodeThread
 {
