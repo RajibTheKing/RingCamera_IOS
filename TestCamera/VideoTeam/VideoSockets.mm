@@ -252,7 +252,7 @@ void VideoSockets::DataReceiverThread()
     SendToServer(testServer, 16);
     
     int startPrefix = 0;
-    
+    m_iReceiveBufferIndex = 0;
     while(m_bDataReceiverThread)
     {
         fflush(stdout);

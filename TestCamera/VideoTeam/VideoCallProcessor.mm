@@ -207,15 +207,15 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     
    
-    
+    /*
     if(m_iActualFriendPort == 60001)
         iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
     else
         iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
     
-   
+   */
     
-    //iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL);
+    iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL);
     
     int iRetStartVideoCall;
     
@@ -226,13 +226,15 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     else
         iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,320, 180, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 500);
     */
-    if(m_iActualFriendPort == 60001)
+    
+    /*if(m_iActualFriendPort == 60001)
         iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 500);
     else
         iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 500);
     
+    */
     
-    //iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,352, 288, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
+    iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
     
     
     
