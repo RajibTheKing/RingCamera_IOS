@@ -189,37 +189,23 @@
 		18747B031BFDD0CD0010CAA3 /* VideoTeam */ = {
 			isa = PBXGroup;
 			children = (
-				DA7CE49A1E700092008895E5 /* CallCommonDefs.h */,
-				DA7CE49B1E700092008895E5 /* CallCommonImports.h */,
-				DA7CE49C1E700092008895E5 /* VoipConstants.h */,
-				DA7CE4921E6FFE82008895E5 /* TPCircularBuffer.c */,
-				DA7CE4931E6FFE82008895E5 /* TPCircularBuffer.h */,
-				DA7CE4941E6FFE82008895E5 /* TPCircularBuffer+AudioBufferList.c */,
-				DA7CE4951E6FFE82008895E5 /* TPCircularBuffer+AudioBufferList.h */,
-				DA7CE4801E6FFD97008895E5 /* AudioRouter.h */,
-				DA7CE4811E6FFD97008895E5 /* AudioRouter.m */,
-				DA7CE4821E6FFD97008895E5 /* AudioSessionManager.h */,
-				DA7CE4831E6FFD97008895E5 /* AudioSessionManager.m */,
-				DA7CE4841E6FFD97008895E5 /* BufferQueue.h */,
-				DA7CE4851E6FFD97008895E5 /* BufferQueue.m */,
-				DA7CE4861E6FFD97008895E5 /* G729Wrapper.h */,
-				DA7CE4871E6FFD97008895E5 /* G729Wrapper.mm */,
-				DA7CE4881E6FFD97008895E5 /* RingCallAudioManager.h */,
-				DA7CE4891E6FFD97008895E5 /* RingCallAudioManager.mm */,
-				DA7CE48A1E6FFD97008895E5 /* SharkfoodMuteSwitchDetector.h */,
-				DA7CE48B1E6FFD97008895E5 /* SharkfoodMuteSwitchDetector.m */,
-				DA7CE47F1E6FFD0D008895E5 /* RingIDSDK.h */,
 				DA5222AA1DC5CF62000EB084 /* AverageCalculator.cpp */,
 				DA5222AB1DC5CF62000EB084 /* AverageCalculator.h */,
+				DAC7C1E81E7546180045242C /* ClientLockHandler.cpp */,
+				DAC7C1E91E7546180045242C /* ClientLockHandler.h */,
+				DAC7C1E31E7544850045242C /* ClientRenderingBuffer.cpp */,
+				DAC7C1E41E7544850045242C /* ClientRenderingBuffer.h */,
 				DA07AA601DE2C35900402BB9 /* Common.hpp */,
 				DA07AA611DE2C3D800402BB9 /* Common.mm */,
 				18747AE81BFDD0C50010CAA3 /* Constants.cpp */,
 				18747AE91BFDD0C50010CAA3 /* Constants.h */,
 				18747AEA1BFDD0C50010CAA3 /* CustomPrintf.h */,
+				DA971EFB1E07A9D600645151 /* FastBilateral.mm */,
 				18747AEC1BFDD0C50010CAA3 /* MessageProcessor.cpp */,
 				18747AED1BFDD0C50010CAA3 /* MessageProcessor.hpp */,
 				18747AEE1BFDD0C50010CAA3 /* RingBuffer.hpp */,
 				18747AEF1BFDD0C50010CAA3 /* RingBuffer.mm */,
+				DA7CE47F1E6FFD0D008895E5 /* RingIDSDK.h */,
 				18747AF01BFDD0C50010CAA3 /* VideoAPI.hpp */,
 				18747AF11BFDD0C50010CAA3 /* VideoAPI.mm */,
 				18747AF21BFDD0C60010CAA3 /* VideoCallProcessor.h */,
@@ -230,11 +216,6 @@
 				18747AF71BFDD0C60010CAA3 /* VideoSockets.mm */,
 				18747AF81BFDD0C60010CAA3 /* VideoThreadProcessor.h */,
 				18747AF91BFDD0C60010CAA3 /* VideoThreadProcessor.mm */,
-				DA971EFB1E07A9D600645151 /* FastBilateral.mm */,
-				DAC7C1E31E7544850045242C /* ClientRenderingBuffer.cpp */,
-				DAC7C1E41E7544850045242C /* ClientRenderingBuffer.h */,
-				DAC7C1E81E7546180045242C /* ClientLockHandler.cpp */,
-				DAC7C1E91E7546180045242C /* ClientLockHandler.h */,
 			);
 			name = VideoTeam;
 			sourceTree = "<group>";
@@ -247,6 +228,7 @@
 				DA7CE47C1E6FECBE008895E5 /* libRingIDSDK.a */,
 				DA7C89EB1DEE91CA002C939F /* AudioVideoEngine.xcodeproj */,
 				DA7C89E51DEE91C2002C939F /* RingIDSDK.xcodeproj */,
+				DA44BCB01E7690C000136F59 /* AudioTeam */,
 				18747B031BFDD0CD0010CAA3 /* VideoTeam */,
 				1B867FE2139D4AD300AD6B47 /* TestCamera */,
 				DA7B6B041E6D357700AC19C3 /* images */,
@@ -305,6 +287,32 @@
 				2BA4851413F1E6DB000BABB3 /* Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DA44BCB01E7690C000136F59 /* AudioTeam */ = {
+			isa = PBXGroup;
+			children = (
+				DA7CE4801E6FFD97008895E5 /* AudioRouter.h */,
+				DA7CE4811E6FFD97008895E5 /* AudioRouter.m */,
+				DA7CE4821E6FFD97008895E5 /* AudioSessionManager.h */,
+				DA7CE4831E6FFD97008895E5 /* AudioSessionManager.m */,
+				DA7CE4841E6FFD97008895E5 /* BufferQueue.h */,
+				DA7CE4851E6FFD97008895E5 /* BufferQueue.m */,
+				DA7CE49A1E700092008895E5 /* CallCommonDefs.h */,
+				DA7CE49B1E700092008895E5 /* CallCommonImports.h */,
+				DA7CE4861E6FFD97008895E5 /* G729Wrapper.h */,
+				DA7CE4871E6FFD97008895E5 /* G729Wrapper.mm */,
+				DA7CE4881E6FFD97008895E5 /* RingCallAudioManager.h */,
+				DA7CE4891E6FFD97008895E5 /* RingCallAudioManager.mm */,
+				DA7CE48A1E6FFD97008895E5 /* SharkfoodMuteSwitchDetector.h */,
+				DA7CE48B1E6FFD97008895E5 /* SharkfoodMuteSwitchDetector.m */,
+				DA7CE4921E6FFE82008895E5 /* TPCircularBuffer.c */,
+				DA7CE4931E6FFE82008895E5 /* TPCircularBuffer.h */,
+				DA7CE4941E6FFE82008895E5 /* TPCircularBuffer+AudioBufferList.c */,
+				DA7CE4951E6FFE82008895E5 /* TPCircularBuffer+AudioBufferList.h */,
+				DA7CE49C1E700092008895E5 /* VoipConstants.h */,
+			);
+			name = AudioTeam;
 			sourceTree = "<group>";
 		};
 		DA7B6B041E6D357700AC19C3 /* images */ = {
