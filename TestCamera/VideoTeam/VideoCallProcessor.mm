@@ -206,35 +206,22 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
     
     
-   
-    /*
+    
+    //If We need Live
     if(m_iActualFriendPort == 60001)
         iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
     else
         iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
     
-   */
-    
-    iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL);
-    
-    int iRetStartVideoCall;
-    
-    
-    
-    /*if(m_iActualFriendPort == 60001)
-        iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,320, 180, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 500);
+    if(m_iActualFriendPort == 60001)
+        iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 500);
     else
-        iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,320, 180, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 500);
-    */
+        iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 500);
     
-    /*if(m_iActualFriendPort == 60001)
-        iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 500);
-    else
-        iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 500);
-    
-    */
-    
-    iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
+   
+    //If We need Call
+    //iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL);
+    //iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
     
     
     
