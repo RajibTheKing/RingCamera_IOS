@@ -101,6 +101,7 @@ void VideoSockets::InitializeSocket(string sActualServerIP, int sActualServerPor
     
     
 }
+
 void VideoSockets::StartDataReceiverThread()
 {
     if(m_bDataReceiverThread == true) return;
@@ -265,7 +266,7 @@ void VideoSockets::DataReceiverThread()
         }
         
         int iPacketType = (int)baDataReceiverBuffer[0];
-        //cout<<"Packet Type = "<<iPacketType<<endl;
+        printf("Packet Type = %d, recv_len = %d\n", iPacketType, recv_len);
         
         if(iPacketType == FULL_PACKET_CODE)
         {

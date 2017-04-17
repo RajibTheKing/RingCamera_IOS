@@ -36,6 +36,10 @@ using namespace std;
 #define SET_CAMERA_RESOLUTION_352x288 210
 #define SET_CAMERA_RESOLUTION_640x480 211
 
+#define CALL_IN_LIVE_TYPE_AUDIO_ONLY 1
+#define CALL_IN_LIVE_TYPE_VIDEO_ONLY 2
+#define CALL_IN_LIVE_TYPE_AUDIO_VIDEO 3
+
 class CVideoAPI;
 
 class CVideoAPI : public CRingIDSDK

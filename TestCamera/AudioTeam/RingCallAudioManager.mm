@@ -850,7 +850,7 @@ static OSStatus playbackCallback(void *inRefCon,
         //[[RingCallAudioManager sharedInstance] playMyReceivedAudioData:shortArray withLength:availableBytes/2];
         
         
-        cout<<"TheKing-------> Client SendingAudio = "<<availableBytes/2<<endl;
+        //cout<<"TheKing-------> Client SendingAudio = "<<availableBytes/2<<endl;
         
         if (success < 0) {
             //RICallLog(@"Faild to send audio data...................");

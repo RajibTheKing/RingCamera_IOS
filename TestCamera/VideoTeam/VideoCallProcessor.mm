@@ -181,14 +181,18 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     //m_pVideoAPI->SetLoggingState(true,5);
     string sActualServerIP = [m_nsServerIP UTF8String];
     
-    VideoSockets::GetInstance()->InitializeSocket("192.168.67.102", m_iActualFriendPort);
+    VideoSockets::GetInstance()->InitializeSocket(sActualServerIP, m_iActualFriendPort);
     
     VideoSockets::GetInstance()->StartDataReceiverThread();
+    
+    
     
     
     int iRet;
     
 #if 1
+    
+#if 0
     iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
     cout<<"CreateSession, Audio, iRet = "<<iRet<<endl;
     iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
@@ -197,31 +201,36 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
     
     CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
+#endif
     
     cout<<"Here height and width = "<<m_iCameraHeight<<", "<<m_iCameraWidth<<endl;
+    
+    iRet = CVideoAPI::GetInstance()->InitializeMediaConnectivity(sActualServerIP, m_iActualFriendPort, 0);
     
     if(m_iCameraHeight * m_iCameraWidth == 288 * 352)
         CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 640, 480, 352, 288);
     else
         CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
-    
+
     
     
     //If We need Live
     if(m_iActualFriendPort == 60001)
-        iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
+        iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER);
     else
-        iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM);
+        iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER);
+    
     
     if(m_iActualFriendPort == 60001)
-        iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 500);
+        iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 1000, false);
     else
-        iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 500);
+        iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 1000, false);
     
    
     //If We need Call
-    //iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL);
-    //iRetStartVideoCall = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
+    //iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
+    //iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
+    
     
     
     

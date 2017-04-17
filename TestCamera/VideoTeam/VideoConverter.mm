@@ -367,7 +367,7 @@ CVPixelBufferRef CVideoConverter::Convert_YUVNV12_To_CVPixelBufferRef(byte* y_ch
     {
         padding = 16 - (iWidth % 16);
     }
-    NSLog(@"TheKing------------------------>>>>>>>>>>>>>>>>>>> padding = %i\n", padding);
+    //NSLog(@"TheKing------------------------>>>>>>>>>>>>>>>>>>> padding = %i\n", padding);
     
     byte *yDestPlane = (byte*)CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
     unsigned char *p = yDestPlane;

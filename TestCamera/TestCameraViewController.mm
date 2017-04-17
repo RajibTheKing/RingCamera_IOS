@@ -134,7 +134,7 @@ int g_iPort;
     
     m_iParamSelector = 0;
     params[0] = 100; //Sigma
-    params[1] = 5; //Radius
+    params[1] = 1; //Radius
     params[2] = 8; //Den
     params[3] = 0;
     [self UpdateValue];
@@ -395,6 +395,7 @@ int g_iPort;
     
     
     NSLog(@"Inside EndCall Button");
+    CVideoAPI::GetInstance()->UnInitializeMediaConnectivity();
     CVideoAPI::GetInstance()->StopAudioCall(200);
     CVideoAPI::GetInstance()->StopVideoCall(200);
     
@@ -588,7 +589,8 @@ int g_iPort;
     {
         role = VIEWER_IN_CALL;
     }
-    CVideoAPI::GetInstance()->StartCallInLive(200, role);
+    
+    CVideoAPI::GetInstance()->StartCallInLive(200, role, CALL_IN_LIVE_TYPE_AUDIO_VIDEO);
 }
 
 - (IBAction)SetFilterOnOffAction:(id)sender
@@ -800,11 +802,15 @@ int g_iPort;
     if(m_iParamSelector == 0)
         params[m_iParamSelector]+=10;
     else
-        params[m_iParamSelector]++;
+    {
+        if(params[m_iParamSelector] == 0)
+            params[m_iParamSelector] = 1;
+        else
+            params[m_iParamSelector] = 0;
+    }
     
     
     [self UpdateValue];
-    //CVideoAPI::GetInstance()->TestVideoEffect(200, params, 3);
 }
 
 - (IBAction)minusBtnAction:(id)sender
@@ -812,19 +818,20 @@ int g_iPort;
     if(m_iParamSelector == 0)
         params[m_iParamSelector]-=10;
     else
-        params[m_iParamSelector]--;
-    
-    if(params[m_iParamSelector] < 0)
-        params[m_iParamSelector] = 0;
+    {
+        if(params[m_iParamSelector] == 0)
+            params[m_iParamSelector] = 1;
+        else
+            params[m_iParamSelector] = 0;
+    }
     
     [self UpdateValue];
-    //CVideoAPI::GetInstance()->TestVideoEffect(200, params, 3);
 }
 
 - (IBAction)ParamBtnAction:(id)sender
 {
     m_iParamSelector++;
-    m_iParamSelector%=4;
+    m_iParamSelector%=2;
     
     if(m_iParamSelector == 0) //Sigma
     {
@@ -832,7 +839,7 @@ int g_iPort;
     }
     else if(m_iParamSelector == 1) //Radius
     {
-        [_paramBtn setTitle:@"1->Radius" forState:UIControlStateNormal];
+        [_paramBtn setTitle:@"1->SharpnessEnable" forState:UIControlStateNormal];
     }
     else if(m_iParamSelector == 2) //Div
     {
@@ -854,6 +861,8 @@ int g_iPort;
     NSString *newString = [prefix stringByAppendingFormat:@"%i", value];
     
     [_paramValueLbl setText:newString];
+    
+    CVideoAPI::GetInstance()->TestVideoEffect(200, params, 2);
     
 }
 
