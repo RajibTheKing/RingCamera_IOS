@@ -33,6 +33,7 @@
 		2BA4851713F1E6DB000BABB3 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4851313F1E6DB000BABB3 /* main.mm */; };
 		DA07AA621DE2C3D800402BB9 /* Common.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA07AA611DE2C3D800402BB9 /* Common.mm */; };
 		DA5222AC1DC5CF62000EB084 /* AverageCalculator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA5222AA1DC5CF62000EB084 /* AverageCalculator.cpp */; };
+		DA6773EF1E8FDD3B006C9B6D /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6773EE1E8FDD3B006C9B6D /* libRingIDSDK.a */; };
 		DA7B6AF41E6D2B6B00AC19C3 /* endBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AF21E6D2B6B00AC19C3 /* endBtn.png */; };
 		DA7B6AF51E6D2B6B00AC19C3 /* startBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AF31E6D2B6B00AC19C3 /* startBtn.png */; };
 		DA7B6AF71E6D30D300AC19C3 /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AF61E6D30D300AC19C3 /* appIcon.png */; };
@@ -42,8 +43,6 @@
 		DA7B6B011E6D348500AC19C3 /* iphone_3x_appicon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AFB1E6D348500AC19C3 /* iphone_3x_appicon.png */; };
 		DA7B6B021E6D348500AC19C3 /* iphone_3x_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AFC1E6D348500AC19C3 /* iphone_3x_settings.png */; };
 		DA7B6B031E6D348500AC19C3 /* iphone_3x_spotlight.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AFD1E6D348500AC19C3 /* iphone_3x_spotlight.png */; };
-		DA7CE47D1E6FECBE008895E5 /* libAudioVideoEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7CE47B1E6FECBE008895E5 /* libAudioVideoEngine.a */; };
-		DA7CE47E1E6FECBE008895E5 /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7CE47C1E6FECBE008895E5 /* libRingIDSDK.a */; };
 		DA7CE48C1E6FFD97008895E5 /* AudioRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7CE4811E6FFD97008895E5 /* AudioRouter.m */; };
 		DA7CE48D1E6FFD97008895E5 /* AudioSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7CE4831E6FFD97008895E5 /* AudioSessionManager.m */; };
 		DA7CE48E1E6FFD97008895E5 /* BufferQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7CE4851E6FFD97008895E5 /* BufferQueue.m */; };
@@ -58,6 +57,7 @@
 		DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA971EFB1E07A9D600645151 /* FastBilateral.mm */; };
 		DAC7C1E51E7544850045242C /* ClientRenderingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC7C1E31E7544850045242C /* ClientRenderingBuffer.cpp */; };
 		DAC7C1EC1E7546180045242C /* ClientLockHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC7C1E81E7546180045242C /* ClientLockHandler.cpp */; };
+		DACAAF6E1EA248C500314098 /* libAudioVideoEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DACAAF6D1EA248C500314098 /* libAudioVideoEngine.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,6 +119,7 @@
 		DA07AA611DE2C3D800402BB9 /* Common.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Common.mm; path = TestCamera/VideoTeam/Common.mm; sourceTree = "<group>"; };
 		DA5222AA1DC5CF62000EB084 /* AverageCalculator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AverageCalculator.cpp; path = TestCamera/VideoTeam/AverageCalculator.cpp; sourceTree = "<group>"; };
 		DA5222AB1DC5CF62000EB084 /* AverageCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AverageCalculator.h; path = TestCamera/VideoTeam/AverageCalculator.h; sourceTree = "<group>"; };
+		DA6773EE1E8FDD3B006C9B6D /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = "Build/Products/Release-universal/libRingIDSDK.a"; sourceTree = "<group>"; };
 		DA7B6AF21E6D2B6B00AC19C3 /* endBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = endBtn.png; path = TestCamera/images/endBtn.png; sourceTree = "<group>"; };
 		DA7B6AF31E6D2B6B00AC19C3 /* startBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = startBtn.png; path = TestCamera/images/startBtn.png; sourceTree = "<group>"; };
 		DA7B6AF61E6D30D300AC19C3 /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = appIcon.png; path = TestCamera/images/appIcon.png; sourceTree = "<group>"; };
@@ -130,8 +131,6 @@
 		DA7B6AFD1E6D348500AC19C3 /* iphone_3x_spotlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iphone_3x_spotlight.png; path = TestCamera/images/iphone_3x_spotlight.png; sourceTree = "<group>"; };
 		DA7C89E51DEE91C2002C939F /* RingIDSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RingIDSDK.xcodeproj; path = "../IPV-RingIDSDK/RingIDSDK.xcodeproj"; sourceTree = "<group>"; };
 		DA7C89EB1DEE91CA002C939F /* AudioVideoEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioVideoEngine.xcodeproj; path = "../IPV-MediaEngine/AudioVideoEngine.xcodeproj"; sourceTree = "<group>"; };
-		DA7CE47B1E6FECBE008895E5 /* libAudioVideoEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAudioVideoEngine.a; path = "Build/Products/Debug-universal/libAudioVideoEngine.a"; sourceTree = "<group>"; };
-		DA7CE47C1E6FECBE008895E5 /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = "Build/Products/Debug-universal/libRingIDSDK.a"; sourceTree = "<group>"; };
 		DA7CE47F1E6FFD0D008895E5 /* RingIDSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RingIDSDK.h; path = TestCamera/VideoTeam/RingIDSDK.h; sourceTree = "<group>"; };
 		DA7CE4801E6FFD97008895E5 /* AudioRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioRouter.h; path = TestCamera/AudioTeam/AudioRouter.h; sourceTree = "<group>"; };
 		DA7CE4811E6FFD97008895E5 /* AudioRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioRouter.m; path = TestCamera/AudioTeam/AudioRouter.m; sourceTree = "<group>"; };
@@ -160,6 +159,7 @@
 		DAC7C1E41E7544850045242C /* ClientRenderingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientRenderingBuffer.h; path = TestCamera/VideoTeam/ClientRenderingBuffer.h; sourceTree = "<group>"; };
 		DAC7C1E81E7546180045242C /* ClientLockHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientLockHandler.cpp; path = TestCamera/VideoTeam/ClientLockHandler.cpp; sourceTree = "<group>"; };
 		DAC7C1E91E7546180045242C /* ClientLockHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientLockHandler.h; path = TestCamera/VideoTeam/ClientLockHandler.h; sourceTree = "<group>"; };
+		DACAAF6D1EA248C500314098 /* libAudioVideoEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAudioVideoEngine.a; path = "Build/Products/Debug-universal/libAudioVideoEngine.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,10 +170,10 @@
 				DA7FCB441E7512FE0035AA4C /* SystemConfiguration.framework in Frameworks */,
 				DA7FCB3C1E7512710035AA4C /* MediaPlayer.framework in Frameworks */,
 				1B3C9A34139D4EAA0042676B /* ImageIO.framework in Frameworks */,
-				DA7CE47D1E6FECBE008895E5 /* libAudioVideoEngine.a in Frameworks */,
 				1B3C9A32139D4E740042676B /* QuartzCore.framework in Frameworks */,
-				DA7CE47E1E6FECBE008895E5 /* libRingIDSDK.a in Frameworks */,
+				DA6773EF1E8FDD3B006C9B6D /* libRingIDSDK.a in Frameworks */,
 				1B3C9A30139D4E5F0042676B /* CoreMedia.framework in Frameworks */,
+				DACAAF6E1EA248C500314098 /* libAudioVideoEngine.a in Frameworks */,
 				1B867FE1139D4AD300AD6B47 /* CoreGraphics.framework in Frameworks */,
 				1B3C9A2E139D4E350042676B /* AssetsLibrary.framework in Frameworks */,
 				1B3C9A2C139D4E1C0042676B /* CoreImage.framework in Frameworks */,
@@ -224,8 +224,8 @@
 			isa = PBXGroup;
 			children = (
 				DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */,
-				DA7CE47B1E6FECBE008895E5 /* libAudioVideoEngine.a */,
-				DA7CE47C1E6FECBE008895E5 /* libRingIDSDK.a */,
+				DA6773EE1E8FDD3B006C9B6D /* libRingIDSDK.a */,
+				DACAAF6D1EA248C500314098 /* libAudioVideoEngine.a */,
 				DA7C89EB1DEE91CA002C939F /* AudioVideoEngine.xcodeproj */,
 				DA7C89E51DEE91C2002C939F /* RingIDSDK.xcodeproj */,
 				DA44BCB01E7690C000136F59 /* AudioTeam */,
@@ -622,6 +622,7 @@
 					"$(PROJECT_DIR)/TestCamera",
 					"$(PROJECT_DIR)/Build/Products/Debug-iphoneos",
 					"$(PROJECT_DIR)/Build/Products/Debug-universal",
+					"$(PROJECT_DIR)/Build/Products/Release-universal",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -654,6 +655,7 @@
 					"$(PROJECT_DIR)/Audio",
 					"$(PROJECT_DIR)/RingCallModule/RingCallModuleFIles/Frameworks",
 				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = TestCamera/Prefix.pch;
 				HEADER_SEARCH_PATHS = (
@@ -673,6 +675,7 @@
 					"$(PROJECT_DIR)/TestCamera",
 					"$(PROJECT_DIR)/Build/Products/Debug-iphoneos",
 					"$(PROJECT_DIR)/Build/Products/Debug-universal",
+					"$(PROJECT_DIR)/Build/Products/Release-universal",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
