@@ -31,9 +31,9 @@
 		2BA4850713F1E6AA000BABB3 /* TestCameraAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4850413F1E6AA000BABB3 /* TestCameraAppDelegate.m */; };
 		2BA4851013F1E6CC000BABB3 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2BA4850C13F1E6CC000BABB3 /* MainStoryboard_iPad.storyboard */; };
 		2BA4851713F1E6DB000BABB3 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4851313F1E6DB000BABB3 /* main.mm */; };
+		D14AD1C81EC9C010009CBFFF /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D14AD1C71EC9C010009CBFFF /* libRingIDSDK.a */; };
 		DA07AA621DE2C3D800402BB9 /* Common.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA07AA611DE2C3D800402BB9 /* Common.mm */; };
 		DA5222AC1DC5CF62000EB084 /* AverageCalculator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA5222AA1DC5CF62000EB084 /* AverageCalculator.cpp */; };
-		DA6773EF1E8FDD3B006C9B6D /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA6773EE1E8FDD3B006C9B6D /* libRingIDSDK.a */; };
 		DA7B6AF41E6D2B6B00AC19C3 /* endBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AF21E6D2B6B00AC19C3 /* endBtn.png */; };
 		DA7B6AF51E6D2B6B00AC19C3 /* startBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AF31E6D2B6B00AC19C3 /* startBtn.png */; };
 		DA7B6AF71E6D30D300AC19C3 /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AF61E6D30D300AC19C3 /* appIcon.png */; };
@@ -115,11 +115,11 @@
 		2BA4851213F1E6DB000BABB3 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = TestCamera/Info.plist; sourceTree = SOURCE_ROOT; };
 		2BA4851313F1E6DB000BABB3 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = main.mm; path = TestCamera/main.mm; sourceTree = SOURCE_ROOT; };
 		2BA4851413F1E6DB000BABB3 /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = TestCamera/Prefix.pch; sourceTree = SOURCE_ROOT; };
+		D14AD1C71EC9C010009CBFFF /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = "Build/Products/Debug-universal/libRingIDSDK.a"; sourceTree = "<group>"; };
 		DA07AA601DE2C35900402BB9 /* Common.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Common.hpp; path = TestCamera/VideoTeam/Common.hpp; sourceTree = "<group>"; };
 		DA07AA611DE2C3D800402BB9 /* Common.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Common.mm; path = TestCamera/VideoTeam/Common.mm; sourceTree = "<group>"; };
 		DA5222AA1DC5CF62000EB084 /* AverageCalculator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AverageCalculator.cpp; path = TestCamera/VideoTeam/AverageCalculator.cpp; sourceTree = "<group>"; };
 		DA5222AB1DC5CF62000EB084 /* AverageCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AverageCalculator.h; path = TestCamera/VideoTeam/AverageCalculator.h; sourceTree = "<group>"; };
-		DA6773EE1E8FDD3B006C9B6D /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = "Build/Products/Release-universal/libRingIDSDK.a"; sourceTree = "<group>"; };
 		DA7B6AF21E6D2B6B00AC19C3 /* endBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = endBtn.png; path = TestCamera/images/endBtn.png; sourceTree = "<group>"; };
 		DA7B6AF31E6D2B6B00AC19C3 /* startBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = startBtn.png; path = TestCamera/images/startBtn.png; sourceTree = "<group>"; };
 		DA7B6AF61E6D30D300AC19C3 /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = appIcon.png; path = TestCamera/images/appIcon.png; sourceTree = "<group>"; };
@@ -171,7 +171,7 @@
 				DA7FCB3C1E7512710035AA4C /* MediaPlayer.framework in Frameworks */,
 				1B3C9A34139D4EAA0042676B /* ImageIO.framework in Frameworks */,
 				1B3C9A32139D4E740042676B /* QuartzCore.framework in Frameworks */,
-				DA6773EF1E8FDD3B006C9B6D /* libRingIDSDK.a in Frameworks */,
+				D14AD1C81EC9C010009CBFFF /* libRingIDSDK.a in Frameworks */,
 				1B3C9A30139D4E5F0042676B /* CoreMedia.framework in Frameworks */,
 				DACAAF6E1EA248C500314098 /* libAudioVideoEngine.a in Frameworks */,
 				1B867FE1139D4AD300AD6B47 /* CoreGraphics.framework in Frameworks */,
@@ -224,7 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */,
-				DA6773EE1E8FDD3B006C9B6D /* libRingIDSDK.a */,
+				D14AD1C71EC9C010009CBFFF /* libRingIDSDK.a */,
 				DACAAF6D1EA248C500314098 /* libAudioVideoEngine.a */,
 				DA7C89EB1DEE91CA002C939F /* AudioVideoEngine.xcodeproj */,
 				DA7C89E51DEE91C2002C939F /* RingIDSDK.xcodeproj */,
