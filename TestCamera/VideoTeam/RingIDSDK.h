@@ -21,6 +21,8 @@ typedef long long LongLong;
 #define MEDIA_TYPE_AUDIO 1
 #define MEDIA_TYPE_VIDEO 2
 
+#define ENABLE_MEDIA_CONNECTIVITY
+
 // Start NAT Traversal Team
 
 void NotifyClientMethod(int event);
@@ -32,7 +34,7 @@ void NotifyClientMethodWithReceivedBytes(int event, LongLong friendId, int media
 // Start Video Team
 
 void NotifyClientMethodWithPacket(LongLong lFriendID, unsigned char data[], int dataLenth);
-void NotifyClientMethodWithVideoData(LongLong lFriendID, int eventType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
+void NotifyClientMethodWithVideoData(LongLong lFriendID, int eventType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int insetHeight, int insetWidth, int iOrienttation);
 void NotifyClientMethodWithVideoNotification(LongLong lCallID, int eventType);
 void NotifyClientMethodWithNetworkStrengthNotification(LongLong lCallID, int eventType);
 void NotifyClientMethodWithAudioData(LongLong lFriendID, int eventType, short data[], int dataLenth);
@@ -58,7 +60,7 @@ void notifyClientMethodWithReceivedIos(int eventType, long long friendName, int 
 // Start Video Team
 
 void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], int dataLenth);
-void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int eventType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
+void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int eventType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int insetHeight, int insetWidth, int iOrienttation);
 void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType);
 void notifyClientMethodWithNetworkStrengthNotificationIos(LongLong lCallID, int eventType);
 void notifyClientMethodWithAudioDataIos(LongLong lFriendID, int eventType, short data[], int dataLenth);
@@ -79,8 +81,11 @@ class CConnectivityEngine;
 // End NAT Traversal Team
 
 // Start Video Team
-
-class CInterfaceOfAudioVideoEngine;
+namespace MediaSDK
+{
+    
+    class CInterfaceOfAudioVideoEngine;
+}
 class CInterfaceOfMediaConnectivity;
 
 // End Video Team
@@ -165,7 +170,7 @@ public:
     int FrameMuxAndEncode( unsigned char *pVideoYuv, int iHeight, int iWidth);
     int StopVideoMuxingAndEncodeSession(unsigned char *finalData);
     
-    bool StartAudioCall(const LongLong& lFriendID, int nServiceType, int nEntityType);
+    bool StartAudioCall(const LongLong& lFriendID, int nServiceType, int entityType);
     
     bool StartCallInLive(const LongLong& llFriendID, int iRole, int nCallInLiveType);
     
@@ -218,7 +223,7 @@ public:
     
     void SetNotifyClientWithPacketCallback(void(*callBackFunctionPointer)(LongLong, unsigned char*, int));
     
-    void SetNotifyClientWithVideoDataCallback(void(*callBackFunctionPointer)(LongLong, int, unsigned char*, int, int, int, int));
+    void SetNotifyClientWithVideoDataCallback(void(*callBackFunctionPointer)(LongLong, int, unsigned char*, int, int, int, int, int , int));
     
     void SetNotifyClientWithVideoNotificationCallback(void(*callBackFunctionPointer)(LongLong, int));
     
@@ -233,7 +238,7 @@ public:
     
     static void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], int dataLenth);
     
-    static void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int eventType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
+    static void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int eventType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int insetHeight, int insetWidth, int iOrienttation);
     
     static void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType);
     
@@ -254,6 +259,8 @@ public:
     
     int UnInitializeMediaConnectivity();
     
+    std::string getMediaEngineVersion();
+    
     // End Video Team
     
     //private:
@@ -266,8 +273,10 @@ public:
     
     // Start Video Team
     
-    CInterfaceOfAudioVideoEngine *m_pCinterfaceOfAudioVideoEngine;
+    MediaSDK::CInterfaceOfAudioVideoEngine *m_pCinterfaceOfAudioVideoEngine;
+#ifdef ENABLE_MEDIA_CONNECTIVITY
     CInterfaceOfMediaConnectivity *m_pCinterfaceOfMediaConnectivity;
+#endif
     
     int m_iMediaType, m_iServiceType, m_iEntityType, m_iCallInLiveType, m_iRole;
     

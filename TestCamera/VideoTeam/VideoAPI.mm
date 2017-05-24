@@ -60,11 +60,11 @@ void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], i
         CVideoAPI::GetInstance()->SendPakcetFragments(data, dataLenth);
     }
 }
-void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int mediaType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrientation)
+void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int mediaType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int insetHeight, int insetWidth, int iOrientation)
 {
     CVideoAPI::GetInstance()->m_iRecvFrameCounter++;
     
-    //cout<<"Found Orientation  = "<<iOrientation<<", iVideoHeight = "<<iVideoHeight<<", iVideoWidth = "<<iVideoWidth<<", dataLen = "<<dataLenth<<", mediaType = "<<mediaType<<endl;
+    cout<<"Found Orientation  = "<<iOrientation<<", iVideoHeight = "<<iVideoHeight<<", iVideoWidth = "<<iVideoWidth<<", dataLen = "<<dataLenth<<", mediaType = "<<mediaType<<", InsetH:W = "<<insetHeight<<","<<insetWidth<<endl;
     string sStatusMessage = "Orientation = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iOrientation) +
                             ", Height = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoHeight) +
                             ", Width = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoWidth);
