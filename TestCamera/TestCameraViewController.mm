@@ -154,7 +154,17 @@ int g_iPort;
     self.paramBtn.layer.cornerRadius = nMyCornerRadius;
     self.endCallBtn.layer.cornerRadius = nMyCornerRadius;
     
+    //cout<<"VideoCallProcessor:: VideoAPI->Init --> "<<"lUser = "<<lUserId<<endl;
     
+    if(CVideoAPI::GetInstance()->Init(100, "", 1) == 1)
+    {
+        printf("myVideoAPI Initialized\n");
+    }
+    else
+    {
+        printf("myVideoAPI is not Initialized\n");
+    }
+    CVideoAPI::GetInstance()->InitializeMediaConnectivity("192.168.111.123", 6060, 1);
 }
 
 - (void)setupAVCapture

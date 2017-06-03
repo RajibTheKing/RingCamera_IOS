@@ -149,15 +149,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     m_pVideoAPI =  CVideoAPI::GetInstance();
     
     
-    cout<<"VideoCallProcessor:: VideoAPI->Init --> "<<"lUser = "<<lUserId<<endl;
-    if(m_pVideoAPI->Init(100, g_sLOG_PATH.c_str(), g_iDEBUG_INFO) == 1)
-    {
-        printf("myVideoAPI Initialized\n");
-    }
-    else
-    {
-        printf("myVideoAPI is not Initialized\n");
-    }
+    
     //352x288
     /*printf("Check: m_iCameraHeight = %d, m_iCameraWidth = %d\n", m_iCameraHeight, m_iCameraWidth);
     m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth);
@@ -205,7 +197,11 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     cout<<"Here height and width = "<<m_iCameraHeight<<", "<<m_iCameraWidth<<endl;
     
-    iRet = CVideoAPI::GetInstance()->InitializeMediaConnectivity(sActualServerIP, m_iActualFriendPort, 0);
+    
+    
+    if(m_iActualFriendPort == 60001)
+        iRet = CVideoAPI::GetInstance()->ProcessCommand("invite 3");
+    
     
     if(m_iCameraHeight * m_iCameraWidth == 288 * 352)
         CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 640, 480, 352, 288);
@@ -215,7 +211,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     
     //If We need Live
-    if(m_iActualFriendPort == 60001)
+    /*if(m_iActualFriendPort == 60001)
         iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER);
     else
         iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER);
@@ -225,11 +221,11 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 1000, false);
     else
         iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 1000, false);
-    
+    */
    
     //If We need Call
-    //iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
-    //iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
+    iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
+    iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
     
     
     
