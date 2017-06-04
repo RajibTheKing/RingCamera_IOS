@@ -10,7 +10,7 @@
 
 
 #import <Foundation/Foundation.h>
-#include "VideoCallProcessor.h"
+#include "VideoCameraProcessor.h"
 #import <CoreImage/CoreImage.h>
 #import <ImageIO/ImageIO.h>
 #import <AssertMacros.h>
@@ -46,28 +46,21 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 #define USE_FORCE_HIGH_FPS_INITIALIZATION
 
 
-@implementation VideoCallProcessor
+@implementation VideoCameraProcessor
 
 - (id) init
 {
     self = [super init];
     NSLog(@"Inside Video Controller Constructor");
-    //m_pVideoCallProcessor = nil;
     
-    m_pVTP =  [VideoThreadProcessor GetInstance];
-    m_pVTP.delegate = self;
+    VideoThreadProcessor *pVideoThreadProcessor = [VideoThreadProcessor GetInstance];
+    pVideoThreadProcessor.delegate = self;
     
     _m_bStartVideoSending = false;
     m_pVideoConverter = new CVideoConverter();
     
     //g_G729CodecNative = new G729CodecNative();
-    
     //int iRet = g_G729CodecNative->Open();
-    
-    //cout <<  "Open returned " << iRet << "\n";
-    
-    m_nsServerIP = @"";
-    
     long long currentTime = CurrentTimeStamp()%10000;
     char charCurrentTime[50];
     sprintf(charCurrentTime, "%lld", currentTime);
@@ -92,51 +85,21 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         
     }*/
 
-    
-    _m_iLoudSpeakerEnable=0;
     return self;
 }
 
 + (id)GetInstance
 {
-    if(!m_pVideoCallProcessor)
+    if(m_pVideoCameraProcessor == nil)
     {
         cout<<"Video_Team: m_pVideoCallProcessor Initialized"<<endl;
         
-        m_pVideoCallProcessor = [[VideoCallProcessor alloc] init];
+        m_pVideoCameraProcessor = [[VideoCameraProcessor alloc] init];
         
     }
-    return m_pVideoCallProcessor;
+    return m_pVideoCameraProcessor;
 }
 
-- (int) Initialize:(long long)lUserId withServerIP:(NSString *)sMyIP
-{
-    m_lUserId = lUserId;
-    m_nsServerIP = sMyIP;
-    
-    return [self InitializeVideoEngine:lUserId];
-}
-- (void)SetRemoteIP:(string)sRemoteIP
-{
-    cout<<"SetRemoteAPI: "<<sRemoteIP<<endl;
-    m_sRemoteIP = sRemoteIP;
-}
-- (void)SetFriendPort:(int)iPort
-{
-    m_iActualFriendPort = iPort;
-}
-- (void)SetFriendId:(long long)lFriendId
-{
-    m_lFriendId = lFriendId;
-}
--(long long)GetUserId
-{
-    return m_lUserId;
-}
--(long long)GetFriendId
-{
-    return m_lFriendId;
-}
 /*
 -(G729CodecNative *)GetG729
 {
@@ -144,190 +107,17 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
 }
 */
 
-- (int)InitializeVideoEngine:(long long) lUserId
-{
-    m_pVideoAPI =  CVideoAPI::GetInstance();
-    
-    
-    
-    //352x288
-    /*printf("Check: m_iCameraHeight = %d, m_iCameraWidth = %d\n", m_iCameraHeight, m_iCameraWidth);
-    m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth);
-    
-    cout<<"VideoCallProcessor:: VideoAPI->StartAudioCall --> "<<"lUser = "<<lUserId<<endl;
-    m_pVideoAPI->StartAudioCall(200);*/
-    
-    int iAuthServerPort = 10001;
-    string sAppSessionId = "12345678";
-    long long lFriendId = 200;
-    long long lServerIP = /*645874748*/ 1011121958;
-    int iFriendPort = m_iActualFriendPort;
-    
-    //NSString *nsServerIP =  @"38.127.68.60"/*@"192.168.57.113"*/;
-    //NSString *nsServerIP =  @"192.168.57.104";
-    
-    NSString *nsServerIP = m_nsServerIP;
-    
-    cout<<"Check--> sRemoteIP = "<<nsServerIP<<endl;
-    
-    //m_pVideoAPI->SetLoggingState(true,5);
-    string sActualServerIP = [m_nsServerIP UTF8String];
-    
-    VideoSockets::GetInstance()->InitializeSocket(sActualServerIP, m_iActualFriendPort);
-    
-    VideoSockets::GetInstance()->StartDataReceiverThread();
-    
-    
-    
-    
-    int iRet;
-    
-#if 1
-    
-#if 0
-    iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
-    cout<<"CreateSession, Audio, iRet = "<<iRet<<endl;
-    iRet = (int)m_pVideoAPI->CreateSession(lFriendId, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
-    cout<<"CreateSession, Video, iRet = "<<iRet<<endl;
-    
-    CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
-    
-    CVideoAPI::GetInstance()->SetRelayServerInformation(200, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
-#endif
-    
-    cout<<"Here height and width = "<<m_iCameraHeight<<", "<<m_iCameraWidth<<endl;
-    
-    
-    
-    if(m_iActualFriendPort == 60001)
-        iRet = CVideoAPI::GetInstance()->ProcessCommand("invite 3");
-    
-    
-    if(m_iCameraHeight * m_iCameraWidth == 288 * 352)
-        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 640, 480, 352, 288);
-    else
-        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
 
-    
-    
-    //If We need Live
-    /*if(m_iActualFriendPort == 60001)
-        iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER);
-    else
-        iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER);
-    
-    
-    if(m_iActualFriendPort == 60001)
-        iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 1000, false);
-    else
-        iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 1000, false);
-    */
-   
-    //If We need Call
-    iRet = m_pVideoAPI->StartAudioCall(200, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
-    iRet = m_pVideoAPI->StartVideoCall(200,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
-    
-    
-    
-    
-    NSLog(@"StartVideoCaLL returned, iRet = %d", iRet);
-    //iRet = m_pVideoAPI->CheckDeviceCapability(200, m_iCameraHeight, m_iCameraWidth);
-    //m_bCheckCall = true;
-#endif
-    
-    [m_pVTP SetVideoAPI:m_pVideoAPI];
-    /*dispatch_queue_t SendDummyDataQ = dispatch_queue_create("SendDummyDataQ",DISPATCH_QUEUE_CONCURRENT);
-    dispatch_async(SendDummyDataQ, ^{
-        [self SendDummyData];
-    });*/
-    return 1;
-}
-
--(void)SendDummyData
-{
-    while(true)
-    {
-        if(!pRawYuv) cout<<"pRaw is NuLL"<<endl;
-        if(m_pVideoAPI == NULL) cout<<"m_pVideoAPI is NULL"<<endl;
-        
-        
-        //m_iCameraHeight = 640;
-        //m_iCameraWidth = 480;
-        /*
-        for(int i=0;i<m_iCameraHeight * m_iCameraWidth * 3 / 2; i++)
-        {
-            pRawYuv[i] = rand()%255;
-            
-        }*/
-        int iRet = -1;
-        iRet = m_pVideoAPI->SendVideoDataV(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2,0,3);
-        //cout<<"ClientEnd--> iRet = "<<iRet<<", Size = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<endl;
-        usleep(60*1000);
-    }
-}
 - (void)SetHeightAndWidth:(int)iHeight withWidth:(int)iWidth
 {
     m_iCameraHeight = iHeight;
     m_iCameraWidth = iWidth;
-    
-    [m_pVTP SetHeightAndWidth:iHeight withWidth:iWidth];
-    
 }
 
 - (void)SetWidthAndHeightForRendering:(int)iWidth withHeight:(int)iHeight
 {
     m_iRenderHeight = iHeight;
     m_iRenderWidth = iWidth;
-}
-
-
-
-
-- (void)SetVideoSockets:(VideoSockets *)pVideoSockets
-{
-    m_pVideoSockets = pVideoSockets;
-}
-
-
-
-
-- (void)StartAllThreads
-{
-    m_pVTP.bRenderThreadActive = true;
-    
-    m_pVTP.bEncodeThreadActive = true;
-    
-    m_pVTP.bEventThreadActive = true;
-    
-    /*dispatch_queue_t EncoderQ = dispatch_queue_create("EncoderQ",DISPATCH_QUEUE_CONCURRENT);
-    dispatch_async(EncoderQ, ^{
-        [m_pVTP EncodeThread];
-    });*/
-    
-    
-    dispatch_queue_t RenderThreadQ = dispatch_queue_create("RenderThreadQ",DISPATCH_QUEUE_CONCURRENT);
-     dispatch_async(RenderThreadQ, ^{
-         [m_pVTP RenderThread];
-     });
-    
-    dispatch_queue_t EventThreadQ = dispatch_queue_create("EventThreadQ",DISPATCH_QUEUE_CONCURRENT);
-    dispatch_async(EventThreadQ, ^{
-        [m_pVTP EventThread];
-    });
-}
-
-- (void)CloseAllThreads
-{
-    m_pVTP.bRenderThreadActive = false;
-    
-    m_pVTP.bEncodeThreadActive = false;
-    
-    m_pVTP.bEventThreadActive = false;
-    
-    VideoSockets::GetInstance()->StopDataReceiverThread();
-    //CVideoAPI::GetInstance()->StopVideoCallV(m_lUserId);
-    //CVideoAPI::GetInstance()->ReleaseV();
-
 }
 
 
@@ -368,9 +158,6 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         
         
         [self SetHeightAndWidth:*iHeight withWidth:*iWidth];
-        
-        m_pEncodeBuffer = new RingBuffer<byte>(m_iCameraWidth,m_iCameraHeight,5);
-        [m_pVTP SetEncodeBuffer:m_pEncodeBuffer];
         
     }
     else
@@ -866,16 +653,7 @@ int ConvertNV12ToI420(unsigned char *convertingData, int iheight, int iwidth)
     fwrite(data, 1, datalen, m_FileForDump);
 }
 
-+(long long)convertStringIPtoLongLong:(NSString *)ipAddr
-{
-    struct in_addr addr;
-    long long ip = 0;
-    if (inet_aton([ipAddr UTF8String], &addr) != 0)
-    {
-        ip = addr.s_addr;
-    }
-    return ip;
-}
+
 
 - (void)dealloc {
     [super dealloc];

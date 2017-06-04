@@ -9,7 +9,7 @@
 #include "VideoConverter.hpp"
 #include "Constants.h"
 #include "MessageProcessor.hpp"
-#include "VideoCallProcessor.h"
+#include "VideoCameraProcessor.h"
 #include "VideoSockets.h"
 
 #include <pthread.h>
@@ -30,37 +30,21 @@
 #include <sys/time.h>
 #include "RingCallAudioManager.h"
 #include <sstream>
-
-//#include "InterfaceOfConnectivityEngine.h"
-
-//#include "CustomPrintf.h"
+#include "VideoThreadProcessor.h"
 
 
-
-#define USE_CANADA_SERVER
-
-//#define printf(...)
-//#define pthread_mutex_lock(...)
-//#define pthread_mutex_unlock(...)
 
 #define SSTR( x ) dynamic_cast< std::ostringstream & >( \
 ( std::ostringstream() << std::dec << x ) ).str()
 
-//bool bStartVideoSending = false;
-
 int iRenderCallTime = 0;
 int iRenderFrameCount = 0;
-
 int g_iFpsTime = 0;
-
-
 string sMyId;
 string sFrinedId;
 int g_iMyId, g_iFriendId;
 
-CMessageProcessor *pMessageProcessor = new CMessageProcessor();
-VideoCallProcessor *g_pVideoCallProcessor;
-VideoSockets *g_pVideoSockets;
+VideoCameraProcessor *g_pVideoCameraProcessor;
 
 
 int iTotalLengthPerSecond = 0;
@@ -68,47 +52,30 @@ int counter = 0;
 FILE *fp = NULL;
 FILE *fpyuv = NULL;
 
-int g_iPort;
+int g_iTargetUser;
 
 @implementation TestCameraViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    //CInterfaceOfConnectivityEngine *m_pInterfaceOfConnectivityEngine = new CInterfaceOfConnectivityEngine();
 
     MyCustomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, m_iCameraWidth, m_iCameraHeight)];
     //MyCustomImageView.transform = CGAffineTransformScale(MyCustomImageView.transform, -1.0, 1.0);
     
-    [_LoginButton setEnabled:false];
-    [_ServerCall setEnabled:false];
-    
-    
     _bP2PSocketInitialized = false;
-    
-    //g_pVideoSockets = [[VideoSockets alloc] init];
-    
-    //g_pVideoSockets = [VideoSockets GetInstance];
-    g_pVideoSockets = VideoSockets::GetInstance();
     
     //### VideoTeam: Initialization Procedure...
   
-    
-    g_pVideoCallProcessor = [VideoCallProcessor GetInstance] /*[[VideoCallProcessor alloc] init]*/;
-    
-    g_pVideoCallProcessor.delegate = self;
+    g_pVideoCameraProcessor = [VideoCameraProcessor GetInstance];
+    g_pVideoCameraProcessor.delegate = self;
 
     //End
     
     session = nil;
-    
-    [g_pVideoCallProcessor SetVideoSockets:g_pVideoSockets];
-    
-    [_PortField setEnabled:false];
-    g_iPort = 60008;
-    [self UpdatePort];
-    [g_pVideoCallProcessor SetFriendPort:g_iPort];
+    [_targetUserField setEnabled:false];
+    g_iTargetUser = 1;
+    [self UpdateTargetUser];
     [self UpdateStatusMessage:"Started Application"];
     
     //ActionListener for MyCustomView
@@ -141,8 +108,8 @@ int g_iPort;
  
     int nMyCornerRadius = 10;
     
-    self.P2PButton.layer.cornerRadius = nMyCornerRadius;
-    self.ChangePort.layer.cornerRadius = nMyCornerRadius;
+    self.startBtn.layer.cornerRadius = nMyCornerRadius;
+    self.targetUserBtn.layer.cornerRadius = nMyCornerRadius;
     self.ChangeResBtn.layer.cornerRadius = nMyCornerRadius;
     self.ldSpeakerBtn.layer.cornerRadius = nMyCornerRadius;
     
@@ -181,11 +148,11 @@ int g_iPort;
 
 
 
-- (IBAction) P2PButtonAction:(id)P2PButton
+- (IBAction) startAction:(id)sender
 {
     /*
     long long lUserId = 200;
-    [g_pVideoCallProcessor Initialize:lUserId];
+    [g_pVideoCameraProcessor Initialize:lUserId];
      */
     if([self.ResField.text isEqual:@"640x480"])
     {
@@ -202,11 +169,11 @@ int g_iPort;
         
     }
     
-    g_pVideoCallProcessor.m_lCameraInitializationStartTime = CurrentTimeStamp();
+    g_pVideoCameraProcessor.m_lCameraInitializationStartTime = CurrentTimeStamp();
     if(session == nil)
     {
         
-        [g_pVideoCallProcessor InitializeCameraSession:&session
+        [g_pVideoCameraProcessor InitializeCameraSession:&session
                                   withDeviceOutput:&videoDataOutput
                                          withLayer:&previewLayer
                                         withHeight:&m_iCameraHeight
@@ -214,64 +181,33 @@ int g_iPort;
         [self setupAVCapture]; //This Method is needed to Initialize Self View with Camera output
     }
     
+    int iRet = [self InitializeAudioVideoEngine];
+    
     [session startRunning];
-    
-    
-    long long lUserId  = 200;
-    /*
-    NSString *nsRemoteIp = @"192.168.57.113";
-    string sRemoteIp([nsRemoteIp UTF8String]);
-    InitializeSocketForRemoteUser(sRemoteIp);
-    [g_pVideoCallProcessor SetRemoteIP:sRemoteIp];
-    */
-    
-    int iRet = [g_pVideoCallProcessor Initialize:lUserId withServerIP: [_IPTextField text]];
-    
-    if(iRet == 0)
-    {
-        [session stopRunning];
-    }
-    
     [[RingCallAudioManager sharedInstance] startRecordAndPlayAudio];
-    
 
-    /*
-    if(!_bP2PSocketInitialized)
-    {
-        printf("Rajib_Check: bindsocketToRemoteData initalization called\n");
-        [g_pVideoSockets BindSocketToReceiveRemoteData];
-        _bP2PSocketInitialized = true;
-    }
-    */
+    g_pVideoCameraProcessor.m_bStartVideoSending = true;
     
-    //bStartVideoSending = true;
+    [self StartAllThreads];
     
-    g_pVideoCallProcessor.m_bStartVideoSending = true;
-    
-    [g_pVideoCallProcessor StartAllThreads];
-    //[session startRunning];
-    
-    [_P2PButton setEnabled:NO];
-     
-    
-    
-    
+    [_startBtn setEnabled:NO];
 }
-- (void)UpdatePort
+
+- (void)UpdateTargetUser
 {
-    g_iPort++;
-    if(g_iPort>60008)
-        g_iPort = 60001;
-    if(g_iPort<60001)
-        g_iPort = 60008;
+    g_iTargetUser++;
+    if(g_iTargetUser>10)
+        g_iTargetUser = 1;
+    if(g_iTargetUser<1)
+        g_iTargetUser = 10;
     
-    cout<<"Current FriendPort = "<<g_iPort<<endl;
+    cout<<"Current Friend = "<<g_iTargetUser<<endl;
     ostringstream oss;
     oss.clear();
-    oss<<g_iPort;
-    string sPort = oss.str();
+    oss<<g_iTargetUser;
+    string sTargetUser = oss.str();
     
-    self.PortField.text = @(sPort.c_str());
+    self.targetUserField.text = @(sTargetUser.c_str());
 }
 
 - (IBAction)ChangeResBtnAction:(id)sender
@@ -292,116 +228,18 @@ int g_iPort;
 
 - (IBAction)loudSpeakerAction:(id)sender
 {
-    g_pVideoCallProcessor.m_iLoudSpeakerEnable = 1;
+    //g_pVideoCameraProcessor.m_iLoudSpeakerEnable = 1;
+    
+    [[RingCallAudioManager sharedInstance] EnableLoudSpeakerTheKing];
+    
     [_ldSpeakerBtn setEnabled:false];
-}
-- (IBAction)ChangePort:(id)sender
-{
-    [self UpdatePort];
-    
-    [g_pVideoCallProcessor SetFriendPort:g_iPort];
-
-    
-}
-
-//bool flagggg = false;
-
-- (IBAction)LoginButtonAction:(id)loginButton
-{
-    std::set<int>st;
-    int xyz = *st.begin();
-    printf("maksud------------->%d\n",xyz);
-
-    NSString *nsRemoteIp = _remoteIPTextField.text;
-    string sRemoteIp([nsRemoteIp UTF8String]);
-    //InitializeSocketForRemoteUser(sRemoteIp);
-    
-    NSLog(@"Inside Login Button");
-    
-    int iMyId = [_myIdTextField.text integerValue];
-    cout<<"Got MyID = "<<iMyId<<endl;
-    
-    int iFriendId = [_friendIdTextField.text integerValue];
-    cout<<"Got MyID = "<<iFriendId<<endl;
-    
-    g_iMyId = iMyId;
-    g_iFriendId = iFriendId;
-
-    [g_pVideoCallProcessor SetFriendId:g_iFriendId];
-    sMyId = SSTR(iMyId);
-    sFrinedId = SSTR(iFriendId);
-    
-#ifndef USE_CANADA_SERVER
-    int iLength = 1 + 4 + sMyId.size();
-    
-    byte* message = (byte*)malloc(iLength);
-    
-    pMessageProcessor->prepareLoginRequestMessage(sMyId, message);
-    
-    
-    SendPacket(message, iLength);
-#else
-    
-    cout<<"Call_Response Message_Found"<<endl;
-    int iLength = 1 + 1 + sMyId.size() + 1 + sFrinedId.size();
-    byte* message = (byte*)malloc(iLength);
-    
-    pMessageProcessor->prepareLoginRequestMessageR(sMyId, sFrinedId, message);
-    
-    VideoSockets::GetInstance()->SendToVideoSocket(message, iLength);
-    
-    [g_pVideoCallProcessor Initialize:g_iMyId];
-    
-#endif
-    
-}
-
-
-- (IBAction)StartCallAction:(id)startButton
-{
-    
-    NSString *nsRemoteIp = _remoteIPTextField.text;
-    string sRemoteIp([nsRemoteIp UTF8String]);
-    //InitializeSocketForRemoteUser(sRemoteIp);
-    
-    NSLog(@"Inside Login Button");
-    
-    int iMyId = [_myIdTextField.text integerValue];
-    cout<<"Got MyID = "<<iMyId<<endl;
-    
-    int iFriendId = [_friendIdTextField.text integerValue];
-    cout<<"Got MyID = "<<iFriendId<<endl;
-    
-    g_iMyId = iMyId;
-    g_iFriendId = iFriendId;
-    
-    
-    sMyId = SSTR(iMyId);
-    sFrinedId = SSTR(iFriendId);
-    
-    cout<<"Call_Response Message_Found"<<endl;
-    int iLength = 1 + 1 + sMyId.size() + 1 + sFrinedId.size();
-    byte* message = (byte*)malloc(iLength);
-    
-    /*
-    pMessageProcessor->prepareLoginRequestMessageR(sMyId, sFrinedId, message);
-    
-    SendToVideoSocket(message, iLength);
-    */
-    
-    g_pVideoCallProcessor.m_bStartVideoSending = true;
-    //[g_pVideoCallProcessor Initialize:g_iMyId];
-    [g_pVideoCallProcessor StartAllThreads];
-    //[self StartCameraSession];
-    [session startRunning];
-    [[RingCallAudioManager sharedInstance] startRecordAndPlayAudio];
 }
 
 
 
 - (IBAction)EndCallAction:(id)endButton
 {
-    //[g_pVideoCallProcessor CloseAllThreads];
+    //[g_pVideoCameraProcessor CloseAllThreads];
     
     
     NSLog(@"Inside EndCall Button");
@@ -411,12 +249,13 @@ int g_iPort;
     
     [[RingCallAudioManager sharedInstance] stopRecordAndPlayAudio];
     
-    [g_pVideoCallProcessor CloseAllThreads];
+    [self CloseAllThreads];
     
     
     [session stopRunning];
     [_ldSpeakerBtn setEnabled:true];
-    g_pVideoCallProcessor.m_iLoudSpeakerEnable = 0;
+    
+    //g_pVideoCameraProcessor.m_iLoudSpeakerEnable = 0;
     
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         MyCustomImageView.image = nil;
@@ -426,10 +265,16 @@ int g_iPort;
         
     }];
     
-    [_P2PButton setEnabled:YES];
+    [_startBtn setEnabled:YES];
      
     
 }
+
+- (IBAction)ChangeTargetUserAction:(id)sender
+{
+    [self UpdateTargetUser];
+}
+
 
 
 
@@ -551,7 +396,7 @@ int g_iPort;
             
             [MyCustomView addSubview:MyCustomImageView];
             [MyCustomView setNeedsDisplay];
-            CalculateFPS();
+            [self CalculateFPS];
             [uiImageToDraw release];
             
         }];
@@ -589,6 +434,7 @@ int g_iPort;
 
 - (IBAction)startCallInLiveAction:(id)sender
 {
+    /*
     int role = CALL_NOT_RUNNING;
     
     if(g_iPort == 60001)
@@ -601,6 +447,7 @@ int g_iPort;
     }
     
     CVideoAPI::GetInstance()->StartCallInLive(200, role, CALL_IN_LIVE_TYPE_AUDIO_VIDEO);
+     */
 }
 
 - (IBAction)SetFilterOnOffAction:(id)sender
@@ -637,7 +484,7 @@ int g_iPort;
     m_iCameraWidth  = iWidth;
     MyCustomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, m_iCameraWidth, m_iCameraHeight)];
     
-    /*[g_pVideoCallProcessor InitializeCameraSession:&session
+    /*[g_pVideoCameraProcessor InitializeCameraSession:&session
                                   withDeviceOutput:&videoDataOutput
                                          withLayer:&previewLayer
                                         withHeight:&m_iCameraHeight
@@ -766,15 +613,8 @@ int g_iPort;
     [MyCustomView release];
     [randomTextField release];
     [MyCustomView release];
-    [_myIdTextField release];
-    [_friendIdTextField release];
-    [_remoteIPTextField release];
-    [_P2PButton release]; //StartCall Button
     [SelfView release];
     [_LoginButton release]; //Login Button
-    [_ServerCall release];
-    [_ChangePort release];
-    [_PortField release];
     [_ChangeResBtn release];
     [_ResLabel release];
     [_ResField release];
@@ -790,6 +630,9 @@ int g_iPort;
     [_paramBtn release];
     [_paramValueLbl release];
     [_endCallBtn release];
+    [_startBtn release];
+    [_targetUserBtn release];
+    [_targetUserField release];
     [super dealloc];
 }
 
@@ -908,14 +751,15 @@ void WriteToFile(byte *pData)
 
 }
 
-void CalculateFPS()
+-(void) CalculateFPS
 {
     
     if(timeGetTime() - iRenderCallTime >= 1000)
     {
         cout<<"\n\n\n--------->>>>>>>> FPS = ("<<iRenderFrameCount<<")\n\n\n";
         string sStatusMessage = "FPS = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iRenderFrameCount);
-        [[VideoCallProcessor GetInstance] UpdateStatusMessage:sStatusMessage];
+        
+        [self UpdateStatusMessage:sStatusMessage];
         
         iRenderFrameCount = 0;
         iRenderCallTime = timeGetTime();
@@ -923,5 +767,120 @@ void CalculateFPS()
     }
     iRenderFrameCount++;
 }
+
+- (int)InitializeAudioVideoEngine
+{
+    NSString *nsServerIP = [_IPTextField text];
+    string sServerIP = [nsServerIP UTF8String];
+    int iRet;
+    long long sessionID = 200;
+    
+    if(g_iTargetUser == 2)
+    {
+        CVideoAPI::GetInstance()->ProcessCommand("invite 3");
+    }
+    
+    
+#if 1
+    
+#if 0
+    iRet = (int)m_pVideoAPI->CreateSession(sessionID, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
+    cout<<"CreateSession, Audio, iRet = "<<iRet<<endl;
+    iRet = (int)m_pVideoAPI->CreateSession(sessionID, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
+    cout<<"CreateSession, Video, iRet = "<<iRet<<endl;
+    
+    CVideoAPI::GetInstance()->SetRelayServerInformation(sessionID, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
+    
+    CVideoAPI::GetInstance()->SetRelayServerInformation(sessionID, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
+#endif
+    
+    cout<<"Here height and width = "<<m_iCameraHeight<<", "<<m_iCameraWidth<<endl;
+    
+    
+    
+    if(m_iCameraHeight * m_iCameraWidth == 288 * 352)
+        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 640, 480, 352, 288);
+    else
+        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
+    
+    
+    
+    //If We need Live
+    /*if(m_iActualFriendPort == 60001)
+     iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER);
+     else
+     iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER);
+     
+     
+     if(m_iActualFriendPort == 60001)
+     iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 1000, false);
+     else
+     iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 1000, false);
+     */
+    
+    //If We need Call
+    iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
+    iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID, m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
+    
+    
+    
+    
+    NSLog(@"StartVideoCaLL returned, iRet = %d", iRet);
+#endif
+    return 1;
+}
+
+- (void)StartAllThreads
+{
+    VideoThreadProcessor *pVideoThreadProcessor = [VideoThreadProcessor GetInstance];
+    
+    pVideoThreadProcessor.bRenderThreadActive = true;
+    pVideoThreadProcessor.bEncodeThreadActive = true;
+    pVideoThreadProcessor.bEventThreadActive = true;
+    
+    
+    /*dispatch_queue_t EncoderQ = dispatch_queue_create("EncoderQ",DISPATCH_QUEUE_CONCURRENT);
+     dispatch_async(EncoderQ, ^{
+     [m_pVTP EncodeThread];
+     });*/
+    
+    
+    dispatch_queue_t RenderThreadQ = dispatch_queue_create("RenderThreadQ",DISPATCH_QUEUE_CONCURRENT);
+    dispatch_async(RenderThreadQ, ^{
+        [[VideoThreadProcessor GetInstance] RenderThread];
+    });
+    
+    dispatch_queue_t EventThreadQ = dispatch_queue_create("EventThreadQ",DISPATCH_QUEUE_CONCURRENT);
+    dispatch_async(EventThreadQ, ^{
+        [[VideoThreadProcessor GetInstance] EventThread];
+    });
+}
+
+- (void)CloseAllThreads
+{
+    VideoThreadProcessor *pVideoThreadProcessor = [VideoThreadProcessor GetInstance];
+    
+    pVideoThreadProcessor.bRenderThreadActive = false;
+    pVideoThreadProcessor.bEncodeThreadActive = false;
+    pVideoThreadProcessor.bEventThreadActive = false;
+    
+    //VideoSockets::GetInstance()->StopDataReceiverThread();
+    //CVideoAPI::GetInstance()->StopVideoCallV(m_lUserId);
+    //CVideoAPI::GetInstance()->ReleaseV();
+    
+}
+
++(long long)convertStringIPtoLongLong:(NSString *)ipAddr
+{
+    struct in_addr addr;
+    long long ip = 0;
+    if (inet_aton([ipAddr UTF8String], &addr) != 0)
+    {
+        ip = addr.s_addr;
+    }
+    return ip;
+}
+
+
 
 @end

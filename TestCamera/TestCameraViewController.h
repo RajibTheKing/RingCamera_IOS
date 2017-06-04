@@ -6,8 +6,8 @@
 
 #include "RingBuffer.hpp"
 #include <stdio.h>
-#include "VideoCallProcessor.h"
-#include "common.hpp"
+#include "VideoCameraProcessor.h"
+#include "Common.hpp"
 
 
 @interface TestCameraViewController : UIViewController <UIGestureRecognizerDelegate, AVCaptureVideoDataOutputSampleBufferDelegate, UITextFieldDelegate, ViewControllerDelegate>
@@ -46,14 +46,10 @@
 @property (nonatomic,strong) id delegate;
 
 @property (retain, nonatomic) IBOutlet UIButton *LoginButton;
-@property (retain, nonatomic) IBOutlet UIButton *P2PButton;
-@property (retain, nonatomic) IBOutlet UITextField *myIdTextField;
-@property (retain, nonatomic) IBOutlet UITextField *friendIdTextField;
-@property (retain, nonatomic) IBOutlet UITextField *remoteIPTextField;
-@property (retain, nonatomic) IBOutlet UIButton *ServerCall;
+@property (retain, nonatomic) IBOutlet UIButton *startBtn;
 
-@property (retain, nonatomic) IBOutlet UIButton *ChangePort;
-@property (retain, nonatomic) IBOutlet UITextField *PortField;
+@property (retain, nonatomic) IBOutlet UIButton *targetUserBtn;
+@property (retain, nonatomic) IBOutlet UITextField *targetUserField;
 
 @property (retain, nonatomic) IBOutlet UIButton *ChangeResBtn;
 @property (retain, nonatomic) IBOutlet UIView *myRealView;
@@ -82,11 +78,11 @@
 - (IBAction)minusBtnAction:(id)sender;
 - (IBAction)ParamBtnAction:(id)sender;
 
-- (IBAction) LoginButtonAction:(id)loginButton;
-- (IBAction) StartCallAction:(id)startButton;
+
+- (IBAction)startAction:(id)sender;
 - (IBAction) EndCallAction:(id)endButton;
-- (IBAction) P2PButtonAction:(id)P2PButton;
-- (IBAction)ChangePort:(id)sender;
+- (IBAction)ChangeTargetUserAction:(id)sender;
+
 - (IBAction)ChangeResBtnAction:(id)sender;
 - (IBAction)loudSpeakerAction:(id)sender;
 
@@ -102,9 +98,14 @@
 
 void WriteToFile(byte *pData);
 unsigned int timeGetTime();
-void CalculateFPS();
-- (void)UpdatePort;
+
+- (void)UpdateTargetUser;
 - (void)UpdateStatusMessage: (string)sMsg;
+- (int)InitializeAudioVideoEngine;
+- (void)StartAllThreads;
+- (void)CloseAllThreads;
++(long long)convertStringIPtoLongLong:(NSString *)ipAddr;
+- (void) CalculateFPS;
 
 
 @end

@@ -10,7 +10,7 @@
 
 #include "VideoAPI.hpp"
 #include "VideoSockets.h"
-#include "VideoCallProcessor.h"
+#include "VideoCameraProcessor.h"
 
 #include "RingCallAudioManager.h"
 
@@ -72,7 +72,7 @@ void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int mediaType, unsig
     
     if(CVideoAPI::GetInstance()->m_iRecvFrameCounter%20 == 0)
     {
-        [[VideoCallProcessor GetInstance] UpdateStatusMessage:sStatusMessage];
+        [[VideoCameraProcessor GetInstance] UpdateStatusMessage:sStatusMessage];
     }
     /*
     
@@ -139,18 +139,18 @@ void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType)
     if(eventType == SET_CAMERA_RESOLUTION_352x288)
     {
         sStatusMessage = "Found SET_CAMERA_RESOLUTION_352x288 = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
-        [[VideoCallProcessor GetInstance] SetCameraResolutionByNotification:352 withWidth:288];
+        [[VideoCameraProcessor GetInstance] SetCameraResolutionByNotification:352 withWidth:288];
         cout<<"Call back operatin done"<<endl;
     }
     
     if(eventType == SET_CAMERA_RESOLUTION_640x480)
     {
         sStatusMessage = "Found SET_CAMERA_RESOLUTION_640x480 = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
-        [[VideoCallProcessor GetInstance] SetCameraResolutionByNotification:640 withWidth:480];
+        [[VideoCameraProcessor GetInstance] SetCameraResolutionByNotification:640 withWidth:480];
     }
     
     cout<<sStatusMessage<<endl;
-    [[VideoCallProcessor GetInstance] UpdateStatusMessage:sStatusMessage];
+    [[VideoCameraProcessor GetInstance] UpdateStatusMessage:sStatusMessage];
     
 }
 int mx = 0;

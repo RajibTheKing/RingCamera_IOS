@@ -31,7 +31,6 @@ class ClientRenderingBuffer;
 @interface VideoThreadProcessor : NSObject
 {
     RingBuffer<byte> *pEncodeBuffer;
-    CVideoAPI *m_pVideoAPI;
     ClientRenderingBuffer *m_pClientRenderingBuffer;
     unsigned char m_pRenderingData[MAXWIDTH*MAXWIDTH*3/2];
     
@@ -40,7 +39,6 @@ class ClientRenderingBuffer;
     int m_iCameraWidth;
     int m_iFrameNumber;
     CAverageCalculator  *m_pRenderingAvg;
-    
     id <VideoThreadProcessorDelegate> _delegate;
 
 }
@@ -55,9 +53,6 @@ class ClientRenderingBuffer;
 
 - (id) init;
 + (id)GetInstance;
-- (void)SetHeightAndWidth:(int)iHeight withWidth:(int)iHeight;
-- (void)SetVideoAPI:(CVideoAPI *)pVideoAPI;
-
 - (void)SetEncodeBuffer:(RingBuffer<byte> *)pBuffer;
 - (void)RenderThread;
 - (void)EncodeThread;

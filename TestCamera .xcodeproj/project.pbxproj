@@ -11,7 +11,7 @@
 		18747AFC1BFDD0C60010CAA3 /* MessageProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18747AEC1BFDD0C50010CAA3 /* MessageProcessor.cpp */; };
 		18747AFD1BFDD0C60010CAA3 /* RingBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18747AEF1BFDD0C50010CAA3 /* RingBuffer.mm */; };
 		18747AFE1BFDD0C60010CAA3 /* VideoAPI.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18747AF11BFDD0C50010CAA3 /* VideoAPI.mm */; };
-		18747AFF1BFDD0C60010CAA3 /* VideoCallProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18747AF31BFDD0C60010CAA3 /* VideoCallProcessor.mm */; };
+		18747AFF1BFDD0C60010CAA3 /* VideoCameraProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18747AF31BFDD0C60010CAA3 /* VideoCameraProcessor.mm */; };
 		18747B001BFDD0C60010CAA3 /* VideoConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18747AF51BFDD0C60010CAA3 /* VideoConverter.mm */; };
 		18747B011BFDD0C60010CAA3 /* VideoSockets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18747AF71BFDD0C60010CAA3 /* VideoSockets.mm */; };
 		18747B021BFDD0C60010CAA3 /* VideoThreadProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18747AF91BFDD0C60010CAA3 /* VideoThreadProcessor.mm */; };
@@ -87,8 +87,8 @@
 		18747AEF1BFDD0C50010CAA3 /* RingBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RingBuffer.mm; path = TestCamera/VideoTeam/RingBuffer.mm; sourceTree = "<group>"; };
 		18747AF01BFDD0C50010CAA3 /* VideoAPI.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = VideoAPI.hpp; path = TestCamera/VideoTeam/VideoAPI.hpp; sourceTree = "<group>"; };
 		18747AF11BFDD0C50010CAA3 /* VideoAPI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VideoAPI.mm; path = TestCamera/VideoTeam/VideoAPI.mm; sourceTree = "<group>"; };
-		18747AF21BFDD0C60010CAA3 /* VideoCallProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoCallProcessor.h; path = TestCamera/VideoTeam/VideoCallProcessor.h; sourceTree = "<group>"; };
-		18747AF31BFDD0C60010CAA3 /* VideoCallProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VideoCallProcessor.mm; path = TestCamera/VideoTeam/VideoCallProcessor.mm; sourceTree = "<group>"; };
+		18747AF21BFDD0C60010CAA3 /* VideoCameraProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoCameraProcessor.h; path = TestCamera/VideoTeam/VideoCameraProcessor.h; sourceTree = "<group>"; };
+		18747AF31BFDD0C60010CAA3 /* VideoCameraProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VideoCameraProcessor.mm; path = TestCamera/VideoTeam/VideoCameraProcessor.mm; sourceTree = "<group>"; };
 		18747AF41BFDD0C60010CAA3 /* VideoConverter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = VideoConverter.hpp; path = TestCamera/VideoTeam/VideoConverter.hpp; sourceTree = "<group>"; };
 		18747AF51BFDD0C60010CAA3 /* VideoConverter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = VideoConverter.mm; path = TestCamera/VideoTeam/VideoConverter.mm; sourceTree = "<group>"; };
 		18747AF61BFDD0C60010CAA3 /* VideoSockets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoSockets.h; path = TestCamera/VideoTeam/VideoSockets.h; sourceTree = "<group>"; };
@@ -208,8 +208,8 @@
 				DA7CE47F1E6FFD0D008895E5 /* RingIDSDK.h */,
 				18747AF01BFDD0C50010CAA3 /* VideoAPI.hpp */,
 				18747AF11BFDD0C50010CAA3 /* VideoAPI.mm */,
-				18747AF21BFDD0C60010CAA3 /* VideoCallProcessor.h */,
-				18747AF31BFDD0C60010CAA3 /* VideoCallProcessor.mm */,
+				18747AF21BFDD0C60010CAA3 /* VideoCameraProcessor.h */,
+				18747AF31BFDD0C60010CAA3 /* VideoCameraProcessor.mm */,
 				18747AF41BFDD0C60010CAA3 /* VideoConverter.hpp */,
 				18747AF51BFDD0C60010CAA3 /* VideoConverter.mm */,
 				18747AF61BFDD0C60010CAA3 /* VideoSockets.h */,
@@ -477,7 +477,7 @@
 				18747AFD1BFDD0C60010CAA3 /* RingBuffer.mm in Sources */,
 				DA7CE4971E6FFE82008895E5 /* TPCircularBuffer+AudioBufferList.c in Sources */,
 				18747AFC1BFDD0C60010CAA3 /* MessageProcessor.cpp in Sources */,
-				18747AFF1BFDD0C60010CAA3 /* VideoCallProcessor.mm in Sources */,
+				18747AFF1BFDD0C60010CAA3 /* VideoCameraProcessor.mm in Sources */,
 				18747AFE1BFDD0C60010CAA3 /* VideoAPI.mm in Sources */,
 				DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */,
 				DA7CE48E1E6FFD97008895E5 /* BufferQueue.m in Sources */,

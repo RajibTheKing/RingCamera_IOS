@@ -29,7 +29,7 @@
 
 #include "VideoSockets.h"
 #include "Constants.h"
-#include "VideoCallProcessor.h"
+#include "VideoCameraProcessor.h"
 #include "RingCallAudioManager.h"
 
 using namespace std;

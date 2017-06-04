@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #include "VideoThreadProcessor.h"
 #include "ClientRenderingBuffer.h"
+#include "VideoCameraProcessor.h"
+
 
 @implementation VideoThreadProcessor
 
@@ -44,18 +46,9 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
     }
     return m_pVideoThreadProcessor;
 }
-
-
 - (void)SetEncodeBuffer:(RingBuffer<byte> *)pBuffer
 {
     pEncodeBuffer = pBuffer;
-}
-
-
-- (void)SetHeightAndWidth:(int)iHeight withWidth:(int)iWidth
-{
-    m_iCameraHeight = iHeight;
-    m_iCameraWidth = iWidth;
 }
 
 - (void)EventThread
@@ -67,22 +60,22 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
         while(_bEventThreadActive)
         {
             
-            if(m_pVideoAPI->m_EventQueue.empty())
+            if(CVideoAPI::GetInstance()->m_EventQueue.empty())
             {
                 usleep(5*1000);
                 continue;
             }
             
             int iEvent;
-            iEvent = m_pVideoAPI->m_EventQueue.front();
-            m_pVideoAPI->m_EventQueue.pop();
+            iEvent = CVideoAPI::GetInstance()->m_EventQueue.front();
+            CVideoAPI::GetInstance()->m_EventQueue.pop();
             
-            if(m_pVideoAPI->m_bReInitialized == false && iEvent == 206)
+            if(CVideoAPI::GetInstance()->m_bReInitialized == false && iEvent == 206)
             {
                 //[[VideoCallProcessor GetInstance] ReInitializeCamera];
                 
                 [self.delegate ReInitializeCamera];
-                m_pVideoAPI->m_bReInitialized = true;
+                CVideoAPI::GetInstance()->m_bReInitialized = true;
                 
             }
             usleep(1000);
@@ -147,9 +140,9 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
         while(_bRenderThreadActive)
         {
             //break;
-            //printf("QQQ.size() = %lu\n", m_pVideoAPI->m_RenderQueue.size());
+            //printf("QQQ.size() = %lu\n", CVideoAPI::GetInstance()->m_RenderQueue.size());
             
-            if(m_pVideoAPI->m_RenderQueue.empty())
+            if(CVideoAPI::GetInstance()->m_RenderQueue.empty())
             {
                 usleep(5*1000);
                 continue;
@@ -157,22 +150,22 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
             
             byte *pGotData;
             
-            while(m_pVideoAPI->m_RenderQueue.size() > 5)
+            while(CVideoAPI::GetInstance()->m_RenderQueue.size() > 5)
             {
-                pthread_mutex_lock(&m_pVideoAPI->pRenderQueueMutex);
-                pGotData = m_pVideoAPI->m_RenderQueue.front();
+                pthread_mutex_lock(&CVideoAPI::GetInstance()->pRenderQueueMutex);
+                pGotData = CVideoAPI::GetInstance()->m_RenderQueue.front();
                 free(pGotData);
-                m_pVideoAPI->m_RenderQueue.pop();
-                m_pVideoAPI->m_RenderDataLenQueue.pop();
-                pthread_mutex_unlock(&m_pVideoAPI->pRenderQueueMutex);
+                CVideoAPI::GetInstance()->m_RenderQueue.pop();
+                CVideoAPI::GetInstance()->m_RenderDataLenQueue.pop();
+                pthread_mutex_unlock(&CVideoAPI::GetInstance()->pRenderQueueMutex);
             }
-            if(m_pVideoAPI->m_RenderQueue.empty())
+            if(CVideoAPI::GetInstance()->m_RenderQueue.empty())
             {
                 usleep(5*1000);
                 continue;
             }
-            pGotData = m_pVideoAPI->m_RenderQueue.front();
-            int iLen = m_pVideoAPI->m_RenderDataLenQueue.front();
+            pGotData = CVideoAPI::GetInstance()->m_RenderQueue.front();
+            int iLen = CVideoAPI::GetInstance()->m_RenderDataLenQueue.front();
             
             int height = CVideoAPI::GetInstance()->m_iReceivedHeight;
             int width = CVideoAPI::GetInstance()->m_iReceivedWidth;
@@ -188,19 +181,19 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
                 continue;
             }
             memcpy(baVideoRenderBuffer, pGotData, iLen);
-            //int iDecodedDataLen = m_pVideoAPI->DecodeV(200, pGotData , iLen, baVideoRenderBuffer , height, width);
+            //int iDecodedDataLen = CVideoAPI::GetInstance()->DecodeV(200, pGotData , iLen, baVideoRenderBuffer , height, width);
             
-            pthread_mutex_lock(&m_pVideoAPI->pRenderQueueMutex);
-            if(!m_pVideoAPI->m_RenderQueue.empty())
+            pthread_mutex_lock(&CVideoAPI::GetInstance()->pRenderQueueMutex);
+            if(!CVideoAPI::GetInstance()->m_RenderQueue.empty())
             {
-                m_pVideoAPI->m_RenderQueue.pop();
+                CVideoAPI::GetInstance()->m_RenderQueue.pop();
             }
-            if(!m_pVideoAPI->m_RenderDataLenQueue.empty())
+            if(!CVideoAPI::GetInstance()->m_RenderDataLenQueue.empty())
             {
-                m_pVideoAPI->m_RenderDataLenQueue.pop();
+                CVideoAPI::GetInstance()->m_RenderDataLenQueue.pop();
             }
             
-            pthread_mutex_unlock(&m_pVideoAPI->pRenderQueueMutex);
+            pthread_mutex_unlock(&CVideoAPI::GetInstance()->pRenderQueueMutex);
             
             if(height > 0 && width > 0)
             {
@@ -221,19 +214,19 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
             
         }
         
-        while(!m_pVideoAPI->m_RenderQueue.empty())
+        while(!CVideoAPI::GetInstance()->m_RenderQueue.empty())
         {
             byte *pGotData;
-            pthread_mutex_lock(&m_pVideoAPI->pRenderQueueMutex);
-            pGotData = m_pVideoAPI->m_RenderQueue.front();
+            pthread_mutex_lock(&CVideoAPI::GetInstance()->pRenderQueueMutex);
+            pGotData = CVideoAPI::GetInstance()->m_RenderQueue.front();
             free(pGotData);
-            m_pVideoAPI->m_RenderQueue.pop();
+            CVideoAPI::GetInstance()->m_RenderQueue.pop();
 
-            pthread_mutex_unlock(&m_pVideoAPI->pRenderQueueMutex);
+            pthread_mutex_unlock(&CVideoAPI::GetInstance()->pRenderQueueMutex);
         }
-        while(!m_pVideoAPI->m_RenderDataLenQueue.empty())
+        while(!CVideoAPI::GetInstance()->m_RenderDataLenQueue.empty())
         {
-            m_pVideoAPI->m_RenderDataLenQueue.pop();
+            CVideoAPI::GetInstance()->m_RenderDataLenQueue.pop();
         }
     }
 }
@@ -268,7 +261,7 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
             
             //printf("VideoTeam_Check: Inside EncodeThread m_iCameraWidth = %d, m_iCameraHeight = %d\n", m_iCameraWidth, m_iCameraHeight);
             
-            int iEncodedDataLen = m_pVideoAPI->EncodeV(200, pDataNow, iFrameSize, baCurrentEncodedData);
+            int iEncodedDataLen = CVideoAPI::GetInstance()->EncodeV(200, pDataNow, iFrameSize, baCurrentEncodedData);
             
             printf("VideoTeam_Check: Inside EncodeDataLen %d\n", iEncodedDataLen);
             
@@ -281,7 +274,7 @@ byte baCurrentEncodedData[MAXWIDTH * MAXHEIGHT * 3 / 2];
             
             unsigned char *pData = baCurrentEncodedData+1;
             
-            m_pVideoAPI->ParseFrameIntoPacketsV(200, pData, iEncodedDataLen, m_iFrameNumber++);
+            CVideoAPI::GetInstance()->ParseFrameIntoPacketsV(200, pData, iEncodedDataLen, m_iFrameNumber++);
             pEncodeBuffer->setIndexStatus(indx, AVAILABLE_TO_WRITE);
             
         }

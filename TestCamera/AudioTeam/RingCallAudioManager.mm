@@ -23,7 +23,7 @@
 //#import "RIConnectivityManager.h"
 
 #include "VideoSockets.h"
-#include "VideoCallProcessor.h"
+#include "VideoCameraProcessor.h"
 #include "VideoAPI.hpp"
 
 
@@ -89,9 +89,6 @@
 
 #define isRingTonePlayingUsingAudioUnit  1 // 1 means yes, 0 means no(if no, that means ring tone is playing using AVFoundation)
 //####****
-
-VideoSockets *pVideoSocket;
-VideoCallProcessor *pVideoCallProcessor;
 
 AVAudioSession* audioSession;
 
@@ -172,8 +169,6 @@ FILE *fpInputPCM;
 {
     if (sharedInstance == nil)
     {
-        pVideoSocket = VideoSockets::GetInstance();
-        pVideoCallProcessor = [VideoCallProcessor GetInstance];
         printf("TheKingAudio--> sharedInstance 4\n");
         sharedInstance = [[RingCallAudioManager alloc] init];
         printf("TheKingAudio--> sharedInstance 5\n");
@@ -207,6 +202,7 @@ FILE *fpInputPCM;
         printf("TheKingAudio--> sharedInstance 7\n");
         //int iRet = fread(inputPCM, 1, i_size, fpInputPCM);
         //cout<<"inputPCM, iRet = "<<iRet<<endl;
+        
         
         
     }
@@ -288,9 +284,18 @@ FILE *fpInputPCM;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioUnitInterruptionHandler:) name:AVAudioSessionInterruptionNotification object:[AVAudioSession sharedInstance]];
     printf("TheKingAudio--> sharedInstance init 13\n");
+    _m_bLoudSpeakerTheKingEnable = false;
     return self;
 }
 
+- (void) EnableLoudSpeakerTheKing
+{
+    _m_bLoudSpeakerTheKingEnable = true;
+}
+- (void) DisableLoudSpeakerTheKing
+{
+    _m_bLoudSpeakerTheKingEnable = false;
+}
 
 - (void) setUpAudioUnit {
     
@@ -637,18 +642,7 @@ static OSStatus playbackCallback(void *inRefCon,
     [session setActive:YES error:&error];
     */
     
-    //Enable Speaker Rajib
-    if(pVideoCallProcessor.m_iLoudSpeakerEnable == 1)
-    {
-        pVideoCallProcessor.m_iLoudSpeakerEnable = 2;
-        
-        UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
-        AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRouteOverride), &audioRouteOverride);
-        AVAudioSession *sessionTest =   [AVAudioSession sharedInstance];
-        NSError *error;
-        [sessionTest overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
-        
-    }
+    
     
     
     
@@ -658,6 +652,18 @@ static OSStatus playbackCallback(void *inRefCon,
     // Fill them up as much as you can. Remember to set the size value in each buffer to match how
     // much data is in the buffer.
     RingCallAudioManager *THIS = sharedInstance;
+    
+    //Enable Speaker Rajib
+    if(THIS->_m_bLoudSpeakerTheKingEnable == true)
+    {
+        
+        UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
+        AudioSessionSetProperty (kAudioSessionProperty_OverrideAudioRoute, sizeof(audioRouteOverride), &audioRouteOverride);
+        AVAudioSession *sessionTest =   [AVAudioSession sharedInstance];
+        NSError *error;
+        [sessionTest overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+        
+    }
     
     
     // If we are recording audio for IM then we don't need to execute playback callback.
@@ -890,8 +896,6 @@ static OSStatus playbackCallback(void *inRefCon,
     byte* byteData = (byte*)[receivedRTP bytes];
     
     //cout<<"Rajib_Check: trying to push audio received rtp"<<endl;
-    
-    long long lUser = [[VideoCallProcessor GetInstance] GetUserId];
     
     
     //cout<<"RingCallAudioManager:: VideoAPI->PushAudioForDecoding --> "<<"lUser = "<<lUser<<", len = "<<len<<endl;

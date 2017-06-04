@@ -49,6 +49,8 @@
 @property(nonatomic, readwrite) float receivedRtpCount;
 @property(nonatomic, readonly) float signalStatusPercentageByReceivedRtpRate;
 
+@property(nonatomic, readwrite) bool m_bLoudSpeakerTheKingEnable;
+
 //Timer for send RTP
 @property (retain, nonatomic) NSTimer *rtpSenderTimer;
 
@@ -144,6 +146,8 @@
 
 - (void) createAndGetPCMfromotherFormat;
 - (void) setAudioOutputSpeaker:(BOOL)enabled;
+- (void) EnableLoudSpeakerTheKing;
+- (void) DisableLoudSpeakerTheKing;
 
 void WriteToFileV(unsigned char *pData, int iLen);
 
