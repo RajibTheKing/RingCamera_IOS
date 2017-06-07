@@ -132,6 +132,22 @@ int g_iTargetUser;
         printf("myVideoAPI is not Initialized\n");
     }
     CVideoAPI::GetInstance()->InitializeMediaConnectivity("192.168.111.123", 6060, 1);
+    
+    Operation[0] = @"Register";
+    Operation[1] = @"Unregister";
+    Operation[2] = @"Invite";
+    Operation[3] = @"Publish";
+    Operation[4] = @"View";
+    Operation[5] = @"Publisher Invite";
+    Operation[6] = @"View Invite";
+    
+    m_iOperationSelector = 0;
+    
+   [[self operationBtn]  setTitle:Operation[m_iOperationSelector] forState:UIControlStateNormal];
+    
+    
+    
+
 }
 
 - (void)setupAVCapture
@@ -475,6 +491,14 @@ int g_iTargetUser;
     //
 }
 
+- (IBAction)operationAction:(id)sender
+{
+    m_iOperationSelector++;
+    m_iOperationSelector%=7;
+    
+    [[self operationBtn]  setTitle:Operation[m_iOperationSelector] forState:UIControlStateNormal];
+}
+
 - (void)SetCameraResolutionByNotification:(int)iHeight withWidth:(int)iWidth
 {
     
@@ -633,6 +657,7 @@ int g_iTargetUser;
     [_startBtn release];
     [_targetUserBtn release];
     [_targetUserField release];
+    [_operationBtn release];
     [super dealloc];
 }
 
@@ -806,21 +831,21 @@ void WriteToFile(byte *pData)
     
     
     //If We need Live
-    /*if(m_iActualFriendPort == 60001)
+    if(g_iTargetUser == 2)
      iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER);
      else
      iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER);
      
      
-     if(m_iActualFriendPort == 60001)
+     if(g_iTargetUser == 2)
      iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 1000, false);
      else
      iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 1000, false);
-     */
+    
     
     //If We need Call
-    iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
-    iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID, m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
+    //iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
+    //iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID, m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
     
     
     

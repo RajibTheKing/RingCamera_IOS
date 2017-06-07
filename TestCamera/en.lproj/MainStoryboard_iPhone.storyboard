@@ -244,6 +244,13 @@
                                     <action selector="CheckCapabilityAction:" destination="2" eventType="touchUpInside" id="RAH-Mg-Mvd"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ud5-ai-8vF">
+                                <rect key="frame" x="106" y="607" width="163" height="30"/>
+                                <state key="normal" title="Operation"/>
+                                <connections>
+                                    <action selector="operationAction:" destination="2" eventType="touchUpInside" id="AnX-oO-nqt"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
@@ -257,10 +264,12 @@
                             <constraint firstAttribute="trailing" secondItem="7A0-Vo-9Xb" secondAttribute="trailing" constant="5" id="CTH-AD-9BN"/>
                             <constraint firstItem="JvL-GG-apj" firstAttribute="top" secondItem="lMh-jH-wzd" secondAttribute="bottom" constant="5" id="Cc7-ar-2Ne"/>
                             <constraint firstItem="lMh-jH-wzd" firstAttribute="top" secondItem="nVp-cg-l0O" secondAttribute="bottom" constant="5" id="DbY-4W-LTy"/>
+                            <constraint firstItem="Vb3-bJ-rzz" firstAttribute="leading" secondItem="ud5-ai-8vF" secondAttribute="trailing" constant="21" id="F4T-pK-dR6"/>
                             <constraint firstAttribute="trailing" secondItem="Vb3-bJ-rzz" secondAttribute="trailing" constant="5" id="FiG-RA-vsp"/>
                             <constraint firstItem="zdQ-zk-8UY" firstAttribute="top" secondItem="SBx-et-y2C" secondAttribute="bottom" constant="5" id="Fr8-75-XuO"/>
                             <constraint firstItem="tvc-w2-gsO" firstAttribute="top" secondItem="I9h-Y5-WUe" secondAttribute="bottom" constant="5" id="Muq-Ff-A1d"/>
                             <constraint firstItem="7A0-Vo-9Xb" firstAttribute="leading" secondItem="Bpb-HS-GhP" secondAttribute="trailing" constant="10" id="Pdn-cP-3Cq"/>
+                            <constraint firstItem="KOy-Oh-3jh" firstAttribute="top" secondItem="ud5-ai-8vF" secondAttribute="bottom" constant="30" id="Q0U-vU-eiU"/>
                             <constraint firstItem="7Fz-kt-MBd" firstAttribute="top" secondItem="JvL-GG-apj" secondAttribute="bottom" constant="5" id="Qp4-oT-qnu"/>
                             <constraint firstItem="7Fz-kt-MBd" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="5" id="UCj-lt-4eQ"/>
                             <constraint firstItem="JvL-GG-apj" firstAttribute="top" secondItem="btB-ro-XiA" secondAttribute="bottom" constant="5" id="VhI-Z6-EgI"/>
@@ -281,6 +290,7 @@
                             <constraint firstAttribute="trailingMargin" secondItem="Bt0-vh-cZq" secondAttribute="trailing" constant="5" id="xBZ-ul-nSg"/>
                             <constraint firstItem="5oi-2M-n7t" firstAttribute="top" secondItem="c18-2G-VME" secondAttribute="bottom" constant="5" id="xZS-FK-OOY"/>
                             <constraint firstItem="nVp-cg-l0O" firstAttribute="top" secondItem="tvc-w2-gsO" secondAttribute="bottom" constant="5" id="xuW-vG-6sO"/>
+                            <constraint firstItem="ud5-ai-8vF" firstAttribute="leading" secondItem="7Fz-kt-MBd" secondAttribute="trailing" constant="21" id="zfT-iH-eVK"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="d4i-wF-zvS"/>
@@ -296,6 +306,7 @@
                         <outlet property="ldSpeakerBtn" destination="WG1-Lv-zOc" id="kcp-U6-665"/>
                         <outlet property="minusBtn" destination="Bpb-HS-GhP" id="GXp-zb-Rkh"/>
                         <outlet property="myRealView" destination="3" id="Ufj-re-NL0"/>
+                        <outlet property="operationBtn" destination="ud5-ai-8vF" id="8Kj-oF-wTZ"/>
                         <outlet property="paramBtn" destination="BIE-6r-XJn" id="SC0-xE-Rjb"/>
                         <outlet property="paramValueLbl" destination="7A0-Vo-9Xb" id="1Pv-Qb-ryS"/>
                         <outlet property="plusBtn" destination="c18-2G-VME" id="Sjh-1e-cu9"/>

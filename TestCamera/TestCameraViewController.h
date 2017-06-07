@@ -40,6 +40,9 @@
     
     int m_iParamSelector;
     int params[4];
+    NSString *Operation[10];
+    int m_iOperationSelector;
+    
     
 }
 
@@ -69,6 +72,7 @@
 @property (retain, nonatomic) IBOutlet UIButton *paramBtn;
 @property (retain, nonatomic) IBOutlet UILabel *paramValueLbl;
 @property (retain, nonatomic) IBOutlet UIButton *endCallBtn;
+@property (retain, nonatomic) IBOutlet UIButton *operationBtn;
 
 
 
@@ -92,6 +96,7 @@
 - (IBAction)makeReceiverAction:(id)sender;
 - (IBAction)startCallInLiveAction:(id)sender;
 - (IBAction)SetFilterOnOffAction:(id)sender;
+- (IBAction)operationAction:(id)sender;
 
 - (void)UpdateValue;
 

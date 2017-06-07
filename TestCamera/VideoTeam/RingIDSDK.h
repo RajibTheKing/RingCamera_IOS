@@ -23,23 +23,6 @@ typedef long long LongLong;
 
 #define ENABLE_MEDIA_CONNECTIVITY
 
-// Start NAT Traversal Team
-
-void NotifyClientMethod(int event);
-void NotifyClientMethodForFriend(int event, LongLong friendId, int mediaName);
-void NotifyClientMethodWithReceivedBytes(int event, LongLong friendId, int mediaName, int dataLen, unsigned char* data);
-
-// End NAT Traversal Team
-
-// Start Video Team
-
-void NotifyClientMethodWithPacket(LongLong lFriendID, unsigned char data[], int dataLenth);
-void NotifyClientMethodWithVideoData(LongLong lFriendID, int eventType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int insetHeight, int insetWidth,  int iOrienttation);
-void NotifyClientMethodWithVideoNotification(LongLong lCallID, int eventType);
-void NotifyClientMethodWithNetworkStrengthNotification(LongLong lCallID, int eventType);
-void NotifyClientMethodWithAudioData(LongLong lFriendID, int eventType, short data[], int dataLenth);
-void NotifyClientMethodWithAudioAlarm(LongLong lEventType, short data[], int dataLenth);
-void NotifyClientMethodWithAudiPacketData(LongLong lFriendID, unsigned char data[], int dataLenth);
 
 #ifdef ENABLE_MEDIA_CONNECTIVITY
 void AudioDecoding(LongLong lFriendID, unsigned char *in_data, int in_size, int insetID);
@@ -236,22 +219,27 @@ public:
     
     void SetNotifyClientWithAudioPacketDataCallback(void(*callBackFunctionPointer)(LongLong, unsigned char*, int));
     
-    
-    static void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], int dataLenth);
-    
-    static void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int eventType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int iOrienttation);
-    
-    static void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType);
-    
-    static void notifyClientMethodWithNetworkStrengthNotificationIos(LongLong lCallID, int eventType);
-    
-    static void notifyClientMethodWithAudioDataIos(LongLong lFriendID, int eventType, short data[], int dataLenth);
-    
-    static void notifyClientMethodWithAudioAlarmIos(LongLong lEventType, short data[], int dataLenth);
-    
-    static void notifyClientMethodWithAudioPacketDataIos(LongLong lFriendID, unsigned char data[], int dataLenth);
+    /*
+     static void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], int dataLenth);
+     
+     static void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int eventType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int insetHeight, int insetWidth, int iOrienttation);
+     
+     static void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType);
+     
+     static void notifyClientMethodWithNetworkStrengthNotificationIos(LongLong lCallID, int eventType);
+     
+     static void notifyClientMethodWithAudioDataIos(LongLong lFriendID, int eventType, short data[], int dataLenth);
+     
+     static void notifyClientMethodWithAudioAlarmIos(LongLong lEventType, short data[], int dataLenth);
+     
+     static void notifyClientMethodWithAudioPacketDataIos(LongLong lFriendID, unsigned char data[], int dataLenth);
+     */
     
 #ifdef ENABLE_MEDIA_CONNECTIVITY
+    void SetNotifyClientWithSignalingMessage(void(*callBackFunctionPointer)(unsigned char*, int));
+    
+    static void NotifyClientMethodWithSignalingMessage(unsigned char* pMessage, int iLen);
+    
     int InitializeMediaConnectivity(std::string sServerIP, int iPort, int iLogLevel);
     
     int ProcessCommand(std::string sCommand);

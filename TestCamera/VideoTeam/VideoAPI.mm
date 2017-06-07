@@ -51,6 +51,11 @@ void notifyClientMethodWithReceivedIos(int eventType, long long friendName, int 
     
 }
 
+
+
+
+
+
 void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], int dataLenth)
 {
     if(data != NULL)
