@@ -394,7 +394,8 @@ void VideoSockets::PacketReceiver()
         
         
         int iPacketType = (int)baDataReceiverBuffer[0];
-        if(iPacketType == Constants::CALL_RESPONSE)
+        
+        //if(iPacketType == Constants::CALL_RESPONSE)
         {
             
             cout<<"Call_Response Message_Found"<<endl;
@@ -408,7 +409,7 @@ void VideoSockets::PacketReceiver()
             */
             
         }
-        if(iPacketType == Constants::CALL_REQUEST)
+        //if(iPacketType == Constants::CALL_REQUEST)
         {
             cout<<"Call_Request Message_Found"<<endl;
             /*

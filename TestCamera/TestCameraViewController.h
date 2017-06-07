@@ -17,6 +17,8 @@
 	IBOutlet UISegmentedControl *camerasControl;
 	AVCaptureVideoPreviewLayer *previewLayer;
 	AVCaptureVideoDataOutput *videoDataOutput;
+    
+    
 	BOOL detectFaces;
 	dispatch_queue_t videoDataOutputQueue;
 	BOOL isUsingFrontFacingCamera;
@@ -40,7 +42,7 @@
     
     int m_iParamSelector;
     int params[4];
-    NSString *Operation[10];
+    NSString *Operation[20];
     int m_iOperationSelector;
     
     
@@ -106,7 +108,9 @@ unsigned int timeGetTime();
 
 - (void)UpdateTargetUser;
 - (void)UpdateStatusMessage: (string)sMsg;
-- (int)InitializeAudioVideoEngine;
+- (int)InitializeAudioVideoEngineForCall;
+- (int)InitializeAudioVideoEngineForLive;
+- (int)InitializeCameraAndMicrophone;
 - (void)StartAllThreads;
 - (void)CloseAllThreads;
 +(long long)convertStringIPtoLongLong:(NSString *)ipAddr;

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		18747AFA1BFDD0C60010CAA3 /* Constants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18747AE81BFDD0C50010CAA3 /* Constants.cpp */; };
 		18747AFC1BFDD0C60010CAA3 /* MessageProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18747AEC1BFDD0C50010CAA3 /* MessageProcessor.cpp */; };
 		18747AFD1BFDD0C60010CAA3 /* RingBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18747AEF1BFDD0C50010CAA3 /* RingBuffer.mm */; };
 		18747AFE1BFDD0C60010CAA3 /* VideoAPI.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18747AF11BFDD0C50010CAA3 /* VideoAPI.mm */; };
@@ -78,7 +77,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		18747AE81BFDD0C50010CAA3 /* Constants.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Constants.cpp; path = TestCamera/VideoTeam/Constants.cpp; sourceTree = "<group>"; };
 		18747AE91BFDD0C50010CAA3 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = TestCamera/VideoTeam/Constants.h; sourceTree = "<group>"; };
 		18747AEA1BFDD0C50010CAA3 /* CustomPrintf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomPrintf.h; path = TestCamera/VideoTeam/CustomPrintf.h; sourceTree = "<group>"; };
 		18747AEC1BFDD0C50010CAA3 /* MessageProcessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MessageProcessor.cpp; path = TestCamera/VideoTeam/MessageProcessor.cpp; sourceTree = "<group>"; };
@@ -197,7 +195,6 @@
 				DAC7C1E41E7544850045242C /* ClientRenderingBuffer.h */,
 				DA07AA601DE2C35900402BB9 /* Common.hpp */,
 				DA07AA611DE2C3D800402BB9 /* Common.mm */,
-				18747AE81BFDD0C50010CAA3 /* Constants.cpp */,
 				18747AE91BFDD0C50010CAA3 /* Constants.h */,
 				18747AEA1BFDD0C50010CAA3 /* CustomPrintf.h */,
 				DA971EFB1E07A9D600645151 /* FastBilateral.mm */,
@@ -481,7 +478,6 @@
 				18747AFE1BFDD0C60010CAA3 /* VideoAPI.mm in Sources */,
 				DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */,
 				DA7CE48E1E6FFD97008895E5 /* BufferQueue.m in Sources */,
-				18747AFA1BFDD0C60010CAA3 /* Constants.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

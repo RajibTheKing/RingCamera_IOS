@@ -131,15 +131,21 @@ int g_iTargetUser;
     {
         printf("myVideoAPI is not Initialized\n");
     }
-    CVideoAPI::GetInstance()->InitializeMediaConnectivity("192.168.111.123", 6060, 1);
+    
+    NSString *nsServerIP = [_IPTextField text];
+    string sServerIP = [nsServerIP UTF8String];
+    
+    CVideoAPI::GetInstance()->InitializeMediaConnectivity(sServerIP /*Server IP*/, 6060 /* Server Signaling Port*/, 1);
     
     Operation[0] = @"Register";
     Operation[1] = @"Unregister";
     Operation[2] = @"Invite";
-    Operation[3] = @"Publish";
-    Operation[4] = @"View";
-    Operation[5] = @"Publisher Invite";
-    Operation[6] = @"View Invite";
+    Operation[3] = @"EndCall";
+    Operation[4] = @"Publish";
+    Operation[5] = @"View";
+    Operation[6] = @"Publisher Invite";
+    Operation[7] = @"View Invite";
+    Operation[8] = @"Terminate-All";
     
     m_iOperationSelector = 0;
     
@@ -152,7 +158,6 @@ int g_iTargetUser;
 
 - (void)setupAVCapture
 {
-    
     CALayer *rootLayer;
     rootLayer = [SelfView layer];
     [rootLayer setMasksToBounds:YES];
@@ -166,10 +171,28 @@ int g_iTargetUser;
 
 - (IBAction) startAction:(id)sender
 {
-    /*
-    long long lUserId = 200;
-    [g_pVideoCameraProcessor Initialize:lUserId];
-     */
+    int iRet = 0;
+    
+    if(g_iTargetUser == 2)
+    {
+        CVideoAPI::GetInstance()->ProcessCommand("invite 3");
+    }
+    
+    
+    
+    
+    [self StartAllThreads];
+    iRet = [self InitializeCameraAndMicrophone];
+    
+    //iRet = [self InitializeAudioVideoEngineForCall];
+    iRet = [self InitializeAudioVideoEngineForLive];
+    
+    
+    
+}
+
+- (int)InitializeCameraAndMicrophone
+{
     if([self.ResField.text isEqual:@"640x480"])
     {
         m_iCameraHeight = 640;
@@ -186,27 +209,24 @@ int g_iTargetUser;
     }
     
     g_pVideoCameraProcessor.m_lCameraInitializationStartTime = CurrentTimeStamp();
+    
     if(session == nil)
     {
         
         [g_pVideoCameraProcessor InitializeCameraSession:&session
-                                  withDeviceOutput:&videoDataOutput
-                                         withLayer:&previewLayer
-                                        withHeight:&m_iCameraHeight
-                                         withWidth:&m_iCameraWidth];
+                                        withDeviceOutput:&videoDataOutput
+                                               withLayer:&previewLayer
+                                              withHeight:&m_iCameraHeight
+                                               withWidth:&m_iCameraWidth];
         [self setupAVCapture]; //This Method is needed to Initialize Self View with Camera output
     }
     
-    int iRet = [self InitializeAudioVideoEngine];
-    
     [session startRunning];
     [[RingCallAudioManager sharedInstance] startRecordAndPlayAudio];
-
+    
     g_pVideoCameraProcessor.m_bStartVideoSending = true;
     
-    [self StartAllThreads];
-    
-    [_startBtn setEnabled:NO];
+    return 1;
 }
 
 - (void)UpdateTargetUser
@@ -494,7 +514,7 @@ int g_iTargetUser;
 - (IBAction)operationAction:(id)sender
 {
     m_iOperationSelector++;
-    m_iOperationSelector%=7;
+    m_iOperationSelector%=9;
     
     [[self operationBtn]  setTitle:Operation[m_iOperationSelector] forState:UIControlStateNormal];
 }
@@ -793,66 +813,46 @@ void WriteToFile(byte *pData)
     iRenderFrameCount++;
 }
 
-- (int)InitializeAudioVideoEngine
+- (int)InitializeAudioVideoEngineForCall
 {
-    NSString *nsServerIP = [_IPTextField text];
-    string sServerIP = [nsServerIP UTF8String];
+    //If We need Call
+    
     int iRet;
     long long sessionID = 200;
     
-    if(g_iTargetUser == 2)
-    {
-        CVideoAPI::GetInstance()->ProcessCommand("invite 3");
-    }
-    
-    
-#if 1
-    
-#if 0
-    iRet = (int)m_pVideoAPI->CreateSession(sessionID, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
-    cout<<"CreateSession, Audio, iRet = "<<iRet<<endl;
-    iRet = (int)m_pVideoAPI->CreateSession(sessionID, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], lFriendId);
-    cout<<"CreateSession, Video, iRet = "<<iRet<<endl;
-    
-    CVideoAPI::GetInstance()->SetRelayServerInformation(sessionID, (int)1/*Audio*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
-    
-    CVideoAPI::GetInstance()->SetRelayServerInformation(sessionID, (int)2/*Video*/,  [VideoCallProcessor convertStringIPtoLongLong:nsServerIP], iFriendPort);
-#endif
-    
     cout<<"Here height and width = "<<m_iCameraHeight<<", "<<m_iCameraWidth<<endl;
-    
-    
     
     if(m_iCameraHeight * m_iCameraWidth == 288 * 352)
         CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 640, 480, 352, 288);
     else
         CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
+
     
-    
-    
-    //If We need Live
-    if(g_iTargetUser == 2)
-     iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER);
-     else
-     iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER);
-     
-     
-     if(g_iTargetUser == 2)
-     iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 1000, false);
-     else
-     iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 1000, false);
-    
-    
-    //If We need Call
-    //iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
-    //iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID, m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
-    
-    
-    
+    iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
+    iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID, m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
     
     NSLog(@"StartVideoCaLL returned, iRet = %d", iRet);
-#endif
-    return 1;
+    return iRet;
+}
+
+- (int)InitializeAudioVideoEngineForLive
+{
+    //If We need Live
+    int iRet;
+    long long sessionID = 200;
+    
+    if(g_iTargetUser == 2)
+        iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER);
+    else
+        iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER);
+    
+    
+    if(g_iTargetUser == 2)
+        iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 1000, false);
+    else
+        iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 1000, false);
+    
+    return iRet;
 }
 
 - (void)StartAllThreads

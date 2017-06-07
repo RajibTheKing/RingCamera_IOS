@@ -22,16 +22,11 @@ public:
     CMessageProcessor();
     ~CMessageProcessor();
     
+    CMessageProcessor* GetInstance();
     
-    void prepareLoginRequestMessageR(string username, string friendname, byte* outMessage);
-    void prepareLoginRequestMessage( string username, byte *message);
-    void prepareCallRequestMessage( byte* message, string username, string friendname);
-    
-private:
-    void setMessageType( byte* message, byte messageType );
-    int pushAttributeR( byte* message, string attribute, int  index, byte attributeType);
-    int pushAttribute( byte* message, string attribute, int index, byte attributeType );
-    void intToByteArray(int value, byte* outMessage);
+    void Handle_Signaling_Message(unsigned char* buffer, int iLen);
     
 };
+static CMessageProcessor *m_pMessageProcessor = nullptr;
+
 #endif /* MessageProcessor_hpp */

@@ -518,7 +518,7 @@ byte newData[640*480*3/2];
     //                        ", Width = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoWidth);
     //[self UpdateStatusMessage:sStatusMessage];
     
-    //cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
+    cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
     
     //printf("Rajib_Check: Trying to SendVideoDataV\n");
     

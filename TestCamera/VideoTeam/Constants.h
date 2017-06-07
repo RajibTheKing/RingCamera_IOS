@@ -1,73 +1,69 @@
+//
+//  Constants.h
+//  MediaConnectivity
+//
+//  Created by Rajib Chandra Das on 5/31/17.
+//  Copyright © 2017 Rajib Chandra Das. All rights reserved.
+//
 
-#if !defined( _CONSTANTS_H_ )
-#define _CONSTANTS_H_
-
-#include <string>
+#ifndef Constants_h
+#define Constants_h
 
 class Constants
 {
-
 public:
-
-	static int VOICE_BINDING_PORT;
-	static std::string CALL_ID;
-	static std::string VOICE_SERVER_IP;
-	static std::string AUTH_SERVER_IP;
-	static int VOICE_REGISTER_PORT;
-	static int AUTH_SERVER_PORT;
-
-	static const int VOICE_MEDIA = 0;
-	static const int VOICE_REGISTER = 1;
-	static const int VOICE_UNREGISTERED = 2;
-	static const int VOICE_REGISTER_CONFIRMATION = 3;
-	static const int NUMBER_OF_RESEND = 5;
-	static const int REGISTER_RESEND_TIME = 30000;	
-
-	static const int KEEPALIVE = 4;
-	static const int CALLING = 5;
-	static const int RINGING = 6;
-	static const int IN_CALL = 7;
-	static const int ANSWER = 8;
-	static const int BUSY = 9;
-	static const int CANCELED = 10;
-	static const int CONNECTED = 11;
-	static const int DISCONNECTED = 12;
-	static const int BYE = 13;
-	static const int IDEL = 14;
-	static const int NO_ANSWER = 15;
-	static const int USER_AVAILABLE = 16;
-	static const int USER_NOT_AVAILABLE = 17;
-
-	static const int VOICE_REGISTER_PUSH = 20;
-	static const int VOICE_REGISTER_PUSH_CONFIRMATION = 21;
-	static const int PUBLIC_ADDRESS_REQUEST = 100;
-	static const int PUBLIC_ADDRESS_RESPONSE = 101;
-
-	static const int PACKET_TYPE_LENGTH = 1;
-	static const int PACKET_ID_LENGTH = 16;
-	static const int PACKET_ID_LENGTH_LENGTH = 1;
-	static const int USER_ID_LENGTH = 8;
-	static const int FRIEND_ID_LENGTH = 8;
-
-	static const int LOGIN = 110;
-	static const int LOGIN_RESPONSE = 101;
-	static const int LOGIN_OUT = 112;
-	static const int LOGIN_OUT_RESPONSE = 111;
-	static const int CALL_REQUEST = 102;
-	static const int CALL_RESPONSE = 103;
-	static const int KEEP_ALIVE_REQUEST = 115;
-
-	static const int LOGIN_PACKET_LENGTH = PACKET_TYPE_LENGTH + USER_ID_LENGTH;
-	static const int CALL_PACKET_LENGTH = PACKET_TYPE_LENGTH + USER_ID_LENGTH + FRIEND_ID_LENGTH;
-	static const int SIGNALING_PACKET_LENGTH = PACKET_TYPE_LENGTH + USER_ID_LENGTH + FRIEND_ID_LENGTH + PACKET_ID_LENGTH_LENGTH + PACKET_ID_LENGTH;
-	static const int AVAILABILITY_PACKET_LENGTH = PACKET_TYPE_LENGTH + FRIEND_ID_LENGTH + PACKET_ID_LENGTH_LENGTH + PACKET_ID_LENGTH;
-
-	static void setCallID(std::string callID);
-	static void setVoiceBindingPort(int port);
-	static void setVoiceServerIP(std::string IP);
-
-	static int getVoiceBindingPort();
-
+    const static int REGISTER_MESSAGE = 101;
+    const static int UNREGISTER_MESSAGE = 102;
+    const static int INVITE_MESSAGE = 103;
+    const static int END_CALL_MESSAGE = 104;
+    const static int CANCEL_MESSAGE = 105;
+    const static int GET_ONLINE_USER_MESSAGE  = 106;
+    const static int PRESENCE_MESSAGE = 107;
+    const static int PUBLISH_MESSAGE = 108;
+    const static int VIEW_MESSAGE = 109;
+    const static int PUBLISHER_INVITE_MESSAGE = 110;
+    const static int VIEWER_INVITE_MESSAGE = 111;
+    const static int ONLINE_PUBLISHER_MESSAGE = 112;
+    const static int TERMINATE_ALL_MESSAGE = 199; // BE careful about this.
+    const static int STOP_LIVE_CALL_MESSAGE = 113;
+    
+    
+    const static int REPLY_REGISTER_MESSAGE = 121;
+    const static int REPLY_UNREGISTER_MESSAGE = 122;
+    const static int REPLY_INVITE_MESSAGE = 123;
+    const static int REPLY_END_CALL_MESSAGE = 124;
+    const static int REPLY_CANCEL_MESSAGE = 125;
+    const static int REPLY_GET_ONLINE_USER_MESSAGE  = 126;
+    const static int REPLY_PRESENCE_MESSAGE = 127;
+    const static int REPLY_PUBLISH_MESSAGE = 128;
+    const static int REPLY_VIEW_MESSAGE = 129;
+    const static int REPLY_PUBLISHER_INVITE_MESSAGE = 130;
+    const static int REPLY_VIEWER_INVITE_MESSAGE = 131;
+    const static int REPLY_ONLINE_PUBLISHER_MESSAGE = 132;
+    const static int REPLY_STOP_LIVE_CALL_MESSAGE = 133;
+    
+    const static int USER_TYPE_IDLE = 0;
+    const static int USER_TYPE_CALLER = 1;
+    const static int USER_TYPE_CALLEE = 2;
+    const static int USER_TYPE_PUBLISHER = 3;
+    const static int USER_TYPE_VIEWER = 4;
+    const static int USER_TYPE_PUBLISHER_CALLER = 5;
+    const static int USER_TYPE_PUBLISHER_CALLEE = 6;
+    const static int USER_TYPE_VIEWER_CALLER = 7;
+    const static int USER_TYPE_VIEWER_CALLEE = 8;
+    
+    
+    const static int ERRORR_MESSAGE = 12;
+    
+    const static int MAX_SERVER_PORT_NUMBER = 40000;
+    const static int MIN_SERVER_PORT_NUMBER = 30001;
+    
+    const static int MAX_CLIENT_PORT_NUMBER = 30000;
+    const static int MIN_CLIENT_PORT_NUMBER = 20001;
+    
+    const static int SIGNALING_SOCKET_TYPE = 1;
+    const static int MEDIA_SOCKET_TYPE = 2;
+    
 };
 
-#endif 
+#endif /* Constants_h */
