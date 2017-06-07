@@ -44,9 +44,17 @@
     int params[4];
     NSString *Operation[20];
     int m_iOperationSelector;
-    
-    
 }
+@property (retain, nonatomic) IBOutlet NSLayoutConstraint *Constraint_SelfView_Height;
+@property (retain, nonatomic) IBOutlet NSLayoutConstraint *Constraints_SelfView_Width;
+@property (retain, nonatomic) IBOutlet NSLayoutConstraint *Constraints_SelfView_LeftPadding;
+@property (retain, nonatomic) IBOutlet NSLayoutConstraint *Constraints_SelfView_TopPadding;
+
+@property (retain, nonatomic) IBOutlet NSLayoutConstraint *Constraint_CustomView_Height;
+@property (retain, nonatomic) IBOutlet NSLayoutConstraint *Constraints_CustomView_Width;
+@property (retain, nonatomic) IBOutlet NSLayoutConstraint *Constraints_CustomView_LeftPadding;
+@property (retain, nonatomic) IBOutlet NSLayoutConstraint *Constraints_CustomView_TopPadding;
+
 
 @property (nonatomic,strong) id delegate;
 
@@ -75,8 +83,11 @@
 @property (retain, nonatomic) IBOutlet UILabel *paramValueLbl;
 @property (retain, nonatomic) IBOutlet UIButton *endCallBtn;
 @property (retain, nonatomic) IBOutlet UIButton *operationBtn;
+@property (retain, nonatomic) IBOutlet UILabel *UserIDLabel;
 
 
+
++ (id)GetInstance;
 
 - (void)setupAVCapture;
 - (void)teardownAVCapture;
@@ -116,8 +127,14 @@ unsigned int timeGetTime();
 +(long long)convertStringIPtoLongLong:(NSString *)ipAddr;
 - (void) CalculateFPS;
 
+- (void) UpdateUserID:(string)sValue;
+
+
+
 
 @end
+
+static TestCameraViewController *m_pTestCameraViewController = nil;
 
 
 

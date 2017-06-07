@@ -13,6 +13,7 @@
 #include <iostream>
 using namespace std;
 
+
 #define byte unsigned char
 
 
@@ -22,9 +23,12 @@ public:
     CMessageProcessor();
     ~CMessageProcessor();
     
-    CMessageProcessor* GetInstance();
+    static CMessageProcessor* GetInstance();
     
     void Handle_Signaling_Message(unsigned char* buffer, int iLen);
+private:
+    int ByteToInt(unsigned char* data, int &startIndex);
+    void IntToByte(int val, unsigned char* data, int &startIndex);
     
 };
 static CMessageProcessor *m_pMessageProcessor = nullptr;

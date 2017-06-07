@@ -225,11 +225,6 @@
                                     <action selector="plusBtnAction:" destination="2" eventType="touchUpInside" id="4pp-Dg-Kjt"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kGE-FL-FM1">
-                                <rect key="frame" x="127" y="25" width="100" height="150"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.34089698741640989" green="0.27674831675824157" blue="0.59439766839378239" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lMh-jH-wzd">
                                 <rect key="frame" x="5" y="512" width="121" height="30"/>
                                 <color key="backgroundColor" red="0.2706622669" green="0.51556898039999999" blue="0.70233565409999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -251,6 +246,21 @@
                                     <action selector="operationAction:" destination="2" eventType="touchUpInside" id="AnX-oO-nqt"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kGE-FL-FM1">
+                                <rect key="frame" x="113" y="25" width="100" height="150"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.34089698741640989" green="0.27674831675824157" blue="0.59439766839378239" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UserID = -1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p92-SF-FzU">
+                                <rect key="frame" x="5" y="273" width="130" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="RjC-9T-Xzk"/>
+                                    <constraint firstAttribute="width" constant="130" id="Zgj-Yy-FqD"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
@@ -267,10 +277,12 @@
                             <constraint firstItem="Vb3-bJ-rzz" firstAttribute="leading" secondItem="ud5-ai-8vF" secondAttribute="trailing" constant="21" id="F4T-pK-dR6"/>
                             <constraint firstAttribute="trailing" secondItem="Vb3-bJ-rzz" secondAttribute="trailing" constant="5" id="FiG-RA-vsp"/>
                             <constraint firstItem="zdQ-zk-8UY" firstAttribute="top" secondItem="SBx-et-y2C" secondAttribute="bottom" constant="5" id="Fr8-75-XuO"/>
+                            <constraint firstItem="p92-SF-FzU" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="5" id="Kbi-dg-wGf"/>
                             <constraint firstItem="tvc-w2-gsO" firstAttribute="top" secondItem="I9h-Y5-WUe" secondAttribute="bottom" constant="5" id="Muq-Ff-A1d"/>
                             <constraint firstItem="7A0-Vo-9Xb" firstAttribute="leading" secondItem="Bpb-HS-GhP" secondAttribute="trailing" constant="10" id="Pdn-cP-3Cq"/>
                             <constraint firstItem="KOy-Oh-3jh" firstAttribute="top" secondItem="ud5-ai-8vF" secondAttribute="bottom" constant="30" id="Q0U-vU-eiU"/>
                             <constraint firstItem="7Fz-kt-MBd" firstAttribute="top" secondItem="JvL-GG-apj" secondAttribute="bottom" constant="5" id="Qp4-oT-qnu"/>
+                            <constraint firstItem="BIE-6r-XJn" firstAttribute="top" secondItem="p92-SF-FzU" secondAttribute="bottom" constant="69" id="RNV-OV-QZ3"/>
                             <constraint firstItem="7Fz-kt-MBd" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="5" id="UCj-lt-4eQ"/>
                             <constraint firstItem="JvL-GG-apj" firstAttribute="top" secondItem="btB-ro-XiA" secondAttribute="bottom" constant="5" id="VhI-Z6-EgI"/>
                             <constraint firstItem="5oi-2M-n7t" firstAttribute="centerX" secondItem="3" secondAttribute="centerX" id="WPS-5C-XL7"/>
@@ -302,6 +314,7 @@
                         <outlet property="MyCustomView" destination="kGE-FL-FM1" id="cRQ-97-2b2"/>
                         <outlet property="ResField" destination="zdQ-zk-8UY" id="5Cu-61-HBN"/>
                         <outlet property="SelfView" destination="3qS-LM-QOC" id="8eC-2k-N9R"/>
+                        <outlet property="UserIDLabel" destination="p92-SF-FzU" id="0hY-ZO-Inq"/>
                         <outlet property="endCallBtn" destination="Vb3-bJ-rzz" id="dzM-4n-H4J"/>
                         <outlet property="ldSpeakerBtn" destination="WG1-Lv-zOc" id="kcp-U6-665"/>
                         <outlet property="minusBtn" destination="Bpb-HS-GhP" id="GXp-zb-Rkh"/>
@@ -324,7 +337,7 @@
                     </connections>
                 </pinchGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="968.5" y="263.5"/>
+            <point key="canvasLocation" x="968" y="263"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="h38-Iu-qiC">

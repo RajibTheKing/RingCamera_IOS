@@ -128,7 +128,7 @@ public:
     
 };
 
-static CVideoAPI *m_pVideoAPI = NULL;
+static CVideoAPI *m_pVideoAPI = nullptr;
 
 
 

@@ -11,8 +11,9 @@
 #include "VideoAPI.hpp"
 #include "VideoSockets.h"
 #include "VideoCameraProcessor.h"
-
 #include "RingCallAudioManager.h"
+#include "MessageProcessor.hpp"
+
 
 
 //#include "ObjectiveCInterFace.h"
@@ -199,68 +200,11 @@ void notifyClientMethodWithNetworkStrengthNotificationIos(LongLong lCallID, int 
     printf("notifyClientWithNetworkStrengthNotificationCallback eventType = %d\n", eventType);
     cout<<"notifyClientWithNetworkStrengthNotificationCallback : "<<eventType<<endl;
 }
-/*
-void notifyClientMethodWithPacketIos(IPVLongType lFriendID, unsigned char data[], int dataLenth)
+
+void notifyClientMethodWithSignalingDataIos(unsigned char *buffer, int iLen)
 {
-    //cout<<"Inside notifyClientMethodWithPacket"<<endl;
-    CVideoAPI::GetInstance()->SendPakcetFragments(data, dataLenth);
+    CMessageProcessor::GetInstance()->Handle_Signaling_Message(buffer, iLen);
 }
-void notifyClientMethodWithVideoDataIos(IPVLongType lFriendID, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth)
-{
-    //cout<<"Inside notifyClientMethodWithFrame"<<endl;
-    CVideoAPI::GetInstance()->ReceiveFullFrame(data, dataLenth);
-}
-
-void notifyClientMethodWithAudiPacketDataIos(IPVLongType lFriendID, unsigned char data[], int dataLenth)
-{
-    int iPacketType = (int)data[0];
-    cout<<"NotifyClientMethodWithAudioPackt -->"<<dataLenth<<", packet = "<<iPacketType<< endl;
-   
-    //CVideoAPI::GetInstance()->SendPakcetFragments(data, dataLenth);
-    
-    //data[0] = (int)33;
-    //printf("SendPacketFragment datalen = %d\n", iLen);
-    
-    memcpy(bAudioData+1, data, dataLenth);
-    
-    bAudioData[0] = (int)43;
-    
-    //SendToServer(bAudioData, dataLenth+1);
-    
-    CVideoAPI::GetInstance()->Send(200, 1, bAudioData, dataLenth+1);
-    
-    
-}
-
-
-
-void notifyClientMethodWithAudioDataIos(IPVLongType lFriendID, short data[], int dataLenth)
-{
-    cout<<"notifyClientMethodWithAudioDataIos -->"<<dataLenth<< endl;
-    [[RingCallAudioManager sharedInstance] playMyReceivedAudioData:data withLength:dataLenth];
-    
-}
-
-void notifyClientMethodIos(int eventType)
-{
-    
-}
-
-
-void notifyClientMethodForFriendIos(int eventType, IPVLongType friendName, int mediaName)
-{
- 
-}
-
-
-
-void notifyClientMethodWithReceivedIos(int eventType, IPVLongType friendName, int mediaName, int dataLenth, unsigned char data[])
-{
-    
-}
-
-
-*/
 
 
 
@@ -291,10 +235,11 @@ CVideoAPI::CVideoAPI()
 
 CVideoAPI* CVideoAPI::GetInstance()
 {
-    if(m_pVideoAPI == NULL)
+    if(m_pVideoAPI == nullptr)
     {
         m_pVideoAPI = new CVideoAPI();
     }
+    
     return m_pVideoAPI;
 }
 

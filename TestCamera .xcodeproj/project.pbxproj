@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		18747AFC1BFDD0C60010CAA3 /* MessageProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18747AEC1BFDD0C50010CAA3 /* MessageProcessor.cpp */; };
+		18747AFC1BFDD0C60010CAA3 /* MessageProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18747AEC1BFDD0C50010CAA3 /* MessageProcessor.mm */; };
 		18747AFD1BFDD0C60010CAA3 /* RingBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18747AEF1BFDD0C50010CAA3 /* RingBuffer.mm */; };
 		18747AFE1BFDD0C60010CAA3 /* VideoAPI.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18747AF11BFDD0C50010CAA3 /* VideoAPI.mm */; };
 		18747AFF1BFDD0C60010CAA3 /* VideoCameraProcessor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 18747AF31BFDD0C60010CAA3 /* VideoCameraProcessor.mm */; };
@@ -79,7 +79,7 @@
 /* Begin PBXFileReference section */
 		18747AE91BFDD0C50010CAA3 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Constants.h; path = TestCamera/VideoTeam/Constants.h; sourceTree = "<group>"; };
 		18747AEA1BFDD0C50010CAA3 /* CustomPrintf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomPrintf.h; path = TestCamera/VideoTeam/CustomPrintf.h; sourceTree = "<group>"; };
-		18747AEC1BFDD0C50010CAA3 /* MessageProcessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MessageProcessor.cpp; path = TestCamera/VideoTeam/MessageProcessor.cpp; sourceTree = "<group>"; };
+		18747AEC1BFDD0C50010CAA3 /* MessageProcessor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MessageProcessor.mm; path = TestCamera/VideoTeam/MessageProcessor.mm; sourceTree = "<group>"; };
 		18747AED1BFDD0C50010CAA3 /* MessageProcessor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = MessageProcessor.hpp; path = TestCamera/VideoTeam/MessageProcessor.hpp; sourceTree = "<group>"; };
 		18747AEE1BFDD0C50010CAA3 /* RingBuffer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RingBuffer.hpp; path = TestCamera/VideoTeam/RingBuffer.hpp; sourceTree = "<group>"; };
 		18747AEF1BFDD0C50010CAA3 /* RingBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RingBuffer.mm; path = TestCamera/VideoTeam/RingBuffer.mm; sourceTree = "<group>"; };
@@ -198,7 +198,7 @@
 				18747AE91BFDD0C50010CAA3 /* Constants.h */,
 				18747AEA1BFDD0C50010CAA3 /* CustomPrintf.h */,
 				DA971EFB1E07A9D600645151 /* FastBilateral.mm */,
-				18747AEC1BFDD0C50010CAA3 /* MessageProcessor.cpp */,
+				18747AEC1BFDD0C50010CAA3 /* MessageProcessor.mm */,
 				18747AED1BFDD0C50010CAA3 /* MessageProcessor.hpp */,
 				18747AEE1BFDD0C50010CAA3 /* RingBuffer.hpp */,
 				18747AEF1BFDD0C50010CAA3 /* RingBuffer.mm */,
@@ -473,7 +473,7 @@
 				DA5222AC1DC5CF62000EB084 /* AverageCalculator.cpp in Sources */,
 				18747AFD1BFDD0C60010CAA3 /* RingBuffer.mm in Sources */,
 				DA7CE4971E6FFE82008895E5 /* TPCircularBuffer+AudioBufferList.c in Sources */,
-				18747AFC1BFDD0C60010CAA3 /* MessageProcessor.cpp in Sources */,
+				18747AFC1BFDD0C60010CAA3 /* MessageProcessor.mm in Sources */,
 				18747AFF1BFDD0C60010CAA3 /* VideoCameraProcessor.mm in Sources */,
 				18747AFE1BFDD0C60010CAA3 /* VideoAPI.mm in Sources */,
 				DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */,

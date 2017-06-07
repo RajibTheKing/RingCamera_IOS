@@ -26,6 +26,7 @@ typedef long long LongLong;
 
 #ifdef ENABLE_MEDIA_CONNECTIVITY
 void AudioDecoding(LongLong lFriendID, unsigned char *in_data, int in_size, int insetID);
+void notifyClientMethodWithSignalingDataIos(unsigned char *buffer, int iLen);
 #else
 void AudioDecoding(LongLong lFriendID, unsigned char *in_data, int in_size);
 #endif
@@ -222,8 +223,6 @@ public:
     int ProcessCommand(std::string sCommand);
     
     int SendData(unsigned char *pData, int iLen);
-    
-    void SetFunctionPointerForReceive(void(*callBackFunctionPointer)(long long, unsigned char*, int, int));
     
     int UnInitializeMediaConnectivity();
 #endif

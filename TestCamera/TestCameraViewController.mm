@@ -99,6 +99,12 @@ int g_iTargetUser;
     selfUIViewLocationY = SelfView.frame.origin.y;
     
     
+    //NSLayoutConstraint.deactivateConstraints(self.landscapeConstraintsPad);
+    
+    
+    
+    
+    
     m_iParamSelector = 0;
     params[0] = 100; //Sigma
     params[1] = 1; //Radius
@@ -152,8 +158,12 @@ int g_iTargetUser;
    [[self operationBtn]  setTitle:Operation[m_iOperationSelector] forState:UIControlStateNormal];
     
     
-    
+    m_pTestCameraViewController = self;
+}
 
++ (id)GetInstance
+{
+    return m_pTestCameraViewController;
 }
 
 - (void)setupAVCapture
@@ -186,8 +196,7 @@ int g_iTargetUser;
     
     //iRet = [self InitializeAudioVideoEngineForCall];
     iRet = [self InitializeAudioVideoEngineForLive];
-    
-    
+     
     
 }
 
@@ -612,6 +621,8 @@ int g_iTargetUser;
         newFrame = CGRectMake(myCustomUIViewLocationX, myCustomUIViewLocationY, myCustomUIViewWidth, myCustomUIViewHeight);
         [MyCustomView setFrame:newFrame];
         myCustomUIViewState = 0;
+        
+        
     }
     
 }
@@ -678,6 +689,11 @@ int g_iTargetUser;
     [_targetUserBtn release];
     [_targetUserField release];
     [_operationBtn release];
+    [_Constraint_SelfView_Height release];
+    [_Constraints_SelfView_Width release];
+    [_Constraints_SelfView_LeftPadding release];
+    [_Constraints_SelfView_TopPadding release];
+    [_UserIDLabel release];
     [super dealloc];
 }
 
@@ -906,6 +922,10 @@ void WriteToFile(byte *pData)
     return ip;
 }
 
-
+- (void) UpdateUserID:(string)sValue
+{
+    NSString* labelValue = [NSString stringWithUTF8String:sValue.c_str()];
+    [_UserIDLabel setText:labelValue];
+}
 
 @end
