@@ -120,8 +120,11 @@ unsigned int timeGetTime();
 - (void)UpdateTargetUser;
 - (void)UpdateStatusMessage: (string)sMsg;
 - (int)InitializeAudioVideoEngineForCall;
-- (int)InitializeAudioVideoEngineForLive;
+- (int)InitializeAudioVideoEngineForLive: (bool)isPublisher;
 - (int)InitializeCameraAndMicrophone;
+- (int)UnInitializeAudioVideoEngine;
+- (int)UnInitializeCameraAndMicrophone;
+
 - (void)StartAllThreads;
 - (void)CloseAllThreads;
 +(long long)convertStringIPtoLongLong:(NSString *)ipAddr;

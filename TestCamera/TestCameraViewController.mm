@@ -143,15 +143,10 @@ int g_iTargetUser;
     
     CVideoAPI::GetInstance()->InitializeMediaConnectivity(sServerIP /*Server IP*/, 6060 /* Server Signaling Port*/, 1);
     
-    Operation[0] = @"Register";
-    Operation[1] = @"Unregister";
-    Operation[2] = @"Invite";
-    Operation[3] = @"EndCall";
-    Operation[4] = @"Publish";
-    Operation[5] = @"View";
-    Operation[6] = @"Publisher Invite";
-    Operation[7] = @"View Invite";
-    Operation[8] = @"Terminate-All";
+    Operation[0] = @"Invite";
+    Operation[1] = @"Publish";
+    Operation[2] = @"View";
+    Operation[3] = @"Terminate-All";
     
     m_iOperationSelector = 0;
     
@@ -182,22 +177,47 @@ int g_iTargetUser;
 - (IBAction) startAction:(id)sender
 {
     int iRet = 0;
+    NSString *nsTargetUser = [_targetUserField text];
+    string sTargetUser = [nsTargetUser UTF8String];
+    NSString *nsTargetAction = Operation[m_iOperationSelector];
     
-    if(g_iTargetUser == 2)
+    if([nsTargetAction  isEqual: @"Invite"])
     {
-        CVideoAPI::GetInstance()->ProcessCommand("invite 3");
+        CVideoAPI::GetInstance()->ProcessCommand("invite " + sTargetUser);
+        
+        [self StartAllThreads];
+        iRet = [self InitializeCameraAndMicrophone];
+        iRet = [self InitializeAudioVideoEngineForCall];
+        
+        
+        //iRet = [self InitializeAudioVideoEngineForLive];
+        
     }
-    
-    
-    
-    
-    [self StartAllThreads];
-    iRet = [self InitializeCameraAndMicrophone];
-    
-    //iRet = [self InitializeAudioVideoEngineForCall];
-    iRet = [self InitializeAudioVideoEngineForLive];
-     
-    
+    else if([nsTargetAction  isEqual: @"Publish"])
+    {
+        CVideoAPI::GetInstance()->ProcessCommand("publish");
+        [self StartAllThreads];
+        iRet = [self InitializeCameraAndMicrophone];
+        iRet = [self InitializeAudioVideoEngineForLive:true];
+        
+    }
+    else if([nsTargetAction  isEqual: @"View"])
+    {
+        CVideoAPI::GetInstance()->ProcessCommand("view "+ sTargetUser);
+        
+        [self StartAllThreads];
+        iRet = [self InitializeCameraAndMicrophone];
+        iRet = [self InitializeAudioVideoEngineForLive:false];
+        
+        
+    }
+    else if([nsTargetAction  isEqual: @"Terminate-All"])
+    {
+        CVideoAPI::GetInstance()->ProcessCommand("terminate-all");
+        [self UnInitializeAudioVideoEngine];
+        [self UnInitializeCameraAndMicrophone];
+        [self CloseAllThreads];
+    }
 }
 
 - (int)InitializeCameraAndMicrophone
@@ -212,9 +232,6 @@ int g_iTargetUser;
     {
         m_iCameraHeight = 352;
         m_iCameraWidth = 288;
-        
-        
-        
     }
     
     g_pVideoCameraProcessor.m_lCameraInitializationStartTime = CurrentTimeStamp();
@@ -241,10 +258,10 @@ int g_iTargetUser;
 - (void)UpdateTargetUser
 {
     g_iTargetUser++;
-    if(g_iTargetUser>10)
+    if(g_iTargetUser>100)
         g_iTargetUser = 1;
     if(g_iTargetUser<1)
-        g_iTargetUser = 10;
+        g_iTargetUser = 100;
     
     cout<<"Current Friend = "<<g_iTargetUser<<endl;
     ostringstream oss;
@@ -287,8 +304,10 @@ int g_iTargetUser;
     //[g_pVideoCameraProcessor CloseAllThreads];
     
     
-    NSLog(@"Inside EndCall Button");
-    CVideoAPI::GetInstance()->UnInitializeMediaConnectivity();
+    NSLog(@"Inside EndCall Button, is now disabled");
+    
+    /*
+    //CVideoAPI::GetInstance()->UnInitializeMediaConnectivity();
     CVideoAPI::GetInstance()->StopAudioCall(200);
     CVideoAPI::GetInstance()->StopVideoCall(200);
     
@@ -312,6 +331,7 @@ int g_iTargetUser;
     
     [_startBtn setEnabled:YES];
      
+    */
     
 }
 
@@ -492,7 +512,27 @@ int g_iTargetUser;
     }
     
     CVideoAPI::GetInstance()->StartCallInLive(200, role, CALL_IN_LIVE_TYPE_AUDIO_VIDEO);
+    
+     publisherinvite
+     
      */
+    
+    int iRet = 0;
+    NSString *nsTargetUser = [_targetUserField text];
+    string sTargetUser = [nsTargetUser UTF8String];
+    NSString *nsTargetAction = Operation[m_iOperationSelector];
+    
+    if([nsTargetAction  isEqual: @"Publish"])
+    {
+        CVideoAPI::GetInstance()->ProcessCommand("publisherinvite "+sTargetUser);
+        CVideoAPI::GetInstance()->StartCallInLive(200, PUBLISHER_IN_CALL, CALL_IN_LIVE_TYPE_AUDIO_VIDEO);
+    }
+    else if([nsTargetAction  isEqual: @"View"])
+    {
+        CVideoAPI::GetInstance()->ProcessCommand("viewerinvite "+sTargetUser);
+        CVideoAPI::GetInstance()->StartCallInLive(200, VIEWER_IN_CALL, CALL_IN_LIVE_TYPE_AUDIO_VIDEO);
+    }
+    
 }
 
 - (IBAction)SetFilterOnOffAction:(id)sender
@@ -523,7 +563,7 @@ int g_iTargetUser;
 - (IBAction)operationAction:(id)sender
 {
     m_iOperationSelector++;
-    m_iOperationSelector%=9;
+    m_iOperationSelector%=4;
     
     [[self operationBtn]  setTitle:Operation[m_iOperationSelector] forState:UIControlStateNormal];
 }
@@ -543,15 +583,18 @@ int g_iTargetUser;
                                         withHeight:&m_iCameraHeight
                                          withWidth:&m_iCameraWidth];*/
     
+    if(session != nil)
+    {
+        [session stopRunning];
+        if(iHeight==352)
+            [session setSessionPreset:AVCaptureSessionPreset352x288];
+        if(iHeight == 640)
+            [session setSessionPreset:AVCaptureSessionPreset640x480];
+        
+        [session startRunning];
+    }
     
-    [session stopRunning];
     
-    if(iHeight==352)
-        [session setSessionPreset:AVCaptureSessionPreset352x288];
-    if(iHeight == 640)
-        [session setSessionPreset:AVCaptureSessionPreset640x480];
-    
-    [session startRunning];
 }
 
 - (void)UpdateStatusMessage: (string)sMsg
@@ -836,6 +879,8 @@ void WriteToFile(byte *pData)
     int iRet;
     long long sessionID = 200;
     
+    
+    
     cout<<"Here height and width = "<<m_iCameraHeight<<", "<<m_iCameraWidth<<endl;
     
     if(m_iCameraHeight * m_iCameraWidth == 288 * 352)
@@ -851,25 +896,27 @@ void WriteToFile(byte *pData)
     return iRet;
 }
 
-- (int)InitializeAudioVideoEngineForLive
+- (int)InitializeAudioVideoEngineForLive:(bool)isPublisher
 {
     //If We need Live
     int iRet;
     long long sessionID = 200;
     
-    if(g_iTargetUser == 2)
+    if(isPublisher)
         iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER);
     else
         iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER);
     
     
-    if(g_iTargetUser == 2)
+    if(isPublisher)
         iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 1000, false);
     else
         iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 1000, false);
     
     return iRet;
 }
+
+
 
 - (void)StartAllThreads
 {
@@ -911,6 +958,40 @@ void WriteToFile(byte *pData)
     
 }
 
+- (int)UnInitializeAudioVideoEngine
+{
+    //CVideoAPI::GetInstance()->UnInitializeMediaConnectivity();
+    CVideoAPI::GetInstance()->StopAudioCall(200);
+    CVideoAPI::GetInstance()->StopVideoCall(200);
+    
+    return 1;
+    
+}
+- (int)UnInitializeCameraAndMicrophone
+{
+    
+    
+    [[RingCallAudioManager sharedInstance] stopRecordAndPlayAudio];
+    [_ldSpeakerBtn setEnabled:true];
+    [session stopRunning];
+    [session release];
+    session = nil;
+    
+    
+    //g_pVideoCameraProcessor.m_iLoudSpeakerEnable = 0;
+    
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        MyCustomImageView.image = nil;
+        MyCustomImageView.frame = MyCustomView.bounds;
+        [MyCustomView addSubview:MyCustomImageView];
+        [MyCustomView setNeedsDisplay];
+        
+    }];
+    
+    return 1;
+}
+
+
 +(long long)convertStringIPtoLongLong:(NSString *)ipAddr
 {
     struct in_addr addr;
@@ -924,8 +1005,15 @@ void WriteToFile(byte *pData)
 
 - (void) UpdateUserID:(string)sValue
 {
-    NSString* labelValue = [NSString stringWithUTF8String:sValue.c_str()];
-    [_UserIDLabel setText:labelValue];
+    @autoreleasepool {
+        
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            NSString* labelValue = [NSString stringWithUTF8String:sValue.c_str()];
+            [_UserIDLabel setText:labelValue];
+        }];
+    }
+    
+    
 }
 
 @end
