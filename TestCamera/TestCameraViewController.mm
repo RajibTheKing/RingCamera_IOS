@@ -153,7 +153,8 @@ int g_iTargetUser;
     
    [[self operationBtn]  setTitle:Operation[m_iOperationSelector] forState:UIControlStateNormal];
     
-    
+    [_targetUserBtn addTarget:self action:@selector(targetBtnHoldDownAction) forControlEvents:UIControlEventTouchDown];
+    m_brapidFireForTargetUserBtnHold = false;
     m_pTestCameraViewController = self;
 }
 
@@ -258,12 +259,6 @@ int g_iTargetUser;
 
 - (void)UpdateTargetUser
 {
-    g_iTargetUser++;
-    if(g_iTargetUser>100)
-        g_iTargetUser = 1;
-    if(g_iTargetUser<1)
-        g_iTargetUser = 100;
-    
     cout<<"Current Friend = "<<g_iTargetUser<<endl;
     ostringstream oss;
     oss.clear();
@@ -338,7 +333,19 @@ int g_iTargetUser;
 
 - (IBAction)ChangeTargetUserAction:(id)sender
 {
+    NSLog(@"%lf", [_rapidFireTimer timeInterval]) ;
+    
+    [_rapidFireTimer invalidate];
+    
+    if(m_brapidFireForTargetUserBtnHold == false)
+        g_iTargetUser++;
+    
+    if(g_iTargetUser > 100)
+        g_iTargetUser = 1;
+    
     [self UpdateTargetUser];
+    m_brapidFireForTargetUserBtnHold = false;
+    
 }
 
 
@@ -1026,6 +1033,23 @@ void WriteToFile(byte *pData)
         }];
     }
     
+    
+}
+
+- (void)targetBtnHoldDownAction
+{
+    NSLog(@"Inside Khashi");
+    _rapidFireTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(rapidFireForTargetUserBtnHold) userInfo:nil repeats:YES];
+}
+
+- (void)rapidFireForTargetUserBtnHold
+{
+    m_brapidFireForTargetUserBtnHold = true;
+    g_iTargetUser--;
+    if(g_iTargetUser<1)
+        g_iTargetUser = 100;
+    
+    [self UpdateTargetUser];
     
 }
 

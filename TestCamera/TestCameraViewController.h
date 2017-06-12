@@ -44,6 +44,7 @@
     int params[4];
     NSString *Operation[20];
     int m_iOperationSelector;
+    bool m_brapidFireForTargetUserBtnHold;
 }
 @property (retain, nonatomic) IBOutlet NSLayoutConstraint *Constraint_SelfView_Height;
 @property (retain, nonatomic) IBOutlet NSLayoutConstraint *Constraints_SelfView_Width;
@@ -86,6 +87,7 @@
 @property (retain, nonatomic) IBOutlet UIButton *operationBtn;
 @property (retain, nonatomic) IBOutlet UILabel *UserIDLabel;
 
+@property (retain, nonatomic) NSTimer *rapidFireTimer;
 
 
 + (id)GetInstance;
@@ -134,7 +136,7 @@ unsigned int timeGetTime();
 
 - (void) UpdateUserID:(string)sValue;
 
-
+- (void)targetBtnHoldDownAction;
 
 
 @end
