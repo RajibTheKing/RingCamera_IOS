@@ -57,6 +57,7 @@
 
 
 @property (nonatomic,strong) id delegate;
+@property (retain, nonatomic) IBOutlet UIButton *resetBtn;
 
 @property (retain, nonatomic) IBOutlet UIButton *LoginButton;
 @property (retain, nonatomic) IBOutlet UIButton *startBtn;
@@ -96,6 +97,7 @@
 - (IBAction)ParamBtnAction:(id)sender;
 
 
+- (IBAction)resetBtnAction:(id)sender;
 - (IBAction)startAction:(id)sender;
 - (IBAction) EndCallAction:(id)endButton;
 - (IBAction)ChangeTargetUserAction:(id)sender;

@@ -479,20 +479,22 @@ byte newData[640*480*3/2];
     /*****
      *DynamicResizeTest
      **/
-    /*m_pVideoConverter->Convert_YUVNV12_To_YUVI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
-    long long startTime = CurrentTimeStamp();
-    int iNewHeight = 114, iNewWidth = 94;
+    /*long long startTime = CurrentTimeStamp();
+    m_pVideoConverter->Convert_YUVNV12_To_YUVI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
+
+    int iNewHeight = 200, iNewWidth = 150;
     //m_pVideoConverter->DownScaleYUV420_Dynamic(pRawYuv, m_iCameraHeight, m_iCameraWidth, pScaledVideo, 3);
     m_pVideoConverter->DownScaleYUV420_Dynamic(pRawYuv, m_iCameraHeight, m_iCameraWidth, pScaledVideo, iNewHeight,iNewWidth);
     
-    NSLog(@"TimeElapsed = %lld", CurrentTimeStamp() - startTime);
+    
     
     iVideoWidth = iNewWidth;
     iVideoHeight = iNewHeight;
     memcpy(pRawYuv, pScaledVideo, iNewHeight*iNewWidth*3/2);
     m_pVideoConverter->ConvertI420ToNV12(pRawYuv, iVideoHeight, iVideoWidth);
-    */
     
+    NSLog(@"TimeElapsed = %lld", CurrentTimeStamp() - startTime);
+    */
     int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
     
     
@@ -515,10 +517,10 @@ byte newData[640*480*3/2];
     //m_iRenderWidth = iVideoWidth;
     //[self BackConversion:pRawYuv];
     //string sStatusMessage = "Height = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoHeight) +
-    //                        ", Width = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoWidth);
+                            ", Width = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoWidth);
     //[self UpdateStatusMessage:sStatusMessage];
     
-    cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
+    //cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
     
     //printf("Rajib_Check: Trying to SendVideoDataV\n");
     

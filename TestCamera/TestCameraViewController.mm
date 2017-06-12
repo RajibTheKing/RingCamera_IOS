@@ -142,6 +142,7 @@ int g_iTargetUser;
     string sServerIP = [nsServerIP UTF8String];
     
     CVideoAPI::GetInstance()->InitializeMediaConnectivity(sServerIP /*Server IP*/, 6060 /* Server Signaling Port*/, 1);
+    CVideoAPI::GetInstance()->ProcessCommand("register");
     
     Operation[0] = @"Invite";
     Operation[1] = @"Publish";
@@ -547,16 +548,17 @@ int g_iTargetUser;
     
     if(flag)
     {
-        CVideoAPI::GetInstance()->SetVideoEffect(200, 1);
+        //CVideoAPI::GetInstance()->SetVideoEffect(200, 1);
+        
         [_FilterOnOffButton setTitle:nsFilterOffString forState:UIControlStateNormal];
     }
     else
     {
-        CVideoAPI::GetInstance()->SetVideoEffect(200, 0);
+        //CVideoAPI::GetInstance()->SetVideoEffect(200, 0);
         [_FilterOnOffButton setTitle:nsFilterOnString forState:UIControlStateNormal];
     }
     
-    
+    CVideoAPI::GetInstance()->SetBeautification(200, flag);
     //
 }
 
@@ -737,6 +739,7 @@ int g_iTargetUser;
     [_Constraints_SelfView_LeftPadding release];
     [_Constraints_SelfView_TopPadding release];
     [_UserIDLabel release];
+    [_resetBtn release];
     [super dealloc];
 }
 
@@ -808,6 +811,16 @@ int g_iTargetUser;
     }
     
     [self UpdateValue];
+}
+
+- (IBAction)resetBtnAction:(id)sender {
+    CVideoAPI::GetInstance()->ProcessCommand("terminate-all");
+    CVideoAPI::GetInstance()->UnInitializeMediaConnectivity();
+    
+    NSString *nsServerIP = [_IPTextField text];
+    string sServerIP = [nsServerIP UTF8String];
+    
+    CVideoAPI::GetInstance()->InitializeMediaConnectivity(sServerIP /*Server IP*/, 6060 /* Server Signaling Port*/, 1);
 }
 
 - (void)UpdateValue
