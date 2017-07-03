@@ -153,11 +153,11 @@ public:
     
     bool StartAudioCall(const LongLong& lFriendID, int nServiceType, int entityType);
     
-    bool StartCallInLive(const LongLong& llFriendID, int iRole, int nCallInLiveType);
+    bool StartCallInLive(const LongLong& llFriendID, int iRole, int nCallInLiveType, int iViewerID);
     
     void SetCallInLiveType(const LongLong& llFriendID, int nCallInLiveType);
     
-    bool EndCallInLive(const LongLong& lFriendID);
+    bool EndCallInLive(const LongLong& lFriendID, int iViewerID);
     
     bool SetVolume(const LongLong& lFriendID, int iVolume, bool bRecorder);
     

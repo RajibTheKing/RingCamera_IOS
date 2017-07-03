@@ -70,7 +70,7 @@ void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int mediaType, unsig
 {
     CVideoAPI::GetInstance()->m_iRecvFrameCounter++;
     
-    cout<<"Found Orientation  = "<<iOrientation<<", iVideoHeight = "<<iVideoHeight<<", iVideoWidth = "<<iVideoWidth<<", dataLen = "<<dataLenth<<", mediaType = "<<mediaType<<", InsetH:W = "<<insetHeight<<","<<insetWidth<<endl;
+    //cout<<"Found Orientation  = "<<iOrientation<<", iVideoHeight = "<<iVideoHeight<<", iVideoWidth = "<<iVideoWidth<<", dataLen = "<<dataLenth<<", mediaType = "<<mediaType<<", InsetH:W = "<<insetHeight<<","<<insetWidth<<endl;
     string sStatusMessage = "Orientation = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iOrientation) +
                             ", Height = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoHeight) +
                             ", Width = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoWidth);

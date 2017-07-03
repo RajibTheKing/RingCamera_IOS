@@ -533,12 +533,12 @@ int g_iTargetUser;
     if([nsTargetAction  isEqual: @"Publish"])
     {
         CVideoAPI::GetInstance()->ProcessCommand("publisherinvite "+sTargetUser);
-        CVideoAPI::GetInstance()->StartCallInLive(200, PUBLISHER_IN_CALL, CALL_IN_LIVE_TYPE_AUDIO_VIDEO);
+        //CVideoAPI::GetInstance()->StartCallInLive(200, PUBLISHER_IN_CALL, CALL_IN_LIVE_TYPE_AUDIO_VIDEO);
     }
     else if([nsTargetAction  isEqual: @"View"])
     {
         CVideoAPI::GetInstance()->ProcessCommand("viewerinvite "+sTargetUser);
-        CVideoAPI::GetInstance()->StartCallInLive(200, VIEWER_IN_CALL, CALL_IN_LIVE_TYPE_AUDIO_VIDEO);
+        //CVideoAPI::GetInstance()->StartCallInLive(200, VIEWER_IN_CALL, CALL_IN_LIVE_TYPE_AUDIO_VIDEO);
     }
     
 }
