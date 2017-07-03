@@ -824,10 +824,34 @@ int g_iTargetUser;
     CVideoAPI::GetInstance()->ProcessCommand("terminate-all");
     CVideoAPI::GetInstance()->UnInitializeMediaConnectivity();
     
+    CVideoAPI::GetInstance()->StopAudioCall(200);
+    CVideoAPI::GetInstance()->StopVideoCall(200);
+    
+    [[RingCallAudioManager sharedInstance] stopRecordAndPlayAudio];
+    
+    [self CloseAllThreads];
+    
+    
+    [session stopRunning];
+    [_ldSpeakerBtn setEnabled:true];
+    
+    //g_pVideoCameraProcessor.m_iLoudSpeakerEnable = 0;
+    
+    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        MyCustomImageView.image = nil;
+        MyCustomImageView.frame = MyCustomView.bounds;
+        [MyCustomView addSubview:MyCustomImageView];
+        [MyCustomView setNeedsDisplay];
+        
+    }];
+    
+    
     NSString *nsServerIP = [_IPTextField text];
     string sServerIP = [nsServerIP UTF8String];
-    
     CVideoAPI::GetInstance()->InitializeMediaConnectivity(sServerIP /*Server IP*/, 6060 /* Server Signaling Port*/, 1);
+    
+    
+    
 }
 
 - (void)UpdateValue
@@ -903,12 +927,21 @@ void WriteToFile(byte *pData)
     
     cout<<"Here height and width = "<<m_iCameraHeight<<", "<<m_iCameraWidth<<endl;
     
-    if(m_iCameraHeight * m_iCameraWidth == 288 * 352)
-        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(207, 640, 480, 352, 288);
-    else
-        CVideoAPI::GetInstance()->SetDeviceCapabilityResults(205, 640, 480, 352, 288);
-
+    std::string sDevice = getDeviceModel();
+    int iDeviceCapability = 0;
+    if(sDevice == "iPhone7,2")
+    {
+        iDeviceCapability = 205;
+    }
+    else if(sDevice == "iPod5,1")
+    {
+        iDeviceCapability = 208;
+    }
     
+    cout<<"Device Model --> "<<sDevice<<endl;
+    
+    CVideoAPI::GetInstance()->SetDeviceCapabilityResults(iDeviceCapability, 640, 480, 352, 288);
+
     iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
     iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID, m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
     
