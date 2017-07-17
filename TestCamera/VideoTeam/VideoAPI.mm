@@ -127,32 +127,33 @@ void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType)
     {
         sStatusMessage = "Found SET_CAMERA_RESOLUTION_640x480_25FPS_NOT_SUPPORTED = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
     }
-    
-    if(eventType == SET_CAMERA_RESOLUTION_352x288_25FPS_NOT_SUPPORTED)
+    else if(eventType == SET_CAMERA_RESOLUTION_352x288_25FPS_NOT_SUPPORTED)
     {
         sStatusMessage = "Found SET_CAMERA_RESOLUTION_352x288_25FPS_NOT_SUPPORTED = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
     }
-    
-    if(eventType == SET_CAMERA_RESOLUTION_640x480_25FPS)
+    else if(eventType == SET_CAMERA_RESOLUTION_640x480_25FPS)
     {
         sStatusMessage = "Found SET_CAMERA_RESOLUTION_640x480_25FPS = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
     }
-    if(eventType == SET_CAMERA_RESOLUTION_352x288_25FPS)
+    else if(eventType == SET_CAMERA_RESOLUTION_352x288_25FPS)
     {
         sStatusMessage = "Found SET_CAMERA_RESOLUTION_352x288_25FPS = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
     }
-    
-    if(eventType == SET_CAMERA_RESOLUTION_352x288)
+    else if(eventType == SET_CAMERA_RESOLUTION_352x288)
     {
         sStatusMessage = "Found SET_CAMERA_RESOLUTION_352x288 = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
         [[VideoCameraProcessor GetInstance] SetCameraResolutionByNotification:352 withWidth:288];
         cout<<"Call back operatin done"<<endl;
     }
-    
-    if(eventType == SET_CAMERA_RESOLUTION_640x480)
+    else if(eventType == SET_CAMERA_RESOLUTION_640x480)
     {
         sStatusMessage = "Found SET_CAMERA_RESOLUTION_640x480 = " + CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
         [[VideoCameraProcessor GetInstance] SetCameraResolutionByNotification:640 withWidth:480];
+    }
+    else
+    {
+        cout<<"notifyClientMethodWithVideoNotificationIos = lCallID:EventTYpe = "<<lCallID<<":"<<eventType<<endl;
+        sStatusMessage = "Notified = " + CVideoAPI::GetInstance()->IntegertoStringConvert((int)lCallID)+":"+CVideoAPI::GetInstance()->IntegertoStringConvert(eventType);
     }
     
     cout<<sStatusMessage<<endl;

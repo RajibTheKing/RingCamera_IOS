@@ -151,17 +151,17 @@ public:
     int FrameMuxAndEncode( unsigned char *pVideoYuv, int iHeight, int iWidth);
     int StopVideoMuxingAndEncodeSession(unsigned char *finalData);
     
-    bool StartAudioCall(const LongLong& lFriendID, int nServiceType, int entityType);
+    bool StartAudioCall(const LongLong& lFriendID, int nServiceType, int entityType, int nAudioSpeakerType);
     
-    bool StartCallInLive(const LongLong& llFriendID, int iRole, int nCallInLiveType, int iViewerID);
+    bool StartCallInLive(const LongLong& llFriendID, int iRole, int nCallInLiveType);
     
     void SetCallInLiveType(const LongLong& llFriendID, int nCallInLiveType);
     
-    bool EndCallInLive(const LongLong& lFriendID, int iViewerID);
+    bool EndCallInLive(const LongLong& lFriendID);
     
     bool SetVolume(const LongLong& lFriendID, int iVolume, bool bRecorder);
     
-    bool SetLoudSpeaker(const LongLong& lFriendID, bool bOn);
+    bool SetSpeakerType(const LongLong& lFriendID, int iSpeakerType);
     
     bool SetEchoCanceller(const LongLong& lFriendID, bool bOn);
     

@@ -942,7 +942,7 @@ void WriteToFile(byte *pData)
     
     CVideoAPI::GetInstance()->SetDeviceCapabilityResults(iDeviceCapability, 640, 480, 352, 288);
 
-    iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
+    iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER, true);
     iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID, m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
     
     NSLog(@"StartVideoCaLL returned, iRet = %d", iRet);
@@ -956,9 +956,9 @@ void WriteToFile(byte *pData)
     long long sessionID = 200;
     
     if(isPublisher)
-        iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER);
+        iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, true);
     else
-        iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER);
+        iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, true);
     
     
     if(isPublisher)
