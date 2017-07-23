@@ -943,7 +943,7 @@ void WriteToFile(byte *pData)
     CVideoAPI::GetInstance()->SetDeviceCapabilityResults(iDeviceCapability, 640, 480, 352, 288);
 
     iRet = CVideoAPI::GetInstance()->StartAudioCall(sessionID, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER, true);
-    iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID, m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER);
+    iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID, m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_CALL, ENTITY_TYPE_CALLER, /*NetworkType*/ 0, /*bIsAudioOnlyLive*/false);
     
     NSLog(@"StartVideoCaLL returned, iRet = %d", iRet);
     return iRet;
@@ -962,9 +962,9 @@ void WriteToFile(byte *pData)
     
     
     if(isPublisher)
-        iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, 1000, false);
+        iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_PUBLISHER, /*NetworkType*/ 0, /*bIsAudioOnlyLive*/false);
     else
-        iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, 1000, false);
+        iRet = CVideoAPI::GetInstance()->StartVideoCall(sessionID,m_iCameraHeight, m_iCameraWidth, SERVICE_TYPE_LIVE_STREAM, ENTITY_TYPE_VIEWER, /*NetworkType*/ 0, /*bIsAudioOnlyLive*/false);
     
     return iRet;
 }

@@ -308,7 +308,7 @@ bool CVideoAPI::SetUserNameV(long long lUserName)
 
 bool CVideoAPI::StartVideoCallV(long long lFriendID, int iVideoHeight, int iVideoWidth, int nServiceType, int nEntityType)
 {
-    return StartVideoCall(lFriendID, iVideoHeight, iVideoWidth, nServiceType, nEntityType);
+    return StartVideoCall(lFriendID, iVideoHeight, iVideoWidth, nServiceType, nEntityType, /*NetworkType*/0, /*bAudioOnlyLive*/false);
 }
 
 /*

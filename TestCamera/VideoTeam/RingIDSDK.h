@@ -165,7 +165,7 @@ public:
     
     bool SetEchoCanceller(const LongLong& lFriendID, bool bOn);
     
-    bool StartVideoCall(const LongLong& llFriendID, int nVideoHeight, int nVideoWidth, int nServiceType, int nEntityType, int packetSizeOfNetwork = 0, int nNetworkType = 0, bool bAudioOnlyLive = false);
+    bool StartVideoCall(const LongLong& llFriendID, int nVideoHeight, int nVideoWidth, int nServiceType, int nEntityType, int nNetworkType, bool bAudioOnlyLive);
     
     void PushPacketForDecoding(LongLong lFriendID, int mediaType, int nEntityType, unsigned char *in_data, int in_size);
     
@@ -175,7 +175,7 @@ public:
     
     int CancelAudioData(const LongLong& lFriendID, short *in_data, unsigned int in_size);
     
-    int SendVideoData(const LongLong& lFriendID, unsigned char *in_data, unsigned int in_size, unsigned int orientation_type=0, int device_orientation=0);
+    int SendVideoData(const LongLong& lFriendID, unsigned char *in_data, unsigned int in_size, unsigned int orientation_type, int device_orientation);
     
     int SetEncoderHeightWidth(const LongLong& lFriendID, int height, int width);
     
