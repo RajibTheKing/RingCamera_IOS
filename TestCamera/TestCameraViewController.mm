@@ -31,6 +31,7 @@
 #include "RingCallAudioManager.h"
 #include <sstream>
 #include "VideoThreadProcessor.h"
+#include "TestNeonAssembly.hpp"
 
 
 
@@ -156,6 +157,62 @@ int g_iTargetUser;
     [_targetUserBtn addTarget:self action:@selector(targetBtnHoldDownAction) forControlEvents:UIControlEventTouchDown];
     m_brapidFireForTargetUserBtnHold = false;
     m_pTestCameraViewController = self;
+    
+    TestNeonAssembly testNeonAssembly;
+    unsigned char *temporaryRGB = new unsigned char[MAXHEIGHT * MAXWIDTH * 3];
+    unsigned char *temporaryRGBoutput = new unsigned char[MAXHEIGHT * MAXWIDTH * 3];
+    for(int i=0;i<MAXHEIGHT*MAXWIDTH*3;i++)
+    {
+        temporaryRGB[i] = rand()%256;
+    }
+    
+    long long startTime = CurrentTimeStamp();
+    testNeonAssembly.reference_convert(temporaryRGBoutput, temporaryRGB, MAXHEIGHT * MAXWIDTH);
+    printf("reference_convert timeDIff = %lld\n", CurrentTimeStamp() - startTime);
+    for(int i=0;i<50;i++){printf("%d ", temporaryRGBoutput[i]);}printf("\n");
+    
+    startTime = CurrentTimeStamp();
+    testNeonAssembly.neon_intrinsic_convert(temporaryRGBoutput, temporaryRGB, MAXHEIGHT * MAXWIDTH);
+    printf("neon_intrinsic_convert timeDIff = %lld\n", CurrentTimeStamp() - startTime);
+    for(int i=0;i<50;i++){printf("%d ", temporaryRGBoutput[i]);}printf("\n");
+    
+    startTime = CurrentTimeStamp();
+    testNeonAssembly.neon_assembly_convert(temporaryRGBoutput, temporaryRGB, MAXHEIGHT * MAXWIDTH);
+    printf("neon_assembly_convert timeDIff = %lld\n", CurrentTimeStamp() - startTime);
+    for(int i=0;i<50;i++){printf("%d ", temporaryRGBoutput[i]);}printf("\n");
+    
+    
+    int iFrameLen = 1280*720*3/2;
+    
+    unsigned char *pDest = new unsigned char[iFrameLen];
+    unsigned char *pSrc = new unsigned char[iFrameLen];
+    unsigned char *pDest2 = new unsigned char[iFrameLen];
+    for(int i=0;i<iFrameLen;i++)
+    {
+        pSrc[i] = rand()%256;
+    }
+    
+    startTime = CurrentTimeStamp();
+    testNeonAssembly.Copy_Assembly_Inc(pSrc, pDest, iFrameLen);
+    printf("Copy_assembly_convert timeDIff = %lld\n", CurrentTimeStamp() - startTime);
+    
+    startTime = CurrentTimeStamp();
+    testNeonAssembly.Copy_Assembly_Inc(pSrc, pDest2, iFrameLen);
+    printf("Copy_assembly_convert timeDIff = %lld\n", CurrentTimeStamp() - startTime);
+    
+    
+    startTime = CurrentTimeStamp();
+    memcpy(pDest2, pSrc, iFrameLen);
+    printf("memcpy timeDIff = %lld\n", CurrentTimeStamp() - startTime);
+
+    
+    
+    //for(int i=0;i<iFrameLen;i++){printf("%d ", pSrc[i]);}printf("\n\n\n\n\n\n\n\n");
+    //for(int i=0;i<iFrameLen;i++){printf("%d ", pDest[i]);}printf("\n");
+    
+    
+    
+    
 }
 
 + (id)GetInstance

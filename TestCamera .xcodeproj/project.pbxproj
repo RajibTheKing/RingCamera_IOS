@@ -54,6 +54,8 @@
 		DA7FCB441E7512FE0035AA4C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7FCB431E7512FE0035AA4C /* SystemConfiguration.framework */; };
 		DA835D861E6C5A6200C75A79 /* AppAsset.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */; };
 		DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA971EFB1E07A9D600645151 /* FastBilateral.mm */; };
+		DAAE44FA1F28BAF800BC5FA1 /* Neon_Assembly.s in Sources */ = {isa = PBXBuildFile; fileRef = DAAE44F91F28BAF800BC5FA1 /* Neon_Assembly.s */; };
+		DAAE44FF1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAAE44FD1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp */; };
 		DAC7C1E51E7544850045242C /* ClientRenderingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC7C1E31E7544850045242C /* ClientRenderingBuffer.cpp */; };
 		DAC7C1EC1E7546180045242C /* ClientLockHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC7C1E81E7546180045242C /* ClientLockHandler.cpp */; };
 		DACAAF6E1EA248C500314098 /* libAudioVideoEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DACAAF6D1EA248C500314098 /* libAudioVideoEngine.a */; };
@@ -153,6 +155,9 @@
 		DA7FCB431E7512FE0035AA4C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppAsset.xcassets; sourceTree = "<group>"; };
 		DA971EFB1E07A9D600645151 /* FastBilateral.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = FastBilateral.mm; path = TestCamera/VideoTeam/FastBilateral.mm; sourceTree = "<group>"; };
+		DAAE44F91F28BAF800BC5FA1 /* Neon_Assembly.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = Neon_Assembly.s; sourceTree = "<group>"; };
+		DAAE44FD1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestNeonAssembly.cpp; sourceTree = "<group>"; };
+		DAAE44FE1F28BB4C00BC5FA1 /* TestNeonAssembly.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestNeonAssembly.hpp; sourceTree = "<group>"; };
 		DAC7C1E31E7544850045242C /* ClientRenderingBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientRenderingBuffer.cpp; path = TestCamera/VideoTeam/ClientRenderingBuffer.cpp; sourceTree = "<group>"; };
 		DAC7C1E41E7544850045242C /* ClientRenderingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientRenderingBuffer.h; path = TestCamera/VideoTeam/ClientRenderingBuffer.h; sourceTree = "<group>"; };
 		DAC7C1E81E7546180045242C /* ClientLockHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientLockHandler.cpp; path = TestCamera/VideoTeam/ClientLockHandler.cpp; sourceTree = "<group>"; };
@@ -213,6 +218,9 @@
 				18747AF71BFDD0C60010CAA3 /* VideoSockets.mm */,
 				18747AF81BFDD0C60010CAA3 /* VideoThreadProcessor.h */,
 				18747AF91BFDD0C60010CAA3 /* VideoThreadProcessor.mm */,
+				DAAE44F91F28BAF800BC5FA1 /* Neon_Assembly.s */,
+				DAAE44FD1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp */,
+				DAAE44FE1F28BB4C00BC5FA1 /* TestNeonAssembly.hpp */,
 			);
 			name = VideoTeam;
 			sourceTree = "<group>";
@@ -467,6 +475,7 @@
 				18747B001BFDD0C60010CAA3 /* VideoConverter.mm in Sources */,
 				DA07AA621DE2C3D800402BB9 /* Common.mm in Sources */,
 				DA7CE4911E6FFD97008895E5 /* SharkfoodMuteSwitchDetector.m in Sources */,
+				DAAE44FF1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp in Sources */,
 				2BA4851713F1E6DB000BABB3 /* main.mm in Sources */,
 				DA7CE48C1E6FFD97008895E5 /* AudioRouter.m in Sources */,
 				2B0EF002170E3E27008EDA06 /* TestCameraViewController.mm in Sources */,
@@ -478,6 +487,7 @@
 				18747AFE1BFDD0C60010CAA3 /* VideoAPI.mm in Sources */,
 				DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */,
 				DA7CE48E1E6FFD97008895E5 /* BufferQueue.m in Sources */,
+				DAAE44FA1F28BAF800BC5FA1 /* Neon_Assembly.s in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
