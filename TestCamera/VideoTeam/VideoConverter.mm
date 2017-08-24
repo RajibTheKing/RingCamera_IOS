@@ -1775,6 +1775,51 @@ int CVideoConverter::DownScaleYUV420_Dynamic(unsigned char* pData, int inHeight,
     
 }
 */
+int CVideoConverter::Crop_YUV420(unsigned char* pData, int inHeight, int inWidth, int startXDiff, int endXDiff, int startYDiff, int endYDiff, unsigned char* outputData, int &outHeight, int &outWidth)
+{
+    //cout<<"inHeight,inWidth = "<<iHeight<<", "<<iWidth<<endl;
+    int YPlaneLength = inHeight*inWidth;
+    int UPlaneLength = YPlaneLength >> 2;
+    int indx = 0;
+    outHeight = inHeight - startYDiff - endYDiff;
+    outWidth = inWidth - startXDiff - endXDiff;
+    
+    
+    for(int i=startYDiff; i<(inHeight-endYDiff); i++)
+    {
+        for(int j=startXDiff; j<(inWidth-endXDiff); j++)
+        {
+            outputData[indx++] = pData[i*inWidth + j];
+        }
+    }
+    
+    
+    byte *p = pData + YPlaneLength;
+    byte *q = pData + YPlaneLength + UPlaneLength;
+    
+    int uIndex = indx;
+    int vIndex = indx + (outHeight * outWidth)/4;
+    
+    int halfH = inHeight>>1, halfW = inWidth>>1;
+    
+    for(int i=startYDiff/2; i<(halfH-endYDiff/2); i++)
+    {
+        for(int j=startXDiff/2; j<(halfW-endXDiff/2); j++)
+        {
+            outputData[uIndex] = p[i*halfW + j];
+            outputData[vIndex] = q[i*halfW + j];
+            uIndex++;
+            vIndex++;
+        }
+    }
+    
+    
+    
+    //printf("Now, First Block, H:W -->%d,%d  Indx = %d, uIndex = %d, vIndex = %d\n", outHeight, outWidth, indx, uIndex, vIndex);
+    
+    return outHeight*outWidth*3/2;
+    
+}
 
 
 int CVideoConverter::getMin(int a, int b, int c)

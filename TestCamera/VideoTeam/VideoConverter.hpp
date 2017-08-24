@@ -91,6 +91,7 @@ public:
     int DownScaleVideoData(byte* pData, int &iHeight, int &iWidth, byte* outputData);
     int DownScaleVideoDataWithAverage(byte* pData, int &iHeight, int &iWidth, byte* outputData);
     int DownScaleVideoDataWithAverageVersion2(byte* pData, int &iHeight, int &iWidth, byte* outputData);
+    int Crop_YUV420(unsigned char* pData, int inHeight, int inWidth, int startXDiff, int endXDiff, int startYDiff, int endYDiff, unsigned char* outputData, int &outHeight, int &outWidth);
     
     CIContext *temporaryContext, *temporaryContext2;
     
