@@ -161,4 +161,129 @@ pop { r4-r8, pc }
 
 NEON_ASM_FUNC_END
 
+NEON_ASM_FUNC_BEGIN learn_asm_neon
+#no parameters
+push {r4-r8,lr}
+mov r0, #0x4
+mov r1, #0x2
+add r2, r0, r1, LSL #1
 
+vdup.8  q3, r1
+vmov d0, r0, r1
+
+vmov.32 r0, d0[1]
+
+mov r0, #0xDDAA
+mov r1, #0xFACD
+vmov d1, r0, r1
+vceq.u16 d2, d0, d1
+
+mov r0, #0xCCFF
+mov r1, #0xAADD
+
+vmov d0, r0, r1
+
+vqadd.u8 d1, d0, d0
+
+vpaddl.u8 d0, d0
+vpadal.u8 d0, d0
+
+
+mov r4, #1
+mov r5, #10
+.rept 10
+adds r4, r4, #1
+.endr
+
+
+pop { r4-r8, pc }
+NEON_ASM_FUNC_END
+
+
+#for(int i=startYDiff; i<(inHeight-endYDiff); i++)
+#{
+#    for(int j=startXDiff; j<(inWidth-endXDiff); j++)
+#    {
+#        outputData[indx++] = pData[i*inWidth + j];
+#    }
+#}
+NEON_ASM_FUNC_BEGIN crop_yuv420_arm_neon
+#r0 src data
+#r1 dst data
+#r2 parameters sequence: { inHeight, inWidth, startXDiff, endXDiff, startYDiff, endYDiff }
+push {r3-r11,lr}
+vld1.u32 {d0}, [r2]!
+vmov r3, r4, d0
+vld1.u32 {d1}, [r2]!
+vmov r5, r6, d1
+vld1.u32 {d2}, [r2]!
+vmov r7, r8, d2
+
+#r3 = inHeight, r4 = inWidth, r5 = startXDiff and j, r6 = endXDiff, r7 = startYDiff and i, r8 = endYDiff
+#r9 = using as a temporary variable
+
+mul r9, r7, r4
+add r0, r0, r9
+
+sub r8, r3, r8
+.crop_yuv420_arm_neon_Y_Height:
+
+    vmov r5, r6, d1
+    add r0, r0, r5
+    sub r6, r4, r6
+
+    sub r9, r6, r5
+
+    ands r9, r9, #7
+    beq .crop_yuv420_arm_neon_Y_Width
+    vld1.u8 {d3}, [r0], r9
+    vst1.u8 {d3}, [r1], r9
+    add r5, r5, r9
+    #add r0, r0, r9
+
+
+    .crop_yuv420_arm_neon_Y_Width:
+        vld1.u8 {d3}, [r0]!
+        vst1.u8 {d3}, [r1]!
+
+        add r5, r5, #8
+        cmp r5, r6
+        bne .crop_yuv420_arm_neon_Y_Width
+
+    vmov r5, r6, d1
+    add r0, r0, r6
+
+    add r7, r7, #1
+    cmp r7, r8
+    bne .crop_yuv420_arm_neon_Y_Height
+
+pop { r3-r11, pc }
+NEON_ASM_FUNC_END
+
+NEON_ASM_FUNC_BEGIN CalculateSumOfLast64_ARM_NEON
+#r0 First parameter, This is the address of <pData>
+#r1 Second Parameter, This is the address of <ans>
+push {r2-r8, lr}
+mov r4, r0
+
+mov r5, #192
+.skipLoop:
+vld1.u32 {d0}, [r4]!
+subs r5, #2
+bne .skipLoop
+
+mov r8, #0
+mov r5, #64
+.calculationLoop:
+vld1.u32 {d0}, [r4]!
+vmov r7, r6, d0
+add r8, r8, r6;
+add r8, r8, r7;
+subs r5, #2
+bne .calculationLoop
+
+str r8, [r1]
+
+pop {r2-r8, pc}
+
+NEON_ASM_FUNC_END
