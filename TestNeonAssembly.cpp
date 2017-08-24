@@ -13,12 +13,12 @@
 
 TestNeonAssembly::TestNeonAssembly()
 {
-    
+    param = new unsigned int[10];
 }
 
 TestNeonAssembly::~TestNeonAssembly()
 {
-    
+    delete[] param;
 }
 
 void TestNeonAssembly::reference_convert (unsigned char * __restrict dest, unsigned char * __restrict src, int n)
@@ -81,4 +81,26 @@ void TestNeonAssembly::Copy_Assembly_Inc(unsigned char* __restrict src, unsigned
 void TestNeonAssembly::convert_nv12_to_i420_assembly(unsigned char* __restrict src, unsigned char* __restrict dest, int iHeight, int iWidth)
 {
     convert_nv12_to_i420_asm_neon(src, dest, iHeight, iWidth);
+}
+
+void TestNeonAssembly::learn()
+{
+    learn_asm_neon();
+}
+void TestNeonAssembly::Crop_yuv420_assembly(unsigned char* src, int inHeight, int inWidth, int startXDiff, int endXDiff, int startYDiff, int endYDiff, unsigned char* dst, int &outHeight, int &outWidth)
+{
+    outHeight = inHeight - startYDiff - endYDiff;
+    outWidth = inWidth - startXDiff - endXDiff;
+    param[0] = inHeight;
+    param[1] = inWidth;
+    param[2] = startXDiff;
+    param[3] = endXDiff;
+    param[4] = startYDiff;
+    param[5] = endYDiff;
+    
+    crop_yuv420_arm_neon(src, dst, param);
+}
+void TestNeonAssembly::CalculateSumOfLast64_assembly(unsigned int * pData, unsigned int *ans)
+{
+    CalculateSumOfLast64_ARM_NEON(pData, ans);
 }

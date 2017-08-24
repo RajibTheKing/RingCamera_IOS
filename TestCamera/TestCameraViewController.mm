@@ -211,6 +211,23 @@ int g_iTargetUser;
     //for(int i=0;i<iFrameLen;i++){printf("%d ", pDest[i]);}printf("\n");
     
     
+    testNeonAssembly.learn();
+    
+    unsigned int *pData = new unsigned int[256]; //Always Length is 256
+    for(int i=0;i<256;i++)
+    {
+        pData[i] = rand()%256;
+    }
+    
+    unsigned int *ans = new unsigned int[1];
+    for(int i=192;i<212;i++)
+    {
+        cout<<pData[i]<<" ";
+    }
+    cout<<endl;
+    testNeonAssembly.CalculateSumOfLast64_assembly(pData, ans);
+    cout<<"Final Ans = "<<*ans<<endl;
+    
     
     
 }
