@@ -97,8 +97,13 @@ void TestNeonAssembly::Crop_yuv420_assembly(unsigned char* src, int inHeight, in
     param[3] = endXDiff;
     param[4] = startYDiff;
     param[5] = endYDiff;
+    param[6] = outHeight;
+    param[7] = outWidth;
     
     crop_yuv420_arm_neon(src, dst, param);
+    
+    //ARM_NEON: 2017-08-26 19:45:28.245923 MediaEngine[442:110984] TimeElapsed = 0, frames = 1016, totalDiff = 123
+    //C++: 2017-08-26 19:46:39.203911 MediaEngine[445:111660] TimeElapsed = 0, frames = 1016, totalDiff = 588
 }
 void TestNeonAssembly::CalculateSumOfLast64_assembly(unsigned int * pData, unsigned int *ans)
 {

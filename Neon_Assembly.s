@@ -200,17 +200,10 @@ pop { r4-r8, pc }
 NEON_ASM_FUNC_END
 
 
-#for(int i=startYDiff; i<(inHeight-endYDiff); i++)
-#{
-#    for(int j=startXDiff; j<(inWidth-endXDiff); j++)
-#    {
-#        outputData[indx++] = pData[i*inWidth + j];
-#    }
-#}
 NEON_ASM_FUNC_BEGIN crop_yuv420_arm_neon
 #r0 src data
 #r1 dst data
-#r2 parameters sequence: { inHeight, inWidth, startXDiff, endXDiff, startYDiff, endYDiff }
+#r2 parameters sequence: { inHeight, inWidth, startXDiff, endXDiff, startYDiff, endYDiff, outHeight, outWidth}
 push {r3-r11,lr}
 vld1.u32 {d0}, [r2]!
 vmov r3, r4, d0
@@ -218,10 +211,12 @@ vld1.u32 {d1}, [r2]!
 vmov r5, r6, d1
 vld1.u32 {d2}, [r2]!
 vmov r7, r8, d2
+vld1.u32 {d3}, [r2]!
 
 #r3 = inHeight, r4 = inWidth, r5 = startXDiff and j, r6 = endXDiff, r7 = startYDiff and i, r8 = endYDiff
 #r9 = using as a temporary variable
 
+#Start Process Y
 mul r9, r7, r4
 add r0, r0, r9
 
@@ -236,26 +231,131 @@ sub r8, r3, r8
 
     ands r9, r9, #7
     beq .crop_yuv420_arm_neon_Y_Width
-    vld1.u8 {d3}, [r0], r9
-    vst1.u8 {d3}, [r1], r9
+    vld1.u8 {d4}, [r0], r9
+    vst1.u8 {d4}, [r1], r9
     add r5, r5, r9
     #add r0, r0, r9
 
+    cmp r5, r6
+    beq .crop_yuv420_arm_neon_Y_Width_end
 
     .crop_yuv420_arm_neon_Y_Width:
-        vld1.u8 {d3}, [r0]!
-        vst1.u8 {d3}, [r1]!
+        vld1.u8 {d4}, [r0]!
+        vst1.u8 {d4}, [r1]!
 
         add r5, r5, #8
         cmp r5, r6
         bne .crop_yuv420_arm_neon_Y_Width
-
+.crop_yuv420_arm_neon_Y_Width_end:
     vmov r5, r6, d1
     add r0, r0, r6
 
     add r7, r7, #1
     cmp r7, r8
     bne .crop_yuv420_arm_neon_Y_Height
+
+vmov r3, r4, d0
+vmov r5, r6, d1
+vmov r7, r8, d2
+
+mul r9, r8, r4
+add r0, r0, r9
+
+#Now Ready to process U
+
+
+vshr.u32 d0, d0, #1
+vshr.u32 d1, d1, #1
+vshr.u32 d2, d2, #1
+
+vmov r3, r4, d0
+vmov r5, r6, d1
+vmov r7, r8, d2
+
+mul r9, r7, r4
+add r0, r0, r9
+sub r8, r3, r8
+.crop_yuv420_arm_neon_U_Height:
+
+    vmov r5, r6, d1
+    add r0, r0, r5
+    sub r6, r4, r6
+
+    sub r9, r6, r5
+    ands r9, r9, #7
+    beq .crop_yuv420_arm_neon_U_Width
+    vld1.u8 {d4}, [r0], r9
+    vst1.u8 {d4}, [r1], r9
+
+    add r5, r5, r9
+    cmp r5, r6
+    beq .crop_yuv420_arm_neon_U_Width_end
+
+    .crop_yuv420_arm_neon_U_Width:
+        vld1.u8 {d4}, [r0]!
+        vst1.u8 {d4}, [r1]!
+        add r5, r5, #8
+        cmp r5, r6
+        bne .crop_yuv420_arm_neon_U_Width
+    
+    .crop_yuv420_arm_neon_U_Width_end:
+vmov r5, r6, d1
+add r0, r0, r6
+add r7, r7, #1
+cmp r7, r8
+bne .crop_yuv420_arm_neon_U_Height
+
+vmov r3, r4, d0
+vmov r5, r6, d1
+vmov r7, r8, d2
+
+mul r9, r8, r4
+add r0, r0, r9
+
+#Ready To Process V
+vmov r3, r4, d0
+vmov r5, r6, d1
+vmov r7, r8, d2
+
+mul r9, r7, r4
+add r0, r0, r9
+sub r8, r3, r8
+.crop_yuv420_arm_neon_V_Height:
+
+    vmov r5, r6, d1
+    add r0, r0, r5
+    sub r6, r4, r6
+
+    sub r9, r6, r5
+    ands r9, r9, #7
+    beq .crop_yuv420_arm_neon_V_Width
+    vld1.u8 {d4}, [r0], r9
+    vst1.u8 {d4}, [r1], r9
+
+    add r5, r5, r9
+    cmp r5, r6
+    beq .crop_yuv420_arm_neon_V_Width_end
+
+    .crop_yuv420_arm_neon_V_Width:
+        vld1.u8 {d4}, [r0]!
+        vst1.u8 {d4}, [r1]!
+        add r5, r5, #8
+        cmp r5, r6
+        bne .crop_yuv420_arm_neon_V_Width
+    .crop_yuv420_arm_neon_V_Width_end:
+    vmov r5, r6, d1
+    add r0, r0, r6
+    add r7, r7, #1
+    cmp r7, r8
+bne .crop_yuv420_arm_neon_V_Height
+
+vmov r3, r4, d0
+vmov r5, r6, d1
+vmov r7, r8, d2
+
+mul r9, r8, r4
+add r0, r0, r9
+
 
 pop { r3-r11, pc }
 NEON_ASM_FUNC_END
