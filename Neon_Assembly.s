@@ -6,9 +6,12 @@
 //
 //
 
+
+
+.macro NEON_ASM_FUNC_BEGIN
 .syntax unified
 .text
-.macro NEON_ASM_FUNC_BEGIN
+.extern printf
 .align 2
 .arm
 .globl _$0
@@ -161,15 +164,35 @@ pop { r4-r8, pc }
 
 NEON_ASM_FUNC_END
 
+.section	__TEXT,__cstring,cstring_literals
+output:                               ; @.str
+.asciz	"Is this ok.. The Value FF is: %d Yes I am done\n"
+
 NEON_ASM_FUNC_BEGIN learn_asm_neon
 #no parameters
 push {r4-r8,lr}
+
 mov r0, #0x4
 mov r1, #0x2
-add r2, r0, r1, LSL #1
+mov r6, #0x8
+mov r7, #0x16
+vdup.u8 d0, r0
+vmov.u8 d1, d0
+
+
+bl add_function
+
+mov r1, r6
+ldr r0,=output
+bl	_printf
+
+
+
 
 vdup.8  q3, r1
 vmov d0, r0, r1
+
+
 
 vmov.32 r0, d0[1]
 
@@ -194,6 +217,7 @@ mov r5, #10
 .rept 10
 adds r4, r4, #1
 .endr
+
 
 
 pop { r4-r8, pc }
@@ -352,3 +376,11 @@ str r8, [r1]
 pop {r2-r8, pc}
 
 NEON_ASM_FUNC_END
+
+
+#int add_function(int a, int b);
+add_function:
+add r6, r6, r7
+BX 	lr
+
+
