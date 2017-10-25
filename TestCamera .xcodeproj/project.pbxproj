@@ -55,6 +55,7 @@
 		DA91B85C1F4AA678004844AA /* libAudioVideoEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA91B85B1F4AA678004844AA /* libAudioVideoEngine.a */; };
 		DA91B85E1F4AA67D004844AA /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA91B85D1F4AA67D004844AA /* libRingIDSDK.a */; };
 		DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA971EFB1E07A9D600645151 /* FastBilateral.mm */; };
+		DAA2A2181F7A260800D0443D /* Neon_Assembly_aarch64.s in Sources */ = {isa = PBXBuildFile; fileRef = DAA2A2171F7A260800D0443D /* Neon_Assembly_aarch64.s */; };
 		DAAE44FA1F28BAF800BC5FA1 /* Neon_Assembly.s in Sources */ = {isa = PBXBuildFile; fileRef = DAAE44F91F28BAF800BC5FA1 /* Neon_Assembly.s */; };
 		DAAE44FF1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAAE44FD1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp */; };
 		DAC7C1E51E7544850045242C /* ClientRenderingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC7C1E31E7544850045242C /* ClientRenderingBuffer.cpp */; };
@@ -69,9 +70,9 @@
 			remoteGlobalIDString = FF6FF2741C0B218200CD104A;
 			remoteInfo = RingIDSDK;
 		};
-		DA7C89EF1DEE91CA002C939F /* PBXContainerItemProxy */ = {
+		DABC85D71F65874100F25F17 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = DA7C89EB1DEE91CA002C939F /* AudioVideoEngine.xcodeproj */;
+			containerPortal = DABC85D31F65874100F25F17 /* AudioVideoEngine.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 1852B3471BCE1D3A000FF5C4;
 			remoteInfo = AudioVideoEngine;
@@ -129,7 +130,6 @@
 		DA7B6AFC1E6D348500AC19C3 /* iphone_3x_settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iphone_3x_settings.png; path = TestCamera/images/iphone_3x_settings.png; sourceTree = "<group>"; };
 		DA7B6AFD1E6D348500AC19C3 /* iphone_3x_spotlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iphone_3x_spotlight.png; path = TestCamera/images/iphone_3x_spotlight.png; sourceTree = "<group>"; };
 		DA7C89E51DEE91C2002C939F /* RingIDSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RingIDSDK.xcodeproj; path = "../IPV-RingIDSDK/RingIDSDK.xcodeproj"; sourceTree = "<group>"; };
-		DA7C89EB1DEE91CA002C939F /* AudioVideoEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioVideoEngine.xcodeproj; path = "../IPV-MediaEngine/AudioVideoEngine.xcodeproj"; sourceTree = "<group>"; };
 		DA7CE47F1E6FFD0D008895E5 /* RingIDSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RingIDSDK.h; path = TestCamera/VideoTeam/RingIDSDK.h; sourceTree = "<group>"; };
 		DA7CE4801E6FFD97008895E5 /* AudioRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AudioRouter.h; path = TestCamera/AudioTeam/AudioRouter.h; sourceTree = "<group>"; };
 		DA7CE4811E6FFD97008895E5 /* AudioRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AudioRouter.m; path = TestCamera/AudioTeam/AudioRouter.m; sourceTree = "<group>"; };
@@ -156,9 +156,11 @@
 		DA91B85B1F4AA678004844AA /* libAudioVideoEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAudioVideoEngine.a; path = "Build/Products/Release-universal/libAudioVideoEngine.a"; sourceTree = "<group>"; };
 		DA91B85D1F4AA67D004844AA /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = "Build/Products/Release-universal/libRingIDSDK.a"; sourceTree = "<group>"; };
 		DA971EFB1E07A9D600645151 /* FastBilateral.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = FastBilateral.mm; path = TestCamera/VideoTeam/FastBilateral.mm; sourceTree = "<group>"; };
+		DAA2A2171F7A260800D0443D /* Neon_Assembly_aarch64.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = Neon_Assembly_aarch64.s; sourceTree = "<group>"; };
 		DAAE44F91F28BAF800BC5FA1 /* Neon_Assembly.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = Neon_Assembly.s; sourceTree = "<group>"; };
 		DAAE44FD1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestNeonAssembly.cpp; sourceTree = "<group>"; };
 		DAAE44FE1F28BB4C00BC5FA1 /* TestNeonAssembly.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestNeonAssembly.hpp; sourceTree = "<group>"; };
+		DABC85D31F65874100F25F17 /* AudioVideoEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioVideoEngine.xcodeproj; path = "../IPV-MediaEngine/builds/ios/AudioVideoEngine.xcodeproj"; sourceTree = "<group>"; };
 		DAC7C1E31E7544850045242C /* ClientRenderingBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientRenderingBuffer.cpp; path = TestCamera/VideoTeam/ClientRenderingBuffer.cpp; sourceTree = "<group>"; };
 		DAC7C1E41E7544850045242C /* ClientRenderingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientRenderingBuffer.h; path = TestCamera/VideoTeam/ClientRenderingBuffer.h; sourceTree = "<group>"; };
 		DAC7C1E81E7546180045242C /* ClientLockHandler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientLockHandler.cpp; path = TestCamera/VideoTeam/ClientLockHandler.cpp; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 				18747AF71BFDD0C60010CAA3 /* VideoSockets.mm */,
 				18747AF81BFDD0C60010CAA3 /* VideoThreadProcessor.h */,
 				18747AF91BFDD0C60010CAA3 /* VideoThreadProcessor.mm */,
+				DAA2A2171F7A260800D0443D /* Neon_Assembly_aarch64.s */,
 				DAAE44F91F28BAF800BC5FA1 /* Neon_Assembly.s */,
 				DAAE44FD1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp */,
 				DAAE44FE1F28BB4C00BC5FA1 /* TestNeonAssembly.hpp */,
@@ -231,7 +234,7 @@
 				DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */,
 				DA91B85D1F4AA67D004844AA /* libRingIDSDK.a */,
 				DA91B85B1F4AA678004844AA /* libAudioVideoEngine.a */,
-				DA7C89EB1DEE91CA002C939F /* AudioVideoEngine.xcodeproj */,
+				DABC85D31F65874100F25F17 /* AudioVideoEngine.xcodeproj */,
 				DA7C89E51DEE91C2002C939F /* RingIDSDK.xcodeproj */,
 				DA44BCB01E7690C000136F59 /* AudioTeam */,
 				18747B031BFDD0CD0010CAA3 /* VideoTeam */,
@@ -239,6 +242,7 @@
 				DA7B6B041E6D357700AC19C3 /* images */,
 				1B867FDB139D4AD300AD6B47 /* Frameworks */,
 				1B867FD9139D4AD300AD6B47 /* Products */,
+				DA5D3D6C1F94B9BF00D611AB /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -320,6 +324,15 @@
 			name = AudioTeam;
 			sourceTree = "<group>";
 		};
+		DA5D3D6C1F94B9BF00D611AB /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				1B867FEE139D4AD300AD6B47 /* MainStoryboard_iPhone.storyboard */,
+				1B867FF1139D4AD300AD6B47 /* MainStoryboard_iPad.storyboard */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		DA7B6B041E6D357700AC19C3 /* images */ = {
 			isa = PBXGroup;
 			children = (
@@ -344,10 +357,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DA7C89EC1DEE91CA002C939F /* Products */ = {
+		DABC85D41F65874100F25F17 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DA7C89F01DEE91CA002C939F /* libAudioVideoEngine.a */,
+				DABC85D81F65874100F25F17 /* libAudioVideoEngine.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -402,8 +415,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = DA7C89EC1DEE91CA002C939F /* Products */;
-					ProjectRef = DA7C89EB1DEE91CA002C939F /* AudioVideoEngine.xcodeproj */;
+					ProductGroup = DABC85D41F65874100F25F17 /* Products */;
+					ProjectRef = DABC85D31F65874100F25F17 /* AudioVideoEngine.xcodeproj */;
 				},
 				{
 					ProductGroup = DA7C89E61DEE91C2002C939F /* Products */;
@@ -425,11 +438,11 @@
 			remoteRef = DA7C89E91DEE91C3002C939F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		DA7C89F01DEE91CA002C939F /* libAudioVideoEngine.a */ = {
+		DABC85D81F65874100F25F17 /* libAudioVideoEngine.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libAudioVideoEngine.a;
-			remoteRef = DA7C89EF1DEE91CA002C939F /* PBXContainerItemProxy */;
+			remoteRef = DABC85D71F65874100F25F17 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -476,6 +489,7 @@
 				DA07AA621DE2C3D800402BB9 /* Common.mm in Sources */,
 				DA7CE4911E6FFD97008895E5 /* SharkfoodMuteSwitchDetector.m in Sources */,
 				DAAE44FF1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp in Sources */,
+				DAA2A2181F7A260800D0443D /* Neon_Assembly_aarch64.s in Sources */,
 				2BA4851713F1E6DB000BABB3 /* main.mm in Sources */,
 				DA7CE48C1E6FFD97008895E5 /* AudioRouter.m in Sources */,
 				2B0EF002170E3E27008EDA06 /* TestCameraViewController.mm in Sources */,
@@ -549,6 +563,9 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
+				"GCC_PREPROCESSOR_DEFINITIONS[sdk=iphoneos*][arch=arm64]" = HAVE_NEON_AARCH64;
+				"GCC_PREPROCESSOR_DEFINITIONS[sdk=iphoneos*][arch=armv7]" = HAVE_NEON;
+				"GCC_PREPROCESSOR_DEFINITIONS[sdk=iphoneos*][arch=armv7s]" = HAVE_NEON;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -595,6 +612,7 @@
 		1B867FFB139D4AD300AD6B47 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LIBRARY = "libc++";
@@ -647,6 +665,7 @@
 		1B867FFC139D4AD300AD6B47 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LIBRARY = "libc++";
@@ -664,6 +683,10 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = TestCamera/Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				"GCC_PREPROCESSOR_DEFINITIONS[sdk=iphoneos*][arch=arm64]" = HAVE_NEON_AARCH64;
+				"GCC_PREPROCESSOR_DEFINITIONS[sdk=iphoneos*][arch=armv7]" = HAVE_NEON;
+				"GCC_PREPROCESSOR_DEFINITIONS[sdk=iphoneos*][arch=armv7s]" = HAVE_NEON;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/include\"",
@@ -684,6 +707,7 @@
 					"$(PROJECT_DIR)/Build/Products/Release-universal",
 				);
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DTARGET_OS_IPHONE",
