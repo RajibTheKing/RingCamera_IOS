@@ -6,7 +6,7 @@
 //
 //
 
-
+#ifdef HAVE_NEON
 
 .macro NEON_ASM_FUNC_BEGIN
 .syntax unified
@@ -23,7 +23,7 @@ mov pc, lr
 .endm
 
 
-NEON_ASM_FUNC_BEGIN convert_asm_neon
+NEON_ASM_FUNC_BEGIN convert_arm_neon
 
 # r0: Ptr to destination data
 # r1: Ptr to source data
@@ -60,7 +60,7 @@ pop         { r4-r5, pc }
 
 NEON_ASM_FUNC_END
 
-NEON_ASM_FUNC_BEGIN add_asm_neon
+NEON_ASM_FUNC_BEGIN add_arm_neon
 # r0: Ptr to destination data
 # r1: Ptr to source data
 # r2: Iteration count:
@@ -87,24 +87,24 @@ pop { r4-r5, pc }
 
 NEON_ASM_FUNC_END
 
-NEON_ASM_FUNC_BEGIN copy_asm_neon
+NEON_ASM_FUNC_BEGIN copy_arm_neon
 # r0: Ptr to destination data
 # r1: Ptr to source data
 # r2: Iteration count:
 push {r4-r5,lr}
 
-.Copy_asm_neon_loop:
+.Copy_arm_neon_loop:
 subs    r2, r2, #32
 vld1.u8  {d0-d3}, [r0]!
 vst1.u8  {d0-d3}, [r1]!
-bne  .Copy_asm_neon_loop
+bne  .Copy_arm_neon_loop
 
 
 pop { r4-r5, pc }
 
 NEON_ASM_FUNC_END
 
-NEON_ASM_FUNC_BEGIN convert_nv12_to_i420_asm_neon
+NEON_ASM_FUNC_BEGIN convert_nv12_to_i420_arm_neon
 # r0: Ptr to source data
 # r1: Ptr to destination data
 # r2: height
@@ -115,16 +115,16 @@ mov r5, r4
 
 ### Y-Values
 ands r8, r4, #7
-beq .convert_nv12_to_i420_asm_neon_loop_Y
+beq .convert_nv12_to_i420_arm_neon_loop_Y
 vld1.u8 {d0}, [r0], r8
 vst1.u8 {d0}, [r1], r8
 subs r4, r4, r8
 
-.convert_nv12_to_i420_asm_neon_loop_Y:
+.convert_nv12_to_i420_arm_neon_loop_Y:
 vld1.u8  {d0}, [r0]!
 vst1.u8  {d0}, [r1]!
 subs    r4, r4, #8
-bne  .convert_nv12_to_i420_asm_neon_loop_Y
+bne  .convert_nv12_to_i420_arm_neon_loop_Y
 
 mov r6, r0
 mov r7, r0
@@ -132,33 +132,33 @@ mov r7, r0
 ### U-Values
 lsrs r4, r5, #1
 ands r8, r4, #15
-beq .convert_nv12_to_i420_asm_neon_loop_U
+beq .convert_nv12_to_i420_arm_neon_loop_U
 vld2.u8 {d0,d1}, [r6], r8
 subs r4, r4, r8
 lsrs r8, r8, #1
 vst1.u8 {d0}, [r1], r8
 
-.convert_nv12_to_i420_asm_neon_loop_U:
+.convert_nv12_to_i420_arm_neon_loop_U:
 vld2.u8 {d0, d1}, [r6]!
 vst1.u8 {d0}, [r1]!
 subs    r4, r4, #16
-bne  .convert_nv12_to_i420_asm_neon_loop_U
+bne  .convert_nv12_to_i420_arm_neon_loop_U
 
 
 ### V-Values
 lsrs r4, r5, #1
 ands r8, r4, #15
-beq .convert_nv12_to_i420_asm_neon_loop_V
+beq .convert_nv12_to_i420_arm_neon_loop_V
 vld2.u8 {d0,d1}, [r7], r8
 subs r4, r4, r8
 lsrs r8, r8, #1
 vst1.u8 {d1}, [r1], r8
 
-.convert_nv12_to_i420_asm_neon_loop_V:
+.convert_nv12_to_i420_arm_neon_loop_V:
 vld2.u8 {d0, d1}, [r7]!
 vst1.u8 {d1}, [r1]!
 subs    r4, r4, #16
-bne  .convert_nv12_to_i420_asm_neon_loop_V
+bne  .convert_nv12_to_i420_arm_neon_loop_V
 
 pop { r4-r8, pc }
 
@@ -168,7 +168,7 @@ NEON_ASM_FUNC_END
 output:                               ; @.str
 .asciz	"Is this ok.. The Value FF is: %d Yes I am done\n"
 
-NEON_ASM_FUNC_BEGIN learn_asm_neon
+NEON_ASM_FUNC_BEGIN learn_arm_neon
 #no parameters
 push {r4-r8,lr}
 
@@ -377,10 +377,27 @@ pop {r2-r8, pc}
 
 NEON_ASM_FUNC_END
 
+NEON_ASM_FUNC_BEGIN Reverse_Check_arm_neon
+push {r2-r8, lr}
+#r0 First parameter, This is the address of <pInData>
+#r1 Second Parameter, This is the iLen
+#r2 Third Parameter, This is the address of <pOutData>
+mov r3, r1
+add r2, r2, r3
+
+vld1.u8 {d0}, [r0]!
+vrev64.u8 d1, d0
+
+sub r2, r2, #8
+vst1.u8 {d1}, [r2]!
+
+pop {r2-r8, pc}
+NEON_ASM_FUNC_END
 
 #int add_function(int a, int b);
 add_function:
 add r6, r6, r7
 BX 	lr
 
+#endif
 

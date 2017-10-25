@@ -65,27 +65,27 @@ void TestNeonAssembly::neon_intrinsic_convert (unsigned char * __restrict dest, 
 
 void TestNeonAssembly::neon_assembly_convert (unsigned char*  __restrict dest, unsigned char*  __restrict src, int n)
 {
-    convert_asm_neon(dest,src,n);
+    convert_arm_neon(dest,src,n);
 }
 
 void TestNeonAssembly::neon_assembly_Inc(unsigned char*  __restrict dest, unsigned char*  __restrict src, int n)
 {
-    add_asm_neon(dest,src,n);
+    add_arm_neon(dest,src,n);
 }
 
 void TestNeonAssembly::Copy_Assembly_Inc(unsigned char* __restrict src, unsigned char* __restrict dest, int iLen)
 {
-    copy_asm_neon(src, dest, iLen);
+    copy_arm_neon(src, dest, iLen);
 }
 
 void TestNeonAssembly::convert_nv12_to_i420_assembly(unsigned char* __restrict src, unsigned char* __restrict dest, int iHeight, int iWidth)
 {
-    convert_nv12_to_i420_asm_neon(src, dest, iHeight, iWidth);
+    convert_nv12_to_i420_arm_neon(src, dest, iHeight, iWidth);
 }
 
 void TestNeonAssembly::learn()
 {
-    learn_asm_neon();
+    //learn_arm_neon();
 }
 void TestNeonAssembly::Crop_yuv420_assembly(unsigned char* src, int inHeight, int inWidth, int startXDiff, int endXDiff, int startYDiff, int endYDiff, unsigned char* dst, int &outHeight, int &outWidth)
 {
@@ -101,11 +101,16 @@ void TestNeonAssembly::Crop_yuv420_assembly(unsigned char* src, int inHeight, in
     param[7] = outWidth;
     
     crop_yuv420_arm_neon(src, dst, param);
-    
-    //ARM_NEON: 2017-08-26 19:45:28.245923 MediaEngine[442:110984] TimeElapsed = 0, frames = 1016, totalDiff = 123
-    //C++: 2017-08-26 19:46:39.203911 MediaEngine[445:111660] TimeElapsed = 0, frames = 1016, totalDiff = 588
+    //ARM_NEON_AARCH_64: 2017-10-05 15:52:02.894346 MediaEngine[1114:344013] TimeElapsed = 0, frames = 1016, totalDiff = 82 ms
+    //ARM_NEON: 2017-08-26 19:45:28.245923 MediaEngine[442:110984] TimeElapsed = 0, frames = 1016, totalDiff = 123 ms
+    //C++: 2017-08-26 19:46:39.203911 MediaEngine[445:111660] TimeElapsed = 0, frames = 1016, totalDiff = 588 ms
 }
 void TestNeonAssembly::CalculateSumOfLast64_assembly(unsigned int * pData, unsigned int *ans)
 {
     CalculateSumOfLast64_ARM_NEON(pData, ans);
+}
+
+void TestNeonAssembly::Reverse_Check_Assembly(unsigned char* pInData, int iLen, unsigned char* pOutData)
+{
+    Reverse_Check_arm_neon(pInData, iLen, pOutData);
 }
