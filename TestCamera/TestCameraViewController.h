@@ -44,6 +44,9 @@
     int params[4];
     NSString *Operation[20];
     int m_iOperationSelector;
+    
+    NSString *resolutionList[4];
+    int m_iResolutionSelector;
     bool m_brapidFireForTargetUserBtnHold;
 }
 @property (retain, nonatomic) IBOutlet NSLayoutConstraint *Constraint_SelfView_Height;

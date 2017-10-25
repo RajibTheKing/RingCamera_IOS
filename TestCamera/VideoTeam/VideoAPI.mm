@@ -57,7 +57,7 @@ void notifyClientMethodWithReceivedIos(int eventType, long long friendName, int 
 
 
 
-void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], int dataLenth)
+void notifyClientMethodWithPacketIos(long long lFriendID, unsigned char data[], int dataLenth)
 {
     if(data != NULL)
     {
@@ -66,7 +66,7 @@ void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], i
         CVideoAPI::GetInstance()->SendPakcetFragments(data, dataLenth);
     }
 }
-void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int mediaType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int insetHeight, int insetWidth, int iOrientation)
+void notifyClientMethodWithVideoDataIos(long long lFriendID, int mediaType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int insetHeight, int insetWidth, int iOrientation)
 {
     CVideoAPI::GetInstance()->m_iRecvFrameCounter++;
     
@@ -98,7 +98,7 @@ void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int mediaType, unsig
 }
 
 void WriteToFileVideoAPI(byte *pData, int iLen);
-void notifyClientMethodWithAudioDataIos(LongLong lFriendID, int mediaType, short data[], int dataLenth)
+void notifyClientMethodWithAudioDataIos(long long lFriendID, int mediaType, short data[], int dataLenth)
 {
     //cout<<"Check: Found Audio Data, datalen = "<<dataLenth<<", mediaType = "<<mediaType<<endl;
     byte *temp = new byte[dataLenth*2];
@@ -115,7 +115,7 @@ void notifyClientMethodWithAudioDataIos(LongLong lFriendID, int mediaType, short
     delete[] temp;
     
 }
-void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType) //Video Notification Added
+void notifyClientMethodWithVideoNotificationIos(long long lCallID, int eventType) //Video Notification Added
 {
     cout<<"Found Event type = "<<eventType<<endl;
     
@@ -161,7 +161,7 @@ void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType)
     
 }
 int mx = 0;
-void notifyClientMethodWithAudiPacketDataIos(LongLong lFriendID, unsigned char data[], int dataLenth)
+void notifyClientMethodWithAudiPacketDataIos(long long lFriendID, unsigned char data[], int dataLenth)
 {
     int iPacketType = (int)data[0];
     cout<<"NotifyClientMethodWithAudioPackt -->"<<dataLenth<<", packet = "<<iPacketType<< endl;
@@ -191,12 +191,12 @@ void notifyClientMethodWithAudiPacketDataIos(LongLong lFriendID, unsigned char d
      */
 }
 
-void notifyClientMethodWithAudioAlarmIos(LongLong lFriendID, short *data, int dataLenth)
+void notifyClientMethodWithAudioAlarmIos(long long lFriendID, short *data, int dataLenth)
 {
     printf("notifyClientMethodWithAudioAlarmIos dataLenth = %d\n", dataLenth);
 }
 
-void notifyClientMethodWithNetworkStrengthNotificationIos(LongLong lCallID, int eventType)
+void notifyClientMethodWithNetworkStrengthNotificationIos(long long lCallID, int eventType)
 {
     printf("notifyClientWithNetworkStrengthNotificationCallback eventType = %d\n", eventType);
     cout<<"notifyClientWithNetworkStrengthNotificationCallback : "<<eventType<<endl;

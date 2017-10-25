@@ -5,18 +5,6 @@
 #include <string>
 #include <vector>
 
-#ifdef TARGET_OS_WINDOWS_PHONE
-#define LongLong __int64
-#define IPVLongType LongLong
-#else
-#ifdef WIN32
-typedef __int64 IPVLongType;
-#else
-typedef long long IPVLongType;
-#endif
-
-typedef long long LongLong;
-#endif
 
 #define MEDIA_TYPE_AUDIO 1
 #define MEDIA_TYPE_VIDEO 2
@@ -25,14 +13,14 @@ typedef long long LongLong;
 
 
 #ifdef ENABLE_MEDIA_CONNECTIVITY
-void AudioDecoding(LongLong lFriendID, unsigned char *in_data, int in_size, int insetID);
+void AudioDecoding(long long lFriendID, unsigned char *in_data, int in_size, int insetID);
 void notifyClientMethodWithSignalingDataIos(unsigned char *buffer, int iLen);
 #else
-void AudioDecoding(LongLong lFriendID, unsigned char *in_data, int in_size);
+void AudioDecoding(long long lFriendID, unsigned char *in_data, int in_size);
 #endif
 
-void VideoDecoding(LongLong lFriendID, unsigned char *in_data, int in_size);
-void SendFunction(IPVLongType lFriendID, int mediaType, unsigned char* data, int iLen, int TimeDiff, std::vector< std::pair<int, int> > vAudioBlocks);
+void VideoDecoding(long long lFriendID, unsigned char *in_data, int in_size);
+void SendFunction(long long lFriendID, int mediaType, unsigned char* data, int iLen, int TimeDiff, std::vector< std::pair<int, int> > vAudioBlocks);
 
 // End Video Team
 
@@ -40,22 +28,22 @@ void SendFunction(IPVLongType lFriendID, int mediaType, unsigned char* data, int
 
 // Start NAT Traversal Team
 
-void notifyClientMethodIos(int eventType);
-void notifyClientMethodForFriendIos(int eventType, long long friendName, int iMedia);
-void notifyClientMethodWithReceivedIos(int eventType, long long friendName, int iMedia, int dataLenth, unsigned char data[]);
+//void notifyClientMethodIos(int eventType);
+//void notifyClientMethodForFriendIos(int eventType, long long friendName, int iMedia);
+//void notifyClientMethodWithReceivedIos(int eventType, long long friendName, int iMedia, int dataLenth, unsigned char data[]);
 
 // End NAT Traversal Team
 
 // Start Video Team
 
-void notifyClientMethodWithPacketIos(LongLong lFriendID, unsigned char data[], int dataLenth);
-void notifyClientMethodWithVideoDataIos(LongLong lFriendID, int eventType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int insetHeight, int insetWidth, int iOrienttation);
-void notifyClientMethodWithVideoNotificationIos(LongLong lCallID, int eventType);
-void notifyClientMethodWithNetworkStrengthNotificationIos(LongLong lCallID, int eventType);
-void notifyClientMethodWithAudioDataIos(LongLong lFriendID, int eventType, short data[], int dataLenth);
-void notifyClientMethodWithAudioAlarmIos(LongLong lFriendID, short data[], int dataLenth);
-void notifyClientMethodWithAudioAlarmIos(LongLong lEventType, short data[], int dataLenth);
-void notifyClientMethodWithAudiPacketDataIos(LongLong lFriendID, unsigned char data[], int dataLenth);
+void notifyClientMethodWithPacketIos(long long lFriendID, unsigned char data[], int dataLenth);
+void notifyClientMethodWithVideoDataIos(long long lFriendID, int eventType, unsigned char data[], int dataLenth, int iVideoHeight, int iVideoWidth, int insetHeight, int insetWidth, int iOrienttation);
+void notifyClientMethodWithVideoNotificationIos(long long lCallID, int eventType);
+void notifyClientMethodWithNetworkStrengthNotificationIos(long long lCallID, int eventType);
+void notifyClientMethodWithAudioDataIos(long long lFriendID, int eventType, short data[], int dataLenth);
+void notifyClientMethodWithAudioAlarmIos(long long lFriendID, short data[], int dataLenth);
+void notifyClientMethodWithAudioAlarmIos(long long lEventType, short data[], int dataLenth);
+void notifyClientMethodWithAudiPacketDataIos(long long lFriendID, unsigned char data[], int dataLenth);
 
 // End Video Team
 
@@ -87,53 +75,21 @@ public:
     CRingIDSDK();
     ~CRingIDSDK();
     
-    bool Init(const LongLong& lUserID, const std::string& sLogFilePath, int logLevel);
+    bool Init(const long long& lUserID, const std::string& sLogFilePath, int logLevel);
     
-    bool InitializeLibrary(const LongLong& lUserID);
+    bool InitializeLibrary(const long long& lUserID);
     
     bool IsLoadRingIDSDK();
     
     // Start NAT Traversal Team
     
-    bool SetAuthenticationServer(const LongLong& sAuthServerIP, int iAuthServerPort, const std::string& sAppSessionId);
+    bool CloseSession(const long long& lFriendID, int mediaType);
     
-    void SetTimeOutForSocket(int time_in_sec);
-    
-    int CreateSession(const LongLong& lFriendID, int mediaType, const LongLong& sRelayServerIP, int iRelayServerPort);
-    
-    int TransferFile(const LongLong& fileID, const LongLong& lFriendID, bool isSender, const std::string &filePath, LongLong fileOffset = -1);
-    
-    void CancelTransferFile(const LongLong& fileID, const LongLong& lFriendID, bool deleteFile);
-    
-    void SetRelayServerInformation(const LongLong& lFriendID, int mediaType, const LongLong& sRelayServerIP, int iRelayServerPort);
-    
-    void StartP2PCall(const LongLong& lFriendID, int medaiType, bool bCaller);
-    
-    bool IsConnectionTypeHostToHost(LongLong lFriendID, int mediaType);
-    
-    int SendTo(const LongLong& lFriendID, const int mediaType, unsigned char data[], int iLen, const LongLong& sDestinationIP, int iDestinationPort);
-    
-    std::string GetSelectedIPAddress(const LongLong& lFriendID, int mediaType);
-    
-    int GetSelectedPort(const LongLong& lFriendID, int mediaType);
-    
-    bool CloseSession(const LongLong& lFriendID, int mediaType);
-    
-    void SetNotifyClientMethodCallback(void (*ptr)(int));
-    
-    void SetNotifyClientMethodForFriendCallback(void (*ptr)(int, LongLong, int));
-    
-    void SetNotifyClientMethodWithReceivedBytesCallback(void (*ptr)(int, LongLong, int, int, unsigned char*));
-    
-    void SetNotifierForFileTransfer(void(*ptr)(int, LongLong, LongLong, LongLong, LongLong, double));
     
     // End NAT Traversal Team
     
     void Release();
     
-    void UpdateInformation();
-    
-    void SetLogFileProperty(const std::string& loc, int logLevel, bool bCreate);
     
     void SetLogFileLocation(const std::string& loc);
     
@@ -151,72 +107,72 @@ public:
     int FrameMuxAndEncode( unsigned char *pVideoYuv, int iHeight, int iWidth);
     int StopVideoMuxingAndEncodeSession(unsigned char *finalData);
     
-    bool StartAudioCall(const LongLong& lFriendID, int nServiceType, int entityType, int nAudioSpeakerType);
+    bool StartAudioCall(const long long& lFriendID, int nServiceType, int entityType, int nAudioSpeakerType);
     
-    bool StartCallInLive(const LongLong& llFriendID, int iRole, int nCallInLiveType);
+    bool StartCallInLive(const long long& llFriendID, int iRole, int nCallInLiveType);
     
-    void SetCallInLiveType(const LongLong& llFriendID, int nCallInLiveType);
+    void SetCallInLiveType(const long long& llFriendID, int nCallInLiveType);
     
-    bool EndCallInLive(const LongLong& lFriendID);
+    bool EndCallInLive(const long long& lFriendID);
     
-    bool SetVolume(const LongLong& lFriendID, int iVolume, bool bRecorder);
+    bool SetVolume(const long long& lFriendID, int iVolume, bool bRecorder);
     
-    bool SetSpeakerType(const LongLong& lFriendID, int iSpeakerType);
+    bool SetSpeakerType(const long long& lFriendID, int iSpeakerType);
     
-    bool SetEchoCanceller(const LongLong& lFriendID, bool bOn);
+    bool SetEchoCanceller(const long long& lFriendID, bool bOn);
     
-    bool StartVideoCall(const LongLong& llFriendID, int nVideoHeight, int nVideoWidth, int nServiceType, int nEntityType, int nNetworkType, bool bAudioOnlyLive);
+    bool StartVideoCall(const long long& llFriendID, int nVideoHeight, int nVideoWidth, int nServiceType, int nEntityType, int nNetworkType, bool bAudioOnlyLive);
     
-    void PushPacketForDecoding(LongLong lFriendID, int mediaType, int nEntityType, unsigned char *in_data, int in_size);
+    void PushPacketForDecoding(long long lFriendID, int mediaType, int nEntityType, unsigned char *in_data, int in_size);
     
-    void PushAudioForDecoding(LongLong lFriendID, int mediaType, int nEntityType, unsigned char *in_data, int in_size);
+    void PushAudioForDecoding(long long lFriendID, int mediaType, int nEntityType, unsigned char *in_data, int in_size);
     
-    int SendAudioData(const LongLong& lFriendID, short *in_data, unsigned int in_size);
+    int SendAudioData(const long long& lFriendID, short *in_data, unsigned int in_size);
     
-    int CancelAudioData(const LongLong& lFriendID, short *in_data, unsigned int in_size);
+    int CancelAudioData(const long long& lFriendID, short *in_data, unsigned int in_size);
     
-    int SendVideoData(const LongLong& lFriendID, unsigned char *in_data, unsigned int in_size, unsigned int orientation_type, int device_orientation);
+    int SendVideoData(const long long& lFriendID, unsigned char *in_data, unsigned int in_size, unsigned int orientation_type, int device_orientation);
     
-    int SetEncoderHeightWidth(const LongLong& lFriendID, int height, int width);
+    int SetEncoderHeightWidth(const long long& lFriendID, int height, int width);
     
-    int SetBitRate(const LongLong& lFriendID, int bitRate);
+    int SetBitRate(const long long& lFriendID, int bitRate);
     
     int SetDeviceDisplayHeightWidth(int nVideoHeight, int nVideoWidth);
     
-    int SetBeautification(const IPVLongType llFriendID, bool bIsEnable);
+    int SetBeautification(const long long llFriendID, bool bIsEnable);
     
-    int SetVideoEffect(const IPVLongType llFriendID, int nEffectStatus);
+    int SetVideoEffect(const long long llFriendID, int nEffectStatus);
     
-    int TestVideoEffect(const IPVLongType llFriendID, int *param, int size);
+    int TestVideoEffect(const long long llFriendID, int *param, int size);
     
     
-    bool StopAudioCall(const LongLong& lFriendID);
+    bool StopAudioCall(const long long& lFriendID);
     
-    bool StopVideoCall(const LongLong& lFriendID);
+    bool StopVideoCall(const long long& lFriendID);
     
-    int CheckDeviceCapability(const LongLong& lFriendID, int iHeightHigh, int iWidthHigh, int iHeightLow, int iWidthLow);
+    int CheckDeviceCapability(const long long& lFriendID, int iHeightHigh, int iWidthHigh, int iHeightLow, int iWidthLow);
     int SetDeviceCapabilityResults(int iNotification, int iHeightHigh, int iWidthHigh, int iHeightLow, int iWidthLow);
     
-    void InterruptOccured(const LongLong& lFriendID);
+    void InterruptOccured(const long long& lFriendID);
     
-    void InterruptOver(const LongLong& lFriendID);
+    void InterruptOver(const long long& lFriendID);
     
     bool SetLoggingState(bool loggingState, int logLevel=5);
     
     
-    void SetNotifyClientWithPacketCallback(void(*callBackFunctionPointer)(LongLong, unsigned char*, int));
+    void SetNotifyClientWithPacketCallback(void(*callBackFunctionPointer)(long long, unsigned char*, int));
     
-    void SetNotifyClientWithVideoDataCallback(void(*callBackFunctionPointer)(LongLong, int, unsigned char*, int, int, int, int, int, int));
+    void SetNotifyClientWithVideoDataCallback(void(*callBackFunctionPointer)(long long, int, unsigned char*, int, int, int, int, int, int));
     
-    void SetNotifyClientWithVideoNotificationCallback(void(*callBackFunctionPointer)(LongLong, int));
+    void SetNotifyClientWithVideoNotificationCallback(void(*callBackFunctionPointer)(long long, int));
     
-    void SetNotifyClientWithNetworkStrengthNotificationCallback(void(*callBackFunctionPointer)(LongLong, int));
+    void SetNotifyClientWithNetworkStrengthNotificationCallback(void(*callBackFunctionPointer)(long long, int));
     
-    void SetNotifyClientWithAudioDataCallback(void(*callBackFunctionPointer)(LongLong, int, short*, int));
+    void SetNotifyClientWithAudioDataCallback(void(*callBackFunctionPointer)(long long, int, short*, int));
     
-    void SetNotifyClientWithAudioAlarmCallback(void(*callBackFunctionPointer)(LongLong, short*, int));
+    void SetNotifyClientWithAudioAlarmCallback(void(*callBackFunctionPointer)(long long, short*, int));
     
-    void SetNotifyClientWithAudioPacketDataCallback(void(*callBackFunctionPointer)(LongLong, unsigned char*, int));
+    void SetNotifyClientWithAudioPacketDataCallback(void(*callBackFunctionPointer)(long long, unsigned char*, int));
     
     
 #ifdef ENABLE_MEDIA_CONNECTIVITY
@@ -236,7 +192,7 @@ public:
     
     // Start NAT Traversal Team
     
-    CConnectivityEngine *m_pConnectivityInstance;
+    // CConnectivityEngine *m_pConnectivityInstance;
     
     // End NAT Traversal Team
     
@@ -257,3 +213,4 @@ public:
 
 
 #endif
+

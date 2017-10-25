@@ -181,6 +181,14 @@ int g_iTargetUser;
     printf("neon_assembly_convert timeDIff = %lld\n", CurrentTimeStamp() - startTime);
     for(int i=0;i<50;i++){printf("%d ", temporaryRGBoutput[i]);}printf("\n");
     
+    printf("TheKing--> Check Reverse ARM Assembly\n");
+    unsigned char *temporaryArray = new unsigned char[MAXHEIGHT * MAXWIDTH * 3];
+    unsigned char *temporaryArrayOut = new unsigned char[MAXHEIGHT * MAXWIDTH * 3];
+    int iTempLen = 200;
+    for(int i=0;i<iTempLen;i++)temporaryArray[i]=rand()%255;
+    for(int i=0;i<iTempLen;i++){printf("%4d ", temporaryArray[i]); if((i+1)%30==0)printf("\n");}printf("\n");
+    testNeonAssembly.Reverse_Check_Assembly(temporaryArray, iTempLen, temporaryArrayOut);
+    for(int i=0;i<iTempLen;i++){printf("%4d ", temporaryArrayOut[i]); if((i+1)%30==0)printf("\n"); }printf("\n");
     
     int iFrameLen = 1280*720*3/2;
     
@@ -229,6 +237,12 @@ int g_iTargetUser;
     cout<<"Final Ans = "<<*ans<<endl;
     
     
+    
+    resolutionList[0] = @"352x288";
+    resolutionList[1] = @"640x480";
+    resolutionList[2] = @"1280x720";
+    resolutionList[3] = @"1920x1080";
+    m_iResolutionSelector = 0;
     
 }
 
@@ -298,17 +312,30 @@ int g_iTargetUser;
 
 - (int)InitializeCameraAndMicrophone
 {
-    if([self.ResField.text isEqual:@"640x480"])
+    if([self.ResField.text isEqual:@"352x288"])
+    {
+        m_iCameraHeight = 352;
+        m_iCameraWidth = 288;
+        
+    }
+    else if([self.ResField.text isEqual:@"640x480"])
     {
         m_iCameraHeight = 640;
         m_iCameraWidth = 480;
         
     }
+    else if([self.ResField.text isEqual:@"1280x720"])
+    {
+        m_iCameraHeight = 1280;
+        m_iCameraWidth = 720;
+        
+    }
     else
     {
-        m_iCameraHeight = 352;
-        m_iCameraWidth = 288;
+        m_iCameraHeight = 1920;
+        m_iCameraWidth = 1080;
     }
+
     
     g_pVideoCameraProcessor.m_lCameraInitializationStartTime = CurrentTimeStamp();
     
@@ -346,16 +373,9 @@ int g_iTargetUser;
 {
     cout<<"TheKing--> Inside ChangeResAction"<<endl;
     NSString *nsRes = self.ResField.text;
-    if([nsRes isEqual: @"640x480"])
-    {
-        cout<<"Setting to Low Resolution"<<endl;
-        self.ResField.text = @"352x288";
-    }
-    else
-    {
-        cout<<"Setting to High Resolution"<<endl;
-        self.ResField.text = @"640x480";
-    }
+    m_iResolutionSelector++;
+    m_iResolutionSelector%=4;
+    self.ResField.text = resolutionList[m_iResolutionSelector];
 }
 
 - (IBAction)loudSpeakerAction:(id)sender
@@ -1002,7 +1022,7 @@ void WriteToFile(byte *pData)
     cout<<"Here height and width = "<<m_iCameraHeight<<", "<<m_iCameraWidth<<endl;
     
     std::string sDevice = getDeviceModel();
-    int iDeviceCapability = 0;
+    int iDeviceCapability = 207;
     if(sDevice == "iPhone7,2")
     {
         iDeviceCapability = 205;

@@ -30,10 +30,12 @@
 
 #include <sstream>
 #include <queue>
+#include "TestNeonAssembly.hpp"
 
 
 byte baVideoRenderBufferUVChannel [MAXWIDTH * MAXHEIGHT/2];
 byte pRawYuv[MAXWIDTH * MAXHEIGHT*3/2 + 10];
+byte pOutPutTest[MAXWIDTH * MAXHEIGHT*3/2 + 10];
 byte pScaledVideo[MAXWIDTH * MAXHEIGHT*3/2 + 10];
 
 template class RingBuffer<int>;
@@ -137,12 +139,18 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
         if(*iHeight * *iWidth== 288 * 352)
         {
             [*session setSessionPreset:AVCaptureSessionPreset352x288];
-            //[*session setSessionPreset:AVCaptureSessionPreset1280x720];
-            
         }
         else if(*iHeight * *iWidth == 480 * 640)
         {
             [*session setSessionPreset:AVCaptureSessionPreset640x480];
+        }
+        else if(*iHeight * *iWidth == 1280 * 720)
+        {
+            [*session setSessionPreset:AVCaptureSessionPreset1280x720];
+        }
+        else if(*iHeight * *iWidth == 1080 * 1920)
+        {
+            [*session setSessionPreset:AVCaptureSessionPreset1920x1080];
         }
         else
         {
@@ -344,6 +352,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     [self.delegate UpdateStatusMessage:sMsg];
 }
 int tempCounter = 0;
+long long totalDIff = 0;
 int stride = 352;
 byte newData[640*480*3/2];
 
@@ -476,53 +485,80 @@ byte newData[640*480*3/2];
     //m_pVideoConverter->DetectAndShowOnlySkin(pRawYuv, iNewHeight, iNewWidth);
     
     
+    int iNewHeight = 64, iNewWidth = 64;
     /*****
      *DynamicResizeTest
      **/
-    /*long long startTime = CurrentTimeStamp();
-    m_pVideoConverter->Convert_YUVNV12_To_YUVI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
+    //long long startTime = CurrentTimeStamp();
+    //m_pVideoConverter->Convert_YUVNV12_To_YUVI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
 
-    int iNewHeight = 200, iNewWidth = 150;
+    
     //m_pVideoConverter->DownScaleYUV420_Dynamic(pRawYuv, m_iCameraHeight, m_iCameraWidth, pScaledVideo, 3);
-    m_pVideoConverter->DownScaleYUV420_Dynamic(pRawYuv, m_iCameraHeight, m_iCameraWidth, pScaledVideo, iNewHeight,iNewWidth);
+    //m_pVideoConverter->DownScaleYUV420_Dynamic(pRawYuv, m_iCameraHeight, m_iCameraWidth, pScaledVideo, iNewHeight,iNewWidth);
     
     
     
-    iVideoWidth = iNewWidth;
-    iVideoHeight = iNewHeight;
-    memcpy(pRawYuv, pScaledVideo, iNewHeight*iNewWidth*3/2);
-    m_pVideoConverter->ConvertI420ToNV12(pRawYuv, iVideoHeight, iVideoWidth);
+    //iVideoWidth = iNewWidth;
+    //iVideoHeight = iNewHeight;
+    //memcpy(pRawYuv, pScaledVideo, iNewHeight*iNewWidth*3/2);
+    //m_pVideoConverter->ConvertI420ToNV12(pRawYuv, iVideoHeight, iVideoWidth);
     
-    NSLog(@"TimeElapsed = %lld", CurrentTimeStamp() - startTime);
-    */
+    //NSLog(@"TimeElapsed = %lld", CurrentTimeStamp() - startTime);
+    
+    
     int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
     
-    
+    //printf("TheKing--> Got VideoData len = %d\n", iVideoHeight * iVideoWidth * 3 / 2);
     
     //Sending to OwnReceiving Thread Directly using VideoAPI
     //m_pVideoConverter->mirrorRotateAndConvertNV12ToI420(pRawYuv, newData, iVideoHeight, iVideoWidth);
     //m_pVideoConverter->ConvertI420ToNV12(newData, iVideoHeight, iVideoWidth);
+//#define ASSEMBLY_TEST
+    
+#ifdef ASSEMBLY_TEST
+    
+    
+    TestNeonAssembly ts;
+    ts.convert_nv12_to_i420_assembly(pRawYuv, pOutPutTest, iVideoHeight, iVideoWidth);
+    //m_pVideoConverter->Convert_YUVNV12_To_YUVI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
     
     
     
-    /*
-    CVideoAPI::GetInstance()->m_iReceivedHeight = iVideoHeight;
-    CVideoAPI::GetInstance()->m_iReceivedWidth = iVideoWidth;
-    CVideoAPI::GetInstance()->ReceiveFullFrame(pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
-    */
+    memcpy(pRawYuv, pOutPutTest, iVideoWidth*iVideoHeight*3/2);
+    memset(pOutPutTest, 0, sizeof(pOutPutTest));
+    
+    long long startTime = CurrentTimeStamp();
+    //m_pVideoConverter->Crop_YUV420(pRawYuv, iVideoHeight, iVideoWidth, 12, 10, 22, 28, pOutPutTest, iNewHeight, iNewWidth);
+    ts.Crop_yuv420_assembly(pRawYuv, iVideoHeight, iVideoWidth, 12, 10, 22, 28, pOutPutTest, iNewHeight, iNewWidth);
+    long long diff = CurrentTimeStamp() - startTime;
+    totalDIff+=diff;
+    tempCounter++;
+    NSLog(@"TimeElapsed = %lld, frames = %d, totalDiff = %lld", diff, tempCounter, totalDIff);
+    
+    iVideoHeight = iNewHeight;
+    iVideoWidth = iNewWidth;
+    
+    m_pVideoConverter->ConvertI420ToNV12(pOutPutTest, iVideoHeight, iVideoWidth);
+    
+    
+    //CVideoAPI::GetInstance()->m_iReceivedHeight = iVideoHeight;
+    //CVideoAPI::GetInstance()->m_iReceivedWidth = iVideoWidth;
+    //CVideoAPI::GetInstance()->ReceiveFullFrame(pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2);
+    
     
     
     //Sending to OwnViewer Directly
-    //m_iRenderHeight = iVideoHeight;
-    //m_iRenderWidth = iVideoWidth;
-    //[self BackConversion:pRawYuv];
-    //string sStatusMessage = "Height = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoHeight) +
+    m_iRenderHeight = iVideoHeight;
+    m_iRenderWidth = iVideoWidth;
+    [self BackConversion:pOutPutTest];
+    string sStatusMessage = "Height = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoHeight) +
                             ", Width = " + CVideoAPI::GetInstance()->IntegertoStringConvert(iVideoWidth);
-    //[self UpdateStatusMessage:sStatusMessage];
+    [self UpdateStatusMessage:sStatusMessage];
     
     //cout<<"Rajib_Check: SendVideoDataV, DataLen = "<<m_iCameraHeight * m_iCameraWidth * 3 / 2<<", iRet = "<<iRet<<endl;
     
     //printf("Rajib_Check: Trying to SendVideoDataV\n");
+#endif
     
     /*
     if(tempCounter<300)
