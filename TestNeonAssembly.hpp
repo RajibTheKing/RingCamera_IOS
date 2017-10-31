@@ -21,7 +21,9 @@ extern "C"
     void learn_arm_neon();
     void crop_yuv420_arm_neon(unsigned char* __restrict src, unsigned char* __restrict dst, unsigned int* __restrict param);
     void CalculateSumOfLast64_ARM_NEON(unsigned int* __restrict pData, unsigned int* __restrict ans);
-    void Reverse_Check_arm_neon(unsigned char* pInData, int iLen, unsigned char* pOutData);
+    void Reverse_array_arm_neon(unsigned char* pInData, int iLen, unsigned char* pOutData);
+    void Reverse_array_arm_neon_version2(unsigned char* pInData, int iLen, unsigned char* pOutData);
+    void mirror_YUV420_arm_neon(unsigned char *pInData, unsigned char *pOutData, int iHeight, int iWidth);
 }
 
 
@@ -40,7 +42,8 @@ public:
     void learn();
     void Crop_yuv420_assembly(unsigned char* src, int inHeight, int inWidth, int startXDiff, int endXDiff, int startYDiff, int endYDiff, unsigned char* dst, int &outHeight, int &outWidth);
     void CalculateSumOfLast64_assembly(unsigned int * pData, unsigned int *ans);
-    void Reverse_Check_Assembly(unsigned char* pInData, int iLen, unsigned char* pOutData);
+    void Reverse_array(unsigned char* pInData, int iLen, unsigned char* pOutData);
+    void Mirror_YUV420_Assembly(unsigned char *pInData, unsigned char *pOutData, int iHeight, int iWidth);
     
     unsigned int* __restrict param;
 };

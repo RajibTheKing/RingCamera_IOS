@@ -159,6 +159,7 @@ int g_iTargetUser;
     m_pTestCameraViewController = self;
     
     TestNeonAssembly testNeonAssembly;
+    srand (time(NULL));
     unsigned char *temporaryRGB = new unsigned char[MAXHEIGHT * MAXWIDTH * 3];
     unsigned char *temporaryRGBoutput = new unsigned char[MAXHEIGHT * MAXWIDTH * 3];
     for(int i=0;i<MAXHEIGHT*MAXWIDTH*3;i++)
@@ -181,14 +182,24 @@ int g_iTargetUser;
     printf("neon_assembly_convert timeDIff = %lld\n", CurrentTimeStamp() - startTime);
     for(int i=0;i<50;i++){printf("%d ", temporaryRGBoutput[i]);}printf("\n");
     
+    
+    
     printf("TheKing--> Check Reverse ARM Assembly\n");
-    unsigned char *temporaryArray = new unsigned char[MAXHEIGHT * MAXWIDTH * 3];
-    unsigned char *temporaryArrayOut = new unsigned char[MAXHEIGHT * MAXWIDTH * 3];
-    int iTempLen = 200;
-    for(int i=0;i<iTempLen;i++)temporaryArray[i]=rand()%255;
-    for(int i=0;i<iTempLen;i++){printf("%4d ", temporaryArray[i]); if((i+1)%30==0)printf("\n");}printf("\n");
-    testNeonAssembly.Reverse_Check_Assembly(temporaryArray, iTempLen, temporaryArrayOut);
-    for(int i=0;i<iTempLen;i++){printf("%4d ", temporaryArrayOut[i]); if((i+1)%30==0)printf("\n"); }printf("\n");
+    int numberOfIterations = 1;
+    while(numberOfIterations > 0)
+    {
+        unsigned char *temporaryArray = new unsigned char[MAXHEIGHT * MAXWIDTH * 3];
+        unsigned char *temporaryArrayOut = new unsigned char[MAXHEIGHT * MAXWIDTH * 3];
+        int iTempLen = MAXHEIGHT * MAXWIDTH * 3;
+        for(int i=0;i<iTempLen;i++)temporaryArray[i]=rand()%255;
+        //for(int i=0;i<iTempLen;i++){printf("%02X ", temporaryArray[i]); if((i+1)%16==0)printf("\n");}printf("\n");
+        startTime = CurrentTimeStamp();
+        testNeonAssembly.Reverse_array(temporaryArray, iTempLen, temporaryArrayOut);
+         printf("TotalTimeDiff of Reverse = %lld\n", CurrentTimeStamp() - startTime);
+        //for(int i=0;i<iTempLen;i++){printf("%02X ", temporaryArrayOut[i]); if((i+1)%16==0)printf("\n"); }printf("\n");
+        numberOfIterations--;
+    }
+   
     
     int iFrameLen = 1280*720*3/2;
     

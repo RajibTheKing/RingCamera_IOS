@@ -55,8 +55,9 @@
 		DA91B85C1F4AA678004844AA /* libAudioVideoEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA91B85B1F4AA678004844AA /* libAudioVideoEngine.a */; };
 		DA91B85E1F4AA67D004844AA /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA91B85D1F4AA67D004844AA /* libRingIDSDK.a */; };
 		DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA971EFB1E07A9D600645151 /* FastBilateral.mm */; };
-		DAA2A2181F7A260800D0443D /* Neon_Assembly_aarch64.s in Sources */ = {isa = PBXBuildFile; fileRef = DAA2A2171F7A260800D0443D /* Neon_Assembly_aarch64.s */; };
-		DAAE44FA1F28BAF800BC5FA1 /* Neon_Assembly.s in Sources */ = {isa = PBXBuildFile; fileRef = DAAE44F91F28BAF800BC5FA1 /* Neon_Assembly.s */; };
+		DAA2A2181F7A260800D0443D /* Neon_Assembly_aarch64.S in Sources */ = {isa = PBXBuildFile; fileRef = DAA2A2171F7A260800D0443D /* Neon_Assembly_aarch64.S */; };
+		DAA559F91FA86F4D004C565D /* mirror_YUV420_Assembly.S in Sources */ = {isa = PBXBuildFile; fileRef = DAA559F81FA86F4C004C565D /* mirror_YUV420_Assembly.S */; };
+		DAAE44FA1F28BAF800BC5FA1 /* Neon_Assembly.S in Sources */ = {isa = PBXBuildFile; fileRef = DAAE44F91F28BAF800BC5FA1 /* Neon_Assembly.S */; };
 		DAAE44FF1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAAE44FD1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp */; };
 		DAC7C1E51E7544850045242C /* ClientRenderingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC7C1E31E7544850045242C /* ClientRenderingBuffer.cpp */; };
 		DAC7C1EC1E7546180045242C /* ClientLockHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC7C1E81E7546180045242C /* ClientLockHandler.cpp */; };
@@ -156,8 +157,9 @@
 		DA91B85B1F4AA678004844AA /* libAudioVideoEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAudioVideoEngine.a; path = "Build/Products/Release-universal/libAudioVideoEngine.a"; sourceTree = "<group>"; };
 		DA91B85D1F4AA67D004844AA /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = "Build/Products/Release-universal/libRingIDSDK.a"; sourceTree = "<group>"; };
 		DA971EFB1E07A9D600645151 /* FastBilateral.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = FastBilateral.mm; path = TestCamera/VideoTeam/FastBilateral.mm; sourceTree = "<group>"; };
-		DAA2A2171F7A260800D0443D /* Neon_Assembly_aarch64.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = Neon_Assembly_aarch64.s; sourceTree = "<group>"; };
-		DAAE44F91F28BAF800BC5FA1 /* Neon_Assembly.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = Neon_Assembly.s; sourceTree = "<group>"; };
+		DAA2A2171F7A260800D0443D /* Neon_Assembly_aarch64.S */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = Neon_Assembly_aarch64.S; sourceTree = "<group>"; };
+		DAA559F81FA86F4C004C565D /* mirror_YUV420_Assembly.S */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = mirror_YUV420_Assembly.S; sourceTree = "<group>"; };
+		DAAE44F91F28BAF800BC5FA1 /* Neon_Assembly.S */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = Neon_Assembly.S; sourceTree = "<group>"; };
 		DAAE44FD1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestNeonAssembly.cpp; sourceTree = "<group>"; };
 		DAAE44FE1F28BB4C00BC5FA1 /* TestNeonAssembly.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestNeonAssembly.hpp; sourceTree = "<group>"; };
 		DABC85D31F65874100F25F17 /* AudioVideoEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioVideoEngine.xcodeproj; path = "../IPV-MediaEngine/builds/ios/AudioVideoEngine.xcodeproj"; sourceTree = "<group>"; };
@@ -220,8 +222,9 @@
 				18747AF71BFDD0C60010CAA3 /* VideoSockets.mm */,
 				18747AF81BFDD0C60010CAA3 /* VideoThreadProcessor.h */,
 				18747AF91BFDD0C60010CAA3 /* VideoThreadProcessor.mm */,
-				DAA2A2171F7A260800D0443D /* Neon_Assembly_aarch64.s */,
-				DAAE44F91F28BAF800BC5FA1 /* Neon_Assembly.s */,
+				DAA2A2171F7A260800D0443D /* Neon_Assembly_aarch64.S */,
+				DAAE44F91F28BAF800BC5FA1 /* Neon_Assembly.S */,
+				DAA559F81FA86F4C004C565D /* mirror_YUV420_Assembly.S */,
 				DAAE44FD1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp */,
 				DAAE44FE1F28BB4C00BC5FA1 /* TestNeonAssembly.hpp */,
 			);
@@ -489,7 +492,8 @@
 				DA07AA621DE2C3D800402BB9 /* Common.mm in Sources */,
 				DA7CE4911E6FFD97008895E5 /* SharkfoodMuteSwitchDetector.m in Sources */,
 				DAAE44FF1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp in Sources */,
-				DAA2A2181F7A260800D0443D /* Neon_Assembly_aarch64.s in Sources */,
+				DAA2A2181F7A260800D0443D /* Neon_Assembly_aarch64.S in Sources */,
+				DAA559F91FA86F4D004C565D /* mirror_YUV420_Assembly.S in Sources */,
 				2BA4851713F1E6DB000BABB3 /* main.mm in Sources */,
 				DA7CE48C1E6FFD97008895E5 /* AudioRouter.m in Sources */,
 				2B0EF002170E3E27008EDA06 /* TestCameraViewController.mm in Sources */,
@@ -501,7 +505,7 @@
 				18747AFE1BFDD0C60010CAA3 /* VideoAPI.mm in Sources */,
 				DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */,
 				DA7CE48E1E6FFD97008895E5 /* BufferQueue.m in Sources */,
-				DAAE44FA1F28BAF800BC5FA1 /* Neon_Assembly.s in Sources */,
+				DAAE44FA1F28BAF800BC5FA1 /* Neon_Assembly.S in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,6 +9,7 @@
 #include "TestNeonAssembly.hpp"
 #include <arm_neon.h>
 
+#include <algorithm>
 
 
 TestNeonAssembly::TestNeonAssembly()
@@ -110,7 +111,27 @@ void TestNeonAssembly::CalculateSumOfLast64_assembly(unsigned int * pData, unsig
     CalculateSumOfLast64_ARM_NEON(pData, ans);
 }
 
-void TestNeonAssembly::Reverse_Check_Assembly(unsigned char* pInData, int iLen, unsigned char* pOutData)
+//#define OPTIMIZATION
+
+void TestNeonAssembly::Reverse_array(unsigned char* pInData, int iLen, unsigned char* pOutData)
 {
-    Reverse_Check_arm_neon(pInData, iLen, pOutData);
+    Reverse_array_arm_neon(pInData, iLen, pOutData);
+    //Reverse_array_arm_neon_version2(pInData, iLen, pOutData);
+    /*
+#ifdef OPTIMIZATION
+    std::reverse(pInData, pInData + iLen);
+    memcpy(pOutData, pInData, iLen);
+    
+#else
+    int indx = 0;
+    for(int i=iLen-1; i>=0; i--)
+    {
+        pOutData[indx++] = pInData[i];
+    }
+#endif
+    */
+}
+void TestNeonAssembly::Mirror_YUV420_Assembly(unsigned char *pInData, unsigned char *pOutData, int iHeight, int iWidth)
+{
+    mirror_YUV420_arm_neon(pInData, pOutData, iHeight, iWidth);
 }
