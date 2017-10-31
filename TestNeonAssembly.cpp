@@ -111,13 +111,13 @@ void TestNeonAssembly::CalculateSumOfLast64_assembly(unsigned int * pData, unsig
     CalculateSumOfLast64_ARM_NEON(pData, ans);
 }
 
-//#define OPTIMIZATION
+#define OPTIMIZATION
 
 void TestNeonAssembly::Reverse_array(unsigned char* pInData, int iLen, unsigned char* pOutData)
 {
     Reverse_array_arm_neon(pInData, iLen, pOutData);
     //Reverse_array_arm_neon_version2(pInData, iLen, pOutData);
-    /*
+   /*
 #ifdef OPTIMIZATION
     std::reverse(pInData, pInData + iLen);
     memcpy(pOutData, pInData, iLen);

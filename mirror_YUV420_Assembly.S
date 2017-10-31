@@ -23,104 +23,74 @@ mov pc, lr
 .endm
 
 
-//void CColorConverter::mirrorYUVI420(unsigned char *pInData, unsigned char *pOutData, int iHeight, int iWidth)
+//void mirrorYUVI420(unsigned char *pInData, unsigned char *pOutData, int iHeight, int iWidth)
 NEON_ASM_FUNC_BEGIN mirror_YUV420_arm_neon
 push {r4-r8, lr}
+//r0 = pInData, r1 = pOutData, r2 = iHeight, r3 = iWidth
+
+bl ReverseArrayForMirror //Calling for Y Values
+
+lsr         r2,     r2,     #1
+lsr         r3,     r3,     #1
+
+bl ReverseArrayForMirror //Calling for U Values
+
+bl ReverseArrayForMirror //Calling for V Values
+
+pop {r4-r8, pc}
+NEON_ASM_FUNC_END
+
+
+//It's a branch to reverse row by row array from a frame
+ReverseArrayForMirror:
 pInData     .req    r0
 pOutData    .req    r1
 iHeight     .req    r2
 iWidth      .req    r3
-iYlen       .req    r4
-iUVlen      .req    r5
-iH          .req    r6
-iOverlap    .req    r7
-iTemp       .req    r8
-iLen        .req    r9
-
+iH          .req    r4
+iOverlap    .req    r5
+iTemp       .req    r6
+iLen        .req    r7
 
 mov         iH,         0
-mirror_YUV420_Y_Hloop:
+ReverseForMirror_HLoop: //Starting Height Loop
     mov         iLen,       iWidth
     add         pOutData,   pOutData,   iLen
     add         pOutData,   pOutData,   #8
     ands        iOverlap,   iLen,       #7
-    beq         mirror_YUV420_loop_Reverse //if(iLen % 8 == 0) goto mirror_YUV420_loop_Reverse
+    beq         ReverseForMirror_WLoop //if(iLen % 8 == 0) goto ReverseForMirror_WLoop
 
     sub         pOutData,   pOutData,   #16
     vld1.u8     {d0},       [pInData]!
     vrev64.u8   d1,         d0
     vst1.u8     {d1},       [pOutData]!
     subs        iLen,       iLen,       iOverlap
-    beq mirror_YUV420_Reverse_array_completed //if(iLen == 0) go to end
+    beq ReverseForMirror_completed //if(iLen == 0) go to end
 
     mov         iTemp,      #8
     sub         iTemp,      iTemp,      iOverlap
     sub         pInData,    pInData,    iTemp
     add         pOutData,   pOutData,   iTemp
 
-    mirror_YUV420_loop_Reverse:
+    ReverseForMirror_WLoop: //Starting Width Loop
         vld1.u8     {d0},       [pInData]!
         vrev64.u8   d1,         d0
         sub         pOutData,   pOutData, #16
         vst1.u8     {d1},       [pOutData]!
         subs        iLen,        #8
-        bne mirror_YUV420_loop_Reverse
+        bne ReverseForMirror_WLoop
 
-    mirror_YUV420_Reverse_array_completed:
+    ReverseForMirror_completed:
 
     sub         pOutData,   pOutData,   #8
     add         pOutData,   pOutData,   iWidth
     add         iH,         iH,         #1
     cmp         iH,         iHeight
 
-    bne mirror_YUV420_Y_Hloop //Height Loop for Y Data
+    bne ReverseForMirror_HLoop //Height Loop
+BX     lr
 
 
-mov         iH,         0
-lsr         iWidth,     iWidth,     #1
-mirror_YUV420_UV_Hloop:
-mov         iLen,       iWidth
-add         pOutData,   pOutData,   iLen
-add         pOutData,   pOutData,   #8
-ands        iOverlap,   iLen,       #7
-beq         mirror_YUV420_loop_UV_Reverse //if(iLen % 8 == 0) goto mirror_YUV420_loop_UV_Reverse
-
-sub         pOutData,   pOutData,   #16
-vld1.u8     {d0},       [pInData]!
-vrev64.u8   d1,         d0
-vst1.u8     {d1},       [pOutData]!
-subs        iLen,       iLen,       iOverlap
-beq mirror_YUV420_Reverse_array_UV_completed //if(iLen == 0) go to end
-
-mov         iTemp,      #8
-sub         iTemp,      iTemp,      iOverlap
-sub         pInData,    pInData,    iTemp
-add         pOutData,   pOutData,   iTemp
-
-mirror_YUV420_loop_UV_Reverse:
-vld1.u8     {d0},       [pInData]!
-vrev64.u8   d1,         d0
-sub         pOutData,   pOutData, #16
-vst1.u8     {d1},       [pOutData]!
-subs        iLen,        #8
-bne mirror_YUV420_loop_UV_Reverse
-
-mirror_YUV420_Reverse_array_UV_completed:
-
-sub         pOutData,   pOutData,   #8
-add         pOutData,   pOutData,   iWidth
-add         iH,         iH,         #1
-cmp         iH,         iHeight
-
-bne mirror_YUV420_UV_Hloop //Height Loop for uv Data
-
-
-
-
-
-
-pop {r4-r8, pc}
-NEON_ASM_FUNC_END
 
 #endif
 
