@@ -88,7 +88,7 @@ ReverseForMirror_HLoop: //Starting Height Loop
     cmp         iH,         iHeight
 
     bne ReverseForMirror_HLoop //Height Loop
-BX     lr
+BX     lr //return
 
 
 
