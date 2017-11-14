@@ -192,7 +192,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     
     //Video Setting for YUV Data
     colorOutputSettings = [NSDictionary dictionaryWithObject:
-                           [NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8BiPlanarFullRange] forKey:(id)kCVPixelBufferPixelFormatTypeKey];
+                           [NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange] forKey:(id)kCVPixelBufferPixelFormatTypeKey];
     [*videoDataOutput setVideoSettings:colorOutputSettings];
     [*videoDataOutput setAlwaysDiscardsLateVideoFrames:NO]; // discard if the data output queue is blocked (as we process the still image)
 
@@ -506,16 +506,24 @@ byte newData[640*480*3/2];
     //NSLog(@"TimeElapsed = %lld", CurrentTimeStamp() - startTime);
     
     
+    
+    
+    
+    
+    printf("TheKing--> Got VideoData len = %d, H:W = %d:%d\n", iVideoHeight * iVideoWidth * 3 / 2, iVideoHeight, iVideoWidth);
+
+    
+    
+
+    
+//#define ASSEMBLY_TEST
+    
+#ifndef ASSEMBLY_TEST
     int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
-    
-    //printf("TheKing--> Got VideoData len = %d\n", iVideoHeight * iVideoWidth * 3 / 2);
-    
     //Sending to OwnReceiving Thread Directly using VideoAPI
     //m_pVideoConverter->mirrorRotateAndConvertNV12ToI420(pRawYuv, newData, iVideoHeight, iVideoWidth);
     //m_pVideoConverter->ConvertI420ToNV12(newData, iVideoHeight, iVideoWidth);
-//#define ASSEMBLY_TEST
-    
-#ifdef ASSEMBLY_TEST
+#else
     
     
     TestNeonAssembly ts;
@@ -527,18 +535,41 @@ byte newData[640*480*3/2];
     memcpy(pRawYuv, pOutPutTest, iVideoWidth*iVideoHeight*3/2);
     memset(pOutPutTest, 0, sizeof(pOutPutTest));
     
-    long long startTime = CurrentTimeStamp();
+    
     //m_pVideoConverter->Crop_YUV420(pRawYuv, iVideoHeight, iVideoWidth, 12, 10, 22, 28, pOutPutTest, iNewHeight, iNewWidth);
-    ts.Crop_yuv420_assembly(pRawYuv, iVideoHeight, iVideoWidth, 12, 10, 22, 28, pOutPutTest, iNewHeight, iNewWidth);
-    long long diff = CurrentTimeStamp() - startTime;
-    totalDIff+=diff;
-    tempCounter++;
-    NSLog(@"TimeElapsed = %lld, frames = %d, totalDiff = %lld", diff, tempCounter, totalDIff);
+    ts.Crop_yuv420_assembly(pRawYuv, iVideoHeight, iVideoWidth, 0, 0, 0, 0, pOutPutTest, iNewHeight, iNewWidth);
+    
+
+    
     
     iVideoHeight = iNewHeight;
     iVideoWidth = iNewWidth;
     
+
+    memcpy(pRawYuv, pOutPutTest, iVideoWidth*iVideoHeight*3/2);
+    memset(pOutPutTest, 0, sizeof(pOutPutTest));
+    printf("TheKing--> Sending2 len = %d, H:W = %d:%d\n", iVideoHeight * iVideoWidth * 3 / 2, iVideoHeight, iVideoWidth);
+
+    ts.Mirror_YUV420_Assembly(pRawYuv, pOutPutTest, iVideoHeight, iVideoWidth);
+    //m_pVideoConverter->mirrorYUVI420(pRawYuv, pOutPutTest, iVideoHeight, iVideoWidth);
+
+
+    
     m_pVideoConverter->ConvertI420ToNV12(pOutPutTest, iVideoHeight, iVideoWidth);
+    
+    //Starting downscale oneFourth
+    memcpy(pRawYuv, pOutPutTest, iVideoWidth*iVideoHeight*3/2);
+    memset(pOutPutTest, 0, sizeof(pOutPutTest));
+    long long startTime = CurrentTimeStamp();
+    m_pVideoConverter->DownScaleYUVNV12_YUVNV21_OneFourth(pRawYuv, iVideoHeight, iVideoWidth, pOutPutTest);
+    //ts.DownScaleOneFourthAssembly(pRawYuv, iVideoHeight, iVideoWidth, pOutPutTest);
+    long long diff = CurrentTimeStamp() - startTime;
+    totalDIff+=diff;
+    tempCounter++;
+    NSLog(@"DownScaleOneFourth TimeElapsed = %lld, frames = %d, totalDiff = %lld", diff, tempCounter, totalDIff);
+    iVideoWidth>>=2;
+    iVideoHeight>>=2;
+    //ending downscale oneFourth
     
     
     //CVideoAPI::GetInstance()->m_iReceivedHeight = iVideoHeight;

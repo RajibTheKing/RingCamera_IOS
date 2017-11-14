@@ -190,13 +190,13 @@ int g_iTargetUser;
     {
         unsigned char *temporaryArray = new unsigned char[MAXHEIGHT * MAXWIDTH * 3];
         unsigned char *temporaryArrayOut = new unsigned char[MAXHEIGHT * MAXWIDTH * 3];
-        int iTempLen = MAXHEIGHT * MAXWIDTH * 3;
+        int iTempLen = 64;
         for(int i=0;i<iTempLen;i++)temporaryArray[i]=rand()%255;
-        //for(int i=0;i<iTempLen;i++){printf("%02X ", temporaryArray[i]); if((i+1)%16==0)printf("\n");}printf("\n");
+        for(int i=0;i<iTempLen;i++){printf("%02X ", temporaryArray[i]); if((i+1)%16==0)printf("\n");}printf("\n");
         startTime = CurrentTimeStamp();
         testNeonAssembly.Reverse_array(temporaryArray, iTempLen, temporaryArrayOut);
          printf("TotalTimeDiff of Reverse = %lld\n", CurrentTimeStamp() - startTime);
-        //for(int i=0;i<iTempLen;i++){printf("%02X ", temporaryArrayOut[i]); if((i+1)%16==0)printf("\n"); }printf("\n");
+        for(int i=0;i<iTempLen;i++){printf("%02X ", temporaryArrayOut[i]); if((i+1)%16==0)printf("\n"); }printf("\n");
         numberOfIterations--;
     }
    

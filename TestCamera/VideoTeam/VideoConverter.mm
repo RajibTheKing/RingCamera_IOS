@@ -96,7 +96,7 @@ UIImage* CVideoConverter::Convert_CVPixelBufferRef_To_UIImage( CVPixelBufferRef 
 #endif
 
 #ifdef USE_CONTEXT
-    UIImage *pImage = [[UIImage alloc] initWithCGImage:videoImage scale:1.0 orientation:UIImageOrientationUp];
+    UIImage *pImage = [[UIImage alloc] initWithCGImage:videoImage scale:1.0 orientation:UIImageOrientationUpMirrored];
 #else
     UIImage *pImage = [[UIImage alloc] initWithCIImage:ciImage scale:1.0 orientation:UIImageOrientationLeftMirrored];
     
@@ -195,6 +195,54 @@ void CVideoConverter::mirrorRotateAndConvertNV12ToI420(unsigned char *m_pFrame, 
             pData[vIndex++] = m_pFrame[dimention + ind + 1];
         }
     
+}
+
+void CVideoConverter::mirrorYUVI420(unsigned char *pFrame, unsigned char *pData, int iHeight, int iWidth)
+{
+    //ColorConverterLocker lock(*m_pColorConverterMutex);
+    
+    int yLen = m_Multiplication[iHeight][iWidth];;
+    int uvLen = yLen >> 2;
+    int vStartIndex = yLen + uvLen;
+    int vEndIndex = (yLen * 3) >> 1;
+    
+    for(int i=0; i<iHeight;i++)
+    {
+        int k = iWidth-1;
+        for(int j=0; j <iWidth; j++)
+        {
+            pData[i*iWidth +k] = pFrame[i*iWidth+j];
+            k--;
+        }
+        
+    }
+    
+    
+    int uIndex = vStartIndex-1;
+    int smallHeight = iHeight >> 1;
+    int smallWidth = iWidth >> 1;
+    
+    for(int i=0; i<smallHeight;i++)
+    {
+        int k = smallWidth -1;
+        for(int j=0; j <smallWidth; j++)
+        {
+            pData[yLen + i*smallWidth +k] = pFrame[yLen + i*smallWidth+j];
+            k--;
+        }
+        
+    }
+    
+    for(int i=0; i<smallHeight;i++)
+    {
+        int k = smallWidth - 1;
+        for(int j=0; j <smallWidth; j++)
+        {
+            pData[vStartIndex+i*smallWidth +k] = pFrame[vStartIndex+i*smallWidth+j];
+            k--;
+        }
+        
+    }
 }
 
 int CVideoConverter::Convert_YUVI420_To_YUVNV12(unsigned char *convertingData, unsigned char *channel0, unsigned char *channel1,  int iVideoHeight, int iVideoWidth)
@@ -309,6 +357,62 @@ void CVideoConverter::RotateYUV420Degree90(byte *data, byte *yuv, int imageWidth
     
     return;
 }
+int CVideoConverter::DownScaleYUVNV12_YUVNV21_OneFourth(unsigned char* pData, int &iHeight, int &iWidth, unsigned char* outputData)
+{
+    int idx = 0;
+    for (int i = 0; i < iHeight; i += 4)
+    {
+        for (int j = 0; j < iWidth; j += 4)
+        {
+            int tmp = 0;
+            for(int k = i; k < i + 4; k++)
+            {
+                int kw = k*iWidth;
+                for(int l = j; l < j + 4; l++)
+                {
+                    tmp += pData[kw + l];
+                }
+            }
+            outputData[idx++] = tmp >> 4;
+        }
+    }
+    
+    int halfHeight = iHeight >> 1;
+    int offset = iHeight*iWidth;
+    
+    for (int i = 0; i < halfHeight; i += 4)
+    {
+        for (int j = 0; j < iWidth; j += 8)
+        {
+            int tmpU = 0;
+            int tmpV = 0;
+            for(int k = i; k < i + 4; k++)
+            {
+                int kw = offset + k*iWidth;
+                for(int l = j; l < j + 8; l++)
+                {
+                    if (l % 2 == 0)
+                    {
+                        tmpU += pData[kw + l];
+                    }
+                    else
+                    {
+                        tmpV += pData[kw + l];
+                    }
+                }
+            }
+            outputData[idx++] = tmpU >> 4;
+            outputData[idx++] = tmpV >> 4;
+        }
+    }
+    
+    int outHeight = iHeight >> 2;
+    int outWidth = iWidth >> 2;
+    
+    return (outHeight * outWidth * 3) >> 1;
+}
+
+
 
 /*
 int CVideoConverter::Convert_YUVI420_To_YUVNV12(byte* pData,  byte *y_ch0, byte* y_ch1, int iRenderHeight, int iRenderWidth)
