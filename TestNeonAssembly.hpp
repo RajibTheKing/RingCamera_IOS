@@ -24,6 +24,9 @@ extern "C"
     void Reverse_array_arm_neon(unsigned char* pInData, int iLen, unsigned char* pOutData);
     void Reverse_array_arm_neon_version2(unsigned char* pInData, int iLen, unsigned char* pOutData);
     void mirror_YUV420_arm_neon(unsigned char *pInData, unsigned char *pOutData, int iHeight, int iWidth);
+    
+    void down_scale_one_fourth_arm_neon(unsigned char *pInData, int iHeight, int iWidth, unsigned char *pOutData);
+    
 }
 
 
@@ -44,6 +47,7 @@ public:
     void CalculateSumOfLast64_assembly(unsigned int * pData, unsigned int *ans);
     void Reverse_array(unsigned char* pInData, int iLen, unsigned char* pOutData);
     void Mirror_YUV420_Assembly(unsigned char *pInData, unsigned char *pOutData, int iHeight, int iWidth);
+    void DownScaleOneFourthAssembly(unsigned char *pInData, int iHeight, int iWidth, unsigned char *pOutData);
     
     unsigned int* __restrict param;
 };
