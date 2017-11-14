@@ -246,12 +246,43 @@ NEON_ARM_AACH64_FUNC_BEGIN CalculateSumOfLast64_ARM_NEON
 NEON_ARM_AACH64_FUNC_END
 
 NEON_ARM_AACH64_FUNC_BEGIN Reverse_array_arm_neon
+pInData     .req    x0
+iLen        .req    x1
+pOutData    .req    x2
+iOverlap    .req    x3
+iTemp       .req    x4
 
+add         pOutData,   pOutData,   iLen
+add         pOutData,   pOutData,   #8
+ands        iOverlap,   iLen,       #7
+
+beq         loop_Reverse //if(iLen % 8 == 0) goto loop_Reverse
+
+sub         pOutData,   pOutData,   #16
+ld1     {V0.8B},       [pInData], iOverlap
+rev64   V1.8B,         V0.8B
+st1     {V1.8B},       [pOutData], #8
+subs        iLen,       iLen,       iOverlap
+beq Reverse_array_arm_neon_completed //if(iLen == 0) go to end
+
+mov         iTemp,      #8
+sub         iTemp,      iTemp,      iOverlap
+sub         pInData,    pInData,    iTemp
+add         pOutData,   pOutData,   iTemp
+
+loop_Reverse:
+LD1     {V0.8B},       [pInData], #8
+rev64   V1.8B,         V0.8B
+sub         pOutData,   pOutData, #16
+st1     {V1.8B},       [pOutData], #8
+subs        iLen,    iLen,    #8
+bne loop_Reverse
+
+Reverse_array_arm_neon_completed:
 NEON_ARM_AACH64_FUNC_END
 
-NEON_ARM_AACH64_FUNC_BEGIN mirror_YUV420_arm_neon
+branchCheck:
 
-NEON_ARM_AACH64_FUNC_END
 
 #endif
 
