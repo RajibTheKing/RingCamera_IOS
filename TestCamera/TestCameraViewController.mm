@@ -32,6 +32,7 @@
 #include <sstream>
 #include "VideoThreadProcessor.h"
 #include "TestNeonAssembly.hpp"
+#import "ExternalVideoProcessingViewController.h"
 
 
 
@@ -255,6 +256,12 @@ int g_iTargetUser;
     resolutionList[3] = @"1920x1080";
     m_iResolutionSelector = 0;
     
+    
+    /*
+    ExternalVideoProcessingViewController *newView = [self.storyboard instantiateViewControllerWithIdentifier:@"externalVideoProcessing"];
+    [self.navigationController pushViewController:newView animated:YES];
+    */
+    
 }
 
 + (id)GetInstance
@@ -378,10 +385,14 @@ int g_iTargetUser;
     string sTargetUser = oss.str();
     
     self.targetUserField.text = @(sTargetUser.c_str());
+    
+    
 }
 
 - (IBAction)ChangeResBtnAction:(id)sender
 {
+    
+    
     cout<<"TheKing--> Inside ChangeResAction"<<endl;
     NSString *nsRes = self.ResField.text;
     m_iResolutionSelector++;

@@ -44,6 +44,7 @@ void notifyClientMethodWithAudioDataIos(long long lFriendID, int eventType, shor
 void notifyClientMethodWithAudioAlarmIos(long long lFriendID, short data[], int dataLenth);
 void notifyClientMethodWithAudioAlarmIos(long long lEventType, short data[], int dataLenth);
 void notifyClientMethodWithAudiPacketDataIos(long long lFriendID, unsigned char data[], int dataLenth);
+void notifyClientWithThumbnailDataIos(unsigned char data[], int iHeight, int iWidth, int dataLenth);
 
 // End Video Team
 
@@ -175,6 +176,15 @@ public:
     void SetNotifyClientWithAudioPacketDataCallback(void(*callBackFunctionPointer)(long long, unsigned char*, int));
     
     
+    int StartExternalVideoProcessingSession();
+    int SendH264EncodedDataToGetThumbnail(unsigned char *pH264Data, int iLen, int iThumbnailFrameNumber);
+    int StopExternalVideoProcessingSession();
+    void SetNotifyClientWithThumbnailDataCallback(void(*callBackFunctionPointer)(unsigned char[], int, int, int));
+    
+    
+    
+    
+    
 #ifdef ENABLE_MEDIA_CONNECTIVITY
     int InitializeMediaConnectivity(std::string sServerIP, int iPort, int iLogLevel);
     
@@ -183,6 +193,8 @@ public:
     int SendData(unsigned char *pData, int iLen);
     
     int UnInitializeMediaConnectivity();
+    
+    void SetNotifynotifyClientMethodWithSignalingDataCallback(void(*callBackFunctionPointer)(unsigned char*, int));
 #endif
     
     

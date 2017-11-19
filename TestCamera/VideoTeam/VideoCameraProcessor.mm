@@ -484,26 +484,23 @@ byte newData[640*480*3/2];
     //int iNewHeight = m_iCameraHeight, iNewWidth = m_iCameraWidth;
     //m_pVideoConverter->DetectAndShowOnlySkin(pRawYuv, iNewHeight, iNewWidth);
     
-    
-    int iNewHeight = 64, iNewWidth = 64;
+//#define RESIZE_ENABLE
+    int iNewHeight = 320, iNewWidth = 238;
+#ifdef RESIZE_ENABLE
     /*****
      *DynamicResizeTest
      **/
     //long long startTime = CurrentTimeStamp();
-    //m_pVideoConverter->Convert_YUVNV12_To_YUVI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
-
-    
-    //m_pVideoConverter->DownScaleYUV420_Dynamic(pRawYuv, m_iCameraHeight, m_iCameraWidth, pScaledVideo, 3);
-    //m_pVideoConverter->DownScaleYUV420_Dynamic(pRawYuv, m_iCameraHeight, m_iCameraWidth, pScaledVideo, iNewHeight,iNewWidth);
-    
-    
-    
-    //iVideoWidth = iNewWidth;
-    //iVideoHeight = iNewHeight;
-    //memcpy(pRawYuv, pScaledVideo, iNewHeight*iNewWidth*3/2);
-    //m_pVideoConverter->ConvertI420ToNV12(pRawYuv, iVideoHeight, iVideoWidth);
-    
+    m_pVideoConverter->Convert_YUVNV12_To_YUVI420(pRawYuv, m_iCameraHeight, m_iCameraWidth);
+    m_pVideoConverter->DownScaleYUV420_Dynamic(pRawYuv, m_iCameraHeight, m_iCameraWidth, pScaledVideo, iNewHeight,iNewWidth);
+    iVideoWidth = iNewWidth;
+    iVideoHeight = iNewHeight;
+    memcpy(pRawYuv, pScaledVideo, iNewHeight*iNewWidth*3/2);
+    m_pVideoConverter->ConvertI420ToNV12(pRawYuv, iVideoHeight, iVideoWidth);
     //NSLog(@"TimeElapsed = %lld", CurrentTimeStamp() - startTime);
+#endif
+    
+   
     
     
     
@@ -537,7 +534,8 @@ byte newData[640*480*3/2];
     
     
     //m_pVideoConverter->Crop_YUV420(pRawYuv, iVideoHeight, iVideoWidth, 12, 10, 22, 28, pOutPutTest, iNewHeight, iNewWidth);
-    ts.Crop_yuv420_assembly(pRawYuv, iVideoHeight, iVideoWidth, 0, 0, 0, 0, pOutPutTest, iNewHeight, iNewWidth);
+    //ts.Crop_yuv420_assembly(pRawYuv, iVideoHeight, iVideoWidth, 0, 0, 0, 0, pOutPutTest, iNewHeight, iNewWidth);
+    ts.Crop_yuv420_assembly(pRawYuv, iVideoHeight, iVideoWidth, 26, 22, 0, 0, pOutPutTest, iNewHeight, iNewWidth);
     
 
     
@@ -557,6 +555,7 @@ byte newData[640*480*3/2];
     
     m_pVideoConverter->ConvertI420ToNV12(pOutPutTest, iVideoHeight, iVideoWidth);
     
+    /*
     //Starting downscale oneFourth
     memcpy(pRawYuv, pOutPutTest, iVideoWidth*iVideoHeight*3/2);
     memset(pOutPutTest, 0, sizeof(pOutPutTest));
@@ -570,6 +569,9 @@ byte newData[640*480*3/2];
     iVideoWidth>>=2;
     iVideoHeight>>=2;
     //ending downscale oneFourth
+    */
+    
+    
     
     
     //CVideoAPI::GetInstance()->m_iReceivedHeight = iVideoHeight;

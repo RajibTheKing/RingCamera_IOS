@@ -9,10 +9,33 @@
 #ifndef VideoAPI_h
 #define VideoAPI_h
 
+
+
+
 #include <string>
 #include <iostream>
 #include <queue>
+
 using namespace std;
+
+#import <UIKit/UIKit.h>
+#import <AVFoundation/AVFoundation.h>
+#include <pthread.h>
+
+@protocol ExternalVideoProcessingVCDelegate <NSObject>
+@required
+-(void)ProcessBitmapData:(unsigned char *)pBitmapData withHeight:(int)iHeight withWidth:(int)iWidth withLen:(int)dataLen;
+@end
+
+@interface MediatorClass : UIViewController
+{
+}
++ (id)GetInstance;
+- (id) init;
+@property (nonatomic,strong) id externalVideoProcessingDelegate;
+@end
+static MediatorClass *m_pMediatorClass = nil;
+
 
 
 //#include "CppInterfaceOfRingSDK.h"
@@ -39,6 +62,9 @@ using namespace std;
 #define CALL_IN_LIVE_TYPE_AUDIO_ONLY 1
 #define CALL_IN_LIVE_TYPE_VIDEO_ONLY 2
 #define CALL_IN_LIVE_TYPE_AUDIO_VIDEO 3
+
+
+
 
 class CVideoAPI;
 
@@ -126,9 +152,14 @@ public:
     bool m_bReInitialized;
     int m_iRecvFrameCounter;
     
+    
 };
 
 static CVideoAPI *m_pVideoAPI = nullptr;
+
+
+
+
 
 
 

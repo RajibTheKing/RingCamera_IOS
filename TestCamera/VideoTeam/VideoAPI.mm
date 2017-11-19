@@ -207,6 +207,14 @@ void notifyClientMethodWithSignalingDataIos(unsigned char *buffer, int iLen)
     CMessageProcessor::GetInstance()->Handle_Signaling_Message(buffer, iLen);
 }
 
+void notifyClientWithThumbnailDataIos(unsigned char data[], int iHeight, int iWidth, int dataLenth)
+{
+    printf("TheKing--> notifyClientWithThumbnailDataIos , iHeight, iWidth, dataLength = %d %d %d\n", iHeight, iWidth, dataLenth);
+    MediatorClass *mediator = [MediatorClass GetInstance];
+    [mediator.externalVideoProcessingDelegate ProcessBitmapData:data withHeight:iHeight withWidth:iWidth withLen:dataLenth];
+    
+}
+
 
 
 CVideoAPI::CVideoAPI()
@@ -404,6 +412,29 @@ string CVideoAPI::IntegertoStringConvert(int nConvertingNumber)
     return (std::string)cConvertedCharArray;
 }
 
+@implementation MediatorClass
+
+- (id) init
+{
+    self = [super init];
+    NSLog(@"Inside MediatorClass Constructor");
+    
+    return self;
+}
+
++ (id)GetInstance
+{
+    if(m_pMediatorClass == nil)
+    {
+        cout<<"Video_Team: m_pVideoCallProcessor Initialized"<<endl;
+        
+        m_pMediatorClass = [[MediatorClass alloc] init];
+        
+    }
+    return m_pMediatorClass;
+}
+
+@end
 
 /*void CVideoAPI::SendPakcetFragments(unsigned char*data, int dataLenth)
 {
