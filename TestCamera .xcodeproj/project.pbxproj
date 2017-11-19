@@ -61,6 +61,9 @@
 		DAAE44FF1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAAE44FD1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp */; };
 		DAB17AC91FB962400020A4D8 /* DownScaleOneFourthAssembly.S in Sources */ = {isa = PBXBuildFile; fileRef = DAB17AC51FB9623F0020A4D8 /* DownScaleOneFourthAssembly.S */; };
 		DAB17ACA1FB962400020A4D8 /* DownScaleOneFourthAssembly_arm64.S in Sources */ = {isa = PBXBuildFile; fileRef = DAB17AC81FB962400020A4D8 /* DownScaleOneFourthAssembly_arm64.S */; };
+		DAB40B7E1FC144F4002FCE60 /* Dump_h264_annexb_cut.h264 in Resources */ = {isa = PBXBuildFile; fileRef = DAB40B7D1FC144F4002FCE60 /* Dump_h264_annexb_cut.h264 */; };
+		DAB40B801FC150E4002FCE60 /* FileDump.h264 in Resources */ = {isa = PBXBuildFile; fileRef = DAB40B7F1FC150E3002FCE60 /* FileDump.h264 */; };
+		DAB614C61FC04294009B497E /* ExternalVideoProcessingViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = DAB614C51FC04294009B497E /* ExternalVideoProcessingViewController.mm */; };
 		DAB7AC261FADB50300ECF5DC /* mirror_YUV420_Assembly_arm64.S in Sources */ = {isa = PBXBuildFile; fileRef = DAB7AC231FADB50200ECF5DC /* mirror_YUV420_Assembly_arm64.S */; };
 		DAC7C1E51E7544850045242C /* ClientRenderingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC7C1E31E7544850045242C /* ClientRenderingBuffer.cpp */; };
 		DAC7C1EC1E7546180045242C /* ClientLockHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC7C1E81E7546180045242C /* ClientLockHandler.cpp */; };
@@ -167,6 +170,10 @@
 		DAAE44FE1F28BB4C00BC5FA1 /* TestNeonAssembly.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestNeonAssembly.hpp; sourceTree = "<group>"; };
 		DAB17AC51FB9623F0020A4D8 /* DownScaleOneFourthAssembly.S */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = DownScaleOneFourthAssembly.S; sourceTree = "<group>"; };
 		DAB17AC81FB962400020A4D8 /* DownScaleOneFourthAssembly_arm64.S */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = DownScaleOneFourthAssembly_arm64.S; sourceTree = "<group>"; };
+		DAB40B7D1FC144F4002FCE60 /* Dump_h264_annexb_cut.h264 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Dump_h264_annexb_cut.h264; sourceTree = "<group>"; };
+		DAB40B7F1FC150E3002FCE60 /* FileDump.h264 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FileDump.h264; sourceTree = "<group>"; };
+		DAB614C41FC04294009B497E /* ExternalVideoProcessingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExternalVideoProcessingViewController.h; sourceTree = SOURCE_ROOT; };
+		DAB614C51FC04294009B497E /* ExternalVideoProcessingViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ExternalVideoProcessingViewController.mm; sourceTree = SOURCE_ROOT; };
 		DAB7AC231FADB50200ECF5DC /* mirror_YUV420_Assembly_arm64.S */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = mirror_YUV420_Assembly_arm64.S; sourceTree = "<group>"; };
 		DABC85D31F65874100F25F17 /* AudioVideoEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioVideoEngine.xcodeproj; path = "../IPV-MediaEngine/builds/ios/AudioVideoEngine.xcodeproj"; sourceTree = "<group>"; };
 		DAC7C1E31E7544850045242C /* ClientRenderingBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientRenderingBuffer.cpp; path = TestCamera/VideoTeam/ClientRenderingBuffer.cpp; sourceTree = "<group>"; };
@@ -243,6 +250,8 @@
 		1B867FCD139D4AD300AD6B47 = {
 			isa = PBXGroup;
 			children = (
+				DAB40B7F1FC150E3002FCE60 /* FileDump.h264 */,
+				DAB40B7D1FC144F4002FCE60 /* Dump_h264_annexb_cut.h264 */,
 				DA3494751FB862BD00D8C681 /* libAudioVideoEngine.a */,
 				DA3494761FB862BD00D8C681 /* libRingIDSDK.a */,
 				DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */,
@@ -292,6 +301,8 @@
 				2BA4850413F1E6AA000BABB3 /* TestCameraAppDelegate.m */,
 				2BA4850513F1E6AA000BABB3 /* TestCameraViewController.h */,
 				2B0EF001170E3E27008EDA06 /* TestCameraViewController.mm */,
+				DAB614C41FC04294009B497E /* ExternalVideoProcessingViewController.h */,
+				DAB614C51FC04294009B497E /* ExternalVideoProcessingViewController.mm */,
 				18F66BF91BCB6D8A00FEE798 /* MainStoryboard_iPhone.storyboard */,
 				2BA4850C13F1E6CC000BABB3 /* MainStoryboard_iPad.storyboard */,
 				1B867FE3139D4AD300AD6B47 /* Supporting Files */,
@@ -469,11 +480,13 @@
 				DA7B6AF51E6D2B6B00AC19C3 /* startBtn.png in Resources */,
 				DA7B6AF71E6D30D300AC19C3 /* appIcon.png in Resources */,
 				1B867FF0139D4AD300AD6B47 /* MainStoryboard_iPhone.storyboard in Resources */,
+				DAB40B801FC150E4002FCE60 /* FileDump.h264 in Resources */,
 				DA7B6AFE1E6D348500AC19C3 /* iPhone_2x_AppIcon.png in Resources */,
 				DA835D861E6C5A6200C75A79 /* AppAsset.xcassets in Resources */,
 				DA7B6B031E6D348500AC19C3 /* iphone_3x_spotlight.png in Resources */,
 				DA7B6B011E6D348500AC19C3 /* iphone_3x_appicon.png in Resources */,
 				DA7B6B001E6D348500AC19C3 /* iPhone_2x_spotlight.png in Resources */,
+				DAB40B7E1FC144F4002FCE60 /* Dump_h264_annexb_cut.h264 in Resources */,
 				1B867FF3139D4AD300AD6B47 /* MainStoryboard_iPad.storyboard in Resources */,
 				DA7B6AFF1E6D348500AC19C3 /* iPhone_2x_settings.png in Resources */,
 				18F66BFB1BCB6D8A00FEE798 /* MainStoryboard_iPhone.storyboard in Resources */,
@@ -492,6 +505,7 @@
 				DA7CE48F1E6FFD97008895E5 /* G729Wrapper.mm in Sources */,
 				18747B021BFDD0C60010CAA3 /* VideoThreadProcessor.mm in Sources */,
 				DAB7AC261FADB50300ECF5DC /* mirror_YUV420_Assembly_arm64.S in Sources */,
+				DAB614C61FC04294009B497E /* ExternalVideoProcessingViewController.mm in Sources */,
 				DA7CE48D1E6FFD97008895E5 /* AudioSessionManager.m in Sources */,
 				18747B011BFDD0C60010CAA3 /* VideoSockets.mm in Sources */,
 				DAB17ACA1FB962400020A4D8 /* DownScaleOneFourthAssembly_arm64.S in Sources */,
