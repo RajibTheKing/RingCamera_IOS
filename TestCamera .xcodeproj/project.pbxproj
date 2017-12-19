@@ -417,7 +417,6 @@
 				LastUpgradeCheck = 0460;
 				TargetAttributes = {
 					1B867FD7139D4AD300AD6B47 = {
-						DevelopmentTeam = MB952926M3;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -650,7 +649,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = MB952926M3;
+				DEVELOPMENT_TEAM = 7PZD3JV4DH;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -703,7 +702,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = MB952926M3;
+				DEVELOPMENT_TEAM = 7PZD3JV4DH;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

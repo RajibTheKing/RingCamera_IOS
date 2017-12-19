@@ -257,10 +257,10 @@ int g_iTargetUser;
     m_iResolutionSelector = 0;
     
     
-    /*
-    ExternalVideoProcessingViewController *newView = [self.storyboard instantiateViewControllerWithIdentifier:@"externalVideoProcessing"];
-    [self.navigationController pushViewController:newView animated:YES];
-    */
+    
+    //ExternalVideoProcessingViewController *newView = [self.storyboard instantiateViewControllerWithIdentifier:@"externalVideoProcessing"];
+    //[self.navigationController pushViewController:newView animated:YES];
+    
     
 }
 

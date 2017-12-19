@@ -18,6 +18,9 @@ unsigned char h264Data[10000000];
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    int arr[100];
+    printf("TheKig--> size of array = %d\n", sizeof(arr));
+    
     NSLog(@"TheKing--> Inside startThumbnailAction");
     if(CVideoAPI::GetInstance()->Init(100, "", 1) == 1)
     {
@@ -73,8 +76,11 @@ unsigned char h264Data[10000000];
     NSString *g_DataFile = [[NSBundle mainBundle] pathForResource:@"FileDump" ofType:@"h264"];
     
     std::string sFilePath = std::string([g_DataFile UTF8String]);
+    //sFilePath+="Error";
     NSLog(@"TheKing--> File Path = %s", sFilePath.c_str());
+    int x = [self.positionLabel.text intValue];
     
+    /*
     FILE *filePointer = fopen(sFilePath.c_str(), "rb");
     
     long long  iTotalDataLen = [self GetDataLenFromFile:&filePointer];
@@ -82,9 +88,11 @@ unsigned char h264Data[10000000];
     NSLog(@"TheKing--> iTotalDataLen = %i", iTotalDataLen);
     
     fread(h264Data, iTotalDataLen, 1, filePointer);
-    int x = [self.positionLabel.text intValue];
+    
     CVideoAPI::GetInstance()->SendH264EncodedDataToGetThumbnail(h264Data, iTotalDataLen, x);
-
+    */
+    
+    CVideoAPI::GetInstance()->SendH264EncodedDataFilePathToGetThumbnail(sFilePath, x);
 }
 
 -(long long)GetDataLenFromFile:(FILE **)fp

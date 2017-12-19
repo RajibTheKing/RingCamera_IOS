@@ -484,6 +484,12 @@ byte newData[640*480*3/2];
     //int iNewHeight = m_iCameraHeight, iNewWidth = m_iCameraWidth;
     //m_pVideoConverter->DetectAndShowOnlySkin(pRawYuv, iNewHeight, iNewWidth);
     
+    /*****
+     *DownScale_OneFourthCheck
+     m_pVideoConverter->DownScaleYUVNV12_YUVNV21_OneFourth(pRawYuv, iVideoHeight, iVideoWidth, pOutPutTest);
+     ***/
+    
+    
 //#define RESIZE_ENABLE
     int iNewHeight = 320, iNewWidth = 238;
 #ifdef RESIZE_ENABLE
@@ -517,9 +523,8 @@ byte newData[640*480*3/2];
     
 #ifndef ASSEMBLY_TEST
     int iRet = CVideoAPI::GetInstance()->SendVideoData(200, pRawYuv, m_iCameraHeight * m_iCameraWidth * 3 / 2, 0,3);
-    //Sending to OwnReceiving Thread Directly using VideoAPI
-    //m_pVideoConverter->mirrorRotateAndConvertNV12ToI420(pRawYuv, newData, iVideoHeight, iVideoWidth);
-    //m_pVideoConverter->ConvertI420ToNV12(newData, iVideoHeight, iVideoWidth);
+
+    
 #else
     
     

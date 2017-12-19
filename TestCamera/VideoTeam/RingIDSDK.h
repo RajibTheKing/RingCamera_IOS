@@ -178,6 +178,7 @@ public:
     
     int StartExternalVideoProcessingSession();
     int SendH264EncodedDataToGetThumbnail(unsigned char *pH264Data, int iLen, int iThumbnailFrameNumber);
+    int SendH264EncodedDataFilePathToGetThumbnail(const std::string& sFilePath, int iPositionToSelectFrame);
     int StopExternalVideoProcessingSession();
     void SetNotifyClientWithThumbnailDataCallback(void(*callBackFunctionPointer)(unsigned char[], int, int, int));
     
@@ -225,4 +226,3 @@ public:
 
 
 #endif
-

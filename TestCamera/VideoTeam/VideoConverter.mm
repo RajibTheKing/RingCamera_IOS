@@ -359,37 +359,42 @@ void CVideoConverter::RotateYUV420Degree90(byte *data, byte *yuv, int imageWidth
 }
 int CVideoConverter::DownScaleYUVNV12_YUVNV21_OneFourth(unsigned char* pData, int &iHeight, int &iWidth, unsigned char* outputData)
 {
+    
+    int x = 16;
+    int y = x*x;
+    int z = x / 2;
+    int p = 2 * x;
     int idx = 0;
-    for (int i = 0; i < iHeight; i += 4)
+    for (int i = 0; i < iHeight; i += x)
     {
-        for (int j = 0; j < iWidth; j += 4)
+        for (int j = 0; j < iWidth; j += x)
         {
             int tmp = 0;
-            for(int k = i; k < i + 4; k++)
+            for(int k = i; k < i + x; k++)
             {
                 int kw = k*iWidth;
-                for(int l = j; l < j + 4; l++)
+                for(int l = j; l < j + x; l++)
                 {
                     tmp += pData[kw + l];
                 }
             }
-            outputData[idx++] = tmp >> 4;
+            outputData[idx++] = tmp / y;
         }
     }
     
-    int halfHeight = iHeight >> 1;
+    int newHeight = iHeight / z;
     int offset = iHeight*iWidth;
     
-    for (int i = 0; i < halfHeight; i += 4)
+    for (int i = 0; i < iHeight/2; i += x)
     {
-        for (int j = 0; j < iWidth; j += 8)
+        for (int j = 0; j < iWidth; j += p)
         {
             int tmpU = 0;
             int tmpV = 0;
-            for(int k = i; k < i + 4; k++)
+            for(int k = i; k < i + x; k++)
             {
                 int kw = offset + k*iWidth;
-                for(int l = j; l < j + 8; l++)
+                for(int l = j; l < j + p; l++)
                 {
                     if (l % 2 == 0)
                     {
@@ -401,13 +406,16 @@ int CVideoConverter::DownScaleYUVNV12_YUVNV21_OneFourth(unsigned char* pData, in
                     }
                 }
             }
-            outputData[idx++] = tmpU >> 4;
-            outputData[idx++] = tmpV >> 4;
+            outputData[idx++] = tmpU / y;
+            outputData[idx++] = tmpV / y;
         }
     }
     
-    int outHeight = iHeight >> 2;
-    int outWidth = iWidth >> 2;
+    int outHeight = iHeight / x;
+    int outWidth = iWidth / x;
+    
+    iHeight = outHeight;
+    iWidth = outWidth;
     
     return (outHeight * outWidth * 3) >> 1;
 }
