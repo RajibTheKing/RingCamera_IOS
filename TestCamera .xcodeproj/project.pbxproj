@@ -441,6 +441,7 @@
 				LastUpgradeCheck = 0460;
 				TargetAttributes = {
 					1B867FD7139D4AD300AD6B47 = {
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -658,7 +659,8 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 7PZD3JV4DH;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MB952926M3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -695,6 +697,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.TestCamera;
 				PRODUCT_NAME = MediaEngine;
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -711,7 +714,8 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 7PZD3JV4DH;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = MB952926M3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -754,6 +758,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.apple.TestCamera;
 				PRODUCT_NAME = MediaEngine;
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
