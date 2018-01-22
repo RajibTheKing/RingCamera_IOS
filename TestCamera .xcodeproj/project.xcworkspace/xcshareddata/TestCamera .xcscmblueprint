@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "3D0805DEA1392F9F9C9DF6E0ACEEE740F71C5714",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "FBCBB00DEFFBECD3106C0C615A7392D9390A6C1D" : 9223372036854775807,
+    "948F1EC52AFBCF3A4DB517AD3198B744B5CB4305" : 9223372036854775807,
+    "3D0805DEA1392F9F9C9DF6E0ACEEE740F71C5714" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "0F22854B-E85F-48E7-9611-2D0DBAD98715",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "FBCBB00DEFFBECD3106C0C615A7392D9390A6C1D" : "IPV-MediaEngine\/",
+    "948F1EC52AFBCF3A4DB517AD3198B744B5CB4305" : "IPV-RingIDSDK\/",
+    "3D0805DEA1392F9F9C9DF6E0ACEEE740F71C5714" : "TestCamera\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "TestCamera ",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "TestCamera .xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/gitlab.com\/RajibTheKing\/TestCamera.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3D0805DEA1392F9F9C9DF6E0ACEEE740F71C5714"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/rajib.chandra@gitlab.ipvisionsoft.com\/media-sdk\/RingID-SDK.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "948F1EC52AFBCF3A4DB517AD3198B744B5CB4305"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/rajib.chandra@gitlab.ipvisionsoft.com\/media-sdk\/MediaEngine.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "FBCBB00DEFFBECD3106C0C615A7392D9390A6C1D"
+    }
+  ]
+}
