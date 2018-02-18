@@ -788,7 +788,7 @@ static OSStatus playbackCallback(void *inRefCon,
         
         if (!isRecordedBufferProduceBytes) {
 //#if STATE_DEVELOPMENT
-            NSLog(@"---------------------- Recorded RTP push faild ----------------------");
+            //NSLog(@"---------------------- Recorded RTP push faild ----------------------");
 //#endif
         } else {
 //#if STATE_DEVELOPMENT

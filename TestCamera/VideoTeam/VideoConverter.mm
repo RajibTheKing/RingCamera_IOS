@@ -1933,6 +1933,125 @@ int CVideoConverter::Crop_YUV420(unsigned char* pData, int inHeight, int inWidth
     
 }
 
+int CVideoConverter::RotateI420(byte *pInput, int inHeight, int inWidth, byte *pOutput, int &outHeight, int &outWidth, int rotationParameter)
+{
+    int iLen = inHeight * inWidth * 3 / 2;
+    int indx = 0;
+    
+    if(rotationParameter == 1)
+    {
+        for(int j=0;j<inWidth;j++)
+        {
+            for(int i=inHeight-1; i>=0;i--)
+            {
+                pOutput[indx++] = pInput[i*inWidth + j];
+            }
+        }
+        
+        int halfW = inWidth>>1;
+        int halfH = inHeight>>1;
+        
+        byte *Udata = pInput + indx;
+        byte *VData = Udata + (halfH * halfW);
+        
+        int uIndex = indx;
+        int vIndex = indx + (halfH * halfW);
+        
+        //printf("indx = %d, uIndex = %d, vIndex = %d\n", indx, uIndex, vIndex);
+        
+        
+        for(int j=0;j<halfW;j++)
+        {
+            for(int i=halfH-1; i>=0;i--)
+            {
+                pOutput[uIndex++] = Udata[i*halfW + j];
+                pOutput[vIndex++] = VData[i*halfW + j];
+            }
+        }
+        
+        outHeight = inWidth;
+        outWidth = inHeight;
+    }
+    else if(rotationParameter == 3)
+    {
+        for(int j=inWidth-1;j>=0;j--)
+        {
+            for(int i=0; i<inHeight;i++)
+            {
+                pOutput[indx++] = pInput[i*inWidth + j];
+            }
+        }
+        
+        int halfW = inWidth>>1;
+        int halfH = inHeight>>1;
+        
+        byte *Udata = pInput + indx;
+        byte *VData = Udata + (halfH * halfW);
+        
+        int uIndex = indx;
+        int vIndex = indx + (halfH * halfW);
+        
+        //printf("indx = %d, uIndex = %d, vIndex = %d\n", indx, uIndex, vIndex);
+        
+        
+        for(int j=halfW-1;j>=0;j--)
+        {
+            for(int i=0; i<halfH;i++)
+            {
+                pOutput[uIndex++] = Udata[i*halfW + j];
+                pOutput[vIndex++] = VData[i*halfW + j];
+            }
+        }
+        
+        outHeight = inWidth;
+        outWidth = inHeight;
+    }
+    else if(rotationParameter == 2)
+    {
+        for(int i=inHeight-1; i>=0;i--)
+        {
+            for(int j=0;j<inWidth;j++)
+            {
+                pOutput[indx++] = pInput[i*inWidth + j];
+            }
+        }
+        
+        int halfW = inWidth>>1;
+        int halfH = inHeight>>1;
+        
+        byte *Udata = pInput + indx;
+        byte *VData = Udata + (halfH * halfW);
+        
+        int uIndex = indx;
+        int vIndex = indx + (halfH * halfW);
+        
+        //printf("indx = %d, uIndex = %d, vIndex = %d\n", indx, uIndex, vIndex);
+        
+        
+        for(int i=halfH-1; i>=0;i--)
+        {
+            for(int j=0;j<halfW;j++)
+            {
+                pOutput[uIndex++] = Udata[i*halfW + j];
+                pOutput[vIndex++] = VData[i*halfW + j];
+            }
+        }
+        
+        outHeight = inHeight;
+        outWidth = inWidth;
+    }
+    else
+    {
+        memcpy(pOutput, pInput, iLen);
+        outHeight = inHeight;
+        outWidth = inWidth;
+    }
+    
+    return iLen;
+}
+
+
+
 
 int CVideoConverter::getMin(int a, int b, int c)
 {

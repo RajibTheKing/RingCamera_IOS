@@ -26,6 +26,8 @@ extern "C"
     void mirror_YUV420_arm_neon(unsigned char *pInData, unsigned char *pOutData, int iHeight, int iWidth);
     
     void down_scale_one_fourth_arm_neon(unsigned char *pInData, int iHeight, int iWidth, unsigned char *pOutData);
+    void Rotate90Degree_arm_neon_aarch64(unsigned char *pInData, unsigned char *pOutData, int iHeight, int iWidth);
+    void ne10_img_rotate_get_quad_rangle_subpix_rgba_neon(unsigned char *pDst, unsigned char *pSrc, int iWidth, int iHeight);
     
 }
 
@@ -48,6 +50,11 @@ public:
     void Reverse_array(unsigned char* pInData, int iLen, unsigned char* pOutData);
     void Mirror_YUV420_Assembly(unsigned char *pInData, unsigned char *pOutData, int iHeight, int iWidth);
     void DownScaleOneFourthAssembly(unsigned char *pInData, int iHeight, int iWidth, unsigned char *pOutData);
+    
+    void RotateI420_Assembly(unsigned char *pInput, int inHeight, int inWidth, unsigned char *pOutput, int &outHeight, int &outWidth, int rotationParameter);
+    
+    
+    void ne10_img_rotate_Assembly(unsigned char *pDst, unsigned char *pSrc, int iWidth, int iHeight);
     
     unsigned int* __restrict param;
 };

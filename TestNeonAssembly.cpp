@@ -150,3 +150,30 @@ void TestNeonAssembly::DownScaleOneFourthAssembly(unsigned char *pInData, int iH
     //arm64: Iphone6S 2017-11-13 17:14:00.506603+0600 MediaEngine[966:252105] DownScaleOneFourth TimeElapsed = 1, frames = 1065, totalDiff = 782
     //c++: Iphone6S2 017-11-13 17:15:51.738798+0600 MediaEngine[969:253245] DownScaleOneFourth TimeElapsed = 3, frames = 1048, totalDiff = 4324
 }
+
+void TestNeonAssembly::RotateI420_Assembly(unsigned char *pInput, int inHeight, int inWidth, unsigned char *pOutput, int &outHeight, int &outWidth, int rotationParameter)
+{
+    if(rotationParameter == 3) /*90 Degree rotation*/
+    {
+        Rotate90Degree_arm_neon_aarch64(pInput, pOutput, inHeight, inWidth);
+        outHeight = inWidth;
+        outWidth = inHeight;
+        
+        //Testing Device: iPhone 6
+        //TheKing--> rotationI420 timediffsum = 994, framecounter = 1000 assembly arm64 debug
+        //TheKing--> rotationI420 timediffsum = 1034, framecounter = 1000 assembly arm64 release
+        
+        //TheKing--> rotationI420 timediffsum = 2889, framecounter = 1000 c++ debug
+        //TheKing--> rotationI420 timediffsum = 946, framecounter = 1000 c++ release
+        
+    }
+}
+
+void TestNeonAssembly::ne10_img_rotate_Assembly(unsigned char *pDst, unsigned char *pSrc, int iWidth, int iHeight)
+{
+    
+#ifdef HAVE_NEON
+    printf("TheKing--> ne10_img_rotate_Assembly HAVE_NEON\n");
+    ne10_img_rotate_get_quad_rangle_subpix_rgba_neon(pDst, pSrc, iWidth, iHeight);
+#endif
+}

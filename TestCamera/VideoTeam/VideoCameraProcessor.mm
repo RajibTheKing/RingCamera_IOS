@@ -553,10 +553,23 @@ byte newData[640*480*3/2];
     memset(pOutPutTest, 0, sizeof(pOutPutTest));
     printf("TheKing--> Sending2 len = %d, H:W = %d:%d\n", iVideoHeight * iVideoWidth * 3 / 2, iVideoHeight, iVideoWidth);
 
-    ts.Mirror_YUV420_Assembly(pRawYuv, pOutPutTest, iVideoHeight, iVideoWidth);
+    //ts.Mirror_YUV420_Assembly(pRawYuv, pOutPutTest, iVideoHeight, iVideoWidth);
     //m_pVideoConverter->mirrorYUVI420(pRawYuv, pOutPutTest, iVideoHeight, iVideoWidth);
 
 
+    long long startTime = CurrentTimeStamp();
+    //m_pVideoConverter->RotateI420(pRawYuv, iVideoHeight, iVideoWidth, pOutPutTest, iNewHeight, iNewWidth, 3/*90 Degree*/);
+    ts.RotateI420_Assembly(pRawYuv, iVideoHeight, iVideoWidth, pOutPutTest, iNewHeight, iNewWidth, 3/*90 degree*/);
+    long long timeDiff = CurrentTimeStamp() - startTime;
+    static long long timediffsum = 0;
+    timediffsum+=timeDiff;
+    
+    printf("TheKing--> rotationI420 timediffsum = %lld, framecounter = %d\n", timediffsum, ++tempCounter);
+    
+
+    
+    iVideoHeight = iNewHeight;
+    iVideoWidth = iNewWidth;
     
     m_pVideoConverter->ConvertI420ToNV12(pOutPutTest, iVideoHeight, iVideoWidth);
     

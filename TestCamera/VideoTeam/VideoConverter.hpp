@@ -94,6 +94,7 @@ public:
     int DownScaleVideoDataWithAverageVersion2(byte* pData, int &iHeight, int &iWidth, byte* outputData);
     int Crop_YUV420(unsigned char* pData, int inHeight, int inWidth, int startXDiff, int endXDiff, int startYDiff, int endYDiff, unsigned char* outputData, int &outHeight, int &outWidth);
     int DownScaleYUVNV12_YUVNV21_OneFourth(unsigned char* pData, int &iHeight, int &iWidth, unsigned char* outputData);
+    int RotateI420(byte *pInput, int inHeight, int inWidth, byte *pOutput, int &outHeight, int &outWidth, int rotationParameter);
     CIContext *temporaryContext, *temporaryContext2;
     
     int m_iHeight;

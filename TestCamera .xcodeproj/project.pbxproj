@@ -29,8 +29,7 @@
 		2BA4850713F1E6AA000BABB3 /* TestCameraAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4850413F1E6AA000BABB3 /* TestCameraAppDelegate.m */; };
 		2BA4851713F1E6DB000BABB3 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4851313F1E6DB000BABB3 /* main.mm */; };
 		DA07AA621DE2C3D800402BB9 /* Common.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA07AA611DE2C3D800402BB9 /* Common.mm */; };
-		DA3494771FB862BD00D8C681 /* libAudioVideoEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA3494751FB862BD00D8C681 /* libAudioVideoEngine.a */; };
-		DA3494781FB862BD00D8C681 /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA3494761FB862BD00D8C681 /* libRingIDSDK.a */; };
+		DA19F6D9201706500089C02D /* Rotate_Assembly_aarch64.S in Sources */ = {isa = PBXBuildFile; fileRef = DA19F6D6201706500089C02D /* Rotate_Assembly_aarch64.S */; };
 		DA5222AC1DC5CF62000EB084 /* AverageCalculator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA5222AA1DC5CF62000EB084 /* AverageCalculator.cpp */; };
 		DA7B6AF41E6D2B6B00AC19C3 /* endBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AF21E6D2B6B00AC19C3 /* endBtn.png */; };
 		DA7B6AF51E6D2B6B00AC19C3 /* startBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AF31E6D2B6B00AC19C3 /* startBtn.png */; };
@@ -53,6 +52,9 @@
 		DA7FCB441E7512FE0035AA4C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA7FCB431E7512FE0035AA4C /* SystemConfiguration.framework */; };
 		DA835D861E6C5A6200C75A79 /* AppAsset.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */; };
 		DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA971EFB1E07A9D600645151 /* FastBilateral.mm */; };
+		DAA14B75201887E600F0872F /* NE10_rotate.neon.S in Sources */ = {isa = PBXBuildFile; fileRef = DAA14B72201887E600F0872F /* NE10_rotate.neon.S */; };
+		DAA66F0D20398955006EB546 /* libAudioVideoEngine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DAA66F0C20398955006EB546 /* libAudioVideoEngine.a */; };
+		DAA66F0F2039895E006EB546 /* libRingIDSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DAA66F0E2039895E006EB546 /* libRingIDSDK.a */; };
 		DAAE44FF1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAAE44FD1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp */; };
 		DAB40B7E1FC144F4002FCE60 /* Dump_h264_annexb_cut.h264 in Resources */ = {isa = PBXBuildFile; fileRef = DAB40B7D1FC144F4002FCE60 /* Dump_h264_annexb_cut.h264 */; };
 		DAB40B801FC150E4002FCE60 /* FileDump.h264 in Resources */ = {isa = PBXBuildFile; fileRef = DAB40B7F1FC150E3002FCE60 /* FileDump.h264 */; };
@@ -122,8 +124,7 @@
 		2BA4851313F1E6DB000BABB3 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = SOURCE_ROOT; };
 		DA07AA601DE2C35900402BB9 /* Common.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Common.hpp; path = TestCamera/VideoTeam/Common.hpp; sourceTree = "<group>"; };
 		DA07AA611DE2C3D800402BB9 /* Common.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Common.mm; path = TestCamera/VideoTeam/Common.mm; sourceTree = "<group>"; };
-		DA3494751FB862BD00D8C681 /* libAudioVideoEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAudioVideoEngine.a; path = "Build/Products/Release-universal/libAudioVideoEngine.a"; sourceTree = "<group>"; };
-		DA3494761FB862BD00D8C681 /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = "Build/Products/Release-universal/libRingIDSDK.a"; sourceTree = "<group>"; };
+		DA19F6D6201706500089C02D /* Rotate_Assembly_aarch64.S */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = Rotate_Assembly_aarch64.S; sourceTree = "<group>"; };
 		DA5222AA1DC5CF62000EB084 /* AverageCalculator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AverageCalculator.cpp; path = TestCamera/VideoTeam/AverageCalculator.cpp; sourceTree = "<group>"; };
 		DA5222AB1DC5CF62000EB084 /* AverageCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AverageCalculator.h; path = TestCamera/VideoTeam/AverageCalculator.h; sourceTree = "<group>"; };
 		DA7B6AF21E6D2B6B00AC19C3 /* endBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = endBtn.png; path = TestCamera/images/endBtn.png; sourceTree = "<group>"; };
@@ -160,6 +161,9 @@
 		DA7FCB431E7512FE0035AA4C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppAsset.xcassets; sourceTree = "<group>"; };
 		DA971EFB1E07A9D600645151 /* FastBilateral.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = FastBilateral.mm; path = TestCamera/VideoTeam/FastBilateral.mm; sourceTree = "<group>"; };
+		DAA14B72201887E600F0872F /* NE10_rotate.neon.S */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = NE10_rotate.neon.S; sourceTree = "<group>"; };
+		DAA66F0C20398955006EB546 /* libAudioVideoEngine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libAudioVideoEngine.a; path = "Build/Products/Release-iphoneos/libAudioVideoEngine.a"; sourceTree = "<group>"; };
+		DAA66F0E2039895E006EB546 /* libRingIDSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRingIDSDK.a; path = "Build/Products/Release-iphoneos/libRingIDSDK.a"; sourceTree = "<group>"; };
 		DAAE44FD1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestNeonAssembly.cpp; sourceTree = "<group>"; };
 		DAAE44FE1F28BB4C00BC5FA1 /* TestNeonAssembly.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestNeonAssembly.hpp; sourceTree = "<group>"; };
 		DAB40B7D1FC144F4002FCE60 /* Dump_h264_annexb_cut.h264 */ = {isa = PBXFileReference; lastKnownFileType = file; path = Dump_h264_annexb_cut.h264; sourceTree = "<group>"; };
@@ -190,9 +194,9 @@
 			files = (
 				DA7FCB441E7512FE0035AA4C /* SystemConfiguration.framework in Frameworks */,
 				DA7FCB3C1E7512710035AA4C /* MediaPlayer.framework in Frameworks */,
-				DA3494771FB862BD00D8C681 /* libAudioVideoEngine.a in Frameworks */,
+				DAA66F0D20398955006EB546 /* libAudioVideoEngine.a in Frameworks */,
 				1B3C9A34139D4EAA0042676B /* ImageIO.framework in Frameworks */,
-				DA3494781FB862BD00D8C681 /* libRingIDSDK.a in Frameworks */,
+				DAA66F0F2039895E006EB546 /* libRingIDSDK.a in Frameworks */,
 				1B3C9A32139D4E740042676B /* QuartzCore.framework in Frameworks */,
 				1B3C9A30139D4E5F0042676B /* CoreMedia.framework in Frameworks */,
 				1B867FE1139D4AD300AD6B47 /* CoreGraphics.framework in Frameworks */,
@@ -245,6 +249,8 @@
 		1B867FCD139D4AD300AD6B47 = {
 			isa = PBXGroup;
 			children = (
+				DAA66F0C20398955006EB546 /* libAudioVideoEngine.a */,
+				DAA66F0E2039895E006EB546 /* libRingIDSDK.a */,
 				DA7C89E51DEE91C2002C939F /* RingIDSDK.xcodeproj */,
 				DABC85D31F65874100F25F17 /* AudioVideoEngine.xcodeproj */,
 				2BA4850313F1E6AA000BABB3 /* TestCameraAppDelegate.h */,
@@ -254,8 +260,6 @@
 				2BA4851313F1E6DB000BABB3 /* main.mm */,
 				DAB40B7F1FC150E3002FCE60 /* FileDump.h264 */,
 				DAB40B7D1FC144F4002FCE60 /* Dump_h264_annexb_cut.h264 */,
-				DA3494751FB862BD00D8C681 /* libAudioVideoEngine.a */,
-				DA3494761FB862BD00D8C681 /* libRingIDSDK.a */,
 				DA835D851E6C5A6200C75A79 /* AppAsset.xcassets */,
 				DAB86FED2015C3F9004E0415 /* View */,
 				DAB86FEC2015C3B6004E0415 /* Controller */,
@@ -370,6 +374,7 @@
 				DAB86FF72015C586004E0415 /* DownScaleOneFourthAssembly.S */,
 				DAB86FF82015C586004E0415 /* mirror_YUV420_Assembly.S */,
 				DAB86FF62015C586004E0415 /* Neon_Assembly.S */,
+				DAA14B72201887E600F0872F /* NE10_rotate.neon.S */,
 			);
 			path = arm32;
 			sourceTree = "<group>";
@@ -380,6 +385,7 @@
 				DAB86FFD2015C58F004E0415 /* DownScaleOneFourthAssembly_arm64.S */,
 				DAB86FFC2015C58F004E0415 /* mirror_YUV420_Assembly_arm64.S */,
 				DAB86FFE2015C58F004E0415 /* Neon_Assembly_aarch64.S */,
+				DA19F6D6201706500089C02D /* Rotate_Assembly_aarch64.S */,
 			);
 			path = arm64;
 			sourceTree = "<group>";
@@ -542,6 +548,7 @@
 				DA7CE4901E6FFD97008895E5 /* RingCallAudioManager.mm in Sources */,
 				18747B001BFDD0C60010CAA3 /* VideoConverter.mm in Sources */,
 				DA07AA621DE2C3D800402BB9 /* Common.mm in Sources */,
+				DA19F6D9201706500089C02D /* Rotate_Assembly_aarch64.S in Sources */,
 				DA7CE4911E6FFD97008895E5 /* SharkfoodMuteSwitchDetector.m in Sources */,
 				DAAE44FF1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp in Sources */,
 				2BA4851713F1E6DB000BABB3 /* main.mm in Sources */,
@@ -553,6 +560,7 @@
 				DA7CE4971E6FFE82008895E5 /* TPCircularBuffer+AudioBufferList.c in Sources */,
 				18747AFC1BFDD0C60010CAA3 /* MessageProcessor.mm in Sources */,
 				DAB86FF92015C586004E0415 /* Neon_Assembly.S in Sources */,
+				DAA14B75201887E600F0872F /* NE10_rotate.neon.S in Sources */,
 				18747AFF1BFDD0C60010CAA3 /* VideoCameraProcessor.mm in Sources */,
 				18747AFE1BFDD0C60010CAA3 /* VideoAPI.mm in Sources */,
 				DA971EFC1E07A9D600645151 /* FastBilateral.mm in Sources */,
@@ -687,6 +695,7 @@
 					"$(PROJECT_DIR)/Build/Products/Debug-iphoneos",
 					"$(PROJECT_DIR)/Build/Products/Debug-universal",
 					"$(PROJECT_DIR)/Build/Products/Release-universal",
+					"$(PROJECT_DIR)/Build/Products/Release-iphoneos",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
@@ -747,6 +756,7 @@
 					"$(PROJECT_DIR)/Build/Products/Debug-iphoneos",
 					"$(PROJECT_DIR)/Build/Products/Debug-universal",
 					"$(PROJECT_DIR)/Build/Products/Release-universal",
+					"$(PROJECT_DIR)/Build/Products/Release-iphoneos",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";

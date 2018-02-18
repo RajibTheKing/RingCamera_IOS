@@ -202,7 +202,7 @@ int g_iTargetUser;
     }
    
     
-    int iFrameLen = 1280*720*3/2;
+    int iFrameLen = 1280*720*4;
     
     unsigned char *pDest = new unsigned char[iFrameLen];
     unsigned char *pSrc = new unsigned char[iFrameLen];
@@ -224,8 +224,43 @@ int g_iTargetUser;
     startTime = CurrentTimeStamp();
     memcpy(pDest2, pSrc, iFrameLen);
     printf("memcpy timeDIff = %lld\n", CurrentTimeStamp() - startTime);
+    
+    CVideoConverter *testConverter = new CVideoConverter();
+    startTime = CurrentTimeStamp();
+    //int RotateI420(byte *pInput, int inHeight, int inWidth, byte *pOutput, int &outHeight, int &outWidth, int rotationParameter);
+    int idx = 0;
+    int testHeight = 720, testWidth = 720;
+    
+    /*
+    for(int i=0; i<testHeight; i++)
+    {
+        for(int j=0; j<testWidth; j++)
+        {
+            pSrc[idx++] = j;
+            printf("%d ", pSrc[i*testWidth+j]);
+        }
+        printf("\n");
+    }*/
+    for(int i=0; i<1; i++)
+    {
+        testNeonAssembly.ne10_img_rotate_Assembly(pDest, pSrc, 1280, 720);
+        //int outHeight, outWidth;
+        //testConverter->RotateI420(pSrc, 720, 1280, pDest, outHeight , outWidth , 1);
+    }
 
     
+    printf("ne10_img_rotate_Assembly timeDIff = %lld\n", CurrentTimeStamp() - startTime);
+
+    /*
+    idx = 0;
+    for(int i=0; i<testHeight; i++)
+    {
+        for(int j=0; j<testWidth; j++)
+        {
+            printf("%d ", pDest[i*testWidth+j]);
+        }
+        printf("\n");
+    }*/
     
     //for(int i=0;i<iFrameLen;i++){printf("%d ", pSrc[i]);}printf("\n\n\n\n\n\n\n\n");
     //for(int i=0;i<iFrameLen;i++){printf("%d ", pDest[i]);}printf("\n");
@@ -711,10 +746,12 @@ int g_iTargetUser;
     if(session != nil)
     {
         [session stopRunning];
-        if(iHeight==352)
+        /*if(iHeight==352)
             [session setSessionPreset:AVCaptureSessionPreset352x288];
         if(iHeight == 640)
             [session setSessionPreset:AVCaptureSessionPreset640x480];
+         */
+        [session setSessionPreset:AVCaptureSessionPreset1280x720];
         
         [session startRunning];
     }
@@ -1053,6 +1090,8 @@ void WriteToFile(byte *pData)
     {
         iDeviceCapability = 208;
     }
+    
+    iDeviceCapability = 207;
     
     cout<<"Device Model --> "<<sDevice<<endl;
     
