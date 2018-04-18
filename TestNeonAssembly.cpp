@@ -11,15 +11,28 @@
 
 #include <algorithm>
 
+//unsigned char m_pTempArray2[1280 * 720 * 3];
 
 TestNeonAssembly::TestNeonAssembly()
 {
     param = new unsigned int[10];
+    printf("TestNeonAssembly Constructor check\n");
+    //m_pTempArray2 = new unsigned char[1280 * 720 * 3];
 }
 
 TestNeonAssembly::~TestNeonAssembly()
 {
+    printf("TestNeonAssembly Destructor check\n");
     delete[] param;
+}
+
+TestNeonAssembly* TestNeonAssembly::GetInstance()
+{
+    if(g_TestNeonAssembly == nullptr)
+    {
+        g_TestNeonAssembly = new TestNeonAssembly();
+    }
+    return g_TestNeonAssembly;
 }
 
 void TestNeonAssembly::reference_convert (unsigned char * __restrict dest, unsigned char * __restrict src, int n)
@@ -106,6 +119,30 @@ void TestNeonAssembly::Crop_yuv420_assembly(unsigned char* src, int inHeight, in
     //ARM_NEON: 2017-08-26 19:45:28.245923 MediaEngine[442:110984] TimeElapsed = 0, frames = 1016, totalDiff = 123 ms
     //C++: 2017-08-26 19:46:39.203911 MediaEngine[445:111660] TimeElapsed = 0, frames = 1016, totalDiff = 588 ms
 }
+void TestNeonAssembly::Crop_YUVNV12_YUVNV21_assembly(unsigned char* pData, int inHeight, int inWidth, int startXDiff, int endXDiff, int startYDiff, int endYDiff, unsigned char* outputData, int &outHeight, int &outWidth)
+{
+    outHeight = inHeight - startYDiff - endYDiff;
+    outWidth = inWidth - startXDiff - endXDiff;
+    param[0] = inHeight;
+    param[1] = inWidth;
+    param[2] = startXDiff;
+    param[3] = endXDiff;
+    param[4] = startYDiff;
+    param[5] = endYDiff;
+    param[6] = outHeight;
+    param[7] = outWidth;
+    
+#if defined(HAVE_NEON)
+    
+    Crop_YUVNV12_YUVNV21_arm_aarch32(pData, outputData, param);
+    
+#elif defined(HAVE_NEON_AARCH64)
+    
+    Crop_YUVNV12_YUVNV21_arm_aarch64(pData, outputData, param);
+    
+#endif
+    
+}
 void TestNeonAssembly::CalculateSumOfLast64_assembly(unsigned int * pData, unsigned int *ans)
 {
     CalculateSumOfLast64_ARM_NEON(pData, ans);
@@ -149,6 +186,35 @@ void TestNeonAssembly::DownScaleOneFourthAssembly(unsigned char *pInData, int iH
     
     //arm64: Iphone6S 2017-11-13 17:14:00.506603+0600 MediaEngine[966:252105] DownScaleOneFourth TimeElapsed = 1, frames = 1065, totalDiff = 782
     //c++: Iphone6S2 017-11-13 17:15:51.738798+0600 MediaEngine[969:253245] DownScaleOneFourth TimeElapsed = 3, frames = 1048, totalDiff = 4324
+}
+
+void TestNeonAssembly::BeautificationFilterForChannel_assembly(unsigned char *pBlurConvertingData, int iHeight, int iWidth)
+{
+    memcpy(m_pTempCharArray, pBlurConvertingData, iHeight * iWidth * 3 / 2);
+    param[0] = iHeight;
+    param[1] = iWidth;
+    int a = 10;
+    if(a<0)
+    {
+        a = 0;
+    }
+    BeautificationFilterForChannel_arm_aarch64(pBlurConvertingData, param, m_pTempCharArray, m_pTempShortArray);
+    memcpy(pBlurConvertingData, m_pTempCharArray, iHeight * iWidth * 3 / 2);
+}
+
+int TestNeonAssembly::ConvertNV21ToI420_assembly(unsigned char *convertingData, int iVideoHeight, int iVideoWidth)
+{
+#if defined(HAVE_NEON)
+    
+    ConvertNV21ToI420_arm_aarch32(convertingData, m_pTempArray1, iVideoHeight, iVideoWidth);
+    memcpy(convertingData+(iVideoHeight*iVideoWidth), m_pTempArray1+(iVideoHeight*iVideoWidth), (iVideoHeight * iVideoWidth)/2);
+    
+#elif defined(HAVE_NEON_AARCH64)
+    
+    ConvertNV21ToI420_arm_aarch64(convertingData, m_pTempCharArray, iVideoHeight, iVideoWidth);
+    memcpy(convertingData+(iVideoHeight*iVideoWidth), m_pTempCharArray+(iVideoHeight*iVideoWidth), (iVideoHeight * iVideoWidth)/2);
+    
+#endif
 }
 
 void TestNeonAssembly::RotateI420_Assembly(unsigned char *pInput, int inHeight, int inWidth, unsigned char *pOutput, int &outHeight, int &outWidth, int rotationParameter)
