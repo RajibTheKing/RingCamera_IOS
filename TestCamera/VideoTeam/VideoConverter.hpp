@@ -59,6 +59,8 @@ public:
     void mirrorRotateAndConvertNV12ToI420(unsigned char *m_pFrame, unsigned char *pData, int &iVideoHeight, int &iVideoWidth);
     void mirrorYUVI420(unsigned char *pFrame, unsigned char *pData, int iHeight, int iWidth);
     int ConvertI420ToNV12(unsigned char *convertingData, int iVideoHeight, int iVideoWidth);
+    int ConvertI420ToNV21(unsigned char *convertingData, int iVideoHeight, int iVideoWidth);
+    int ConvertNV21ToI420(unsigned char *convertingData, int iVideoHeight, int iVideoWidth);
     
     int Convert_UIImage_To_RGBA8(UIImage *pImage, byte** outBuf);
     void GaussianBlur(unsigned char* scl, unsigned char* tcl, int h, int w, float r);
@@ -93,6 +95,7 @@ public:
     int DownScaleVideoDataWithAverage(byte* pData, int &iHeight, int &iWidth, byte* outputData);
     int DownScaleVideoDataWithAverageVersion2(byte* pData, int &iHeight, int &iWidth, byte* outputData);
     int Crop_YUV420(unsigned char* pData, int inHeight, int inWidth, int startXDiff, int endXDiff, int startYDiff, int endYDiff, unsigned char* outputData, int &outHeight, int &outWidth);
+    int Crop_YUVNV12_YUVNV21(unsigned char* pData, int inHeight, int inWidth, int startXDiff, int endXDiff, int startYDiff, int endYDiff, unsigned char* outputData, int &outHeight, int &outWidth);
     int DownScaleYUVNV12_YUVNV21_OneFourth(unsigned char* pData, int &iHeight, int &iWidth, unsigned char* outputData);
     int RotateI420(byte *pInput, int inHeight, int inWidth, byte *pOutput, int &outHeight, int &outWidth, int rotationParameter);
     CIContext *temporaryContext, *temporaryContext2;

@@ -152,6 +152,27 @@ int CVideoConverter::ConvertI420ToNV12(unsigned char *convertingData, int iVideo
     
     return UVPlaneEnd;
 }
+int CVideoConverter::ConvertNV21ToI420(unsigned char *convertingData, int iVideoHeight, int iVideoWidth)
+{
+    //ColorConverterLocker lock(*m_pColorConverterMutex);
+    
+    int i, j, k;
+    
+    int YPlaneLength = iVideoHeight*iVideoWidth;
+    int VPlaneLength = YPlaneLength >> 2;
+    int UVPlaneMidPoint = YPlaneLength + VPlaneLength;
+    int UVPlaneEnd = UVPlaneMidPoint + VPlaneLength;
+    
+    for (i = YPlaneLength, j = 0, k = i; i < UVPlaneEnd; i += 2, j++, k++)
+    {
+        m_pVPlane[j] = convertingData[i];
+        convertingData[k] = convertingData[i + 1];
+    }
+    
+    memcpy(convertingData + UVPlaneMidPoint, m_pVPlane, VPlaneLength);
+    
+    return UVPlaneEnd;
+}
 void CVideoConverter::mirrorRotateAndConvertNV12ToI420(unsigned char *m_pFrame, unsigned char *pData, int &iVideoHeight, int &iVideoWidth)
 {
     //Locker lock(*m_pColorConverterMutex);
@@ -1932,6 +1953,78 @@ int CVideoConverter::Crop_YUV420(unsigned char* pData, int inHeight, int inWidth
     return outHeight*outWidth*3/2;
     
 }
+int CVideoConverter::ConvertI420ToNV21(unsigned char *convertingData, int iVideoHeight, int iVideoWidth)
+{
+    int i, j, k;
+    
+    int YPlaneLength = iVideoHeight*iVideoWidth;
+    int VPlaneLength = YPlaneLength >> 2;
+    int UVPlaneMidPoint = YPlaneLength + VPlaneLength;
+    int UVPlaneEnd = UVPlaneMidPoint + VPlaneLength;
+    
+    memcpy(m_pUPlane, convertingData + YPlaneLength, VPlaneLength);
+    
+    for (i = YPlaneLength, j = 0, k = UVPlaneMidPoint; i < UVPlaneEnd; i += 2, j++, k++)
+    {
+        convertingData[i] = convertingData[k];
+        convertingData[i + 1] = m_pUPlane[j];
+    }
+    
+    return UVPlaneEnd;
+    
+}
+int CVideoConverter::Crop_YUVNV12_YUVNV21(unsigned char* pData, int inHeight, int inWidth, int startXDiff, int endXDiff, int startYDiff, int endYDiff, unsigned char* outputData, int &outHeight, int &outWidth)
+{
+    //cout<<"inHeight,inWidth = "<<iHeight<<", "<<iWidth<<endl;
+    int YPlaneLength = inHeight*inWidth;
+    int UPlaneLength = YPlaneLength >> 2;
+    int indx = 0;
+    
+    for(int i=startYDiff; i<(inHeight-endYDiff); i++)
+    {
+        /*
+        for(int j=startXDiff; j<(inWidth-endXDiff); j++)
+        {
+            outputData[indx++] = pData[i*inWidth + j];
+            
+        }
+        */
+        
+        memcpy(outputData+indx, pData+(i*inWidth+startXDiff), (inWidth-endXDiff-startXDiff));
+        indx+=(inWidth-endXDiff-startXDiff);
+        
+    }
+    
+    
+    byte *p = pData + YPlaneLength;
+    int uIndex = indx;
+    int vIndex = indx + 1;
+    
+    
+    int halfH = inHeight>>1, halfW = inWidth>>1;
+    
+    for(int i=startYDiff/2; i<(halfH-endYDiff/2); i++)
+    {
+        /*
+        for(int j=startXDiff; j<(inWidth-endXDiff); j+=2)
+        {
+            outputData[uIndex] = p[i*inWidth + j];
+            outputData[vIndex] = p[i*inWidth + j + 1];
+            uIndex+=2;
+            vIndex+=2;
+        }
+        */
+        memcpy(outputData+indx, p+(i*inWidth + startXDiff), inWidth-endXDiff-startXDiff);
+        indx+=(inWidth-endXDiff-startXDiff);
+    }
+    
+    outHeight = inHeight - startYDiff - endYDiff;
+    outWidth = inWidth - startXDiff - endXDiff;
+    //printf("Now, First Block, H:W -->%d,%d  Indx = %d, uIndex = %d, vIndex = %d\n", outHeight, outWidth, indx, uIndex, vIndex);
+    return outHeight*outWidth*3/2;
+    
+}
+
 
 int CVideoConverter::RotateI420(byte *pInput, int inHeight, int inWidth, byte *pOutput, int &outHeight, int &outWidth, int rotationParameter)
 {

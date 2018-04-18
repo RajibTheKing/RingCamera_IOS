@@ -61,6 +61,7 @@ int g_iTargetUser;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSLog(@"Inside ViewDidLoad");
 
     MyCustomImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, m_iCameraWidth, m_iCameraHeight)];
     //MyCustomImageView.transform = CGAffineTransformScale(MyCustomImageView.transform, -1.0, 1.0);
@@ -144,12 +145,14 @@ int g_iTargetUser;
     string sServerIP = [nsServerIP UTF8String];
     
     CVideoAPI::GetInstance()->InitializeMediaConnectivity(sServerIP /*Server IP*/, 6060 /* Server Signaling Port*/, 1);
-    CVideoAPI::GetInstance()->ProcessCommand("register");
+    //CVideoAPI::GetInstance()->ProcessCommand("register");
     
-    Operation[0] = @"Invite";
-    Operation[1] = @"Publish";
-    Operation[2] = @"View";
-    Operation[3] = @"Terminate-All";
+    Operation[0] = @"Register";
+    Operation[1] = @"Invite";
+    Operation[2] = @"Endcall";
+    Operation[3] = @"Publish";
+    Operation[4] = @"View";
+    Operation[5] = @"Terminate-All";
     
     m_iOperationSelector = 0;
     
@@ -159,6 +162,7 @@ int g_iTargetUser;
     m_brapidFireForTargetUserBtnHold = false;
     m_pTestCameraViewController = self;
     
+#if 0
     TestNeonAssembly testNeonAssembly;
     srand (time(NULL));
     unsigned char *temporaryRGB = new unsigned char[MAXHEIGHT * MAXWIDTH * 3];
@@ -243,7 +247,7 @@ int g_iTargetUser;
     }*/
     for(int i=0; i<1; i++)
     {
-        testNeonAssembly.ne10_img_rotate_Assembly(pDest, pSrc, 1280, 720);
+        //testNeonAssembly.ne10_img_rotate_Assembly(pDest, pSrc, 1280, 720);
         //int outHeight, outWidth;
         //testConverter->RotateI420(pSrc, 720, 1280, pDest, outHeight , outWidth , 1);
     }
@@ -282,7 +286,7 @@ int g_iTargetUser;
     cout<<endl;
     testNeonAssembly.CalculateSumOfLast64_assembly(pData, ans);
     cout<<"Final Ans = "<<*ans<<endl;
-    
+#endif
     
     
     resolutionList[0] = @"352x288";
@@ -324,17 +328,26 @@ int g_iTargetUser;
     string sTargetUser = [nsTargetUser UTF8String];
     NSString *nsTargetAction = Operation[m_iOperationSelector];
     
-    if([nsTargetAction  isEqual: @"Invite"])
+    if([nsTargetAction  isEqual: @"Register"])
+    {
+        CVideoAPI::GetInstance()->ProcessCommand("register");
+        
+    }
+    else if([nsTargetAction  isEqual: @"Invite"])
     {
         CVideoAPI::GetInstance()->ProcessCommand("invite " + sTargetUser);
         
         [self StartAllThreads];
         iRet = [self InitializeCameraAndMicrophone];
-        iRet = [self InitializeAudioVideoEngineForCall];
+        //iRet = [self InitializeAudioVideoEngineForCall];
         
         
         //iRet = [self InitializeAudioVideoEngineForLive];
         
+    }
+    else if([nsTargetAction  isEqual: @"Endcall"])
+    {
+        CVideoAPI::GetInstance()->ProcessCommand("end " + sTargetUser);
     }
     else if([nsTargetAction  isEqual: @"Publish"])
     {
@@ -723,7 +736,7 @@ int g_iTargetUser;
 - (IBAction)operationAction:(id)sender
 {
     m_iOperationSelector++;
-    m_iOperationSelector%=4;
+    m_iOperationSelector%=6;
     
     [[self operationBtn]  setTitle:Operation[m_iOperationSelector] forState:UIControlStateNormal];
 }

@@ -60,6 +60,20 @@ void CMessageProcessor::Handle_Signaling_Message(unsigned char* buffer, int iLen
         [[TestCameraViewController GetInstance] InitializeAudioVideoEngineForCall];
         
     }
+    else if(buffer[0] ==  Constants::END_CALL_MESSAGE)
+    {
+        [[TestCameraViewController GetInstance] UnInitializeAudioVideoEngine];
+        [[TestCameraViewController GetInstance] UnInitializeCameraAndMicrophone];
+        [[TestCameraViewController GetInstance] CloseAllThreads];
+        
+    }
+    else if(buffer[0] ==  Constants::REPLY_END_CALL_MESSAGE)
+    {
+        [[TestCameraViewController GetInstance] UnInitializeAudioVideoEngine];
+        [[TestCameraViewController GetInstance] UnInitializeCameraAndMicrophone];
+        [[TestCameraViewController GetInstance] CloseAllThreads];
+        
+    }
     else if(buffer[0] ==  Constants::PUBLISHER_INVITE_MESSAGE)
     {
         int publisherID = ByteToInt(buffer, startIndex);
