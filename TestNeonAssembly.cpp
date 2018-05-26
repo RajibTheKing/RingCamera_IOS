@@ -198,7 +198,11 @@ void TestNeonAssembly::BeautificationFilterForChannel_assembly(unsigned char *pB
     {
         a = 0;
     }
+#if defined(HAVE_NEON)
+    BeautificationFilterForChannel_arm_aarch32(pBlurConvertingData, param, m_pTempCharArray, m_pTempShortArray);
+#elif defined(HAVE_NEON_AARCH64)
     BeautificationFilterForChannel_arm_aarch64(pBlurConvertingData, param, m_pTempCharArray, m_pTempShortArray);
+#endif
     memcpy(pBlurConvertingData, m_pTempCharArray, iHeight * iWidth * 3 / 2);
 }
 
@@ -206,8 +210,8 @@ int TestNeonAssembly::ConvertNV21ToI420_assembly(unsigned char *convertingData, 
 {
 #if defined(HAVE_NEON)
     
-    ConvertNV21ToI420_arm_aarch32(convertingData, m_pTempArray1, iVideoHeight, iVideoWidth);
-    memcpy(convertingData+(iVideoHeight*iVideoWidth), m_pTempArray1+(iVideoHeight*iVideoWidth), (iVideoHeight * iVideoWidth)/2);
+    ConvertNV21ToI420_arm_aarch32(convertingData, m_pTempCharArray, iVideoHeight, iVideoWidth);
+    memcpy(convertingData+(iVideoHeight*iVideoWidth), m_pTempCharArray+(iVideoHeight*iVideoWidth), (iVideoHeight * iVideoWidth)/2);
     
 #elif defined(HAVE_NEON_AARCH64)
     
