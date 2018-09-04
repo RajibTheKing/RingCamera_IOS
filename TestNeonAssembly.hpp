@@ -39,6 +39,9 @@ extern "C"
     void Rotate90Degree_arm_neon_aarch64(unsigned char *pInData, unsigned char *pOutData, int iHeight, int iWidth);
     void ne10_img_rotate_get_quad_rangle_subpix_rgba_neon(unsigned char *pDst, unsigned char *pSrc, int iWidth, int iHeight);
     
+    void InitializeCumulativeSumForY_arm_aarch64(int inHeight, int inWidth, unsigned char *pData, int *cummulativeY);
+    void InitializeCumulativeSumForY_arm_aarch32(int inHeight, int inWidth, unsigned char *pData, int *cummulativeY);
+    
 }
 
 
@@ -68,11 +71,12 @@ public:
 
     
     int ConvertNV21ToI420_assembly(unsigned char *convertingData, int iVideoHeight, int iVideoWidth);
-    
     void RotateI420_Assembly(unsigned char *pInput, int inHeight, int inWidth, unsigned char *pOutput, int &outHeight, int &outWidth, int rotationParameter);
-    
-    
     void ne10_img_rotate_Assembly(unsigned char *pDst, unsigned char *pSrc, int iWidth, int iHeight);
+    
+    
+    void InitializeCumulativeSumForY_Assembly(int inHeight, int inWidth, unsigned char *pData, int *cummulativeY);
+    
     
     //unsigned char *m_pTempArray2;
     unsigned char m_pTempCharArray[640 * 480 * 3];

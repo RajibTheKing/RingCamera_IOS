@@ -67,8 +67,8 @@ void BeautificationFilter::doSharpen2(unsigned char *inData, int iHeight, int iW
              temp   = temp - inData[curIndex - iWidth] - inData[curIndex + iWidth];
              temp   = temp - inData[curIndex + 1] - inData[curIndex - 1];
              temp   = temp >> 0;
-             //outData[curIndex]   = min(255, max(0, temp + inData[curIndex]));
-            outData[curIndex] = temp + inData[curIndex];
+             outData[curIndex]   = min(255, max(0, temp + inData[curIndex]));
+            //outData[curIndex] = temp + inData[curIndex];
             
         }
     }

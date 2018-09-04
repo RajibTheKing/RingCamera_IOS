@@ -77,6 +77,7 @@ string g_sLOG_PATH = "Document/VideoEngine.log";
     NSString *filePathyuv = [documentsDirectory stringByAppendingPathComponent:@"test_chunk.mp4"];
     handle = [NSFileHandle fileHandleForUpdatingAtPath:filePathyuv];
     char *filePathcharyuv = (char*)[filePathyuv UTF8String];
+    printf("TheKing--> documentsDirectory = %s\n", filePathcharyuv);
     m_FileReadFromDump = fopen(filePathcharyuv, "rb");
     _m_fR = 2;
     _m_Threashold=0;
@@ -560,20 +561,20 @@ byte newData[640*480*3/2];
     //m_pVideoConverter->ConvertI420ToNV12(pRawYuv, iVideoHeight, iVideoWidth);
     
     
-    long long startTime = CurrentTimeStamp();
+    //long long startTime = CurrentTimeStamp();
 
     //ts->BeautificationFilterForChannel_assembly(pRawYuv, iVideoHeight*iVideoWidth*3/2, iVideoHeight, iVideoWidth);
     //BeautificationFilter::GetInstance()->doSharpen(pRawYuv, iVideoHeight, iVideoWidth);
     //TheKing--> Sharpen timediffsum = 1499, framecounter = 500
     
     //BeautificationFilter::GetInstance()->doSharpen2(pRawYuv, iVideoHeight, iVideoWidth, pOutPutTest);
-    TestNeonAssembly::GetInstance()->BeautificationFilterForChannel_assembly(pRawYuv,  iVideoHeight, iVideoWidth);
+    //TestNeonAssembly::GetInstance()->BeautificationFilterForChannel_assembly(pRawYuv,  iVideoHeight, iVideoWidth);
     //TheKing--> Sharpen timediffsum = 783, framecounter = 500
     
-    long long timeDiff = CurrentTimeStamp() - startTime;
-    static long long timediffsum = 0;
-    timediffsum+=timeDiff;
-    printf("TheKing--> Sharpen timediffsum = %lld, framecounter = %d\n", timediffsum, ++tempCounter);
+    //long long timeDiff = CurrentTimeStamp() - startTime;
+    //static long long timediffsum = 0;
+    //timediffsum+=timeDiff;
+    //printf("TheKing--> Sharpen timediffsum = %lld, framecounter = %d\n", timediffsum, ++tempCounter);
     //iVideoHeight = iNewHeight;
     //iVideoWidth = iNewWidth;
     
@@ -614,15 +615,25 @@ byte newData[640*480*3/2];
     //ending downscale oneFourth
     */
     
+    //Starting downscale Dynamic
+    m_pVideoConverter->Convert_YUVNV12_To_YUVI420(pRawYuv, iVideoHeight, iVideoWidth);
+    //memcpy(pRawYuv, pOutPutTest, iVideoWidth*iVideoHeight*3/2);
+    //memset(pOutPutTest, 0, sizeof(pOutPutTest));
+    long long startTime = CurrentTimeStamp();
+    iNewHeight = 320;
+    iNewWidth = 240;
     
-    
-    
-    //CVideoAPI::GetInstance()->m_iReceivedHeight = iVideoHeight;
-    //CVideoAPI::GetInstance()->m_iReceivedWidth = iVideoWidth;
-    //CVideoAPI::GetInstance()->ReceiveFullFrame(pRawYuv, iVideoHeight * iVideoWidth * 3 / 2);
-    
-    
-    
+    m_pVideoConverter->DownScaleYUV420_Dynamic_Version222(pRawYuv, iVideoHeight, iVideoWidth, pOutPutTest, iNewHeight, iNewWidth);
+    long long diff = CurrentTimeStamp() - startTime;
+    totalDIff+=diff;
+    tempCounter++;
+    NSLog(@"DownScaleYUV420_Dynamic_Version222 TimeElapsed = %lld, frames = %d, totalDiff = %lld", diff, tempCounter, totalDIff);
+    m_pVideoConverter->ConvertI420ToNV12(pOutPutTest, iNewHeight, iNewWidth);
+    iVideoHeight = iNewHeight;
+    iVideoWidth = iNewWidth;
+    memcpy(pRawYuv, pOutPutTest, iVideoWidth*iVideoHeight*3/2);
+    //ending downscale oneFourth
+
     //Sending to OwnViewer Directly
     m_iRenderHeight = iVideoHeight;
     m_iRenderWidth = iVideoWidth;

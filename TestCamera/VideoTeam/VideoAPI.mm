@@ -191,7 +191,7 @@ void notifyClientMethodWithAudiPacketDataIos(long long lFriendID, unsigned char 
      */
 }
 
-void notifyClientMethodWithAudioAlarmIos(long long lFriendID, short *data, int dataLenth)
+void notifyClientMethodWithAudioAlarmIos(long long lFriendID, int *data, int dataLenth)
 {
     printf("notifyClientMethodWithAudioAlarmIos dataLenth = %d\n", dataLenth);
 }

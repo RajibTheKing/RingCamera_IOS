@@ -247,3 +247,16 @@ void TestNeonAssembly::ne10_img_rotate_Assembly(unsigned char *pDst, unsigned ch
     ne10_img_rotate_get_quad_rangle_subpix_rgba_neon(pDst, pSrc, iWidth, iHeight);
 #endif
 }
+
+void TestNeonAssembly::InitializeCumulativeSumForY_Assembly(int inHeight, int inWidth, unsigned char *pData, int *cummulativeY)
+{
+#if defined(HAVE_NEON)
+    
+    
+    
+#elif defined(HAVE_NEON_AARCH64)
+    
+    InitializeCumulativeSumForY_arm_aarch64(inHeight, inWidth, pData, cummulativeY);
+    
+#endif
+}

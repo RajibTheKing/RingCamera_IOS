@@ -30,6 +30,16 @@
 		2BA4851713F1E6DB000BABB3 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2BA4851313F1E6DB000BABB3 /* main.mm */; };
 		DA07AA621DE2C3D800402BB9 /* Common.mm in Sources */ = {isa = PBXBuildFile; fileRef = DA07AA611DE2C3D800402BB9 /* Common.mm */; };
 		DA19F6D9201706500089C02D /* Rotate_Assembly_aarch64.S in Sources */ = {isa = PBXBuildFile; fileRef = DA19F6D6201706500089C02D /* Rotate_Assembly_aarch64.S */; };
+		DA50553720E24F2D0005A8C3 /* VideoEffectsTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA50553620E24F2C0005A8C3 /* VideoEffectsTest.cpp */; };
+		DA50554220E25AF60005A8C3 /* Bedroom1_640x480.yuv in Resources */ = {isa = PBXBuildFile; fileRef = DA50553A20E25AEC0005A8C3 /* Bedroom1_640x480.yuv */; };
+		DA50554320E25AF60005A8C3 /* Bedroom2_640x480.yuv in Resources */ = {isa = PBXBuildFile; fileRef = DA50553B20E25AED0005A8C3 /* Bedroom2_640x480.yuv */; };
+		DA50554420E25AF60005A8C3 /* Girl4_180x240.yuv in Resources */ = {isa = PBXBuildFile; fileRef = DA50553C20E25AEF0005A8C3 /* Girl4_180x240.yuv */; };
+		DA50554720E25AF60005A8C3 /* Girl1_640x480.yuv in Resources */ = {isa = PBXBuildFile; fileRef = DA50553F20E25AF30005A8C3 /* Girl1_640x480.yuv */; };
+		DA50554820E25AF60005A8C3 /* Girl2_400x600.yuv in Resources */ = {isa = PBXBuildFile; fileRef = DA50554020E25AF50005A8C3 /* Girl2_400x600.yuv */; };
+		DA50554920E25AF60005A8C3 /* Girl3_640x960.yuv in Resources */ = {isa = PBXBuildFile; fileRef = DA50554120E25AF60005A8C3 /* Girl3_640x960.yuv */; };
+		DA50554C20E25B510005A8C3 /* VideoBeautificationerTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA50554A20E25B510005A8C3 /* VideoBeautificationerTest.cpp */; };
+		DA50555020E266510005A8C3 /* House1_640x352.yuv in Resources */ = {isa = PBXBuildFile; fileRef = DA50554E20E266500005A8C3 /* House1_640x352.yuv */; };
+		DA50555120E266510005A8C3 /* House2_640x360.yuv in Resources */ = {isa = PBXBuildFile; fileRef = DA50554F20E266510005A8C3 /* House2_640x360.yuv */; };
 		DA5222AC1DC5CF62000EB084 /* AverageCalculator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA5222AA1DC5CF62000EB084 /* AverageCalculator.cpp */; };
 		DA5AF08D2073808C00AB603F /* BeautificationFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DA5AF08B2073808C00AB603F /* BeautificationFilter.cpp */; };
 		DA7B6AF41E6D2B6B00AC19C3 /* endBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7B6AF21E6D2B6B00AC19C3 /* endBtn.png */; };
@@ -72,6 +82,8 @@
 		DAB86FFF2015C58F004E0415 /* mirror_YUV420_Assembly_arm64.S in Sources */ = {isa = PBXBuildFile; fileRef = DAB86FFC2015C58F004E0415 /* mirror_YUV420_Assembly_arm64.S */; };
 		DAB870002015C58F004E0415 /* DownScaleOneFourthAssembly_arm64.S in Sources */ = {isa = PBXBuildFile; fileRef = DAB86FFD2015C58F004E0415 /* DownScaleOneFourthAssembly_arm64.S */; };
 		DAB870012015C58F004E0415 /* Neon_Assembly_aarch64.S in Sources */ = {isa = PBXBuildFile; fileRef = DAB86FFE2015C58F004E0415 /* Neon_Assembly_aarch64.S */; };
+		DAB8A39120FF448500A1CDDD /* DownScaleDynamicAssembly_arm64.S in Sources */ = {isa = PBXBuildFile; fileRef = DAB8A39020FF448500A1CDDD /* DownScaleDynamicAssembly_arm64.S */; };
+		DAB8A39520FF44C200A1CDDD /* DownScaleDynamicAssembly_arm32.S in Sources */ = {isa = PBXBuildFile; fileRef = DAB8A39420FF44C200A1CDDD /* DownScaleDynamicAssembly_arm32.S */; };
 		DAC7C1E51E7544850045242C /* ClientRenderingBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC7C1E31E7544850045242C /* ClientRenderingBuffer.cpp */; };
 		DAC7C1EC1E7546180045242C /* ClientLockHandler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DAC7C1E81E7546180045242C /* ClientLockHandler.cpp */; };
 		DAC984B9206628A2008DF06C /* Crop_YUVNV12_YUVNV21_Assembly_arm32.S in Sources */ = {isa = PBXBuildFile; fileRef = DAC984B8206628A2008DF06C /* Crop_YUVNV12_YUVNV21_Assembly_arm32.S */; };
@@ -132,10 +144,23 @@
 		DA07AA601DE2C35900402BB9 /* Common.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Common.hpp; path = TestCamera/VideoTeam/Common.hpp; sourceTree = "<group>"; };
 		DA07AA611DE2C3D800402BB9 /* Common.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Common.mm; path = TestCamera/VideoTeam/Common.mm; sourceTree = "<group>"; };
 		DA19F6D6201706500089C02D /* Rotate_Assembly_aarch64.S */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = Rotate_Assembly_aarch64.S; sourceTree = "<group>"; };
+		DA50553320E24F2C0005A8C3 /* VideoEffectsTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoEffectsTest.h; path = TestCamera/VideoTeam/VideoEffectsTest.h; sourceTree = "<group>"; };
+		DA50553620E24F2C0005A8C3 /* VideoEffectsTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VideoEffectsTest.cpp; path = TestCamera/VideoTeam/VideoEffectsTest.cpp; sourceTree = "<group>"; };
+		DA50553A20E25AEC0005A8C3 /* Bedroom1_640x480.yuv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Bedroom1_640x480.yuv; sourceTree = "<group>"; };
+		DA50553B20E25AED0005A8C3 /* Bedroom2_640x480.yuv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Bedroom2_640x480.yuv; sourceTree = "<group>"; };
+		DA50553C20E25AEF0005A8C3 /* Girl4_180x240.yuv */ = {isa = PBXFileReference; lastKnownFileType = file; path = Girl4_180x240.yuv; sourceTree = "<group>"; };
+		DA50553F20E25AF30005A8C3 /* Girl1_640x480.yuv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Girl1_640x480.yuv; sourceTree = "<group>"; };
+		DA50554020E25AF50005A8C3 /* Girl2_400x600.yuv */ = {isa = PBXFileReference; lastKnownFileType = file; path = Girl2_400x600.yuv; sourceTree = "<group>"; };
+		DA50554120E25AF60005A8C3 /* Girl3_640x960.yuv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Girl3_640x960.yuv; sourceTree = "<group>"; };
+		DA50554A20E25B510005A8C3 /* VideoBeautificationerTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VideoBeautificationerTest.cpp; path = TestCamera/VideoTeam/VideoBeautificationerTest.cpp; sourceTree = "<group>"; };
+		DA50554D20E25B6F0005A8C3 /* VideoBeautificationerTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoBeautificationerTest.h; path = TestCamera/VideoTeam/VideoBeautificationerTest.h; sourceTree = "<group>"; };
+		DA50554E20E266500005A8C3 /* House1_640x352.yuv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = House1_640x352.yuv; sourceTree = "<group>"; };
+		DA50554F20E266510005A8C3 /* House2_640x360.yuv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = House2_640x360.yuv; sourceTree = "<group>"; };
 		DA5222AA1DC5CF62000EB084 /* AverageCalculator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AverageCalculator.cpp; path = TestCamera/VideoTeam/AverageCalculator.cpp; sourceTree = "<group>"; };
 		DA5222AB1DC5CF62000EB084 /* AverageCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AverageCalculator.h; path = TestCamera/VideoTeam/AverageCalculator.h; sourceTree = "<group>"; };
 		DA5AF08B2073808C00AB603F /* BeautificationFilter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BeautificationFilter.cpp; path = TestCamera/VideoTeam/BeautificationFilter.cpp; sourceTree = "<group>"; };
 		DA5AF08C2073808C00AB603F /* BeautificationFilter.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = BeautificationFilter.hpp; path = TestCamera/VideoTeam/BeautificationFilter.hpp; sourceTree = "<group>"; };
+		DA712028213E9123006D0416 /* Size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Size.h; path = TestCamera/VideoTeam/Size.h; sourceTree = "<group>"; };
 		DA7B6AF21E6D2B6B00AC19C3 /* endBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = endBtn.png; path = TestCamera/images/endBtn.png; sourceTree = "<group>"; };
 		DA7B6AF31E6D2B6B00AC19C3 /* startBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = startBtn.png; path = TestCamera/images/startBtn.png; sourceTree = "<group>"; };
 		DA7B6AF61E6D30D300AC19C3 /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = appIcon.png; path = TestCamera/images/appIcon.png; sourceTree = "<group>"; };
@@ -192,6 +217,8 @@
 		DAB86FFC2015C58F004E0415 /* mirror_YUV420_Assembly_arm64.S */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = mirror_YUV420_Assembly_arm64.S; sourceTree = "<group>"; };
 		DAB86FFD2015C58F004E0415 /* DownScaleOneFourthAssembly_arm64.S */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = DownScaleOneFourthAssembly_arm64.S; sourceTree = "<group>"; };
 		DAB86FFE2015C58F004E0415 /* Neon_Assembly_aarch64.S */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = Neon_Assembly_aarch64.S; sourceTree = "<group>"; };
+		DAB8A39020FF448500A1CDDD /* DownScaleDynamicAssembly_arm64.S */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = DownScaleDynamicAssembly_arm64.S; sourceTree = "<group>"; };
+		DAB8A39420FF44C200A1CDDD /* DownScaleDynamicAssembly_arm32.S */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = DownScaleDynamicAssembly_arm32.S; sourceTree = "<group>"; };
 		DABC85D31F65874100F25F17 /* AudioVideoEngine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioVideoEngine.xcodeproj; path = "../IPV-MediaEngine/builds/ios/AudioVideoEngine.xcodeproj"; sourceTree = "<group>"; };
 		DAC7C1E31E7544850045242C /* ClientRenderingBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ClientRenderingBuffer.cpp; path = TestCamera/VideoTeam/ClientRenderingBuffer.cpp; sourceTree = "<group>"; };
 		DAC7C1E41E7544850045242C /* ClientRenderingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClientRenderingBuffer.h; path = TestCamera/VideoTeam/ClientRenderingBuffer.h; sourceTree = "<group>"; };
@@ -229,6 +256,11 @@
 		18747B031BFDD0CD0010CAA3 /* VideoTeam */ = {
 			isa = PBXGroup;
 			children = (
+				DA712028213E9123006D0416 /* Size.h */,
+				DA50554A20E25B510005A8C3 /* VideoBeautificationerTest.cpp */,
+				DA50554D20E25B6F0005A8C3 /* VideoBeautificationerTest.h */,
+				DA50553620E24F2C0005A8C3 /* VideoEffectsTest.cpp */,
+				DA50553320E24F2C0005A8C3 /* VideoEffectsTest.h */,
 				DA5222AA1DC5CF62000EB084 /* AverageCalculator.cpp */,
 				DA5222AB1DC5CF62000EB084 /* AverageCalculator.h */,
 				DAC7C1E81E7546180045242C /* ClientLockHandler.cpp */,
@@ -266,6 +298,14 @@
 		1B867FCD139D4AD300AD6B47 = {
 			isa = PBXGroup;
 			children = (
+				DA50553A20E25AEC0005A8C3 /* Bedroom1_640x480.yuv */,
+				DA50553B20E25AED0005A8C3 /* Bedroom2_640x480.yuv */,
+				DA50553F20E25AF30005A8C3 /* Girl1_640x480.yuv */,
+				DA50554020E25AF50005A8C3 /* Girl2_400x600.yuv */,
+				DA50554120E25AF60005A8C3 /* Girl3_640x960.yuv */,
+				DA50553C20E25AEF0005A8C3 /* Girl4_180x240.yuv */,
+				DA50554E20E266500005A8C3 /* House1_640x352.yuv */,
+				DA50554F20E266510005A8C3 /* House2_640x360.yuv */,
 				DAA66F0C20398955006EB546 /* libAudioVideoEngine.a */,
 				DAA66F0E2039895E006EB546 /* libRingIDSDK.a */,
 				DA7C89E51DEE91C2002C939F /* RingIDSDK.xcodeproj */,
@@ -395,6 +435,7 @@
 				DAC984B8206628A2008DF06C /* Crop_YUVNV12_YUVNV21_Assembly_arm32.S */,
 				DAC984C220666201008DF06C /* ConvertNV21ToI420_arm32.S */,
 				DAA314482070A955007ACFB1 /* BeautificationFilterForChannel_arm_aarch32.S */,
+				DAB8A39420FF44C200A1CDDD /* DownScaleDynamicAssembly_arm32.S */,
 			);
 			path = arm32;
 			sourceTree = "<group>";
@@ -409,6 +450,7 @@
 				DA94BC4C205E7BBA00619B25 /* Crop_YUVNV12_YUVNV21_Assembly_arm64.S */,
 				DAC984BE206661E9008DF06C /* ConvertNV21ToI420_arm64.S */,
 				DAA314442070A93E007ACFB1 /* BeautificationFilterForChannel_arm_aarch64.S */,
+				DAB8A39020FF448500A1CDDD /* DownScaleDynamicAssembly_arm64.S */,
 			);
 			path = arm64;
 			sourceTree = "<group>";
@@ -532,19 +574,27 @@
 				DAB86FF02015C4B1004E0415 /* MainStoryboard_iPhone.storyboard in Resources */,
 				DA7B6B021E6D348500AC19C3 /* iphone_3x_settings.png in Resources */,
 				DA7B6AF41E6D2B6B00AC19C3 /* endBtn.png in Resources */,
+				DA50554220E25AF60005A8C3 /* Bedroom1_640x480.yuv in Resources */,
 				DA7B6AF51E6D2B6B00AC19C3 /* startBtn.png in Resources */,
 				DA7B6AF71E6D30D300AC19C3 /* appIcon.png in Resources */,
 				1B867FF0139D4AD300AD6B47 /* MainStoryboard_iPhone.storyboard in Resources */,
 				DAB40B801FC150E4002FCE60 /* FileDump.h264 in Resources */,
 				DA7B6AFE1E6D348500AC19C3 /* iPhone_2x_AppIcon.png in Resources */,
+				DA50554420E25AF60005A8C3 /* Girl4_180x240.yuv in Resources */,
 				DA835D861E6C5A6200C75A79 /* AppAsset.xcassets in Resources */,
+				DA50555020E266510005A8C3 /* House1_640x352.yuv in Resources */,
+				DA50554820E25AF60005A8C3 /* Girl2_400x600.yuv in Resources */,
 				DAB86FF52015C512004E0415 /* Info.plist in Resources */,
+				DA50554320E25AF60005A8C3 /* Bedroom2_640x480.yuv in Resources */,
+				DA50554920E25AF60005A8C3 /* Girl3_640x960.yuv in Resources */,
 				DA7B6B031E6D348500AC19C3 /* iphone_3x_spotlight.png in Resources */,
 				DA7B6B011E6D348500AC19C3 /* iphone_3x_appicon.png in Resources */,
 				DA7B6B001E6D348500AC19C3 /* iPhone_2x_spotlight.png in Resources */,
 				DAB40B7E1FC144F4002FCE60 /* Dump_h264_annexb_cut.h264 in Resources */,
 				1B867FF3139D4AD300AD6B47 /* MainStoryboard_iPad.storyboard in Resources */,
+				DA50555120E266510005A8C3 /* House2_640x360.yuv in Resources */,
 				DA7B6AFF1E6D348500AC19C3 /* iPhone_2x_settings.png in Resources */,
+				DA50554720E25AF60005A8C3 /* Girl1_640x480.yuv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -560,11 +610,14 @@
 				18747B021BFDD0C60010CAA3 /* VideoThreadProcessor.mm in Sources */,
 				DAB614C61FC04294009B497E /* ExternalVideoProcessingViewController.mm in Sources */,
 				DA7CE48D1E6FFD97008895E5 /* AudioSessionManager.m in Sources */,
+				DA50554C20E25B510005A8C3 /* VideoBeautificationerTest.cpp in Sources */,
 				DAC984C320666201008DF06C /* ConvertNV21ToI420_arm32.S in Sources */,
 				DAB870012015C58F004E0415 /* Neon_Assembly_aarch64.S in Sources */,
 				DAA314492070A955007ACFB1 /* BeautificationFilterForChannel_arm_aarch32.S in Sources */,
 				DAB86FFA2015C586004E0415 /* DownScaleOneFourthAssembly.S in Sources */,
+				DAB8A39120FF448500A1CDDD /* DownScaleDynamicAssembly_arm64.S in Sources */,
 				DAB870002015C58F004E0415 /* DownScaleOneFourthAssembly_arm64.S in Sources */,
+				DAB8A39520FF44C200A1CDDD /* DownScaleDynamicAssembly_arm32.S in Sources */,
 				DA94BC4D205E7BBA00619B25 /* Crop_YUVNV12_YUVNV21_Assembly_arm64.S in Sources */,
 				18747B011BFDD0C60010CAA3 /* VideoSockets.mm in Sources */,
 				DAB86FFF2015C58F004E0415 /* mirror_YUV420_Assembly_arm64.S in Sources */,
@@ -575,6 +628,7 @@
 				18747B001BFDD0C60010CAA3 /* VideoConverter.mm in Sources */,
 				DA07AA621DE2C3D800402BB9 /* Common.mm in Sources */,
 				DAC984BF206661E9008DF06C /* ConvertNV21ToI420_arm64.S in Sources */,
+				DA50553720E24F2D0005A8C3 /* VideoEffectsTest.cpp in Sources */,
 				DA19F6D9201706500089C02D /* Rotate_Assembly_aarch64.S in Sources */,
 				DA7CE4911E6FFD97008895E5 /* SharkfoodMuteSwitchDetector.m in Sources */,
 				DAAE44FF1F28BB4C00BC5FA1 /* TestNeonAssembly.cpp in Sources */,
@@ -625,6 +679,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
@@ -662,6 +717,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;

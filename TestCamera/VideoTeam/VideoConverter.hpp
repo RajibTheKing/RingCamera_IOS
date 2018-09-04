@@ -85,7 +85,7 @@ public:
     int DownScale_3_2_YUV420(unsigned char* pData, int &iHeight, int &iWidth, unsigned char* outputData);
     
     int DownScaleYUV420_Dynamic(unsigned char* pData, int &iHeight, int &iWidth, unsigned char* outputData, int diff);
-    int DownScaleYUV420_Dynamic(unsigned char* pData, int inHeight, int inWidth, unsigned char* outputData, int outHeight, int outWidth);
+    
     
     
     void SendPakcetFragments(byte*data, int iLen);
@@ -98,6 +98,15 @@ public:
     int Crop_YUVNV12_YUVNV21(unsigned char* pData, int inHeight, int inWidth, int startXDiff, int endXDiff, int startYDiff, int endYDiff, unsigned char* outputData, int &outHeight, int &outWidth);
     int DownScaleYUVNV12_YUVNV21_OneFourth(unsigned char* pData, int &iHeight, int &iWidth, unsigned char* outputData);
     int RotateI420(byte *pInput, int inHeight, int inWidth, byte *pOutput, int &outHeight, int &outWidth, int rotationParameter);
+    
+    int DownScaleYUV420_Dynamic_Version222(unsigned char* pData, int inHeight, int inWidth, unsigned char* outputData, int outHeight, int outWidth);
+    void InitializeCumulativeSumForY(int inHeight, int inWidth, unsigned char *pData);
+    void InitializeCumulativeSumForUV(int halfH, int halfW, unsigned char *p, unsigned char *q);
+    int DownScaleYData(int MaximumFraction, int inHeight, int inWidth, int outHeight, int outWidth, int factorH,
+                       int fractionH, int factorW, int fractionW, unsigned char *pData, unsigned char *outputData);
+    int DownScaleUVData(int MaximumFraction, int halfH, int factorH, int fractionH, int halfW, int factorW, int fractionW, int outHeight, int outWidth,
+                        unsigned char *p, unsigned char *q, int uIndex, int vIndex, unsigned char *outputData);
+    
     CIContext *temporaryContext, *temporaryContext2;
     
     int m_iHeight;

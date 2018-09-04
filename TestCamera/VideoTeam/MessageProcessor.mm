@@ -81,7 +81,7 @@ void CMessageProcessor::Handle_Signaling_Message(unsigned char* buffer, int iLen
         int targetServerMediaPort = ByteToInt(buffer, startIndex);
         int iInsetID = buffer[startIndex++];
         printf("TestCamera--> PUBLISHER_INVITE_MESSAGE, publisherID --> videwerID = %d --> %d, insetID = %d VIEWER_IN_CALL\n", publisherID, myViewerID, iInsetID);
-        CVideoAPI::GetInstance()->StartCallInLive(200, VIEWER_IN_CALL, CALL_IN_LIVE_TYPE_AUDIO_VIDEO/*, iInsetID*/);
+        //CVideoAPI::GetInstance()->StartCallInLive(200, VIEWER_IN_CALL, CALL_IN_LIVE_TYPE_AUDIO_VIDEO/*, iInsetID*/);
     }
     else if(buffer[0] ==  Constants::REPLY_PUBLISHER_INVITE_MESSAGE)
     {
@@ -91,7 +91,7 @@ void CMessageProcessor::Handle_Signaling_Message(unsigned char* buffer, int iLen
         int targetServerMediaPort = ByteToInt(buffer, startIndex);
         int iInsetID = buffer[startIndex++];
         printf("TestCamera--> REPLY_PUBLISHER_INVITE_MESSAGE, publisherID --> videwerID = %d --> %d, insetID = %d PUBLISHER_IN_CALL\n", publisherID, myViewerID, iInsetID);
-        CVideoAPI::GetInstance()->StartCallInLive(200, PUBLISHER_IN_CALL, CALL_IN_LIVE_TYPE_AUDIO_VIDEO/*, iInsetID*/);
+        //CVideoAPI::GetInstance()->StartCallInLive(200, PUBLISHER_IN_CALL, CALL_IN_LIVE_TYPE_AUDIO_VIDEO/*, iInsetID*/);
     }
     else if(buffer[0] ==  Constants::VIEWER_INVITE_MESSAGE)
     {

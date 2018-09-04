@@ -6,8 +6,8 @@
 //
 
 #import "ExternalVideoProcessingViewController.h"
-
-
+#include "VideoEffectsTest.h"
+#include "VideoBeautificationerTest.h"
 unsigned char h264Data[10000000];
 
 @interface ExternalVideoProcessingViewController ()
@@ -34,7 +34,7 @@ unsigned char h264Data[10000000];
     MediatorClass *mediator =  [MediatorClass GetInstance];
     mediator.externalVideoProcessingDelegate = self;
     
-    CVideoAPI::GetInstance()->StartExternalVideoProcessingSession();
+    //CVideoAPI::GetInstance()->StartExternalVideoProcessingSession();
     // Do any additional setup after loading the view.
 }
 
@@ -92,7 +92,7 @@ unsigned char h264Data[10000000];
     CVideoAPI::GetInstance()->SendH264EncodedDataToGetThumbnail(h264Data, iTotalDataLen, x);
     */
     
-    CVideoAPI::GetInstance()->SendH264EncodedDataFilePathToGetThumbnail(sFilePath, x);
+    //CVideoAPI::GetInstance()->SendH264EncodedDataFilePathToGetThumbnail(sFilePath, x);
 }
 
 -(long long)GetDataLenFromFile:(FILE **)fp
@@ -177,6 +177,76 @@ unsigned char h264Data[10000000];
     [_positionLabel release];
     [_minusBtn release];
     
+    [_filterCheck release];
     [super dealloc];
+}
+- (IBAction)filterCheckAction:(id)sender
+{
+    CVideoEffectsTest *videoEffectTest = new CVideoEffectsTest();
+    
+    
+    NSString *dataFile = [[NSBundle mainBundle] pathForResource:@"House2_640x360" ofType:@"yuv"];
+    NSLog(@"%@",dataFile);
+    std::string filePath = std::string([dataFile UTF8String]);
+    
+    //std::string filePath = "/Users/RajibTheKing/Downloads/liveNew.h264";
+    FILE *fpInputFile = fopen(filePath.c_str(), "rb");
+    int iHeight = 360;
+    int iWidth = 640;
+   
+    unsigned char inputData[640*480*3/2];
+    unsigned char temp[640*480*3/2];
+    
+    fread(inputData, 1, iHeight*iWidth*3/2, fpInputFile);
+    
+    
+    CVideoBeautificationerTest *beautifyTest = new CVideoBeautificationerTest(iHeight, iWidth, 2);
+    
+    NSFileHandle *handle;
+    NSArray *Docpaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [Docpaths objectAtIndex:0];
+    
+    NSString *filePathyuv = [documentsDirectory stringByAppendingPathComponent:@"House2_640x360_Sketch_Gray.yuv"];
+    char *filePathcharyuv = (char*)[filePathyuv UTF8String];
+    FILE *fpOutputFile1 = fopen(filePathcharyuv, "wb");
+    
+    NSString *filePathyuv2 = [documentsDirectory stringByAppendingPathComponent:@"House2_640x360_Sketch_White.yuv"];
+    char *filePathcharyuv2 = (char*)[filePathyuv2 UTF8String];
+    FILE *fpOutputFile2 = fopen(filePathcharyuv2, "wb");
+    
+    NSString *filePathyuv3 = [documentsDirectory stringByAppendingPathComponent:@"House2_640x360_beautify.yuv"];
+    char *filePathcharyuv3 = (char*)[filePathyuv3 UTF8String];
+    FILE *fpOutputFile3 = fopen(filePathcharyuv3, "wb");
+    
+    
+    
+    memcpy(temp, inputData, iHeight * iWidth * 3 / 2);
+    videoEffectTest->PencilSketchGrayEffect(temp, iHeight, iWidth);
+    fwrite(temp, 1, iHeight*iWidth*3/2, fpOutputFile1);
+    
+    memcpy(temp, inputData, iHeight * iWidth * 3 / 2);
+    videoEffectTest->PencilSketchWhiteEffect(temp, iHeight, iWidth);
+    fwrite(temp, 1, iHeight*iWidth*3/2, fpOutputFile2);
+    
+    
+    memcpy(temp, inputData, iHeight * iWidth * 3 / 2);
+    beautifyTest->BeautificationFilterNew(temp, iHeight*iWidth*3/2, iHeight, iWidth, iHeight, iWidth, true);
+    fwrite(temp, 1, iHeight*iWidth*3/2, fpOutputFile3);
+    
+    
+    fclose(fpInputFile);
+    fclose(fpOutputFile1);
+    fclose(fpOutputFile2);
+    fclose(fpOutputFile3);
+    
+    NSLog(@"File Write Done");
+    
+    
+    
+    
+    
+    
+    
+    
 }
 @end

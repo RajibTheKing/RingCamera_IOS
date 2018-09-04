@@ -138,12 +138,13 @@ void  VideoSockets::BindSocketToReceiveRemoteData()
     
     si_VideoSendSocket.sin_addr.s_addr = htonl(INADDR_ANY);
     
+    /*
     //bind socket to port
     if( bind(s_VideoSendSocket , (struct sockaddr*)&si_VideoSendSocket, sizeof(si_VideoSendSocket) ) == -1)
     {
         printf("bind\n");
     }
-    
+    */
     
     
     dispatch_queue_t PacketReceiverForVideoSendSocketQ = dispatch_queue_create("PacketReceiverForVideoSendSocketQ",DISPATCH_QUEUE_SERIAL);
