@@ -19,7 +19,7 @@ extern unsigned int timeGetTime();
 
 unsigned char m_pVPlane[640*480*3/2];
 unsigned char m_pUPlane[640*480*3/2];
-
+TestNeonAssembly testNeon;
 CVideoConverter::CVideoConverter()
 {
     
@@ -1293,7 +1293,7 @@ int CumulativeSum_V2[1280 * 720];
 void CVideoConverter::InitializeCumulativeSumForY(int inHeight, int inWidth, unsigned char *pData)
 {
     //TestNeonAssembly::GetInstance()->InitializeCumulativeSumForY_Assembly(inHeight, inWidth, pData, CumulativeSum2);
-    
+    /*
     CumulativeSum2[0] = (int)pData[0];
     
     for (int i = 1, iw = inWidth; i<inHeight; i++, iw += inWidth)
@@ -1304,14 +1304,11 @@ void CVideoConverter::InitializeCumulativeSumForY(int inHeight, int inWidth, uns
     {
         CumulativeSum2[j] = (int)(CumulativeSum2[j - 1] + (int)pData[j]);
     }
+    */
     
-    for (int i = 1, iw = inWidth; i<inHeight; i++, iw += inWidth)
-    {
-        for (int j = 1; j<inWidth; j++)
-        {
-            CumulativeSum2[i * inWidth + j] = (int)(CumulativeSum2[i * inWidth + (j - 1)] + CumulativeSum2[(i - 1) * inWidth + j] - CumulativeSum2[(i - 1) * inWidth + (j - 1)] + pData[iw + j]);
-        }
-    }
+    testNeon.InitializeCumulativeSumForY_Assembly(inHeight, inWidth, pData, CumulativeSum2);
+
+    
 }
 
 void CVideoConverter::InitializeCumulativeSumForUV(int halfH, int halfW, unsigned char *p, unsigned char *q)
@@ -1487,6 +1484,7 @@ int CVideoConverter::DownScaleYUV420_Dynamic_Version222(unsigned char* pData, in
     printf("inHeight, inWidth = (%d, %d)    ratioHeight, ratioWidth = (%lf,%lf)   H:W = %d,%d\n", inHeight, inWidth, ratioHeight, ratioWidth, outHeight, outWidth);
     //Y Data
     InitializeCumulativeSumForY(inHeight, inWidth, pData);
+    //testNeon.InitializeCumulativeSumForY_Assembly(inHeight, inWidth, pData, CumulativeSum2);
     indx = DownScaleYData(MaximumFraction, inHeight, inWidth, outHeight, outWidth, factorH, fractionH, factorW, fractionW, pData, outputData);
     
     //UV Data

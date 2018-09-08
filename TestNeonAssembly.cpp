@@ -250,6 +250,15 @@ void TestNeonAssembly::ne10_img_rotate_Assembly(unsigned char *pDst, unsigned ch
 
 void TestNeonAssembly::InitializeCumulativeSumForY_Assembly(int inHeight, int inWidth, unsigned char *pData, int *cummulativeY)
 {
+    
+    std::cout<<"TheKing--> InitializeCumulativeSumForY\n";
+    for(int i=0; i<32; i++)
+    {
+        printf("%X ", pData[i]);
+    }
+    printf("\n");
+    
+    
 #if defined(HAVE_NEON)
     
     
